@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import StatusPicker from "@/components/ui/StatusPicker";
+import StatusPicker from "@/components/ui/StatusPicker"
 
 export default {
   props: ["employee", "new"],
@@ -72,34 +72,34 @@ export default {
   data() {
     return {
       activeEmployee: {},
-    };
+    }
   },
   methods: {
     setActiveStatus(status) {
-      this.activeEmployee.status = status;
+      this.activeEmployee.status = status
     },
     setCurrentEmployeeData() {
       if (this.new) {
-        this.activeEmployee.status = "staged";
+        this.activeEmployee.status = "staged"
       } else {
-        this.activeEmployee.status = this.employee.status;
+        this.activeEmployee.status = this.employee.status
       }
-      this.activeEmployee.email = this.employee.email;
-      this.activeEmployee.phone = this.employee.phone;
-      this.activeEmployee.role = this.employee.role;
-      this.activeEmployee.contract = this.employee.contract;
-      this.activeEmployee.contractType = this.employee.contractType;
-      this.activeEmployee.note = this.employee.note;
+      this.activeEmployee.email = this.employee.email || ""
+      this.activeEmployee.phone = this.employee.phone || ""
+      this.activeEmployee.role = this.employee.role || ""
+      this.activeEmployee.contract = this.employee.contract || ""
+      this.activeEmployee.contractType = this.employee.contractType || ""
+      this.activeEmployee.note = this.employee.note || ""
     },
     setContractType(value) {
-      this.activeEmployee.contractType = value;
+      this.activeEmployee.contractType = value
     },
     closeEditEmployee() {
-      this.$emit("closeEditEmployee");
+      this.$emit("closeEditEmployee")
     },
     deleteEmployee() {
-      this.activeEmployee.status = "archived";
-      this.saveEditEmployee();
+      this.activeEmployee.status = "archived"
+      this.saveEditEmployee()
     },
     async saveEditEmployee() {
       // TODO verify data
@@ -107,19 +107,19 @@ export default {
       if (this.new) {
         this.$store.dispatch("employees/createNewUser", {
           employee: this.activeEmployee,
-        });
+        })
       } else {
         this.$store.dispatch("employees/updateUser", {
           id: this.employee.id,
           data: this.activeEmployee,
-        });
+        })
       }
 
-      this.closeEditEmployee();
+      this.closeEditEmployee()
     },
   },
   mounted() {
-    this.setCurrentEmployeeData();
+    this.setCurrentEmployeeData()
   },
-};
+}
 </script>
