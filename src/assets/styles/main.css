@@ -898,16 +898,16 @@ section#planner .row .day.active.management {
 section#planner .row .day.active.management:hover {
   background-color: #bcd4f9;
 }
-section#planner .row .day.active.teamleader {
+section#planner .row .day.active.leadership {
   background-color: #dff2db;
 }
-section#planner .row .day.active.teamleader:hover {
+section#planner .row .day.active.leadership:hover {
   background-color: #ceebc8;
 }
-section#planner .row .day.active.algemeen {
+section#planner .row .day.active.general {
   background-color: #fbf3d9;
 }
-section#planner .row .day.active.algemeen:hover {
+section#planner .row .day.active.general:hover {
   background-color: #f9ecc2;
 }
 section#planner .row .day.active.restaurant {

@@ -57,8 +57,8 @@ export default {
       searchInput: "",
       filters: {
         management: false,
-        teamleader: false,
-        algemeen: false,
+        leadership: false,
+        general: false,
         restaurant: false,
         cleaning: false,
       },
@@ -86,7 +86,7 @@ export default {
   },
   computed: {
     displayRoles() {
-      const roles = ["management", "teamleader", "algemeen", "restaurant", "cleaning"];
+      const roles = ["management", "leadership", "general", "restaurant", "cleaning"];
 
       if (Object.values(this.filters).includes(true)) {
         return roles.filter((role) => this.filters[role] === true);

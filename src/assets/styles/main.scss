@@ -748,13 +748,13 @@ section#planner {
             background-color: darken(color.$blue-light, 5%);
           }
         }
-        &.teamleader {
+        &.leadership {
           background-color: color.$green-light;
           &:hover {
             background-color: darken(color.$green-light, 5%);
           }
         }
-        &.algemeen {
+        &.general {
           background-color: color.$yellow-light;
           &:hover {
             background-color: darken(color.$yellow-light, 5%);

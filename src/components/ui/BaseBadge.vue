@@ -48,9 +48,9 @@ export default {
         // Employee Role
         case "management":
           return "blue";
-        case "teamleader":
+        case "leadership":
           return "green";
-        case "algemeen":
+        case "general":
           return "yellow";
         case "restaurant":
           return "purple";
