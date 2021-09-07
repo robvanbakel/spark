@@ -1,6 +1,6 @@
 <template>
   <div class="edit-modal">
-    <div class="overlay"></div>
+    <base-overlay dark transparent></base-overlay>
     <div class="modal">
       <div class="header">
         <h1 v-if="$store.getters['planner/newShift']">New Shift</h1>
