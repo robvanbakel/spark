@@ -5,6 +5,9 @@ export default {
   currentWeekSchedule(state, getters, rootState, rootGetters) {
     return state.schedules[rootGetters['date/weekId']]
   },
+  activeShiftId(state) {
+    return state.activeShiftId
+  },
   activeShift(state) {
     return state.activeShift
   },

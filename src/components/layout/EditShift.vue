@@ -1,9 +1,9 @@
 <template>
   <div class="edit-modal">
     <base-overlay dark transparent></base-overlay>
-    <div class="modal">
+    <div class="modal" v-if="shift">
       <div class="header">
-        <h1 v-if="$store.getters['planner/newShift']">New Shift</h1>
+        <h1 v-if="newShift">New Shift</h1>
         <h1 v-else>Edit Shift</h1>
         <span class="clear material-icons material-icons-round" @click="closeEditShift">clear</span>
       </div>
@@ -59,13 +59,7 @@
           </div>
           <div class="form-control">
             <label>Break</label>
-            <base-switch
-              v-if="this.shift"
-              :items="$store.getters['planner/breaks']"
-              :active="this.shift.break"
-              @activeItem="setBreak"
-              fixed="true"
-            ></base-switch>
+            <base-switch :items="$store.getters['planner/breaks']" :active="this.shift.break" @activeItem="setBreak" fixed="true"></base-switch>
           </div>
           <div class="form-control note">
             <label for="note">Notes</label>
@@ -73,7 +67,7 @@
           </div>
 
           <div class="form-actions">
-            <button v-if="!$store.getters['planner/newShift']" class="delete" @click="deleteShift">
+            <button v-if="!newShift" class="delete" @click="deleteShift">
               <span class="material-icons material-icons-round">delete</span>
             </button>
             <button class="secondary" @click="closeEditShift">Cancel</button>
@@ -89,7 +83,8 @@
 export default {
   data() {
     return {
-      shift: this.$store.getters["planner/activeShift"].shift,
+      newShift: true,
+      shift: null,
       error: {
         employee: false,
         place: false,
@@ -100,7 +95,7 @@ export default {
         notes: false,
       },
       selectedSuggestion: null,
-    };
+    }
   },
   computed: {
     showNewSuggestion() {
@@ -108,106 +103,139 @@ export default {
         this.shift.place != "" &&
         !this.$store.getters["settings/suggestions"]
           .map((sug) => {
-            return sug.toLowerCase();
+            return sug.toLowerCase()
           })
           .includes(this.shift.place.toLowerCase())
       ) {
-        return true;
+        return true
       } else {
-        return false;
+        return false
       }
     },
   },
   methods: {
     switchHandler(selectedEmployee) {
-      this.shift.employee = selectedEmployee;
+      this.shift.employee = selectedEmployee
     },
     setBreak(val) {
       if (val === "-") {
-        this.shift.break = "0";
+        this.shift.break = "0"
       } else {
-        this.shift.break = val;
+        this.shift.break = val
       }
     },
     clearError(field) {
-      this.error[field] = false;
+      this.error[field] = false
     },
     validateTime(time, field) {
       if (/^([0-9])$/.test(time)) {
-        this.shift[field] = `0${time}:00`;
+        this.shift[field] = `0${time}:00`
       } else if (/^([0-1][0-9]|2[0-3])$/.test(time)) {
-        this.shift[field] = `${time}:00`;
+        this.shift[field] = `${time}:00`
       } else if (/^([0-1]?[0-9]|2[0-3])\D?([0-5][0-9])$/.test(time)) {
-        this.shift[field] = `${time.slice(0, 2)}:${time.slice(-2)}`;
+        this.shift[field] = `${time.slice(0, 2)}:${time.slice(-2)}`
       } else {
-        this.error[field] = true;
+        this.error[field] = true
       }
 
-      if (this.shift.start && this.shift.end) {
-        const [startHour, startMin] = this.shift.start.split(":");
-        const [endHour, endMin] = this.shift.end.split(":");
+      if (this.start && this.end) {
+        const [startHour, startMin] = this.start.split(":")
+        const [endHour, endMin] = this.end.split(":")
 
-        const start = new Date();
-        start.setHours(startHour);
-        start.setMinutes(startMin);
+        const start = new Date()
+        start.setHours(startHour)
+        start.setMinutes(startMin)
 
-        const end = new Date();
-        end.setHours(endHour);
-        end.setMinutes(endMin);
+        const end = new Date()
+        end.setHours(endHour)
+        end.setMinutes(endMin)
 
-        if (end <= start && this.shift.end != "00:00") {
-          this.error.end = true;
+        if (end <= start && this.end != "00:00") {
+          this.error.end = true
         } else {
-          this.error.end = false;
+          this.error.end = false
         }
       }
     },
     selectSuggestion(suggestion) {
-      this.shift.place = suggestion;
-      this.shift.selectedSuggestion = suggestion;
+      this.place = suggestion
+      this.selectedSuggestion = suggestion
     },
-    saveEditShift() {
-      const stringifyDate = (date) => {
-        const [day, month, year] = date.split("-");
-        return `${year}${month}${day}`;
-      };
+    async saveEditShift() {
+      const { weekId, day } = await this.$store.dispatch("date/getWeekIdAndDay", this.shift.date)
 
-      const stringifyTime = (time) => {
-        return time.replace(":", "");
-      };
+      const stringifyTime = (time) => time.replace(":", "")
 
-      if (this.$store.getters["planner/newShift"]) {
-        this.$store.dispatch("planner/addNewShift", {
-          employee: this.employee.id,
-          place: this.place,
-          date: stringifyDate(this.date),
-          start: stringifyTime(this.start),
-          end: stringifyTime(this.end),
-          break: this.break,
-          notes: this.notes,
-        });
-      } else {
-        this.$store.dispatch("planner/saveEditShift", {
-          employee: this.employee.id,
-          place: this.place,
-          date: stringifyDate(this.date),
-          start: stringifyTime(this.start),
-          end: stringifyTime(this.end),
-          break: this.break,
-          notes: this.notes,
-        });
+      const shiftId = {
+        employeeId: this.shift.employee.id,
+        weekId,
+        day,
       }
 
-      this.closeEditShift();
+      const shiftInfo = {
+        place: this.shift.place,
+        start: stringifyTime(this.shift.start),
+        end: stringifyTime(this.shift.end),
+        break: this.shift.break,
+        notes: this.shift.notes || "",
+      }
+
+      this.$store.dispatch("planner/saveEditShift", {shiftId, shiftInfo})
+
+      this.closeEditShift()
     },
     closeEditShift() {
-      this.$store.dispatch("planner/setActiveShift", null);
-      this.$store.dispatch("planner/newShift", null);
+      this.$store.dispatch("planner/setActiveShiftId", null)
     },
     deleteShift() {
-      this.$store.dispatch("planner/deleteShift");
-      this.closeEditShift();
+      this.$store.dispatch("planner/deleteShift")
+      this.closeEditShift()
     },
   },
-};
+  mounted() {
+    // Find selected shift
+    const { weekId, day, employeeId } = this.$store.getters["planner/activeShiftId"]
+    const shift = this.$store.getters["planner/schedules"][weekId][employeeId][day]
+
+    // Helper functions
+
+    const employee = this.$store.getters["employees/employees"].find((emp) => emp.id === employeeId)
+
+    const parseTime = (time) => {
+      return time.substring(0, 2) + ":" + time.substring(2, 4)
+    }
+
+    const parseDate = () => {
+      const [month, date, year] = this.$store.getters["date/dates"][day].toLocaleDateString({ year: "numeric", month: "numeric", day: "numeric" }).split("/")
+      return `${date.padStart(2, "0")}-${month.padStart(2, "0")}-${year}`
+    }
+
+    // Set boilerplate shift info
+    const activeShift = {
+      employee: {
+        fullName: `${employee.firstName} ${employee.lastName}`,
+        id: employeeId,
+      },
+      place: "",
+      date: parseDate(),
+      start: "",
+      end: "",
+      break: "",
+      notes: "",
+    }
+
+    // If active shift exists, set shift info
+    if (shift) {
+      this.newShift = false
+
+      activeShift.place = shift.place
+      activeShift.start = parseTime(shift.start)
+      activeShift.end = parseTime(shift.end)
+      activeShift.break = shift.break
+      activeShift.notes = shift.notes
+    }
+
+    this.shift = activeShift
+  },
+}
 </script>

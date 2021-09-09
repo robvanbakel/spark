@@ -1,95 +1,71 @@
-import { db } from '@/firebase'
+import { db } from "@/firebase"
 
 export default {
-  setActiveShift(context, payload) {
-
+  setActiveShiftId(context, payload) {
     if (payload) {
-
-      const { weekId, day, employeeId } = payload
-      const shift = context.getters.schedules[weekId][employeeId][day];
-      const employee = context.rootGetters["employees/employees"].find((emp) => emp.id === employeeId);
-
-      const parseTime = (time) => {
-        return time.substring(0, 2) + ":" + time.substring(2, 4);
-      };
-
-      const parseDate = () => {
-        const [month, date, year] = context.rootGetters['date/dates'][day]
-          .toLocaleDateString({ year: 'numeric', month: 'numeric', day: 'numeric', })
-          .split('/')
-
-        return `${date.padStart(2, '0')}-${month.padStart(2, '0')}-${year}`
-      }
-
-      context.commit('activeShift', {
-        weekId,
-        day,
-        employeeId,
-        shift: {
-          employee: {
-            fullName: `${employee.firstName} ${employee.lastName}`,
-            id: employeeId,
-          },
-          place: shift.place,
-          date: parseDate(),
-          start: parseTime(shift.start),
-          end: parseTime(shift.end),
-          break: shift.break,
-          notes: shift.notes,
-        }
-      })
-
+      context.commit("activeShiftId", payload)
     } else {
-      context.commit('activeShift', null)
+      context.commit("activeShiftId", null)
     }
-
-  },
-  newShift(context, payload) {
-    context.commit('newShift', payload)
   },
   async addNewShift(context, payload) {
-
     // Update DB
-    const res = await db.collection('schedules').add(payload);
+    const res = await db.collection("schedules").add(payload)
 
     // Update locally
-    context.commit('updateShiftLocally', {
+    context.commit("updateShiftLocally", {
       newShiftId: res.id,
-      shift: payload
+      shift: payload,
     })
-
   },
-  saveEditShift(context, payload) {
+  async saveEditShift(context, payload) {
+    // Helper function to check if two ojbects have equal values
+    const shiftIdChanged = (obj1, obj2) => {
+      for (const key in obj1) {
+        if (obj1[key] !== obj2[key]) {
+          return true
+        }
+      }
+      return false
+    }
 
-    // Update DB
-    db.collection('schedules').doc(context.getters.activeShiftId).update(payload);
+    // Check if shiftId changed and update shiftInfo
+    if (!shiftIdChanged(context.getters["activeShiftId"], payload.shiftId)) {
+      // Update locally
+      context.commit("updateShiftLocally", payload)
 
-    // Update locally
-    context.commit('updateShiftLocally', {
-      activeShiftId: context.getters.activeShiftId,
-      shift: payload
-    })
+      // Update DB
 
+      const { weekId, employeeId, day } = payload.shiftId
+
+      const schedule = context.getters["schedules"][weekId][employeeId]
+
+      schedule[day] = payload.shiftInfo
+
+      await db
+        .collection("schedules")
+        .doc(weekId)
+        .set({ [employeeId]: [...schedule] }, { merge: true })
+
+    } 
   },
   deleteShift(context) {
-
     // Update DB
-    db.collection('schedules').doc(context.getters.activeShiftId).delete();
+    db.collection("schedules")
+      .doc(context.getters.activeShiftId)
+      .delete()
 
     // Update locally
-    context.commit('removeShiftLocally', context.getters.activeShiftId)
-
+    context.commit("removeShiftLocally", context.getters.activeShiftId)
   },
   async getSchedules(context) {
-
     let schedules = {}
 
-    const snapshot = await db.collection('schedules').get();
-    snapshot.forEach(doc => {
+    const snapshot = await db.collection("schedules").get()
+    snapshot.forEach((doc) => {
       schedules[doc.id] = doc.data()
-    });
+    })
 
-    context.commit('schedules', schedules);
-
+    context.commit("schedules", schedules)
   },
 }

@@ -1,46 +1,24 @@
 export default {
   schedules(state, payload) {
-    state.schedules = payload;
+    state.schedules = payload
   },
   activeShift(state, payload) {
     state.activeShift = payload
   },
+  activeShiftId(state, payload) {
+    state.activeShiftId = payload
+  },
   newShift(state, payload) {
-    state.newShift = payload;
+    state.newShift = payload
   },
   addSuggestion(state, payload) {
     state.suggestions.push(payload.suggestion)
   },
-  updateShiftLocally(state, payload) {
-
-    if (payload.newShiftId) {
-
-      state.schedules.push({
-        id: payload.newShiftId,
-        ...payload.shift
-      })
-
-    } else {
-
-      for (const key in state.schedules) {
-        if (state.schedules[key].id === payload.activeShiftId) {
-          state.schedules[key] = {
-            id: payload.activeShiftId,
-            ...payload.shift
-          }
-        }
-      }
-    }
+  async updateShiftLocally(state, payload) {
+    const { weekId, day, employeeId } = payload.shiftId
+    state.schedules[weekId][employeeId][day] = payload.shiftInfo
   },
-  removeShiftLocally(state, id) {
-
-    for (const key in state.schedules) {
-      if (state.schedules[key].id === id) {
-        state.schedules[key] = {
-          id: null,
-        }
-      }
-    }
-
-  }
+  removeShiftLocally(state, { weekId, day, employeeId }) {
+    state.schedules[weekId][employeeId][day] = null
+  },
 }

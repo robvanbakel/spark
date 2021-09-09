@@ -30,7 +30,7 @@
       <PlannerContent v-for="role in this.displayRoles" :key="role" :role="role" :search="searchInput" />
     </section>
 
-    <EditShift v-if="$store.getters['planner/activeShift']" />
+    <EditShift v-if="$store.getters['planner/activeShiftId']" />
 
     <the-sidebar>
       <section>

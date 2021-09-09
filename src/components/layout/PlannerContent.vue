@@ -36,83 +36,79 @@ export default {
   props: ["role", "search"],
   watch: {
     search: function(query) {
-      this.searchInput = query;
+      this.searchInput = query
     },
   },
   data() {
     return {
       searchInput: "",
-    };
+    }
   },
   methods: {
     employeeInfo(id, query) {
-      const employee = this.$store.getters["employees/employees"].find((emp) => emp.id === id);
+      const employee = this.$store.getters["employees/employees"].find((emp) => emp.id === id)
 
-      let output = employee[query] || employee;
+      let output = employee[query] || employee
 
       switch (query) {
         case "fullName":
-          output = `${employee.firstName} ${employee.lastName}`;
-          break;
+          output = `${employee.firstName} ${employee.lastName}`
+          break
         case "role":
-          output = employee.role.toLowerCase();
-          break;
+          output = employee.role.toLowerCase()
+          break
       }
 
-      return output;
+      return output
     },
     totalHours(id) {
-      let total = 0;
+      let total = 0
 
       this.$store.getters["planner/currentWeekSchedule"][id].forEach((shift) => {
         if (shift) {
-          const [startHours, startMinutes] = shift.start.match(/\d{2}/g);
-          const [endHours, endMinutes] = shift.end.match(/\d{2}/g);
+          const [startHours, startMinutes] = shift.start.match(/\d{2}/g)
+          const [endHours, endMinutes] = shift.end.match(/\d{2}/g)
 
-          const start = new Date(0);
-          start.setHours(startHours);
-          start.setMinutes(startMinutes);
-          const end = new Date(0);
+          const start = new Date(0)
+          start.setHours(startHours)
+          start.setMinutes(startMinutes)
+          const end = new Date(0)
 
-          end.setHours(endHours);
-          end.setMinutes(endMinutes);
+          end.setHours(endHours)
+          end.setMinutes(endMinutes)
 
-          const totalHours = Math.abs(start - end);
+          const totalHours = Math.abs(start - end)
 
-          total += totalHours / 1000 / 60 / 60;
-          total -= shift.break / 60;
+          total += totalHours / 1000 / 60 / 60
+          total -= shift.break / 60
         }
-      });
+      })
 
-      return total.toFixed(2);
+      return total.toFixed(2)
     },
     shiftInfo(payload, query) {
-      const shift = this.$store.getters["planner/currentWeekSchedule"][payload.employeeId][payload.day - 1];
+      const shift = this.$store.getters["planner/currentWeekSchedule"][payload.employeeId][payload.day - 1]
 
-      const formatTime = (time) => time.substring(0, 2) + ":" + time.substring(2, 4);
+      const formatTime = (time) => time.substring(0, 2) + ":" + time.substring(2, 4)
 
       if (shift) {
-        let output = shift[query] || shift;
+        let output = shift[query] || shift
 
         switch (query) {
           case "time":
-            output = `${formatTime(shift.start)} - ${formatTime(shift.end)}`;
-            break;
+            output = `${formatTime(shift.start)} - ${formatTime(shift.end)}`
+            break
         }
 
-        return output;
+        return output
       }
     },
-    handleClick(payload) {
-      if (payload.new) {
-        this.$store.dispatch("planner/newShift", payload);
-      } else {
-        this.$store.dispatch("planner/setActiveShift", {
-          weekId: this.$store.getters["date/weekId"],
-          ...payload,
-        });
-      }
+    handleClick(payload) {     
+      this.$store.dispatch("planner/setActiveShiftId", {
+        weekId: this.$store.getters["date/weekId"],
+        ...payload,
+      })
     },
   },
-};
+}
 </script>
