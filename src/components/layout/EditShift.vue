@@ -158,7 +158,7 @@ export default {
       }
     },
     selectSuggestion(suggestion) {
-      this.place = suggestion
+      this.shift.place = suggestion
       this.selectedSuggestion = suggestion
     },
     async saveEditShift() {
