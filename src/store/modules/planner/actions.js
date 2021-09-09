@@ -29,25 +29,40 @@ export default {
       return false
     }
 
-    // Check if shiftId changed and update shiftInfo
-    if (!shiftIdChanged(context.getters["activeShiftId"], payload.shiftId)) {
-      // Update locally
-      context.commit("updateShiftLocally", payload)
+    // If shiftId changed, check if documents exist
+    if (shiftIdChanged(context.getters["activeShiftId"], payload.shiftId)) {
+      // Delete old shift locally
+      context.commit("updateShiftLocally", {
+        shiftId: context.getters["activeShiftId"],
+        shiftInfo: null,
+      })
 
-      // Update DB
+      // If not present, instantiate empty schedule
+      context.commit("createEmptySchedule", payload.shiftId)
 
-      const { weekId, employeeId, day } = payload.shiftId
-
+      // Delete old shift on DB
+      const { weekId, employeeId, day } = context.getters["activeShiftId"]
       const schedule = context.getters["schedules"][weekId][employeeId]
-
-      schedule[day] = payload.shiftInfo
+      schedule[day] = null
 
       await db
         .collection("schedules")
         .doc(weekId)
         .set({ [employeeId]: [...schedule] }, { merge: true })
+    }
 
-    } 
+    // Update locally
+    context.commit("updateShiftLocally", payload)
+
+    // Update DB
+    const { weekId, employeeId, day } = payload.shiftId
+    const schedule = context.getters["schedules"][weekId][employeeId]
+    schedule[day] = payload.shiftInfo
+
+    await db
+      .collection("schedules")
+      .doc(weekId)
+      .set({ [employeeId]: [...schedule] }, { merge: true })
   },
   deleteShift(context) {
     // Update DB

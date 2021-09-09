@@ -20,19 +20,17 @@ Each employee will receive a unique link to automatically add their work schedul
 
 ## Feature Implementation Status
 
-| Feature                        | View    | Status      |
-| ------------------------------ | ------- | ----------- |
-| Login as employer              | AUTH    | Done        |
-| View, edit and delete employee | STAFF   | Done        |
-| Search and filter employees    | STAFF   | Done        |
-| View shifts in weekly planning | PLANNER | Done        |
-| Search and filter shifts       | PLANNER | Done        |
-| Edit shift                     | PLANNER | In progress |
-| Delete shift                   | PLANNER | In progress |
-| Add new shift                  | PLANNER | In progress |
-| Login as employee              | AUTH    | -           |
-| Activate account as employee   | AUTH    | -           |
-| Add new employee               | STAFF   | -           |
+| Feature                           | View    | Status      |
+| --------------------------------- | ------- | ----------- |
+| Login as employer                 | AUTH    | Done        |
+| Read, update and delete employees | STAFF   | Done        |
+| Search and filter employees       | STAFF   | Done        |
+| Create, read and update shifts    | PLANNER | Done        |
+| Search and filter shifts          | PLANNER | Done        |
+| Delete shifts                     | PLANNER | In progress |
+| Login as employee                 | AUTH    | -           |
+| Activate account as employee      | AUTH    | -           |
+| Create employees                  | STAFF   | -           |
 
 #### Built With
 

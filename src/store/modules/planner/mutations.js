@@ -14,9 +14,18 @@ export default {
   addSuggestion(state, payload) {
     state.suggestions.push(payload.suggestion)
   },
-  async updateShiftLocally(state, payload) {
+  updateShiftLocally(state, payload) {
     const { weekId, day, employeeId } = payload.shiftId
     state.schedules[weekId][employeeId][day] = payload.shiftInfo
+  },
+  createEmptySchedule(state, { weekId, employeeId }) {
+    if (!state.schedules[weekId]) {
+      state.schedules[weekId] = {}
+    }
+
+    if (!state.schedules[weekId][employeeId]) {
+      state.schedules[weekId][employeeId] = new Array(7).fill(null)
+    }
   },
   removeShiftLocally(state, { weekId, day, employeeId }) {
     state.schedules[weekId][employeeId][day] = null
