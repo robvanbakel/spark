@@ -31,6 +31,20 @@ Each employee will receive a unique link to automatically add their work schedul
 | Login as employee                      | AUTH    | -           |
 | Activate account as employee           | AUTH    | -           |
 
+## Screenshots
+
+###### List of employees
+![EmployeeList](https://i.imgur.com/CF7wd8H.jpeg)
+
+###### Modal to edit employee details
+![EditEmployee](https://i.imgur.com/66qFPCK.jpeg)
+
+###### Weekly view of the planner
+![Planner](https://i.imgur.com/xmKoobt.jpeg)
+
+###### Modal to edit a shift
+![EditShift](https://i.imgur.com/O8YSxef.jpeg)
+
 #### Built With
 
 - Vue 3
