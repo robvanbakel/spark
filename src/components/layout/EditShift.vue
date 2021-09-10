@@ -66,8 +66,10 @@
             <textarea id="note" v-model="shift.notes"></textarea>
           </div>
 
+          <base-confirm message="Deleting this shift cannot be undone." v-if="showConfirmDelete" @confirm="deleteShift" />
+
           <div class="form-actions">
-            <button v-if="!newShift" class="delete" @click="deleteShift">
+            <button v-if="!newShift" class="delete" @click="showConfirmDelete = true">
               <span class="material-icons material-icons-round">delete</span>
             </button>
             <button class="secondary" @click="closeEditShift">Cancel</button>
@@ -95,6 +97,7 @@ export default {
         notes: false,
       },
       selectedSuggestion: null,
+      showConfirmDelete: false,
     }
   },
   computed: {
@@ -187,9 +190,13 @@ export default {
     closeEditShift() {
       this.$store.dispatch("planner/setActiveShiftId", null)
     },
-    deleteShift() {
-      this.$store.dispatch("planner/deleteShift")
-      this.closeEditShift()
+    deleteShift(confirmed) {
+      if (confirmed) {
+        this.$store.dispatch("planner/deleteShift")
+        this.closeEditShift()
+      }
+
+      this.showConfirmDelete = false
     },
   },
   mounted() {

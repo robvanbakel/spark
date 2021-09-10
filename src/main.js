@@ -11,6 +11,7 @@ import BaseButton from "@/components/ui/BaseButton";
 import BaseSwitch from "@/components/ui/BaseSwitch";
 import BaseSelect from "@/components/ui/BaseSelect";
 import BaseOverlay from "@/components/ui/BaseOverlay";
+import BaseConfirm from "@/components/ui/BaseConfirm";
 import TheSidebar from "@/components/layout/TheSidebar";
 
 import { auth } from '@/firebase'
@@ -40,6 +41,7 @@ auth.onAuthStateChanged((user) => {
     app.component('base-switch', BaseSwitch);
     app.component('base-select', BaseSelect);
     app.component('base-overlay', BaseOverlay);
+    app.component('base-confirm', BaseConfirm);
     app.component('the-sidebar', TheSidebar);
 
     app.mount('#app')

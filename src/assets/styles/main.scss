@@ -355,7 +355,7 @@ header {
   justify-content: flex-start;
   align-items: center;
   padding: 32px 0;
-  div#logo{
+  div#logo {
     img {
       height: 15px;
     }
@@ -511,6 +511,7 @@ section#employeelist {
 div.edit-modal {
   .modal {
     @include mixin.baseModal;
+    overflow: hidden;
     width: 515px;
     .header {
       display: flex;
@@ -686,6 +687,27 @@ div.edit-modal {
           }
         }
       }
+    }
+  }
+}
+
+.confirm {
+  width: min-content !important;
+  text-align: center;
+  padding: 32px 40px 24px !important;
+  white-space: nowrap;
+  .header {
+    justify-content: center !important;
+    margin-bottom: 0 !important;
+  }
+  .main {
+    margin: 24px 0 30px;
+  }
+  .form-actions {
+    margin-top: 0 !important;
+    justify-content: center;
+    button.secondary {
+      margin-left: 0 !important;
     }
   }
 }

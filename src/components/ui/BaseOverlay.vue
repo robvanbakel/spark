@@ -4,6 +4,7 @@
 
 <script>
 export default {
+  emits:['clickout'],
   props: {
     dark: Boolean,
     transparent: Boolean,
