@@ -73,7 +73,7 @@ export default {
       this.$refs.searchInput.focus();
     },
     addNewShift() {
-      this.$store.dispatch("planner/newShift", 'new');
+      this.$store.dispatch("planner/setActiveShiftId", 'new');
     },
     setFilter(status) {
       this.filters[status] = !this.filters[status];

@@ -180,7 +180,7 @@ export default {
         notes: this.shift.notes || "",
       }
 
-      this.$store.dispatch("planner/saveEditShift", {shiftId, shiftInfo})
+      this.$store.dispatch("planner/saveEditShift", { shiftId, shiftInfo })
 
       this.closeEditShift()
     },
@@ -193,46 +193,52 @@ export default {
     },
   },
   mounted() {
-    // Find selected shift
-    const { weekId, day, employeeId } = this.$store.getters["planner/activeShiftId"]
-    const shift = this.$store.getters["planner/schedules"][weekId][employeeId][day]
-
-    // Helper functions
-
-    const employee = this.$store.getters["employees/employees"].find((emp) => emp.id === employeeId)
-
-    const parseTime = (time) => {
-      return time.substring(0, 2) + ":" + time.substring(2, 4)
-    }
-
-    const parseDate = () => {
-      const [month, date, year] = this.$store.getters["date/dates"][day].toLocaleDateString({ year: "numeric", month: "numeric", day: "numeric" }).split("/")
-      return `${date.padStart(2, "0")}-${month.padStart(2, "0")}-${year}`
-    }
-
     // Set boilerplate shift info
     const activeShift = {
-      employee: {
-        fullName: `${employee.firstName} ${employee.lastName}`,
-        id: employeeId,
-      },
+      employee: {},
       place: "",
-      date: parseDate(),
+      date: "",
       start: "",
       end: "",
       break: "",
       notes: "",
     }
 
-    // If active shift exists, set shift info
-    if (shift) {
-      this.newShift = false
+    if (this.$store.getters["planner/activeShiftId"] !== "new") {
+      // Find selected shift
+      const { weekId, day, employeeId } = this.$store.getters["planner/activeShiftId"]
+      const shift = this.$store.getters["planner/schedules"][weekId][employeeId][day]
 
-      activeShift.place = shift.place
-      activeShift.start = parseTime(shift.start)
-      activeShift.end = parseTime(shift.end)
-      activeShift.break = shift.break
-      activeShift.notes = shift.notes
+      // Helper functions
+
+      const employee = this.$store.getters["employees/employees"].find((emp) => emp.id === employeeId)
+
+      const parseTime = (time) => {
+        return time.substring(0, 2) + ":" + time.substring(2, 4)
+      }
+
+      const parseDate = () => {
+        const [month, date, year] = this.$store.getters["date/dates"][day].toLocaleDateString({ year: "numeric", month: "numeric", day: "numeric" }).split("/")
+        return `${date.padStart(2, "0")}-${month.padStart(2, "0")}-${year}`
+      }
+
+      // Set boilerplate shift info
+      activeShift.employee = {
+        fullName: `${employee.firstName} ${employee.lastName}`,
+        id: employeeId,
+      }
+      activeShift.date = parseDate()
+
+      // If active shift exists, set shift info
+      if (shift) {
+        this.newShift = false
+
+        activeShift.place = shift.place
+        activeShift.start = parseTime(shift.start)
+        activeShift.end = parseTime(shift.end)
+        activeShift.break = shift.break
+        activeShift.notes = shift.notes
+      }
     }
 
     this.shift = activeShift

@@ -3,11 +3,7 @@ import { db } from "@/firebase"
 
 export default {
   setActiveShiftId(context, payload) {
-    if (payload) {
-      context.commit("activeShiftId", payload)
-    } else {
-      context.commit("activeShiftId", null)
-    }
+    context.commit("activeShiftId", payload)
   },
   async addNewShift(context, payload) {
     // Update DB
@@ -31,15 +27,12 @@ export default {
     }
 
     // If shiftId changed, check if documents exist
-    if (shiftIdChanged(context.getters["activeShiftId"], payload.shiftId)) {
+    if (context.getters["activeShiftId"] !== "new" && shiftIdChanged(context.getters["activeShiftId"], payload.shiftId)) {
       // Delete old shift locally
       context.commit("updateShiftLocally", {
         shiftId: context.getters["activeShiftId"],
         shiftInfo: null,
       })
-
-      // If not present, instantiate empty schedule
-      context.commit("createEmptySchedule", payload.shiftId)
 
       // Prepare object to update DB
       const { weekId, employeeId, day } = context.getters["activeShiftId"]
@@ -48,19 +41,18 @@ export default {
 
       // Pass updated schdule to DB; delete schedule if schedule is empty
       if (schedule.filter((i) => i !== null).length) {
-
         db.collection("schedules")
           .doc(weekId)
           .set({ [employeeId]: [...schedule] }, { merge: true })
-
       } else {
-
         db.collection("schedules")
           .doc(weekId)
           .update({ [employeeId]: firebase.firestore.FieldValue.delete() })
-
       }
     }
+
+    // If not present, instantiate empty schedule
+    context.commit("createEmptySchedule", payload.shiftId)
 
     // Update locally
     context.commit("updateShiftLocally", payload)
