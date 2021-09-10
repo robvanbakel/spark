@@ -64,6 +64,9 @@ export default {
         .doc(weekId)
         .set({ [employeeId]: [...schedule] }, { merge: true })
     } else {
+
+      context.commit('deleteScheduleLocally', context.getters["activeShiftId"])
+      
       db.collection("schedules")
         .doc(weekId)
         .update({ [employeeId]: firebase.firestore.FieldValue.delete() })

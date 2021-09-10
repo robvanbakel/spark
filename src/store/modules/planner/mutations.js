@@ -27,7 +27,7 @@ export default {
       state.schedules[weekId][employeeId] = new Array(7).fill(null)
     }
   },
-  removeShiftLocally(state, { weekId, day, employeeId }) {
-    state.schedules[weekId][employeeId][day] = null
+  deleteScheduleLocally(state, { weekId, employeeId }) {
+    delete state.schedules[weekId][employeeId]
   },
 }
