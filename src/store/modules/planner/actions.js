@@ -1,3 +1,4 @@
+import firebase from "firebase/app"
 import { db } from "@/firebase"
 
 export default {
@@ -40,15 +41,25 @@ export default {
       // If not present, instantiate empty schedule
       context.commit("createEmptySchedule", payload.shiftId)
 
-      // Delete old shift on DB
+      // Prepare object to update DB
       const { weekId, employeeId, day } = context.getters["activeShiftId"]
       const schedule = context.getters["schedules"][weekId][employeeId]
       schedule[day] = null
 
-      await db
-        .collection("schedules")
-        .doc(weekId)
-        .set({ [employeeId]: [...schedule] }, { merge: true })
+      // Pass updated schdule to DB; delete schedule if schedule is empty
+      if (schedule.filter((i) => i !== null).length) {
+
+        db.collection("schedules")
+          .doc(weekId)
+          .set({ [employeeId]: [...schedule] }, { merge: true })
+
+      } else {
+
+        db.collection("schedules")
+          .doc(weekId)
+          .update({ [employeeId]: firebase.firestore.FieldValue.delete() })
+
+      }
     }
 
     // Update locally
@@ -59,8 +70,7 @@ export default {
     const schedule = context.getters["schedules"][weekId][employeeId]
     schedule[day] = payload.shiftInfo
 
-    await db
-      .collection("schedules")
+    db.collection("schedules")
       .doc(weekId)
       .set({ [employeeId]: [...schedule] }, { merge: true })
   },
