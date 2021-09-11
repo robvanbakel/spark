@@ -13,29 +13,28 @@ export default {
   emits: ["activeItem"],
   methods: {
     setActive(e, item) {
+      const activeLeft = e.target.getBoundingClientRect().left - this.$refs.wrapper.getBoundingClientRect().left + "px"
+      const activeWidth = e.target.getBoundingClientRect().width + "px"
 
-      const activeLeft = e.target.getBoundingClientRect().left - this.$refs.wrapper.getBoundingClientRect().left + "px";
-      const activeWidth = e.target.getBoundingClientRect().width + "px";
+      this.$refs.indicator.style.left = activeLeft
+      this.$refs.indicator.style.width = activeWidth
 
-      this.$refs.indicator.style.left = activeLeft;
-      this.$refs.indicator.style.width = activeWidth;
-
-      this.$emit("activeItem", item);
+      this.$emit("activeItem", item)
     },
   },
   mounted() {
-    if (this.active) {
-      const switchItems = document.querySelectorAll(".switch-control");
-      switchItems.forEach((item) => {
-        if (item.innerText === this.active) {
-          item.click();
-        }
-      });
-    }
+    const selectedItem = this.active || "-"
+
+    const switchItems = document.querySelectorAll(".switch-control")
+    switchItems.forEach((item) => {
+      if (item.innerText === selectedItem) {
+        item.click()
+      }
+    })
 
     setTimeout(() => {
-      this.$refs.indicator.style.transition = "all 120ms ease-in-out";
-    }, 120);
+      this.$refs.indicator.style.transition = "all 120ms ease-in-out"
+    }, 120)
   },
-};
+}
 </script>

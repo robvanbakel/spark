@@ -65,7 +65,7 @@
           </div>
           <div class="form-control">
             <label>Break</label>
-            <base-switch :items="$store.getters['planner/breaks']" :active="this.shift.break" @activeItem="setBreak" fixed="true"></base-switch>
+            <base-switch :items="$store.getters['planner/breaks']" :active="this.shift.break" @activeItem="setBreak" :fixed="true"></base-switch>
           </div>
           <div class="form-control note">
             <label for="note">Notes</label>
