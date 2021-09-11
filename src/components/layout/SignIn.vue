@@ -10,6 +10,15 @@
       <a href="#">Forgot Password?</a>
     </form>
   </div>
+
+  <transition name="demo">
+    <div v-if="showDemo" class="auth-modal demo">
+      <h1>No account yet?</h1>
+      <p>Click the button below to enter a demo account. Any changes you make won't be stored and will be lost when existing the demo environment.</p>
+      <base-button v-if="!demoLoading" icon="login" @click="enterDemo">Enter Demo</base-button>
+      <base-button v-else disabled icon="login" >Loading…</base-button>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -20,9 +29,21 @@ export default {
       email: "",
       password: "",
       isLoading: false,
+      showDemo: false,
+      demoLoading: false
     }
   },
   methods: {
+    async enterDemo() {
+
+      this.demoLoading = true
+
+      await this.$store.dispatch("auth/login", {
+        email: "demo@company.com",
+        password: "demo@company.com"
+      })
+
+    },
     async handleSubmit() {
       this.isLoading = true
 
@@ -45,5 +66,21 @@ export default {
       }
     },
   },
+  mounted() {
+    setTimeout(() => {
+      this.showDemo = true
+    }, 650)
+  },
 }
 </script>
+
+<style>
+.demo-enter-from {
+  transform: translateY(16px);
+  opacity: 0;
+}
+
+.demo-enter-active {
+  transition: all 500ms ease-out;
+}
+</style>

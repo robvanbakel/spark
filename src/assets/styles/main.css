@@ -477,6 +477,23 @@ button.baseButton span {
 .auth .auth-modal a:hover {
   color: #a7a3ac;
 }
+.auth .auth-modal.demo {
+  margin-top: 40px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.auth .auth-modal.demo h1 {
+  font-size: 21px;
+  margin-bottom: 0;
+}
+.auth .auth-modal.demo p {
+  margin: 12px 0 18px;
+}
+.auth .auth-modal.demo button {
+  height: 32px;
+}
 
 header {
   display: flex;
