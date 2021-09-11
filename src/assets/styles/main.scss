@@ -273,6 +273,10 @@ button.baseButton {
   outline: none;
   appearance: none;
   cursor: pointer;
+  &.error {
+    border-color: color.$danger;
+    background-color: color.$danger-light;
+  }
 }
 
 // AUTH

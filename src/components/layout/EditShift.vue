@@ -11,12 +11,18 @@
         <div>
           <div class="form-control">
             <label for="name">Name</label>
-            <base-select v-if="shift" :selected="shift.employee" @selectedEmployee="switchHandler"></base-select>
+            <base-select
+              :class="{ error: error.employee }"
+              v-if="shift"
+              :selected="shift.employee"
+              @selectedEmployee="switchHandler"
+              @change="clearError('employee')"
+            ></base-select>
           </div>
           <div class="form-control">
             <label for="place">Place</label>
             <div>
-              <input type="text" id="place" v-model.trim="shift.place" @input="clearSelectedSuggestion" />
+              <input type="text" :class="{ error: error.place }" id="place" v-model.trim="shift.place" @input="clearError('place')" />
               <div class="suggestions">
                 <span
                   v-for="suggestion in $store.getters['settings/suggestions']"
@@ -36,14 +42,14 @@
           <div class="form-control">
             <label for="date">Date</label>
             <div class="form-control-date">
-              <input type="text" id="date" v-model="shift.date" />
+              <input type="text" :class="{ error: error.date }" @input="clearError('date')" id="date" v-model="shift.date" />
               <div class="form-control-time">
                 <span class="input-label-main">Time</span>
                 <input
                   type="text"
                   :class="['time', { error: error.start }]"
                   v-model.trim="shift.start"
-                  @blur="validateTime(shift.start, 'start')"
+                  @blur="formatTime(shift.start, 'start')"
                   @input="clearError('start')"
                 />
                 <span class="input-label">-</span>
@@ -51,7 +57,7 @@
                   type="text"
                   :class="['time', { error: error.end }]"
                   v-model.trim="shift.end"
-                  @blur="validateTime(shift.end, 'end')"
+                  @blur="formatTime(shift.end, 'end')"
                   @input="clearError('end')"
                 />
               </div>
@@ -73,7 +79,7 @@
               <span class="material-icons material-icons-round">delete</span>
             </button>
             <button class="secondary" @click="closeEditShift">Cancel</button>
-            <base-button @click="saveEditShift">Save</base-button>
+            <base-button @click="validate">Save</base-button>
           </div>
         </div>
       </div>
@@ -93,8 +99,6 @@ export default {
         date: false,
         start: false,
         end: false,
-        break: false,
-        notes: false,
       },
       selectedSuggestion: null,
       showConfirmDelete: false,
@@ -130,20 +134,62 @@ export default {
     clearError(field) {
       this.error[field] = false
     },
-    validateTime(time, field) {
+    formatTime(time, field) {
       if (/^([0-9])$/.test(time)) {
         this.shift[field] = `0${time}:00`
       } else if (/^([0-1][0-9]|2[0-3])$/.test(time)) {
         this.shift[field] = `${time}:00`
       } else if (/^([0-1]?[0-9]|2[0-3])\D?([0-5][0-9])$/.test(time)) {
         this.shift[field] = `${time.slice(0, 2)}:${time.slice(-2)}`
+      }
+    },
+    selectSuggestion(suggestion) {
+      this.shift.place = suggestion
+      this.error.place = false
+      this.selectedSuggestion = suggestion
+    },
+    validate() {
+      // Validate field: employee
+      if (this.shift.employee.id) {
+        this.error.employee = false
       } else {
-        this.error[field] = true
+        this.error.employee = true
       }
 
-      if (this.start && this.end) {
-        const [startHour, startMin] = this.start.split(":")
-        const [endHour, endMin] = this.end.split(":")
+      // Validate field: place
+      if (this.shift.place) {
+        this.error.place = false
+      } else {
+        this.error.place = true
+      }
+
+      // Validate field: date
+      if (/^\d{2}-\d{2}-\d{4}$/.test(this.shift.date)) {
+        this.error.date = false
+      } else {
+        this.error.date = true
+      }
+
+      const timeRegex = /^([0-1][0-9]|2[0-3]):([0-5][0-9])$/
+
+      // Validate field: start
+      if (timeRegex.test(this.shift.start)) {
+        this.error.start = false
+      } else {
+        this.error.start = true
+      }
+
+      // Validate field: end
+      if (timeRegex.test(this.shift.end)) {
+        this.error.end = false
+      } else {
+        this.error.end = true
+      }
+
+      // Check if start is before end
+      if (!this.error.start && !this.error.start) {
+        const [startHour, startMin] = this.shift.start.split(":")
+        const [endHour, endMin] = this.shift.end.split(":")
 
         const start = new Date()
         start.setHours(startHour)
@@ -153,16 +199,16 @@ export default {
         end.setHours(endHour)
         end.setMinutes(endMin)
 
-        if (end <= start && this.end != "00:00") {
+        if (end <= start && this.shift.end != "00:00") {
           this.error.end = true
         } else {
           this.error.end = false
         }
       }
-    },
-    selectSuggestion(suggestion) {
-      this.shift.place = suggestion
-      this.selectedSuggestion = suggestion
+
+      if (!Object.values(this.error).includes(true)) {
+        this.saveEditShift()
+      }
     },
     async saveEditShift() {
       const { weekId, day } = await this.$store.dispatch("date/getWeekIdAndDay", this.shift.date)

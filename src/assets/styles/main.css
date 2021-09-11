@@ -398,6 +398,10 @@ button.baseButton span {
           appearance: none;
   cursor: pointer;
 }
+.base-select.error {
+  border-color: #de6035;
+  background-color: #fbece7;
+}
 
 .auth {
   background: #f5f5f5;
