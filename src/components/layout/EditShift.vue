@@ -72,7 +72,7 @@
             <textarea id="note" v-model="shift.notes"></textarea>
           </div>
 
-          <base-confirm message="Deleting this shift cannot be undone." v-if="showConfirmDelete" @confirm="deleteShift" />
+          <base-confirm message="Deleting this shift cannot be undone." choiceTrue="Delete Shift" v-if="showConfirmDelete" @choice="deleteShift" />
 
           <div class="form-actions">
             <button v-if="!newShift" class="delete" @click="showConfirmDelete = true">

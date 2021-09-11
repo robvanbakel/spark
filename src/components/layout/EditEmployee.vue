@@ -48,8 +48,11 @@
           <label for="note">Notes</label>
           <textarea id="note" v-model="activeEmployee.note"></textarea>
         </div>
+
+        <base-confirm message="Deleting an employee cannot be undone." choiceTrue="Delete Employee" v-if="showConfirmDelete" @choice="deleteEmployee" />
+
         <div class="form-actions">
-          <button v-if="!this.new" class="delete" @click="deleteEmployee">
+          <button v-if="!this.new" class="delete" @click="showConfirmDelete = true">
             <span class="material-icons material-icons-round">delete</span>
           </button>
           <button class="secondary" @click="closeEditEmployee">Cancel</button>
@@ -72,6 +75,7 @@ export default {
   data() {
     return {
       activeEmployee: {},
+      showConfirmDelete: false,
     }
   },
   methods: {
@@ -97,9 +101,13 @@ export default {
     closeEditEmployee() {
       this.$emit("closeEditEmployee")
     },
-    deleteEmployee() {
-      this.activeEmployee.status = "archived"
-      this.saveEditEmployee()
+    deleteEmployee(confirmed) {
+      if (confirmed) {
+        this.activeEmployee.status = "archived"
+        this.saveEditEmployee()
+      }
+
+      this.showConfirmDelete = false
     },
     async saveEditEmployee() {
       // TODO verify data

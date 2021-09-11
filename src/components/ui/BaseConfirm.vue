@@ -6,15 +6,15 @@
     </div>
     <div class="main">{{ message }}</div>
     <div class="form-actions">
-      <button class="secondary" @click="confirm(false)">Cancel</button>
-      <base-button @click="confirm(true)">Delete Shift</base-button>
+      <button class="secondary" @click="confirm(false)">{{choiceFalse}}</button>
+      <base-button @click="confirm(true)">{{choiceTrue}}</base-button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  emits: ["confirm"],
+  emits: ["choice"],
   props: {
     title: {
       type: String,
@@ -24,10 +24,18 @@ export default {
       type: String,
       default: "This action cannot be undone.",
     },
+    choiceFalse: {
+      type: String,
+      default: "Cancel",
+    },
+    choiceTrue: {
+      type: String,
+      default: "Ok",
+    },
   },
   methods: {
     confirm(choice) {
-      this.$emit("confirm", choice)
+      this.$emit("choice", choice)
     },
   },
 }
