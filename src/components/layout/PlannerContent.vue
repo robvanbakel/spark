@@ -103,7 +103,7 @@ export default {
         return output
       }
     },
-    handleClick(payload) {     
+    handleClick(payload) {  
       this.$store.dispatch("planner/setActiveShiftId", {
         weekId: this.$store.getters["date/weekId"],
         ...payload,

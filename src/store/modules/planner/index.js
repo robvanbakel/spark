@@ -7,7 +7,7 @@ export default {
   state() {
     return {
       newShift: null,
-      activeShift: null,
+      activeShiftId: null,
       breaks: ['-', '15', '30', '45', '60'],
     }
   },

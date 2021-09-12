@@ -1,7 +1,7 @@
 <template>
   <div class="edit-modal">
     <base-overlay dark transparent></base-overlay>
-    <div class="modal" v-if="shift">
+    <div class="modal">
       <div class="header">
         <h1 v-if="newShift">New Shift</h1>
         <h1 v-else>Edit Shift</h1>
@@ -12,8 +12,8 @@
           <div class="form-control">
             <label for="name">Name</label>
             <base-select
+              v-if="shift.employee.id || newShift"
               :class="{ error: error.employee }"
-              v-if="shift"
               :selected="shift.employee"
               @selectedEmployee="switchHandler"
               @change="clearError('employee')"
@@ -91,8 +91,16 @@
 export default {
   data() {
     return {
-      newShift: true,
-      shift: null,
+      newShift: null,
+      shift: {
+        employee: {},
+        place: "",
+        date: "",
+        start: "",
+        end: "",
+        break: "",
+        notes: "",
+      },
       error: {
         employee: false,
         place: false,
@@ -245,56 +253,46 @@ export default {
       this.showConfirmDelete = false
     },
   },
-  mounted() {
-    // Set boilerplate shift info
-    const activeShift = {
-      employee: {},
-      place: "",
-      date: "",
-      start: "",
-      end: "",
-      break: "",
-      notes: "",
-    }
+  async mounted() {
+    const activeShiftId = this.$store.getters["planner/activeShiftId"]
 
-    if (this.$store.getters["planner/activeShiftId"] !== "new") {
-      // Find selected shift
-      const { weekId, day, employeeId } = this.$store.getters["planner/activeShiftId"]
+    if (activeShiftId === "new") {
+      this.newShift = true
+    } else {
+      this.newShift = false
+
+      // Get info for selected shift
+      const { weekId, day, employeeId } = activeShiftId
       const shift = this.$store.getters["planner/schedules"][weekId][employeeId][day]
-
-      // Helper functions
-
       const employee = this.$store.getters["employees/employees"].find((emp) => emp.id === employeeId)
 
-      const parseTime = (time) => {
-        return time.substring(0, 2) + ":" + time.substring(2, 4)
-      }
+      // Helper functions
+      const parseTime = (time) => time.substring(0, 2) + ":" + time.substring(2, 4)
 
-      const parseDate = () => {
-        const [month, date, year] = this.$store.getters["date/dates"][day].toLocaleDateString({ year: "numeric", month: "numeric", day: "numeric" }).split("/")
-        return `${date.padStart(2, "0")}-${month.padStart(2, "0")}-${year}`
+      const parseDate = (input) => {
+        const date = input .getDate() .toString() .padStart(2, "0")
+        const month = (input.getMonth() + 1).toString().padStart(2, "0")
+        const year = input.getFullYear()
+
+        return `${date}-${month}-${year}`
       }
 
       // Set boilerplate shift info
-      activeShift.employee = {
+      this.shift.employee = {
         fullName: `${employee.firstName} ${employee.lastName}`,
         id: employeeId,
       }
-      activeShift.date = parseDate()
+      this.shift.date = parseDate(this.$store.getters["date/dates"][day])
 
       // If active shift exists, set shift info
       if (shift) {
-        this.newShift = false
-
-        activeShift.place = shift.place
-        activeShift.start = parseTime(shift.start)
-        activeShift.end = parseTime(shift.end)
-        activeShift.break = shift.break
-        activeShift.notes = shift.notes
+        this.shift.place = shift.place
+        this.shift.start = parseTime(shift.start)
+        this.shift.end = parseTime(shift.end)
+        this.shift.break = shift.break
+        this.shift.notes = shift.notes
       }
     }
-
-    this.shift = activeShift
   },
 }
 </script>

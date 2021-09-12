@@ -68,26 +68,21 @@ export default {
 
     return dates
   },
-  async getWeekId(context, providedDate) {
-    let date = providedDate || new Date()
+  async getWeekId(context, date = new Date()) {
 
-    Date.prototype.getWeekNumber = function() {
+    // Add function to Date object to get weekId
+
+    Date.prototype.getWeekId = function() {
       var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
       var dayNum = d.getUTCDay() || 7
       d.setUTCDate(d.getUTCDate() + 4 - dayNum)
-      var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
-      return Math.ceil(((d - yearStart) / 86400000 + 1) / 7)
+      const year = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
+      const week = Math.ceil(((d - year) / 86400000 + 1) / 7)
+      return `${year.getFullYear()}-${week.toString().padStart(2,'0')}`
     }
 
-    const weekId =
-      date.getFullYear() +
-      "-" +
-      date
-        .getWeekNumber()
-        .toString()
-        .padStart(2, "0")
+    return date.getWeekId()
 
-    return weekId
   },
   async getWeekIdAndDay(context, providedDate) {
     const [date, month, year] = providedDate.split("-")

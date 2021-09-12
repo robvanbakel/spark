@@ -106,7 +106,7 @@ export default {
   },
   computed: {
     selectedMonthName() {
-      return new Date(this.selectedYear, this.selectedMonth).toLocaleString("default", { month: "long" });
+      return new Date(this.selectedYear, this.selectedMonth).toLocaleString("en-US", { month: "long" });
     },
     shortDays() {
       return ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];

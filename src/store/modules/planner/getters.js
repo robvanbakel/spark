@@ -8,9 +8,6 @@ export default {
   activeShiftId(state) {
     return state.activeShiftId
   },
-  activeShift(state) {
-    return state.activeShift
-  },
   breaks(state) {
     return state.breaks;
   },
