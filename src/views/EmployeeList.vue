@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import EditEmployee from "@/components/layout/EditEmployee";
+import EditEmployee from "@/components/layout/EditEmployee"
 
 export default {
   components: {
@@ -63,16 +63,14 @@ export default {
         inactive: false,
         staged: false,
       },
-    };
+    }
   },
   computed: {
     employees() {
       // Get all non-archived employees
       const employees = this.$store.getters["employees/employees"].filter((emp) => {
-        if (emp.status != "archived") {
-          return emp;
-        }
-      });
+        return emp.status != "archived" && emp.status != 'admin'
+      })
 
       // Apply filter & search
       return employees.filter((emp) => {
@@ -82,42 +80,42 @@ export default {
             this.getFullName(emp)
               .toLowerCase()
               .includes(this.searchInput.toLowerCase())
-          );
+          )
         } else {
           return this.getFullName(emp)
             .toLowerCase()
-            .includes(this.searchInput.toLowerCase());
+            .includes(this.searchInput.toLowerCase())
         }
-      });
+      })
     },
   },
   methods: {
     editEmployee(employee) {
-      this.activeEmployee = employee;
+      this.activeEmployee = employee
     },
     closeEditEmployee() {
-      this.activeEmployee = null;
-      this.newEmployee = false;
+      this.activeEmployee = null
+      this.newEmployee = false
     },
     getFullName(employee) {
-      return employee.firstName + " " + employee.lastName;
+      return employee.firstName + " " + employee.lastName
     },
     setFilter(status) {
-      this.filters[status] = !this.filters[status];
+      this.filters[status] = !this.filters[status]
     },
     clearFilters() {
       Object.keys(this.filters).forEach((key) => {
-        this.filters[key] = false;
-      });
+        this.filters[key] = false
+      })
     },
     clearSearchInput() {
-      this.searchInput = "";
-      this.$refs.searchInput.focus();
+      this.searchInput = ""
+      this.$refs.searchInput.focus()
     },
     addNewEmployee() {
-      this.newEmployee = true;
-      this.activeEmployee = true;
+      this.newEmployee = true
+      this.activeEmployee = true
     },
   },
-};
+}
 </script>

@@ -7,7 +7,7 @@ export default {
   state() {
     return {
       user: null,
-      mode: null
+      admin: false,
     }
   },
   mutations,

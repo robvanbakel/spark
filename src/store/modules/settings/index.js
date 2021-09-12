@@ -6,7 +6,8 @@ export default {
   namespaced: true,
   state() {
     return {
-      suggestions: []
+      suggestions: null,
+      admin: null,
     }
   },
   mutations,

@@ -20,13 +20,12 @@ import { auth } from '@/firebase'
 
 let app = null
 
-auth.onAuthStateChanged((user) => {
-
+auth.onAuthStateChanged(async (user) => {
+  
   if (user) {
-    store.dispatch('auth/getCurrentUser')
+    await store.dispatch('settings/getSettings')
     store.dispatch('employees/getEmployees')
     store.dispatch('planner/getSchedules')
-    store.dispatch('settings/getSettings')
   }
 
   if (!app) {

@@ -1,17 +1,33 @@
+import { auth } from '@/firebase'
 import { db } from '@/firebase'
 
 export default {
 
   async getEmployees(context) {
 
+    const uid = auth.currentUser.uid
     let employees = []
 
-    const snapshot = await db.collection('employees').get();
+    if (context.rootGetters["settings/admin"].includes(uid)) {
+      context.commit("auth/admin", true, { root: true })
+    } else {
+      context.commit("auth/admin", false, { root: true })
+    }
+
+    const snapshot = await db.collection('users').get();
     snapshot.forEach(doc => {
-      employees.push({
+
+      const employee = {
         id: doc.id,
         ...doc.data()
-      })
+      }
+
+      employees.push(employee)
+
+      if(employee.id === uid) {
+        context.commit("auth/setUser", employee, { root: true })
+      }
+
     });
 
     context.commit('setEmployees', employees);
@@ -19,7 +35,7 @@ export default {
   },
   async updateUser(context, payload) {
 
-    db.collection('employees').doc(payload.id).update(payload.data)
+    db.collection('users').doc(payload.id).update(payload.data)
     context.commit('updateEmployee', payload);
 
   },
@@ -35,7 +51,7 @@ export default {
 
     const data = await res.json();
 
-    db.collection('employees').doc(data.localId).set(payload.employee);
+    db.collection('users').doc(data.localId).set(payload.employee);
 
     return data.localId
 

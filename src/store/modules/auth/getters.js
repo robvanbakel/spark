@@ -2,8 +2,8 @@ export default {
   user(state) {
     return state.user
   },
-  mode(state) {
-    return state.mode
+  admin(state) {
+    return state.admin
   },
 
 }

@@ -5,18 +5,17 @@ import { db } from '@/firebase'
 export default {
   async getSettings(context) {
 
-    let suggestions = []
-
     const snapshot = await db.collection('settings').get();
     snapshot.forEach(doc => {
       switch (doc.id) {
         case 'suggestions':
-          suggestions = doc.data().suggestions
+          context.commit('suggestions', doc.data().suggestions)
+          break;
+        case 'admin':
+          context.commit('admin', doc.data().admin)
           break;
       }
     })
-
-    context.commit('suggestions', suggestions);
 
   },
   addSuggestion(context, payload) {
