@@ -20,14 +20,17 @@
   </div>
   <main v-if="$store.getters['planner/schedules']">
     <section id="planner">
-      <div class="header">
-        <div></div>
-        <div class="dayWrapper" v-for="offset in $store.getters['date/daysVisible']" :key="offset">
-          <span class="dayName">{{ $store.getters["date/dayNames"][offset - 1] }}</span>
-          <span class="date">{{ $store.getters["date/datesShort"][offset - 1] }}</span>
+      <EmptyWeek v-if="emptyWeek && !hideEmptyWeek" @hide-empty-week="hideEmptyWeek = true" />
+      <div v-else>
+        <div class="header">
+          <div></div>
+          <div class="dayWrapper" v-for="offset in $store.getters['date/daysVisible']" :key="offset">
+            <span class="dayName">{{ $store.getters["date/dayNames"][offset - 1] }}</span>
+            <span class="date">{{ $store.getters["date/datesShort"][offset - 1] }}</span>
+          </div>
         </div>
+        <PlannerContent v-for="role in this.displayRoles" :key="role" :role="role" :search="searchInput" />
       </div>
-      <PlannerContent v-for="role in this.displayRoles" :key="role" :role="role" :search="searchInput" />
     </section>
 
     <EditShift v-if="$store.getters['planner/activeShiftId']" />
@@ -41,9 +44,10 @@
 </template>
 
 <script>
-import PlannerContent from "@/components/layout/PlannerContent";
-import EditShift from "@/components/layout/EditShift";
-import PlannerCalendar from "@/components/layout/PlannerCalendar";
+import PlannerContent from "@/components/layout/PlannerContent"
+import EditShift from "@/components/layout/EditShift"
+import PlannerCalendar from "@/components/layout/PlannerCalendar"
+import EmptyWeek from "@/components/layout/EmptyWeek"
 
 export default {
   props: ["weekId"],
@@ -51,10 +55,12 @@ export default {
     PlannerContent,
     EditShift,
     PlannerCalendar,
+    EmptyWeek,
   },
   data() {
     return {
       searchInput: "",
+      hideEmptyWeek: false,
       filters: {
         management: false,
         leadership: false,
@@ -62,46 +68,49 @@ export default {
         restaurant: false,
         cleaning: false,
       },
-    };
+    }
   },
   methods: {
     closeEditShift() {
-      this.activeShiftId = null;
+      this.activeShiftId = null
     },
     clearSearchInput() {
-      this.searchInput = "";
-      this.$refs.searchInput.focus();
+      this.searchInput = ""
+      this.$refs.searchInput.focus()
     },
     addNewShift() {
-      this.$store.dispatch("planner/setActiveShiftId", 'new');
+      this.$store.dispatch("planner/setActiveShiftId", "new")
     },
     setFilter(status) {
-      this.filters[status] = !this.filters[status];
+      this.filters[status] = !this.filters[status]
     },
     clearFilters() {
       Object.keys(this.filters).forEach((key) => {
-        this.filters[key] = false;
-      });
+        this.filters[key] = false
+      })
     },
   },
   computed: {
     displayRoles() {
-      const roles = ["management", "leadership", "general", "restaurant", "cleaning"];
+      const roles = ["management", "leadership", "general", "restaurant", "cleaning"]
 
       if (Object.values(this.filters).includes(true)) {
-        return roles.filter((role) => this.filters[role] === true);
+        return roles.filter((role) => this.filters[role] === true)
       } else {
-        return roles;
+        return roles
       }
-
+    },
+    emptyWeek() {
+      return !this.$store.getters["planner/currentWeekSchedule"]
     },
   },
   watch: {
     $route(to) {
       if (to.name === "Planner") {
-        this.$store.dispatch("date/setDates", this.$route.params.weekId);
+        this.$store.dispatch("date/setDates", this.$route.params.weekId)
+        this.hideEmptyWeek = false
       }
     },
   },
-};
+}
 </script>

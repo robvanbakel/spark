@@ -357,7 +357,7 @@ button.baseButton {
     display: flex;
     flex-direction: column;
     align-items: center;
-    h1{
+    h1 {
       font-size: 21px;
       margin-bottom: 0;
     }
@@ -853,6 +853,55 @@ section#planner {
             color: color.$main;
           }
         }
+      }
+    }
+  }
+}
+
+// EMPTY WEEK
+.empty-week {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 60px 0;
+  h1 {
+    color: color.$text-100;
+    font-weight: 500;
+    margin-bottom: 12px;
+    font-size: 28px;
+  }
+  h5 {
+    font-size: 14px;
+    color: color.$text-500;
+    font-weight: 400;
+  }
+  p {
+    margin: 32px 0 60px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .action-wrapper {
+    display: flex;
+    justify-content: space-between;
+    div {
+      display: flex;
+      align-items: center;
+      padding: 22px 26px;
+      background-color: rgba(color.$select, 0.5);
+      border: 1px solid color.$border;
+      color: color.$text-700;
+      font-weight: 500;
+      margin: 0 20px;
+      cursor: pointer;
+      transition: all 120ms ease;
+      span {
+        margin-right: 14px;
+        font-size: 21px;
+      }
+      &:hover {
+        background-color: color.$select;
+
       }
     }
   }
