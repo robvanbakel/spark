@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     employeeInfo(id, query) {
-      const employee = this.$store.getters["employees/employees"].find((emp) => emp.id === id)
+      const employee = this.$store.getters["employees/users"].find((emp) => emp.id === id)
 
       let output = employee[query] || employee
 

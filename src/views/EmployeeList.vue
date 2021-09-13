@@ -68,9 +68,7 @@ export default {
   computed: {
     employees() {
       // Get all non-archived employees
-      const employees = this.$store.getters["employees/employees"].filter((emp) => {
-        return emp.status != "archived" && emp.status != 'admin'
-      })
+      const employees = this.$store.getters["employees/employees"]
 
       // Apply filter & search
       return employees.filter((emp) => {
