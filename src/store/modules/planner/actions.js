@@ -28,7 +28,7 @@ export default {
 
     // If shiftId changed, check if documents exist
     if (context.getters["activeShiftId"] !== "new" && shiftIdChanged(context.getters["activeShiftId"], payload.shiftId)) {
-      context.dispatch('deleteShift')
+      context.dispatch("deleteShift")
     }
 
     // If not present, instantiate empty schedule
@@ -47,7 +47,6 @@ export default {
       .set({ [employeeId]: [...schedule] }, { merge: true })
   },
   deleteShift(context) {
-
     context.commit("updateShiftLocally", {
       shiftId: context.getters["activeShiftId"],
       shiftInfo: null,
@@ -64,9 +63,8 @@ export default {
         .doc(weekId)
         .set({ [employeeId]: [...schedule] }, { merge: true })
     } else {
+      context.commit("deleteScheduleLocally", context.getters["activeShiftId"])
 
-      context.commit('deleteScheduleLocally', context.getters["activeShiftId"])
-      
       db.collection("schedules")
         .doc(weekId)
         .update({ [employeeId]: firebase.firestore.FieldValue.delete() })
@@ -81,5 +79,21 @@ export default {
     })
 
     context.commit("schedules", schedules)
+  },
+  async copyWeek(context, payload) {
+
+    // Get schedule
+    const schedule = context.getters['schedules'][payload.from]
+
+    // Update locally
+    context.commit("setSchedule", {
+      weekId: payload.to,
+      schedule
+    })   
+
+    // Update DB
+    db.collection("schedules")
+    .doc(payload.to)
+    .set(schedule)
   },
 }

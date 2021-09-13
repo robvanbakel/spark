@@ -4,5 +4,8 @@ export default {
   },
   admin(state) {
     return state.admin
+  },
+  roles(state) {
+    return state.roles
   }
 }

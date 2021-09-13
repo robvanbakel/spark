@@ -1034,23 +1034,46 @@ section#planner .row .day .shift-info span.time {
   justify-content: space-between;
 }
 .empty-week .action-wrapper div {
+  width: 260px;
+  height: 68px;
+  margin: 0 20px;
+}
+.empty-week .action-wrapper .action {
   display: flex;
+  justify-content: center;
   align-items: center;
-  padding: 22px 26px;
   background-color: rgba(245, 245, 247, 0.5);
   border: 1px solid #deddde;
   color: #c8c6cc;
   font-weight: 500;
-  margin: 0 20px;
   cursor: pointer;
   transition: all 120ms ease;
 }
-.empty-week .action-wrapper div span {
+.empty-week .action-wrapper .action.transparent {
+  opacity: 0.35;
+}
+.empty-week .action-wrapper .action.transparent:hover {
+  opacity: 1;
+}
+.empty-week .action-wrapper .action span {
   margin-right: 14px;
   font-size: 21px;
 }
-.empty-week .action-wrapper div:hover {
+.empty-week .action-wrapper .action:hover {
   background-color: #f5f5f7;
+}
+.empty-week .action-wrapper .copy-week-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.empty-week .action-wrapper .copy-week-wrapper select {
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
+}
+.empty-week .action-wrapper .copy-week-wrapper button {
+  margin-left: 20px;
 }
 
 .plannerCalendar {

@@ -15,6 +15,9 @@ export default {
     const { weekId, day, employeeId } = payload.shiftId
     state.schedules[weekId][employeeId][day] = payload.shiftInfo
   },
+  setSchedule(state, { weekId, schedule }) {
+    state.schedules[weekId] = JSON.parse(JSON.stringify(schedule));
+  },
   createEmptySchedule(state, { weekId, employeeId }) {
     if (!state.schedules[weekId]) {
       state.schedules[weekId] = {}

@@ -7,15 +7,24 @@
       You can either start with an empty schedule or copy an existing week.
     </p>
     <div class="action-wrapper">
-      <div @click="$emit('hideEmptyWeek')"><span class="material-icons material-icons-round">calendar_today</span> Create empty schedule</div>
-      <div><span class="material-icons material-icons-round">event_note</span> Copy an existing week</div>
+        <div :class="['action', { transparent: showCopyWeek }]" @click="$emit('hideEmptyWeek')"><span class="material-icons material-icons-round">calendar_today</span> Create empty schedule</div>
+        <CopyWeek v-if="showCopyWeek" />
+        <div class="action" @click="showCopyWeek = true" v-else><span class="material-icons material-icons-round">event_note</span> Copy an existing week</div>
     </div>
   </div>
 </template>
 
 <script>
+import CopyWeek from "@/components/ui/CopyWeek"
+
 export default {
-  emits: ['hideEmptyWeek'],
+  emits: ["hideEmptyWeek"],
+  components: { CopyWeek },
+  data() {
+    return {
+      showCopyWeek: false,
+    }
+  },
   computed: {
     weekNumber() {
       return parseInt(this.$store.getters["date/weekId"].split("-")[1])
@@ -25,7 +34,14 @@ export default {
 
       const formatDate = (date) => date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
 
-      return `${formatDate(dates[0])} – ${formatDate(dates[dates.length-1])}`
+      return `${formatDate(dates[0])} – ${formatDate(dates[dates.length - 1])}`
+    },
+  },
+  watch: {
+    $route(to) {
+      if (to.name === "Planner") {
+        this.showCopyWeek = false
+      }
     },
   },
 }

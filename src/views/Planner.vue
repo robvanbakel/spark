@@ -29,7 +29,7 @@
             <span class="date">{{ $store.getters["date/datesShort"][offset - 1] }}</span>
           </div>
         </div>
-        <PlannerContent v-for="role in this.displayRoles" :key="role" :role="role" :search="searchInput" />
+        <PlannerContent :roles="displayRoles" :search="searchInput" />
       </div>
     </section>
 
@@ -61,13 +61,7 @@ export default {
     return {
       searchInput: "",
       hideEmptyWeek: false,
-      filters: {
-        management: false,
-        leadership: false,
-        general: false,
-        restaurant: false,
-        cleaning: false,
-      },
+      filters: {},
     }
   },
   methods: {
@@ -85,19 +79,15 @@ export default {
       this.filters[status] = !this.filters[status]
     },
     clearFilters() {
-      Object.keys(this.filters).forEach((key) => {
-        this.filters[key] = false
-      })
+      Object.keys(this.filters).forEach((key) => (this.filters[key] = false))
     },
   },
   computed: {
     displayRoles() {
-      const roles = ["management", "leadership", "general", "restaurant", "cleaning"]
-
       if (Object.values(this.filters).includes(true)) {
-        return roles.filter((role) => this.filters[role] === true)
+        return Object.keys(this.filters).filter((role) => this.filters[role] === true)
       } else {
-        return roles
+        return Object.keys(this.filters)
       }
     },
     emptyWeek() {
@@ -111,6 +101,9 @@ export default {
         this.hideEmptyWeek = false
       }
     },
+  },
+  mounted() {
+    this.filters = this.$store.getters["settings/roles"].reduce((filters, role) => ((filters[role] = false), filters), {})
   },
 }
 </script>

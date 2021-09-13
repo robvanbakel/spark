@@ -14,6 +14,9 @@ export default {
         case 'admin':
           context.commit('admin', doc.data().admin)
           break;
+        case 'roles':
+          context.commit('roles', doc.data().roles)
+          break;
       }
     })
 

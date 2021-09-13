@@ -8,6 +8,7 @@ export default {
     return {
       suggestions: null,
       admin: null,
+      roles: null,
     }
   },
   mutations,
