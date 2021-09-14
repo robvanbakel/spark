@@ -1,28 +1,46 @@
 <template>
-  <div v-for="(schedule, employeeId) in $store.getters['planner/currentWeekSchedule']" :key="schedule">
-    <div class="row" v-if="employeeInfo(employeeId, 'role') === role">
-      <div class="employee">
-        <span class="name">{{ employeeInfo(employeeId, "fullName") }}</span>
-        <span class="hours">{{ totalHours(employeeId) }} hours</span>
+  <div v-if="this.role">
+    <div v-for="(schedule, employeeId) in $store.getters['planner/currentWeekSchedule']" :key="schedule">
+      <div class="row" v-if="employeeInfo(employeeId, 'role') === role">
+        <div class="employee">
+          <span class="name">{{ employeeInfo(employeeId, "fullName") }}</span>
+          <span class="hours">{{ totalHours(employeeId) }} hours</span>
+        </div>
+        <div
+          v-for="(shift, day) in $store.getters['planner/currentWeekSchedule'][employeeId]"
+          :key="day"
+          :class="[
+            'day',
+            role,
+            {
+              active: shift,
+              hidden: !shift?.place.toLowerCase().includes(searchInput.toLowerCase()),
+            },
+          ]"
+          @click="handleClick({ day, employeeId })"
+        >
+          <div class="shift-info" v-if="shift">
+            <span class="place">{{ shift.place }}</span>
+            <span class="time">
+              {{ shift.start.substring(0, 2) }}:{{ shift.start.substring(2, 4) }} - {{ shift.end.substring(0, 2) }}:{{ shift.end.substring(2, 4) }}
+            </span>
+          </div>
+        </div>
       </div>
-      <div
-        v-for="(shift, day) in $store.getters['planner/currentWeekSchedule'][employeeId]"
-        :key="day"
-        :class="[
-          'day',
-          role,
-          {
-            active: shift,
-            hidden: !shift?.place.toLowerCase().includes(searchInput.toLowerCase()),
-          },
-        ]"
-        @click="handleClick({ day, employeeId })"
-      >
-        <div class="shift-info" v-if="shift">
-          <span class="place">{{ shift.place }}</span>
-          <span class="time">
-            {{ shift.start.substring(0, 2) }}:{{ shift.start.substring(2, 4) }} - {{ shift.end.substring(0, 2) }}:{{ shift.end.substring(2, 4) }}
-          </span>
+    </div>
+  </div>
+  <div v-else>
+    <div>
+      <div class="row">
+        <div class="employee">
+          <span class="name"></span>
+          <span class="hours"></span>
+        </div>
+        <div v-for="(day, index) in 7" :key="day" :class="['day']" @click="handleClick({ day: index })">
+          <div class="shift-info">
+            <span class="place"></span>
+            <span class="time"></span>
+          </div>
         </div>
       </div>
     </div>
@@ -31,7 +49,7 @@
 
 <script>
 export default {
-  props: ['empty',"role", "search"],
+  props: ["role", "search"],
   watch: {
     search: function(query) {
       this.searchInput = query
@@ -102,6 +120,7 @@ export default {
       }
     },
     handleClick(payload) {
+      console.log(payload)
       this.$store.dispatch("planner/setActiveShiftId", {
         weekId: this.$store.getters["date/weekId"],
         ...payload,

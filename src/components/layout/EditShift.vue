@@ -256,26 +256,33 @@ export default {
   async mounted() {
     const activeShiftId = this.$store.getters["planner/activeShiftId"]
 
+    // Helper functions
+    const parseTime = (time) => time.substring(0, 2) + ":" + time.substring(2, 4)
+
+    const parseDate = (input) => {
+      const date = input
+        .getDate()
+        .toString()
+        .padStart(2, "0")
+      const month = (input.getMonth() + 1).toString().padStart(2, "0")
+      const year = input.getFullYear()
+
+      return `${date}-${month}-${year}`
+    }
+
     if (activeShiftId === "new") {
       this.newShift = true
+    } else if (!activeShiftId.employeeId) {
+      this.newShift = true
+      this.shift.date = parseDate(this.$store.getters["date/dates"][activeShiftId.day])
     } else {
       this.newShift = false
 
       // Get info for selected shift
       const { weekId, day, employeeId } = activeShiftId
+
       const shift = this.$store.getters["planner/schedules"][weekId][employeeId][day]
       const employee = this.$store.getters["employees/employees"].find((emp) => emp.id === employeeId)
-
-      // Helper functions
-      const parseTime = (time) => time.substring(0, 2) + ":" + time.substring(2, 4)
-
-      const parseDate = (input) => {
-        const date = input .getDate() .toString() .padStart(2, "0")
-        const month = (input.getMonth() + 1).toString().padStart(2, "0")
-        const year = input.getFullYear()
-
-        return `${date}-${month}-${year}`
-      }
 
       // Set boilerplate shift info
       this.shift.employee = {

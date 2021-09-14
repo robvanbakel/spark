@@ -1,5 +1,6 @@
 <template>
   <PlannerRow v-for="role in this.roles" :key="role" :role="role" :search="search" />
+  <PlannerRow />
 </template>
 
 <script>
