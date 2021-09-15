@@ -1,7 +1,7 @@
 <template>
   <div v-if="this.role">
     <div v-for="(schedule, employeeId) in $store.getters['planner/currentWeekSchedule']" :key="schedule">
-      <div class="row" v-if="employeeInfo(employeeId, 'role') === role">
+      <div class="row" v-if="employeeInfo(employeeId, 'role') === role && employeeInfo(employeeId, 'status') !== 'archived'">
         <div class="employee">
           <span class="name">{{ employeeInfo(employeeId, "fullName") }}</span>
           <span class="hours">{{ totalHours(employeeId) }} hours</span>
@@ -73,6 +73,9 @@ export default {
         case "role":
           output = employee.role.toLowerCase()
           break
+        case "status":
+          output = employee.status
+          break
       }
 
       return output
@@ -120,7 +123,6 @@ export default {
       }
     },
     handleClick(payload) {
-      console.log(payload)
       this.$store.dispatch("planner/setActiveShiftId", {
         weekId: this.$store.getters["date/weekId"],
         ...payload,
