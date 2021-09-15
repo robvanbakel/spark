@@ -65,7 +65,13 @@
           </div>
           <div class="form-control">
             <label>Break</label>
-            <base-switch :items="$store.getters['planner/breaks']" :active="this.shift.break" @activeItem="setBreak" :fixed="true"></base-switch>
+            <base-switch
+              v-if="this.shift.break"
+              :items="$store.getters['planner/breaks']"
+              :active="this.shift.break"
+              @activeItem="setBreak"
+              :fixed="true"
+            ></base-switch>
           </div>
           <div class="form-control note">
             <label for="note">Notes</label>
@@ -98,7 +104,7 @@ export default {
         date: "",
         start: "",
         end: "",
-        break: "",
+        break: null,
         notes: "",
       },
       error: {
@@ -270,6 +276,8 @@ export default {
       return `${date}-${month}-${year}`
     }
 
+    this.shift.break = "-"
+
     if (activeShiftId === "new") {
       this.newShift = true
     } else if (!activeShiftId.employeeId) {
@@ -296,9 +304,10 @@ export default {
         this.shift.place = shift.place
         this.shift.start = parseTime(shift.start)
         this.shift.end = parseTime(shift.end)
-        this.shift.break = shift.break
         this.shift.notes = shift.notes
+        this.shift.break = shift.break
       }
+
     }
   },
 }

@@ -23,7 +23,7 @@ export default {
     },
   },
   mounted() {
-    const selectedItem = this.active || "-"
+    const selectedItem = this.active
 
     const switchItems = document.querySelectorAll(".switch-control")
     switchItems.forEach((item) => {
