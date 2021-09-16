@@ -20,29 +20,33 @@ Each employee will receive a unique link to automatically add their work schedul
 
 ## Feature Implementation Status
 
-| Feature                                | View    | Status      |
-| -------------------------------------- | ------- | ----------- |
-| Login as employer                      | AUTH    | Done        |
-| Read, update and delete employees      | STAFF   | Done        |
-| Search and filter employees            | STAFF   | Done        |
-| Create, read, update and delete shifts | PLANNER | Done        |
-| Search and filter shifts               | PLANNER | Done        |
-| Create employees                       | STAFF   | In progress |
-| Login as employee                      | AUTH    | -           |
-| Activate account as employee           | AUTH    | -           |
+| Feature                                       | View    | Status      |
+| --------------------------------------------- | ------- | ----------- |
+| Login as employer                             | AUTH    | Done        |
+| Create, read, update and delete employees     | STAFF   | Done        |
+| Search and filter employees                   | STAFF   | Done        |
+| Create, read, update and delete shifts        | PLANNER | Done        |
+| Search and filter shifts                      | PLANNER | Done        |
+| Serve calendar subscription for each employee | PLANNER | Done        |
+| Login as employee                             | AUTH    | In progress |
+| Activate account as employee                  | AUTH    | In progress |
 
 ## Screenshots
 
 ###### List of employees
+
 ![EmployeeList](https://i.imgur.com/CF7wd8H.jpeg)
 
 ###### Modal to edit employee details
+
 ![EditEmployee](https://i.imgur.com/66qFPCK.jpeg)
 
 ###### Weekly view of the planner
+
 ![Planner](https://i.imgur.com/xmKoobt.jpeg)
 
 ###### Modal to edit a shift
+
 ![EditShift](https://i.imgur.com/O8YSxef.jpeg)
 
 #### Built With
@@ -54,3 +58,7 @@ Each employee will receive a unique link to automatically add their work schedul
 - Firebase
   - [Firebase Auth](https://firebase.google.com/docs/auth)
   - [Cloud Firestore](https://firebase.google.com/docs/firestore)
+
+## Other repositories
+
+- [robvanbakel/wip-planner-admin](https://github.com/robvanbakel/wip-planner-admin)
