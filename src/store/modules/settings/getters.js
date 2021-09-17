@@ -7,5 +7,8 @@ export default {
   },
   roles(state) {
     return state.roles
-  }
+  },
+  hideSidebar(state) {
+    return state.hideSidebar
+  },
 }

@@ -16,6 +16,7 @@ body {
 .container {
   margin: 0 auto;
   min-width: 1140px;
+  overflow: hidden;
 }
 
 .overlay {
@@ -56,6 +57,17 @@ aside {
   width: 264px;
   margin-left: 40px;
 }
+aside, aside > * {
+  transition: all 260ms ease-in;
+}
+aside.hidden {
+  margin-left: -264px;
+}
+aside.hidden > * {
+  opacity: 0;
+  transform: translateX(304px);
+  position: relative;
+}
 
 p {
   color: #635d6d;
@@ -86,6 +98,7 @@ button.baseButton {
   align-items: center;
   border: none;
   outline: none;
+  white-space: nowrap;
 }
 button.baseButton:disabled {
   opacity: 0.5;
@@ -100,6 +113,23 @@ button.baseButton:active {
 button.baseButton span {
   font-size: 22px;
   margin-right: 8px;
+}
+button.baseButton.inverted {
+  border: 1px solid #413659;
+  background: none;
+}
+button.baseButton.inverted:hover:not(:disabled) {
+  background-color: #f5f5f7;
+}
+button.baseButton.icon-only {
+  width: 40px;
+}
+button.baseButton.icon-only span {
+  margin-right: 0;
+  color: #413659;
+}
+button.baseButton.icon-only span.flipped {
+  transform: scaleX(-100%);
 }
 
 .badge.red.inactive {
@@ -571,6 +601,7 @@ div.actionbar {
 }
 div.actionbar div.search {
   width: 360px;
+  min-width: 200px;
   display: flex;
   align-items: center;
   position: relative;
@@ -609,6 +640,7 @@ div.actionbar .filter {
   font-size: 14px;
   font-weight: 500;
   color: #413659;
+  overflow-y: scroll;
 }
 div.actionbar .filter .badge {
   margin-left: 12px;
@@ -619,8 +651,13 @@ div.actionbar .filter span.clear {
   color: #a7a3ac;
   cursor: pointer;
 }
-div.actionbar button {
+div.actionbar .actions {
+  display: flex;
   margin-left: auto;
+  padding-left: 40px;
+}
+div.actionbar .actions > *:not(:first-child) {
+  margin-left: 12px;
 }
 
 section#employeelist {

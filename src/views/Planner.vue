@@ -16,7 +16,12 @@
       ></base-badge>
       <span v-if="Object.values(filters).includes(true)" class="clear material-icons material-icons-round" @click="clearFilters">clear</span>
     </div>
-    <base-button @click="addNewShift" icon="add">Add Shift</base-button>
+    <div class="actions">
+      <base-button @click="addNewShift" icon="add">Add Shift</base-button>
+      <base-button class="inverted icon-only" @click="$store.dispatch('settings/toggleSidebar')">
+        <span class="clear material-icons material-icons-round" :class="{ flipped: !$store.getters['settings/hideSidebar'] }">menu_open</span>
+      </base-button>
+    </div>
   </div>
   <main v-if="$store.getters['planner/schedules']">
     <section id="planner">

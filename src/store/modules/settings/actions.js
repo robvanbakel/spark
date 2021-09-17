@@ -48,5 +48,8 @@ export default {
     context.commit('suggestions', suggestions);
 
   },
+  toggleSidebar(context) {
+    context.commit('toggleSidebar')
+  }
 
 }

@@ -16,7 +16,9 @@
       ></base-badge>
       <span v-if="Object.values(filters).includes(true)" class="clear material-icons material-icons-round" @click="clearFilters">clear</span>
     </div>
-    <base-button @click="addNewEmployee" icon="add">Add Employee</base-button>
+    <div class="actions">
+      <base-button @click="addNewEmployee" icon="add">Add Employee</base-button>
+    </div>
   </div>
   <main>
     <section id="employeelist">
