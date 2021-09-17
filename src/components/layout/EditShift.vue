@@ -261,6 +261,9 @@ export default {
   },
   async mounted() {
     const activeShiftId = this.$store.getters["planner/activeShiftId"]
+    
+    this.newShift = true
+    this.shift.break = "-"
 
     // Helper functions
     const parseTime = (time) => time.substring(0, 2) + ":" + time.substring(2, 4)
@@ -276,38 +279,34 @@ export default {
       return `${date}-${month}-${year}`
     }
 
-    this.shift.break = "-"
+    if (activeShiftId !== "new") {
+      if (!activeShiftId.employeeId) {
+        this.shift.date = parseDate(this.$store.getters["date/dates"][activeShiftId.day])
+      } else {
+        // Get info for selected shift
+        const { weekId, day, employeeId } = activeShiftId
 
-    if (activeShiftId === "new") {
-      this.newShift = true
-    } else if (!activeShiftId.employeeId) {
-      this.newShift = true
-      this.shift.date = parseDate(this.$store.getters["date/dates"][activeShiftId.day])
-    } else {
-      this.newShift = false
+        const shift = this.$store.getters["planner/schedules"][weekId][employeeId][day]
+        const employee = this.$store.getters["employees/employees"].find((emp) => emp.id === employeeId)
 
-      // Get info for selected shift
-      const { weekId, day, employeeId } = activeShiftId
+        // Set boilerplate shift info
+        this.shift.employee = {
+          fullName: `${employee.firstName} ${employee.lastName}`,
+          id: employeeId,
+        }
+        this.shift.date = parseDate(this.$store.getters["date/dates"][day])
 
-      const shift = this.$store.getters["planner/schedules"][weekId][employeeId][day]
-      const employee = this.$store.getters["employees/employees"].find((emp) => emp.id === employeeId)
+        // If active shift exists, set shift info
+        if (shift) {
+          this.newShift = false
 
-      // Set boilerplate shift info
-      this.shift.employee = {
-        fullName: `${employee.firstName} ${employee.lastName}`,
-        id: employeeId,
+          this.shift.place = shift.place
+          this.shift.start = parseTime(shift.start)
+          this.shift.end = parseTime(shift.end)
+          this.shift.notes = shift.notes
+          this.shift.break = shift.break
+        }
       }
-      this.shift.date = parseDate(this.$store.getters["date/dates"][day])
-
-      // If active shift exists, set shift info
-      if (shift) {
-        this.shift.place = shift.place
-        this.shift.start = parseTime(shift.start)
-        this.shift.end = parseTime(shift.end)
-        this.shift.notes = shift.notes
-        this.shift.break = shift.break
-      }
-
     }
   },
 }
