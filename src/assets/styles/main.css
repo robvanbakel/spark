@@ -129,7 +129,7 @@ button.baseButton.icon-only span {
   color: #413659;
 }
 button.baseButton.icon-only span.flipped {
-  transform: scaleX(-100%);
+  transform: scaleX(-1);
 }
 
 .badge.red.inactive {
