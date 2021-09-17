@@ -1,6 +1,7 @@
 <template>
   <div class="empty-week">
-    <h1>Week {{ weekNumber }}</h1>
+    <week-switch></week-switch>
+    <!-- <h1>Week {{ $store.getters['date/weekNumber'] }}</h1> -->
     <h5>{{ dateRange }}</h5>
     <p>
       No planning has been made for this week yet!<br />
@@ -26,9 +27,6 @@ export default {
     }
   },
   computed: {
-    weekNumber() {
-      return parseInt(this.$store.getters["date/weekId"].split("-")[1])
-    },
     dateRange() {
       const dates = this.$store.getters["date/dates"]
 

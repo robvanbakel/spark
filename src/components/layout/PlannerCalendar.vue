@@ -29,90 +29,99 @@ export default {
       selectedDate: this.$store.getters["date/calendarPoint"].getDate(),
       selectedMonth: this.$store.getters["date/calendarPoint"].getMonth(),
       selectedYear: this.$store.getters["date/calendarPoint"].getFullYear(),
-    };
+    }
   },
   methods: {
     daysInMonth() {
-      return new Date(this.selectedYear, this.selectedMonth + 1, 0).getDate();
+      return new Date(this.selectedYear, this.selectedMonth + 1, 0).getDate()
     },
     visibleInPrevMonth() {
-      const amount = new Date(this.selectedYear, this.selectedMonth, 0).getDay();
+      const amount = new Date(this.selectedYear, this.selectedMonth, 0).getDay()
 
-      let dates = [];
+      let dates = []
 
       for (let i = 0; i < amount; i++) {
-        dates.unshift(new Date(this.selectedYear, this.selectedMonth, -i).getDate());
+        dates.unshift(new Date(this.selectedYear, this.selectedMonth, -i).getDate())
       }
 
-      return dates;
+      return dates
     },
     visibleInNextMonth() {
-      const lastDayInMonth = new Date(this.selectedYear, this.selectedMonth + 1, 0).getDay();
+      const lastDayInMonth = new Date(this.selectedYear, this.selectedMonth + 1, 0).getDay()
 
       if (lastDayInMonth != 0) {
-        return 7 - lastDayInMonth;
+        return 7 - lastDayInMonth
       }
     },
     next() {
       if (this.selectedMonth === 11) {
-        this.selectedMonth = 0;
-        this.selectedYear++;
+        this.selectedMonth = 0
+        this.selectedYear++
       } else {
-        this.selectedMonth++;
+        this.selectedMonth++
       }
     },
     prev() {
       if (this.selectedMonth === 0) {
-        this.selectedMonth = 11;
-        this.selectedYear--;
+        this.selectedMonth = 11
+        this.selectedYear--
       } else {
-        this.selectedMonth--;
+        this.selectedMonth--
       }
     },
     calendarPointClass(num) {
-      const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString();
+      const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString()
 
-      let dateClass = "";
+      let dateClass = ""
 
       this.$store.getters["date/dateIds"].forEach((dateId) => {
-        const selectedYear = dateId.slice(0, 4);
-        const selectedMonth = parseInt(dateId.slice(4, 6) - 1);
-        const selectedDate = dateId.slice(6, 8);
+        const selectedYear = dateId.slice(0, 4)
+        const selectedMonth = parseInt(dateId.slice(4, 6) - 1)
+        const selectedDate = dateId.slice(6, 8)
 
-        const selectedFullDate = new Date(selectedYear, selectedMonth, selectedDate).toDateString();
+        const selectedFullDate = new Date(selectedYear, selectedMonth, selectedDate).toDateString()
 
-        calendarFullDate === selectedFullDate ? dateClass='selected' : "";
-      });
+        calendarFullDate === selectedFullDate ? (dateClass = "selected") : ""
+      })
 
-      return dateClass;
+      return dateClass
     },
     currentDateClass(num) {
-      const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString();
-      const currentFullDate = new Date().toDateString();
+      const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString()
+      const currentFullDate = new Date().toDateString()
 
-      return calendarFullDate === currentFullDate ? "current-date" : "";
+      return calendarFullDate === currentFullDate ? "current-date" : ""
     },
     today() {
-      this.selectedMonth = new Date().getMonth();
-      this.selectedYear = new Date().getFullYear();
+      this.selectedMonth = new Date().getMonth()
+      this.selectedYear = new Date().getFullYear()
     },
     async setWeek(selectedDay) {
-      const date = new Date(this.selectedYear, this.selectedMonth, selectedDay);
+      const date = new Date(this.selectedYear, this.selectedMonth, selectedDay)
+      const selectedWeekId = await this.$store.dispatch("date/getWeekId", date)
 
-      const selectedWeekId = await this.$store.dispatch("date/getWeekId", date);
-
-      this.$router.push({ name: "Planner", params: { weekId: selectedWeekId } });
+      this.$router.push({ name: "Planner", params: { weekId: selectedWeekId } })
     },
   },
   computed: {
     selectedMonthName() {
-      return new Date(this.selectedYear, this.selectedMonth).toLocaleString("en-US", { month: "long" });
+      return new Date(this.selectedYear, this.selectedMonth).toLocaleString("en-US", { month: "long" })
     },
     shortDays() {
-      return ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+      return ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+    },
+    calendarPoint() {
+      return this.$store.getters["date/calendarPoint"]
     },
   },
-};
+  watch: {
+    calendarPoint() {
+      this.selectedDate = this.$store.getters["date/calendarPoint"].getDate()
+      this.selectedMonth = this.$store.getters["date/calendarPoint"].getMonth()
+      this.selectedYear = this.$store.getters["date/calendarPoint"].getFullYear()
+    },
+  },
+}
 </script>
 <style scoped>
 section {

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap&family=Material+Icons");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Material+Icons");
 * {
   margin: 0;
   padding: 0;
@@ -923,6 +923,33 @@ section#planner .header {
   text-align: center;
   font-size: 16px;
 }
+section#planner .header .week-switch {
+  justify-content: flex-start;
+  height: 32px;
+  color: #635d6d;
+}
+section#planner .header .week-switch h2 {
+  font-weight: 400;
+  color: #a7a3ac;
+  font-size: 24px;
+  margin: 0;
+}
+section#planner .header .week-switch span {
+  opacity: 0;
+  width: 0px;
+  overflow: hidden;
+}
+section#planner .header .week-switch:hover h2 {
+  color: #413659;
+  font-size: 16px;
+  margin: 0 0.5em;
+  font-weight: 500;
+}
+section#planner .header .week-switch:hover span {
+  color: #413659;
+  opacity: 1;
+  width: 24px;
+}
 section#planner .header .dayWrapper {
   display: flex;
   flex-direction: column;
@@ -1050,11 +1077,13 @@ section#planner .row .day .shift-info span.time {
   text-align: center;
   padding: 60px 0;
 }
-.empty-week h1 {
-  color: #2f273c;
-  font-weight: 500;
+.empty-week .week-switch {
   margin-bottom: 12px;
+}
+.empty-week .week-switch h2 {
+  color: #2f273c;
   font-size: 28px;
+  font-weight: 500;
 }
 .empty-week h5 {
   font-size: 14px;
@@ -1184,4 +1213,27 @@ section#planner .row .day .shift-info span.time {
   left: 0;
   background-color: #f5f5f7;
   z-index: -1;
+}
+
+.week-switch {
+  display: flex;
+  align-items: center;
+  color: #413659;
+}
+.week-switch * {
+  transition: all 160ms ease-in;
+}
+.week-switch h2 {
+  font-size: 16px;
+  margin: 0 0.5em;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+}
+.week-switch span {
+  cursor: pointer;
+  opacity: 0.35;
+}
+.week-switch:hover span {
+  opacity: 1;
 }

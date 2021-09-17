@@ -2,6 +2,9 @@ export default {
   weekId(state) {
     return state.weekId
   },
+  weekNumber(state){
+    return parseInt(state.weekId.split("-")[1])
+  },
   dates(state) {
     return state.dates
   },

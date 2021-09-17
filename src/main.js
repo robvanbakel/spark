@@ -12,6 +12,7 @@ import BaseSwitch from "@/components/ui/BaseSwitch";
 import BaseSelect from "@/components/ui/BaseSelect";
 import BaseOverlay from "@/components/ui/BaseOverlay";
 import BaseConfirm from "@/components/ui/BaseConfirm";
+import WeekSwitch from "@/components/ui/WeekSwitch";
 import TheSidebar from "@/components/layout/TheSidebar";
 
 import { auth } from '@/firebase'
@@ -41,6 +42,7 @@ auth.onAuthStateChanged(async (user) => {
     app.component('base-select', BaseSelect);
     app.component('base-overlay', BaseOverlay);
     app.component('base-confirm', BaseConfirm);
+    app.component('week-switch', WeekSwitch);
     app.component('the-sidebar', TheSidebar);
 
     app.mount('#app')

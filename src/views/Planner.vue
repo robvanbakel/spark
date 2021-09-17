@@ -28,7 +28,11 @@
       <EmptyWeek v-if="emptyWeek && !hideEmptyWeek" @hide-empty-week="hideEmptyWeek = true" />
       <div v-else>
         <div class="header">
-          <div></div>
+          <div>
+            <transition name="weekSwitch">
+              <week-switch v-if="$store.getters['settings/hideSidebar']" />
+            </transition>
+          </div>
           <div class="dayWrapper" v-for="offset in $store.getters['date/daysVisible']" :key="offset">
             <span class="dayName">{{ $store.getters["date/dayNames"][offset - 1] }}</span>
             <span class="date">{{ $store.getters["date/datesShort"][offset - 1] }}</span>
@@ -112,3 +116,18 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.weekSwitch-enter-from,
+.weekSwitch-leave-to {
+  opacity: 0;
+  transform: translateX(-12px);
+}
+
+.weekSwitch-enter-active {
+  transition: all 200ms ease-out;
+}
+.weekSwitch-leave-active {
+  transition: all 200ms ease-in;
+}
+</style>
