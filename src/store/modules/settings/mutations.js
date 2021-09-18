@@ -11,5 +11,11 @@ export default {
   toggleSidebar(state) {
     state.hideSidebar = !state.hideSidebar
   },
+  hideSidebar(state, payload) {
+    state.hideSidebar = payload
+  },
+  sidebarAutoHidden(state, payload) {
+    state.sidebarAutoHidden = payload
+  },
 
 }

@@ -11,4 +11,7 @@ export default {
   hideSidebar(state) {
     return state.hideSidebar
   },
+  sidebarAutoHidden(state) {
+    return state.sidebarAutoHidden
+  },
 }

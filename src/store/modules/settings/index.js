@@ -9,7 +9,8 @@ export default {
       suggestions: null,
       admin: null,
       roles: null,
-      hideSidebar: false
+      hideSidebar: false,
+      sidebarAutoHidden: false,
     }
   },
   mutations,

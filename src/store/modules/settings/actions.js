@@ -50,6 +50,12 @@ export default {
   },
   toggleSidebar(context) {
     context.commit('toggleSidebar')
-  }
-
+  },
+  hideSidebar(context, payload) {
+    context.commit('hideSidebar', payload)
+  },
+  sidebarAutoHidden(context, payload) {
+    context.commit('sidebarAutoHidden', payload)
+  },
+  
 }

@@ -18,7 +18,7 @@
     </div>
     <div class="actions">
       <base-button @click="addNewShift" icon="add">Add Shift</base-button>
-      <base-button class="inverted icon-only" @click="$store.dispatch('settings/toggleSidebar')">
+      <base-button class="inverted icon-only" @click="toggleSidebar">
         <span class="clear material-icons material-icons-round" :class="{ flipped: !$store.getters['settings/hideSidebar'] }">menu_open</span>
       </base-button>
     </div>
@@ -90,6 +90,10 @@ export default {
     clearFilters() {
       Object.keys(this.filters).forEach((key) => (this.filters[key] = false))
     },
+    toggleSidebar() {
+      this.$store.dispatch('settings/toggleSidebar')
+      this.$store.dispatch('settings/sidebarAutoHidden', false)
+    }
   },
   computed: {
     displayRoles() {
