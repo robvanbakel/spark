@@ -1,58 +1,60 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory } from "vue-router"
 
-import { auth } from '@/firebase'
-import store from '@/store'
+import { auth } from "@/firebase"
+import store from "@/store"
 
-import Home from '@/views/Home';
-import EmployeeList from '@/views/EmployeeList';
-import Planner from '@/views/Planner';
-import Employee from '@/views/Employee';
-import Auth from '@/views/Auth';
+import Home from "@/views/Home"
+import EmployeeList from "@/views/EmployeeList"
+import Planner from "@/views/Planner"
+import Employee from "@/views/Employee"
+import Auth from "@/views/Auth"
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/',
+      path: "/",
       component: Home,
-      name: 'Home',
+      name: "Home",
     },
     {
-      path: '/auth',
+      path: "/auth",
       component: Auth,
-      name: 'Auth',
-      meta: { noAuth: true }
+      name: "Auth",
+      meta: { noAuth: true },
     },
     {
-      path: '/staff',
+      path: "/staff",
       component: EmployeeList,
-      name: 'EmployeeList',
+      name: "EmployeeList",
+      meta: { admin: true },
     },
     {
-      path: '/planner/:weekId?',
+      path: "/planner/:weekId?",
       component: Planner,
-      name: 'Planner',
+      name: "Planner",
+      meta: { admin: true },
       async beforeEnter(to) {
-        const weekId = to.params.weekId || store.getters["date/weekId"] || await store.dispatch("date/getWeekId");
-        store.dispatch("date/setDates", weekId);
-      }
+        const weekId = to.params.weekId || store.getters["date/weekId"] || (await store.dispatch("date/getWeekId"))
+        store.dispatch("date/setDates", weekId)
+      },
     },
     {
-      path: '/employee',
+      path: "/employee",
       component: Employee,
-      name: 'Employee',
+      name: "Employee",
     },
   ],
-});
+})
 
 router.beforeEach((to, from, next) => {
-
   if (!to.meta.noAuth && !auth.currentUser) {
-    next({ name: 'Auth' })
+    next({ name: "Auth" })
+  } else if (to.meta.admin && !store.getters["auth/admin"]) {
+    next({ name: "Employee" })
   } else {
     next()
   }
-
-});
+})
 
 export default router

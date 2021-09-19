@@ -6,7 +6,6 @@ export default {
   async login(context, payload) {
     try {
       const res = await auth.signInWithEmailAndPassword(payload.email, payload.password)
-      router.push({ name: "EmployeeList" })
       return res
     } catch (err) {
       console.log(err)

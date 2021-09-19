@@ -1,32 +1,54 @@
 import { auth } from "@/firebase"
 import { db } from "@/firebase"
 
+import router from "@/router"
+
 export default {
   async getEmployees(context) {
     const uid = auth.currentUser.uid
-    let employees = []
 
     if (context.rootGetters["settings/admin"].includes(uid)) {
+      // Set global auth/admin variable to false
       context.commit("auth/admin", true, { root: true })
+
+      let employees = []
+
+      // If user is admin, load all users from database
+      const snapshot = await db.collection("users").get()
+      snapshot.forEach((doc) => {
+        const employee = {
+          id: doc.id,
+          ...doc.data(),
+        }
+
+        employees.push(employee)
+
+        if (employee.id === uid) {
+          context.commit("auth/setUser", employee, { root: true })
+        }
+      })
+
+      context.commit("setEmployees", employees)
+      
+      router.push({ name: "EmployeeList" })
+
     } else {
+      // Set global auth/admin variable to false
       context.commit("auth/admin", false, { root: true })
+
+      // If user is not admin, load only own data from database
+      const res = await db
+        .collection("users")
+        .doc(uid)
+        .get()
+      const employee = await res.data()
+
+      context.commit("auth/setUser", employee, { root: true })
+
+      router.push({ name: "Employee" })
+
     }
 
-    const snapshot = await db.collection("users").get()
-    snapshot.forEach((doc) => {
-      const employee = {
-        id: doc.id,
-        ...doc.data(),
-      }
-
-      employees.push(employee)
-
-      if (employee.id === uid) {
-        context.commit("auth/setUser", employee, { root: true })
-      }
-    })
-
-    context.commit("setEmployees", employees)
   },
   async updateUser(context, payload) {
     db.collection("users")
@@ -35,7 +57,7 @@ export default {
     context.commit("updateEmployee", payload)
   },
   async createNewUser(context, payload) {
-    const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/createNewUser`, {
+    const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/createNewUser`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -48,7 +70,8 @@ export default {
     // Update locally
     context.commit("addUser", {
       id: uid || new Date().toISOString(), // Fallback fake uid for demo environment
-      data: payload.employee })
+      data: payload.employee,
+    })
 
     // Update DB
     db.collection("users")

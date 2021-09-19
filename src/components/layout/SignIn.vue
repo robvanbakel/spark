@@ -16,7 +16,7 @@
       <h1>No account yet?</h1>
       <p>Click the button below to enter a demo account. Any changes you make won't be stored and will be lost when existing the demo environment.</p>
       <base-button v-if="!demoLoading" icon="login" @click="enterDemo">Enter Demo</base-button>
-      <base-button v-else disabled icon="login" >Loading…</base-button>
+      <base-button v-else disabled icon="login">Loading…</base-button>
     </div>
   </transition>
 </template>
@@ -30,19 +30,17 @@ export default {
       password: "",
       isLoading: false,
       showDemo: false,
-      demoLoading: false
+      demoLoading: false,
     }
   },
   methods: {
     async enterDemo() {
-
       this.demoLoading = true
 
       await this.$store.dispatch("auth/login", {
         email: "demo@company.com",
-        password: "demo@company.com"
+        password: "demo@company.com",
       })
-
     },
     async handleSubmit() {
       this.isLoading = true
@@ -52,17 +50,19 @@ export default {
         password: this.password,
       })
 
-      this.isLoading = false
+      if (!res.user) {
+        this.isLoading = false
 
-      switch (res.code) {
-        case "auth/user-not-found":
-          this.errorMessage = "User not found"
-          break
-        case "auth/wrong-password":
-          this.errorMessage = "Password incorrect"
-          break
-        default:
-          this.errorMessage = "Login failed"
+        switch (res.code) {
+          case "auth/user-not-found":
+            this.errorMessage = "User not found"
+            break
+          case "auth/wrong-password":
+            this.errorMessage = "Password incorrect"
+            break
+          default:
+            this.errorMessage = "Login failed"
+        }
       }
     },
   },

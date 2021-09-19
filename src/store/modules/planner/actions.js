@@ -71,14 +71,20 @@ export default {
     }
   },
   async getSchedules(context) {
-    let schedules = {}
 
-    const snapshot = await db.collection("schedules").get()
-    snapshot.forEach((doc) => {
-      schedules[doc.id] = doc.data()
-    })
+    if(context.rootGetters['auth/admin']) {
 
-    context.commit("schedules", schedules)
+      let schedules = {}
+  
+      const snapshot = await db.collection("schedules").get()
+      snapshot.forEach((doc) => {
+        schedules[doc.id] = doc.data()
+      })
+  
+      context.commit("schedules", schedules)
+
+    }
+
   },
   async copyWeek(context, payload) {
 
