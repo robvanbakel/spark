@@ -35,7 +35,7 @@ export default {
     context.commit("updateEmployee", payload)
   },
   async createNewUser(context, payload) {
-    const res = await fetch(`/createNewUser`, {
+    const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/createNewUser`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
