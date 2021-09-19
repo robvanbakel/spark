@@ -6,6 +6,7 @@ export default {
   namespaced: true,
   state() {
     return {
+      schedules: null,
       newShift: null,
       activeShiftId: null,
       breaks: ['-', '15', '30', '45', '60'],

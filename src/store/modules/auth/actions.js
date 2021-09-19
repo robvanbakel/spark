@@ -12,8 +12,13 @@ export default {
       return err
     }
   },
-  logout() {
+  logout(context) {
     auth.signOut()
+
+    // Reset data
+    context.commit("planner/schedules", null, { root: true })
+    context.commit("employees/setEmployees", null, { root: true })
+
     router.push({ name: "Auth" })
   },
 }
