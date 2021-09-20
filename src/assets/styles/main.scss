@@ -1101,3 +1101,79 @@ section#planner {
     }
   }
 }
+
+// Single Employee Calendar
+
+section#singleEmployeeCalendar {
+  padding: 40px;
+  .header {
+    margin-bottom: 3em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .actions {
+      display: flex;
+      &>* {
+        margin-left: 12px;
+      }
+      button.inverted.icon-only span {
+        font-size: 26px;
+      }
+    }
+  }
+  .calendar {
+    display: flex;
+    .row {
+      height: 60px;
+      margin-bottom: 12px;
+    }
+    .colDays {
+      margin-right: 22px;
+      .row {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        span.dayName {
+          font-size: 14px;
+          font-weight: 700;
+          color: color.$text-100;
+          margin-bottom: 6px;
+        }
+        span.date {
+          font-size: 11px;
+          color: color.$text-500;
+        }
+      }
+    }
+    .colCalendar {
+      width: min-content;
+      .row {
+        display: grid;
+        grid-template-columns: repeat(24, 40px);
+        font-size: 14px;
+        .shift {
+          position: relative;
+          background-color: color.$blue-light;
+          border-radius: 6px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+          span {
+            &.place {
+              font-size: 12px;
+              font-weight: 700;
+              color: color.$text-100;
+              margin-bottom: 6px;
+              letter-spacing: 0.02em;
+            }
+            &.time {
+              font-size: 12px;
+              color: color.$main;
+            }
+          }
+        }
+      }
+    }
+  }
+}

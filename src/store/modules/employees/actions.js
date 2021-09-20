@@ -29,26 +29,29 @@ export default {
       })
 
       context.commit("setEmployees", employees)
-      
-      router.push({ name: "EmployeeList" })
 
+      router.push({ name: "EmployeeList" })
     } else {
       // Set global auth/admin variable to false
       context.commit("auth/admin", false, { root: true })
 
       // If user is not admin, load only own data from database
-      const res = await db
+      const doc = await db
         .collection("users")
         .doc(uid)
         .get()
-      const employee = await res.data()
 
-      context.commit("auth/setUser", employee, { root: true })
+      context.commit(
+        "auth/setUser",
+        {
+          id: doc.id,
+          ...doc.data(),
+        },
+        { root: true }
+      )
 
       router.push({ name: "Employee" })
-
     }
-
   },
   async updateUser(context, payload) {
     db.collection("users")

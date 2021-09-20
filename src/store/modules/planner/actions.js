@@ -71,35 +71,36 @@ export default {
     }
   },
   async getSchedules(context) {
+    let schedules = {}
 
-    if(context.rootGetters['auth/admin']) {
-
-      let schedules = {}
-  
+    if (context.rootGetters["auth/admin"]) {
       const snapshot = await db.collection("schedules").get()
       snapshot.forEach((doc) => {
         schedules[doc.id] = doc.data()
       })
-  
-      context.commit("schedules", schedules)
+    } else {
+
+      const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/getSchedules/${context.rootGetters['auth/user'].id}`)
+
+      schedules = await res.json()
 
     }
 
+    context.commit("schedules", schedules)
   },
   async copyWeek(context, payload) {
-
     // Get schedule
-    const schedule = context.getters['schedules'][payload.from]
+    const schedule = context.getters["schedules"][payload.from]
 
     // Update locally
     context.commit("setSchedule", {
       weekId: payload.to,
-      schedule
-    })   
+      schedule,
+    })
 
     // Update DB
     db.collection("schedules")
-    .doc(payload.to)
-    .set(schedule)
+      .doc(payload.to)
+      .set(schedule)
   },
 }

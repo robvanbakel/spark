@@ -1,6 +1,6 @@
 <template>
   <div v-if="!breakpoints.sm.active" class="container">
-    <TheHeader v-if="this.$store.getters['auth/user']" />
+    <TheHeader v-if="$store.getters['auth/user']" />
     <router-view></router-view>
   </div>
   <div v-else style="text-align: center; padding: 3em 1em;">
