@@ -32,11 +32,17 @@
         </div>
       </div>
     </section>
+
+    <base-modal v-if="showQR" @clickout="closeQR">
+      <div class="qr-popup">
+        <p>Scan this QR code with your phone to add your work schedule to your calendar.</p>
+        <img :src="qrCodeImg" alt="Link to calendar subscription" />
+        <base-button @click="closeQR">Close</base-button>
+      </div>
+    </base-modal>
+
     <the-sidebar>
       <section><PlannerCalendar /></section>
-      <section v-if="showQR" style="height:264px; display:grid; place-items:center;">
-        <img :src="qrCodeImg" alt="Link to calendar subscription" style="width: 220px" />
-      </section>
     </the-sidebar>
   </main>
 </template>
@@ -122,6 +128,9 @@ export default {
     async generateQR() {
       this.qrCodeImg = await QRCode.toDataURL(this.webcalLink)
       this.showQR = true
+    },
+    closeQR() {
+      this.showQR = false
     },
     openCalendar() {
       location.replace(this.webcalLink)

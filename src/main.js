@@ -11,6 +11,7 @@ import BaseButton from "@/components/ui/BaseButton"
 import BaseSwitch from "@/components/ui/BaseSwitch"
 import BaseSelect from "@/components/ui/BaseSelect"
 import BaseOverlay from "@/components/ui/BaseOverlay"
+import BaseModal from "@/components/ui/BaseModal"
 import BaseConfirm from "@/components/ui/BaseConfirm"
 import WeekSwitch from "@/components/ui/WeekSwitch"
 import TheSidebar from "@/components/layout/TheSidebar"
@@ -41,6 +42,7 @@ auth.onAuthStateChanged(async (user) => {
     app.component("base-switch", BaseSwitch)
     app.component("base-select", BaseSelect)
     app.component("base-overlay", BaseOverlay)
+    app.component("base-modal", BaseModal)
     app.component("base-confirm", BaseConfirm)
     app.component("week-switch", WeekSwitch)
     app.component("the-sidebar", TheSidebar)
