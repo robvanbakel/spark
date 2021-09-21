@@ -4,6 +4,8 @@ This planner is a personal project, currently a work in progress.
 
 The app aims to make it easy for employers to create and share work schedules with their employees. Employees will be notified when their schedule changes and will be prompted to approve the updates before they are automatically added to their phone's calendar.
 
+Read the [Demo section](#demo) to learn how to access the demo environment.
+
 ## Features
 
 #### Managing Employees
@@ -17,6 +19,12 @@ Employers can add, edit and remove shifts from a weekly planning. Each shift is 
 #### Calendar Subscriptions
 
 Each employee will receive a unique link to automatically add their work schedule to their calendar via a subscription. Changes in the planning that are made by the employer will be automatically synchronized with the employees' calendars.
+
+## Demo
+
+To see the planner in action, visit the [public demo page](https://planner.robvanbakel.com) and click on the *Enter Demo* button below the login form. You'll be taken to the admin area, which is where employers will manage their staff and create schedules.
+
+In order to login as an employee, use any of the demo employee email addresses available in the admin area. For all accounts, the password is the same as the email address.
 
 ## Feature Implementation Status
 
