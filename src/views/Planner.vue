@@ -91,9 +91,9 @@ export default {
       Object.keys(this.filters).forEach((key) => (this.filters[key] = false))
     },
     toggleSidebar() {
-      this.$store.dispatch('settings/toggleSidebar')
-      this.$store.dispatch('settings/sidebarAutoHidden', false)
-    }
+      this.$store.dispatch("settings/toggleSidebar")
+      this.$store.dispatch("settings/sidebarAutoHidden", false)
+    },
   },
   computed: {
     displayRoles() {
@@ -110,8 +110,10 @@ export default {
   watch: {
     $route(to) {
       if (to.name === "Planner") {
-        this.$store.dispatch("date/setDates", this.$route.params.weekId)
+        const weekId = this.$route.params.weekId
+        this.$store.dispatch("date/setDates", weekId)
         this.hideEmptyWeek = false
+        document.title = `Week ${parseInt(this.$route.params.weekId.split("-")[1])} - Planner`
       }
     },
   },
