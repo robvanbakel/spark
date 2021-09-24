@@ -6,7 +6,7 @@ import store from "@/store"
 import Home from "@/views/Home"
 import EmployeeList from "@/views/EmployeeList"
 import Planner from "@/views/Planner"
-import Employee from "@/views/Employee"
+import Schedule from "@/views/Schedule"
 import Auth from "@/views/Auth"
 
 const router = createRouter({
@@ -21,50 +21,45 @@ const router = createRouter({
       path: "/auth",
       component: Auth,
       name: "Auth",
-      meta: { 
+      meta: {
         noAuth: true,
         title: "Login",
-       },
+      },
     },
     {
       path: "/staff",
       component: EmployeeList,
       name: "EmployeeList",
-      meta: { 
+      meta: {
         admin: true,
         title: "Staff",
-
-       },
+      },
     },
     {
       path: "/planner/:weekId?",
       component: Planner,
       name: "Planner",
-      meta: { 
+      meta: {
         admin: true,
-       },
+      },
       async beforeEnter(to) {
         const weekId = to.params.weekId || store.getters["date/weekId"] || (await store.dispatch("date/getWeekId"))
         store.dispatch("date/setDates", weekId)
         document.title = `Week ${store.getters["date/weekNumber"]} - Planner`
-
       },
     },
     {
-      path: "/employee",
-      component: Employee,
-      name: "Employee",
-      async beforeEnter() {
-        const user = store.getters['auth/user']
-        document.title = `${user.firstName} ${user.lastName} - Planner`
-
+      path: "/schedule/:weekId?",
+      component: Schedule,
+      name: "Schedule",
+      async beforeEnter(to) {
+        store.dispatch("date/setDates", to.params.weekId || store.getters["date/weekId"] || (await store.dispatch("date/getWeekId")))
       },
     },
   ],
 })
 
 router.beforeEach((to, from, next) => {
-
   let title = "Planner"
 
   if (to.meta.title) {
@@ -72,11 +67,11 @@ router.beforeEach((to, from, next) => {
   }
 
   document.title = title
-  
+
   if (!to.meta.noAuth && !auth.currentUser) {
     next({ name: "Auth" })
   } else if (to.meta.admin && !store.getters["auth/admin"]) {
-    next({ name: "Employee" })
+    next({ name: "Schedule" })
   } else {
     next()
   }

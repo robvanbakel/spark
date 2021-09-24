@@ -7,7 +7,7 @@
     </div>
     <nav>
       <ul>
-        <li v-if="employee"><router-link :to="{ name: 'Employee' }">Employee</router-link></li>
+        <li v-if="employee"><router-link :to="{ name: 'Schedule' }">Schedule</router-link></li>
         <li v-if="admin"><router-link :to="{ name: 'EmployeeList' }">Staff</router-link></li>
         <li v-if="admin"><router-link :to="{ name: 'Planner' }">Planner</router-link></li>
       </ul>

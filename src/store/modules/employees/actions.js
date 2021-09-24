@@ -50,7 +50,7 @@ export default {
         { root: true }
       )
 
-      router.push({ name: "Employee" })
+      router.push({ name: "Schedule" })
     }
   },
   async updateUser(context, payload) {

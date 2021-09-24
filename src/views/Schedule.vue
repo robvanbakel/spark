@@ -124,6 +124,16 @@ export default {
       return -startPoint * this.dayWidth
     },
   },
+   watch: {
+    $route(to) {
+      if (to.name === "Schedule") {
+        const weekId = this.$route.params.weekId
+        this.$store.dispatch("date/setDates", weekId)
+        this.hideEmptyWeek = false
+        document.title = `Week ${parseInt(this.$route.params.weekId.split("-")[1])} - Planner`
+      }
+    },
+  },
   methods: {
     async generateQR() {
       this.qrCodeImg = await QRCode.toDataURL(this.webcalLink)

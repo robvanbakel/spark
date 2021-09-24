@@ -100,7 +100,7 @@ export default {
       const date = new Date(this.selectedYear, this.selectedMonth, selectedDay)
       const selectedWeekId = await this.$store.dispatch("date/getWeekId", date)
 
-      this.$router.push({ name: "Planner", params: { weekId: selectedWeekId } })
+      this.$router.push({ params: { weekId: selectedWeekId } })
     },
   },
   computed: {
