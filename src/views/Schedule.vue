@@ -18,8 +18,10 @@
           </div>
         </div>
         <div class="colCalendar" ref="calendar">
+          <div class="grid">
+            <div class="hour" v-for="(hour, index) in 24" :key="index" :style="{ width: `${dayWidth}px`, left: `${dayWidth * index}px` }"></div>
+          </div>
           <div class="row " v-for="(day, index) in schedule" :key="index">
-            <!-- TODO Implement div.hours with :style="{ width: `${dayWidth}px`, left: `${startOffset}px` }" -->
             <div
               class="shift"
               v-if="day"
@@ -78,6 +80,13 @@ export default {
     showRange() {
       const schedule = this.$store.getters["planner/schedules"][this.$store.getters["date/weekId"]]
 
+      if(!schedule) {
+        return {
+          showStart: '0800',
+          showEnd: '1800'
+        }
+      }
+
       const startTimes = schedule.map((day) => day?.start).filter((item) => item)
       const showStart = Math.min(...startTimes)
         .toString()
@@ -105,7 +114,9 @@ export default {
 
       const minFraction = mins / 60
 
-      const range = hours + minFraction
+      let range = hours + minFraction
+
+      range = 24
 
       return this.calendarWidth / range
     },
@@ -124,7 +135,7 @@ export default {
       return -startPoint * this.dayWidth
     },
   },
-   watch: {
+  watch: {
     $route(to) {
       if (to.name === "Schedule") {
         const weekId = this.$route.params.weekId
@@ -149,7 +160,7 @@ export default {
       return time.substring(0, 2) + ":" + time.substring(2, 4)
     },
     checkCalendarWidth() {
-      // this.calendarWidth = this.$refs.calendar?.clientWidth
+      this.calendarWidth = this.$refs.calendar?.clientWidth
     },
     timeRangeToPercentage(start, end) {
       // Destructure input
@@ -166,15 +177,19 @@ export default {
       const hoursPercentage = hours * 100
       const minsPercentage = (mins / 60) * 100
 
-      const percentage = hoursPercentage + minsPercentage
+      let percentage = (hoursPercentage + minsPercentage) / 24
 
       // Calculate starting point
       const startHourPercentage = startHour * 100
       const startMinPercentage = (startMin / 60) * 100
-      const startPoint = startHourPercentage + startMinPercentage
+      let startPoint = (startHourPercentage + startMinPercentage) / 24
 
       return { startPoint, percentage }
     },
+  },
+  mounted() {
+    this.checkCalendarWidth()
+    window.addEventListener("resize", this.checkCalendarWidth)
   },
 }
 </script>

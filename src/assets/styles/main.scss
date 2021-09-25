@@ -1143,7 +1143,7 @@ section#singleEmployeeCalendar {
       margin-bottom: 12px;
     }
     .colDays {
-      margin-right: 22px;
+      margin-right: 40px;
       .row {
         display: flex;
         flex-direction: column;
@@ -1161,19 +1161,33 @@ section#singleEmployeeCalendar {
       }
     }
     .colCalendar {
-      width: min-content;
+      width: 100%;
+      position: relative;
+      .grid {
+        @include mixin.scheduleGrid;
+        position: absolute;
+        height: 100%;
+        border-left: 1px solid lighten(color.$border,6%);
+        .hour {
+          border-right: 1px solid lighten(color.$border,6%);
+            position: absolute;
+            height: 100%;
+        }
+      }
       .row {
-        display: grid;
-        grid-template-columns: repeat(24, 40px);
+        @include mixin.scheduleGrid;
         font-size: 14px;
+        position: relative;
+        width: 100%;
         .shift {
-          position: relative;
+          position: absolute;
           background-color: color.$blue-light;
           border-radius: 6px;
           display: flex;
           flex-direction: column;
           justify-content: center;
           text-align: center;
+          height: 100%;
           span {
             &.place {
               font-size: 12px;
