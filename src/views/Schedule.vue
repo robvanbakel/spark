@@ -19,10 +19,7 @@
         </div>
         <div class="colCalendar" ref="calendar">
           <div class="hours">
-            <span v-for="(hour, index) in 25" :key="index"  :style="{ width: `${dayWidth}px`}">{{ index.toString().padStart(2, "0") }}:00</span>
-          </div>
-          <div class="grid">
-            <div class="hour" v-for="(hour, index) in 24" :key="index" :style="{ width: `${dayWidth}px`, left: `${dayWidth * index}px` }"></div>
+            <span v-for="(hour, index) in 25" :key="index" :style="{ width: `${dayWidth}px`, '--calendarHeight':`${calendarHeight + 12}px` }">{{ index.toString().padStart(2, "0") }}:00</span>
           </div>
           <div class="row " v-for="(day, index) in schedule" :key="index">
             <div
@@ -63,6 +60,7 @@ export default {
     return {
       qrCodeImg: null,
       calendarWidth: null,
+      calendarHeight: null,
       rows: [],
       showQR: false,
     }
@@ -164,6 +162,7 @@ export default {
     },
     checkCalendarWidth() {
       this.calendarWidth = this.$refs.calendar?.clientWidth
+      this.calendarHeight = this.$refs.calendar?.clientHeight
     },
     timeRangeToPercentage(start, end) {
       // Destructure input
@@ -196,3 +195,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.hours span::after {
+  height: var(--calendarHeight);
+}
+</style>

@@ -1318,22 +1318,18 @@ section#singleEmployeeCalendar .calendar .hours span {
   left: -50%;
   top: -32px;
 }
+section#singleEmployeeCalendar .calendar .hours span::after {
+  content: "";
+  width: 1px;
+  background-color: #ededed;
+  display: block;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+}
 section#singleEmployeeCalendar .calendar .colCalendar {
   width: 100%;
   position: relative;
-}
-section#singleEmployeeCalendar .calendar .colCalendar .grid {
-  display: grid;
-  grid-template-columns: repeat(24, 1fr);
-  position: absolute;
-  height: 100%;
-  margin: -12px 0;
-  border-left: 1px solid #ededed;
-}
-section#singleEmployeeCalendar .calendar .colCalendar .grid .hour {
-  border-right: 1px solid #ededed;
-  position: absolute;
-  height: 100%;
 }
 section#singleEmployeeCalendar .calendar .colCalendar .row {
   display: grid;

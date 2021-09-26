@@ -1172,25 +1172,20 @@ section#singleEmployeeCalendar {
         position: relative;
         left: -50%;
         top: -32px;
+        &::after {
+          content: '';
+          width: 1px;
+          background-color: lighten(color.$border, 6%);
+          display: block;
+          position: absolute;
+          top: 20px;
+          left: 50%;
+        }
       }
     }
     .colCalendar {
       width: 100%;
       position: relative;
-
-      .grid {
-        @include mixin.scheduleGrid;
-        position: absolute;
-        height: 100%;
-        margin: -12px 0;
-        border-left: 1px solid lighten(color.$border, 6%);
-        .hour {
-          border-right: 1px solid lighten(color.$border, 6%);
-          position: absolute;
-          height: 100%;
-        }
-      }
-
       .row {
         @include mixin.scheduleGrid;
         font-size: 14px;
