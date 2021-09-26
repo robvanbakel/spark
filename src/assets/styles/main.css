@@ -1281,13 +1281,14 @@ section#singleEmployeeCalendar .header .actions button.inverted.icon-only span {
 }
 section#singleEmployeeCalendar .calendar {
   display: flex;
+  margin-top: 72px;
 }
 section#singleEmployeeCalendar .calendar .row {
   height: 60px;
   margin-bottom: 12px;
 }
 section#singleEmployeeCalendar .calendar .colDays {
-  margin-right: 40px;
+  width: 120px;
 }
 section#singleEmployeeCalendar .calendar .colDays .row {
   display: flex;
@@ -1304,6 +1305,19 @@ section#singleEmployeeCalendar .calendar .colDays .row span.date {
   font-size: 11px;
   color: #a7a3ac;
 }
+section#singleEmployeeCalendar .calendar .hours {
+  display: grid;
+  grid-template-columns: repeat(25, 1fr);
+  font-size: 11px;
+  color: #c8c6cc;
+  text-align: center;
+  position: absolute;
+}
+section#singleEmployeeCalendar .calendar .hours span {
+  position: relative;
+  left: -50%;
+  top: -32px;
+}
 section#singleEmployeeCalendar .calendar .colCalendar {
   width: 100%;
   position: relative;
@@ -1313,6 +1327,7 @@ section#singleEmployeeCalendar .calendar .colCalendar .grid {
   grid-template-columns: repeat(24, 1fr);
   position: absolute;
   height: 100%;
+  margin: -12px 0;
   border-left: 1px solid #ededed;
 }
 section#singleEmployeeCalendar .calendar .colCalendar .grid .hour {

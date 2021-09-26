@@ -18,6 +18,9 @@
           </div>
         </div>
         <div class="colCalendar" ref="calendar">
+          <div class="hours">
+            <span v-for="(hour, index) in 25" :key="index"  :style="{ width: `${dayWidth}px`}">{{ index.toString().padStart(2, "0") }}:00</span>
+          </div>
           <div class="grid">
             <div class="hour" v-for="(hour, index) in 24" :key="index" :style="{ width: `${dayWidth}px`, left: `${dayWidth * index}px` }"></div>
           </div>
@@ -80,10 +83,10 @@ export default {
     showRange() {
       const schedule = this.$store.getters["planner/schedules"][this.$store.getters["date/weekId"]]
 
-      if(!schedule) {
+      if (!schedule) {
         return {
-          showStart: '0800',
-          showEnd: '1800'
+          showStart: "0800",
+          showEnd: "1800",
         }
       }
 
