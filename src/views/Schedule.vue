@@ -19,7 +19,9 @@
         </div>
         <div class="colCalendar" ref="calendar">
           <div class="hours">
-            <span v-for="(hour, index) in 25" :key="index" :style="{ width: `${dayWidth}px`, '--calendarHeight':`${calendarHeight + 12}px` }">{{ index.toString().padStart(2, "0") }}:00</span>
+            <span v-for="(hour, index) in 25" :key="index" :style="{ width: `${dayWidth}px`, '--calendarHeight': `${calendarHeight + 12}px` }"
+              >{{ index.toString().padStart(2, "0") }}:00</span
+            >
           </div>
           <div class="row " v-for="(day, index) in schedule" :key="index">
             <div
@@ -192,6 +194,9 @@ export default {
   mounted() {
     this.checkCalendarWidth()
     window.addEventListener("resize", this.checkCalendarWidth)
+  },
+  updated() {
+    this.checkCalendarWidth()
   },
 }
 </script>
