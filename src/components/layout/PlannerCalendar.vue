@@ -26,9 +26,8 @@
 export default {
   data() {
     return {
-      selectedDate: this.$store.getters["date/calendarPoint"].getDate(),
-      selectedMonth: this.$store.getters["date/calendarPoint"].getMonth(),
-      selectedYear: this.$store.getters["date/calendarPoint"].getFullYear(),
+      selectedMonth: this.$store.getters["date/dates"][3].getMonth(),
+      selectedYear: this.$store.getters["date/dates"][3].getFullYear(),
     }
   },
   methods: {
@@ -74,14 +73,8 @@ export default {
 
       let dateClass = ""
 
-      this.$store.getters["date/dateIds"].forEach((dateId) => {
-        const selectedYear = dateId.slice(0, 4)
-        const selectedMonth = parseInt(dateId.slice(4, 6) - 1)
-        const selectedDate = dateId.slice(6, 8)
-
-        const selectedFullDate = new Date(selectedYear, selectedMonth, selectedDate).toDateString()
-
-        calendarFullDate === selectedFullDate ? (dateClass = "selected") : ""
+      this.$store.getters["date/dates"].forEach((date) => {
+        calendarFullDate === date.toDateString() ? (dateClass = "selected") : ""
       })
 
       return dateClass
@@ -111,14 +104,13 @@ export default {
       return ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
     },
     calendarPoint() {
-      return this.$store.getters["date/calendarPoint"]
+      return this.$store.getters["date/dates"][3]
     },
   },
   watch: {
     calendarPoint() {
-      this.selectedDate = this.$store.getters["date/calendarPoint"].getDate()
-      this.selectedMonth = this.$store.getters["date/calendarPoint"].getMonth()
-      this.selectedYear = this.$store.getters["date/calendarPoint"].getFullYear()
+      this.selectedMonth = this.$store.getters["date/dates"][3].getMonth()
+      this.selectedYear = this.$store.getters["date/dates"][3].getFullYear()
     },
   },
 }

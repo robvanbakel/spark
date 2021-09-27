@@ -27,7 +27,6 @@ auth.onAuthStateChanged(async (user) => {
     await store.dispatch("settings/getSettings")
     await store.dispatch("employees/getEmployees")
     await store.dispatch("planner/getSchedules")
-    await store.dispatch("date/setWeekId")
     await store.dispatch("date/setDates")
   }
 

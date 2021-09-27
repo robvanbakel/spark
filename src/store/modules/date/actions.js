@@ -1,48 +1,10 @@
 export default {
-  async setDates(context, weekId = context.getters["weekId"]) {
-    const dates = await context.dispatch("getDatesFromWeekId", weekId)
-
-    let dateIds = []
-    let datesShort = []
-    let dayNames = []
-
-    // Set dateIds and datesShort
-
-    dates.forEach((date, index) => {
-      // Set calendarPoint
-      index === 3 ? context.commit("calendarPoint", date) : null
-
-      // Get and format DateId
-      dateIds.push(
-        date.getFullYear() +
-          (date.getMonth() + 1).toString().padStart(2, "0") +
-          date
-            .getDate()
-            .toString()
-            .padStart(2, "0")
-      )
-
-      // Get and format dateShort
-      let dateShort = date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
-      datesShort.push(dateShort)
-
-      // Get and format dayName
-      let dayName = date.toLocaleDateString("en-US", { weekday: "long" })
-      dayNames.push(dayName)
-    })
-
-    context.commit("weekId", weekId)
-    context.commit("dateIds", dateIds)
-    context.commit("datesShort", datesShort)
-    context.commit("dayNames", dayNames)
-    context.commit("dates", dates)
-  },
-  async getDatesFromWeekId(context, weekId) {
-    const [year, week] = weekId.split("-")
-
-    let dates = []
+  async setDates(context, weekId) {
+    // If no weekId is specified, use current weekId
+    weekId = weekId || (await context.dispatch("getWeekId"))
 
     // Find first day of week
+    const [year, week] = weekId.split("-")
 
     let monday = new Date(year, 0, 1 + (week - 1) * 7)
 
@@ -52,48 +14,34 @@ export default {
       monday.setDate(monday.getDate() + 8 - monday.getDay())
     }
 
-    // Add function to iterate through days
+    // Create array of dates
 
-    Date.prototype.addDays = function(days) {
-      var date = new Date(this.valueOf())
-      date.setDate(date.getDate() + days)
-      return date
-    }
+    const dates = Array.from({ length: 7 }, (element, index) => {
+      const date = new Date(monday)
+      return new Date(date.setDate(date.getDate() + index))
+    })
 
-    // Fill date array
+    // Store in global state
 
-    for (let i = 0; i < 7; i++) {
-      dates.push(monday.addDays(i))
-    }
-
-    return dates
-  },
-  async getWeekId(context, date = new Date()) {
-    // Add function to Date object to get weekId
-
-    Date.prototype.getWeekId = function() {
-      var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
-      var dayNum = d.getUTCDay() || 7
-      d.setUTCDate(d.getUTCDate() + 4 - dayNum)
-      const year = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
-      const week = Math.ceil(((d - year) / 86400000 + 1) / 7)
-      return `${year.getFullYear()}-${week.toString().padStart(2, "0")}`
-    }
-
-    return date.getWeekId()
-  },
-  async setWeekId(context) {
-    const weekId = await context.dispatch("getWeekId")
     context.commit("weekId", weekId)
+    context.commit("dates", dates)
   },
-  async getWeekIdAndDay(context, providedDate) {
-    const [date, month, year] = providedDate.split("-")
+  async getWeekId(context, providedDate = new Date()) {
 
-    const dateObject = new Date(year, month - 1, date)
+    // Find fourth day of week (ISO-8601 definition)
+    const date = new Date(Date.UTC(providedDate.getFullYear(), providedDate.getMonth(), providedDate.getDate()))
+    date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7))
 
-    const weekId = await context.dispatch("getWeekId", dateObject)
-    const day = dateObject.getUTCDay()
+    // Get year from date
+    const year = new Date(Date.UTC(date.getUTCFullYear(), 0, 1))
 
-    return { weekId, day }
+    // Calculate week number from date
+    const week = Math.ceil(((date - year) / 86400000 + 1) / 7)
+
+    // Construct weekId
+
+    const weekId = `${year.getFullYear()}-${week.toString().padStart(2, "0")}`
+
+    return weekId
   },
 }

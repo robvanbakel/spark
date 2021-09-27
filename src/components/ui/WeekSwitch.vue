@@ -10,7 +10,7 @@
 export default {
   methods: {
     async shiftWeek(amount) {
-      const date = this.$store.getters["date/calendarPoint"]
+      const date = this.$store.getters["date/dates"][3]
       const newDate = new Date(date.setDate(date.getDate() + 7 * amount))
       const newWeekId = await this.$store.dispatch("date/getWeekId", newDate)
 

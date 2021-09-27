@@ -33,9 +33,9 @@
               <week-switch v-if="$store.getters['settings/hideSidebar']" />
             </transition>
           </div>
-          <div class="dayWrapper" v-for="offset in $store.getters['date/daysVisible']" :key="offset">
+          <div class="dayWrapper" v-for="offset in 7" :key="offset">
             <span class="dayName">{{ $store.getters["date/dayNames"][offset - 1] }}</span>
-            <span class="date">{{ $store.getters["date/datesShort"][offset - 1] }}</span>
+            <span class="date">{{ $store.getters['date/datesShort'][offset - 1] }}</span>
           </div>
         </div>
         <PlannerContent :roles="displayRoles" :search="searchInput" />

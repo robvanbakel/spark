@@ -225,7 +225,12 @@ export default {
       }
     },
     async saveEditShift() {
-      const { weekId, day } = await this.$store.dispatch("date/getWeekIdAndDay", this.shift.date)
+      const [date, month, year] = this.shift.date.split("-")
+
+      const dateObject = new Date(year, month - 1, date)
+
+      const weekId = await this.$store.dispatch("date/getWeekId", dateObject)
+      const day = dateObject.getUTCDay()
 
       const stringifyTime = (time) => time.replace(":", "")
 
@@ -261,7 +266,7 @@ export default {
   },
   async mounted() {
     const activeShiftId = this.$store.getters["planner/activeShiftId"]
-    
+
     this.newShift = true
     this.shift.break = "-"
 

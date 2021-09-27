@@ -43,9 +43,7 @@ const router = createRouter({
         admin: true,
       },
       async beforeEnter(to) {
-        const weekId = to.params.weekId || store.getters["date/weekId"] || (await store.dispatch("date/getWeekId"))
-        store.dispatch("date/setDates", weekId)
-        document.title = `Week ${store.getters["date/weekNumber"]} - Planner`
+        store.dispatch("date/setDates", to.params.weekId)
       },
     },
     {
@@ -53,7 +51,7 @@ const router = createRouter({
       component: Schedule,
       name: "Schedule",
       async beforeEnter(to) {
-        store.dispatch("date/setDates", to.params.weekId || store.getters["date/weekId"] || (await store.dispatch("date/getWeekId")))
+        store.dispatch("date/setDates", to.params.weekId)
       },
     },
   ],

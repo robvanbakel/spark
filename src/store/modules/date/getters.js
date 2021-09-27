@@ -2,25 +2,16 @@ export default {
   weekId(state) {
     return state.weekId
   },
-  weekNumber(state){
-    return parseInt(state.weekId.split("-")[1])
-  },
   dates(state) {
     return state.dates
   },
-  dateIds(state) {
-    return state.dateIds
+  weekNumber(state) {
+    return parseInt(state.weekId?.split("-")[1])
   },
   dayNames(state) {
-    return state.dayNames;
+    return state.dates.map((date) => date.toLocaleDateString("en-US", { weekday: "long" }))
   },
   datesShort(state) {
-    return state.datesShort;
-  },
-  daysVisible(state) {
-    return state.daysVisible;
-  },
-  calendarPoint(state) {
-    return state.calendarPoint;
+    return state.dates.map((date) => date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }))
   },
 }

@@ -7,12 +7,7 @@ export default {
   state() {
     return {
       weekId: null,
-      dateIds: [],
-      daysVisible: 7,
-      datesShort: [],
-      dayNames: [],
       dates: [],
-      calendarPoint: new Date()
     }
   },
   mutations,
