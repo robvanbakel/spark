@@ -22,7 +22,7 @@ Each employee will receive a unique link to automatically add their work schedul
 
 ## Demo
 
-To see the planner in action, visit the [public demo page](https://planner.robvanbakel.com) and click on the *Enter Demo* button below the login form. You'll be taken to the admin area, which is where employers will manage their staff and create schedules.
+To see the planner in action, visit the [public demo page](https://planner.robvanbakel.com) and click on the _Enter Demo_ button below the login form. You'll be taken to the admin area, which is where employers will manage their staff and create schedules.
 
 In order to login as an employee, use any of the demo employee email addresses available in the admin area. For all accounts, the password is the same as the email address.
 
@@ -36,9 +36,9 @@ In order to login as an employee, use any of the demo employee email addresses a
 | Search and filter employees                   | STAFF    | Done        |
 | Create, read, update and delete shifts        | PLANNER  | Done        |
 | Search and filter shifts                      | PLANNER  | Done        |
+| View schedules in Employee login              | EMPLOYEE | Done        |
 | Serve calendar subscription for each employee | EMPLOYEE | Done        |
 | Activate account as employee                  | AUTH     | In progress |
-| Build dashboard for employee login            | EMPLOYEE | In progress |
 
 ## Screenshots
 
