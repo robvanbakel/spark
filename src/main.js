@@ -28,7 +28,7 @@ auth.onAuthStateChanged(async (user) => {
     await store.dispatch("employees/getEmployees")
     await store.dispatch("planner/getSchedules")
     await store.dispatch("date/setWeekId")
-    await store.dispatch("date/setDates", store.getters['date/weekId'])
+    await store.dispatch("date/setDates")
   }
 
   if (!app) {

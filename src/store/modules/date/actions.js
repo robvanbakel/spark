@@ -1,5 +1,5 @@
 export default {
-  async setDates(context, weekId) {
+  async setDates(context, weekId = context.getters["weekId"]) {
     const dates = await context.dispatch("getDatesFromWeekId", weekId)
 
     let dateIds = []
@@ -83,7 +83,7 @@ export default {
     return date.getWeekId()
   },
   async setWeekId(context) {
-    const weekId = await context.dispatch('getWeekId')
+    const weekId = await context.dispatch("getWeekId")
     context.commit("weekId", weekId)
   },
   async getWeekIdAndDay(context, providedDate) {
