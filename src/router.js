@@ -8,6 +8,7 @@ import EmployeeList from "@/views/EmployeeList"
 import Planner from "@/views/Planner"
 import Schedule from "@/views/Schedule"
 import Auth from "@/views/Auth"
+import Settings from "@/views/Settings"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -52,6 +53,14 @@ const router = createRouter({
       name: "Schedule",
       async beforeEnter(to) {
         store.dispatch("date/setDates", to.params.weekId)
+      },
+    },
+    {
+      path: "/settings",
+      component: Settings,
+      name: "Settings",
+      meta: {
+        title: "Settings",
       },
     },
   ],
