@@ -10,6 +10,15 @@
     <div class="settings-group">
       <h2>Share with employees</h2>
       <div class="setting toggle">
+        <span class="label">Employee Notes</span>
+        <base-switch
+          toggle
+          id="employeeNotes"
+          :active="$store.getters['settings/shareWithEmployees'].employeeNotes.toString()"
+          @activeItem="setShareWithEmployees($event, 'employeeNotes')"
+        ></base-switch>
+      </div>
+      <div class="setting toggle">
         <span class="label">Shift Notes</span>
         <base-switch
           toggle
@@ -27,6 +36,7 @@ export default {
   data() {
     return {
       shareWithEmployees: {
+        employeeNotes: null,
         shiftNotes: null,
       }
     }
