@@ -405,27 +405,42 @@ button.baseButton.icon-only span.flipped {
 }
 
 .switch-wrapper {
+  position: relative;
   background-color: #e3e1e6;
-  display: flex;
-  color: #fff;
-  font-size: 14px;
+  border-radius: 6px;
   height: 40px;
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: 0.05em;
   width: -webkit-min-content;
   width: -moz-min-content;
   width: min-content;
-  letter-spacing: 0.05em;
-  position: relative;
-  border-radius: 6px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   cursor: pointer;
 }
-.switch-wrapper .switch-control {
+.switch-wrapper > div {
+  display: flex;
+  height: 100%;
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
+  cursor: pointer;
+}
+.switch-wrapper > div .switch-control {
   padding: 0 22px;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1;
 }
-.switch-wrapper .switch-control.fixed {
+.switch-wrapper > div .switch-control.toggle span {
+  pointer-events: none;
+  font-size: 18px;
+}
+.switch-wrapper > div .switch-control.fixed {
   padding: 0;
   width: 40px;
 }
