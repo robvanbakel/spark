@@ -10,6 +10,7 @@
         <li v-if="employee"><router-link :to="{ name: 'Schedule' }">Schedule</router-link></li>
         <li v-if="admin"><router-link :to="{ name: 'EmployeeList' }">Staff</router-link></li>
         <li v-if="admin"><router-link :to="{ name: 'Planner' }">Planner</router-link></li>
+        <li v-if="admin"><router-link :to="{ name: 'Settings' }">Settings</router-link></li>
       </ul>
     </nav>
     <div id="profile" @click="logout">

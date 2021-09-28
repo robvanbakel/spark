@@ -9,6 +9,7 @@ export default {
       suggestions: null,
       admin: null,
       roles: null,
+      shareWithEmployees: {},
       hideSidebar: false,
       sidebarAutoHidden: false,
     }

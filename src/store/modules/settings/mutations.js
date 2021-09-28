@@ -17,5 +17,8 @@ export default {
   sidebarAutoHidden(state, payload) {
     state.sidebarAutoHidden = payload
   },
+  shareWithEmployees(state, payload) {
+    state.shareWithEmployees = payload
+  },
 
 }

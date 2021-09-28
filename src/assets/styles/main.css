@@ -107,7 +107,7 @@ button.baseButton:disabled {
 button.baseButton:hover:not(:disabled) {
   background-color: #352c49;
 }
-button.baseButton:active {
+button.baseButton:active:not(:disabled) {
   background-color: #2a2339;
 }
 button.baseButton span {
@@ -1285,6 +1285,9 @@ section#singleEmployeeCalendar .header {
   justify-content: space-between;
   align-items: center;
 }
+section#singleEmployeeCalendar .header h1 {
+  color: #2f273c;
+}
 section#singleEmployeeCalendar .header .actions {
   display: flex;
 }
@@ -1373,4 +1376,44 @@ section#singleEmployeeCalendar .calendar .colCalendar .row .shift span.place {
 section#singleEmployeeCalendar .calendar .colCalendar .row .shift span.time {
   font-size: 12px;
   color: #413659;
+}
+
+section#settings {
+  padding: 40px;
+}
+section#settings .header {
+  margin-bottom: 3em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+section#settings .header h1 {
+  color: #2f273c;
+}
+section#settings .header .actions {
+  display: flex;
+}
+section#settings .header .actions > * {
+  margin-left: 12px;
+}
+section#settings .header .actions button.inverted.icon-only span {
+  font-size: 26px;
+}
+section#settings .settings-group h2 {
+  font-size: 18px;
+  color: #2f273c;
+  margin-bottom: 1.5em;
+  font-weight: 500;
+}
+section#settings .settings-group .setting {
+  margin-bottom: 12px;
+}
+section#settings .settings-group .setting.toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 210px;
+}
+section#settings .settings-group .setting.toggle span.label {
+  font-size: 14px;
 }

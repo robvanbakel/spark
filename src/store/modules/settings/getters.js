@@ -14,4 +14,7 @@ export default {
   sidebarAutoHidden(state) {
     return state.sidebarAutoHidden
   },
+  shareWithEmployees(state) {
+    return state.shareWithEmployees
+  },
 }
