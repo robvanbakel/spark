@@ -13,7 +13,7 @@
       <div class="calendar">
         <div class="colDays">
           <div class="row" v-for="(day, index) in 7" :key="index">
-            <span class="dayName"> {{ days[index] }}</span>
+            <span class="dayName"> {{ $store.getters['date/dayNames'][index] }}</span>
             <span class="date">{{ $store.getters["date/datesShort"][index] }}</span>
           </div>
         </div>
@@ -70,9 +70,6 @@ export default {
   computed: {
     webcalLink() {
       return `webcal://planner.robvanbakel.com/feed/${this.$store.getters["auth/user"].id}`
-    },
-    days() {
-      return ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     },
     schedule() {
       const schedules = this.$store.getters["planner/schedules"]
