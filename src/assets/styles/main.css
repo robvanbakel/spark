@@ -1399,11 +1399,18 @@ section#settings .header .actions > * {
 section#settings .header .actions button.inverted.icon-only span {
   font-size: 26px;
 }
+section#settings .settings-group {
+  color: #2f273c;
+}
 section#settings .settings-group h2 {
   font-size: 18px;
-  color: #2f273c;
-  margin-bottom: 1.5em;
+  margin-bottom: 1em;
   font-weight: 500;
+}
+section#settings .settings-group p.lead {
+  font-size: 15px;
+  max-width: 440px;
+  margin-bottom: 1.5em;
 }
 section#settings .settings-group .setting {
   margin-bottom: 12px;

@@ -1256,11 +1256,17 @@ section#settings {
     }
   }
   .settings-group {
+    color: color.$text-100;
     h2 {
       font-size: 18px;
-      color: color.$text-100;
-      margin-bottom: 1.5em;
+      margin-bottom: 1em;
       font-weight: 500;
+    }
+    p.lead {
+      font-size: 15px;
+      max-width: 440px;
+      margin-bottom: 1.5em;
+
     }
     .setting {
       margin-bottom: 12px;
