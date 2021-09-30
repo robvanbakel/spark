@@ -67,7 +67,7 @@
             <label>Break</label>
             <base-switch
               v-if="this.shift.break"
-              :items="$store.getters['planner/breaks']"
+              :items="$store.getters['settings/breaks']"
               :active="this.shift.break"
               @activeItem="setBreak"
               :fixed="true"

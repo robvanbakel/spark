@@ -3,34 +3,17 @@ export default {
     return state.schedules
   },
   nonEmptySchedules(state) {
-    let nonEmptySchedules = []
-
-    for (const weekId in state.schedules) {
-      if (Object.keys(state.schedules[weekId]).length !== 0) {
-        nonEmptySchedules.push(weekId)
-      }
-    }
-
-    return nonEmptySchedules
-  },
-  currentWeekSchedule(state, getters, rootState, rootGetters) {
-    const weekId = rootGetters["date/weekId"]
-    const schedule = state.schedules[weekId]
-
-    if (schedule && Object.keys(schedule).length !== 0) {
-      return schedule
-    }
+    return Object.keys(state.schedules).filter((weekId) => Object.keys(state.schedules[weekId]).length)
   },
   activeShiftId(state) {
     return state.activeShiftId
   },
-  breaks(state) {
-    return state.breaks
+  currentWeekSchedule(state, getters, rootState, rootGetters) {
+    const schedule = state.schedules[rootGetters["date/weekId"]]
+
+    if (schedule && Object.keys(schedule).length) {
+      return schedule
+    }
   },
-  suggestions(state) {
-    return state.suggestions
-  },
-  newShift(state) {
-    return state.newShift
-  },
+
 }

@@ -2,18 +2,29 @@ import firebase from "firebase/app"
 import { db } from "@/firebase"
 
 export default {
+  async getSchedules(context) {
+
+    let schedules = {}
+
+    if (context.rootGetters["auth/admin"]) {
+
+      // If user is admin, get all schedules from DB
+      const snapshot = await db.collection("schedules").get()
+      snapshot.forEach((doc) => {
+        schedules[doc.id] = doc.data()
+      })
+    } else {
+
+      // If user is not admin, get schedules associated with current user 
+      const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/getSchedules/${context.rootGetters['auth/user'].id}`)
+      schedules = await res.json()
+
+    }
+
+    context.commit("schedules", schedules)
+  },
   setActiveShiftId(context, payload) {
     context.commit("activeShiftId", payload)
-  },
-  async addNewShift(context, payload) {
-    // Update DB
-    const res = await db.collection("schedules").add(payload)
-
-    // Update locally
-    context.commit("updateShiftLocally", {
-      newShiftId: res.id,
-      shift: payload,
-    })
   },
   async saveEditShift(context, payload) {
     // Helper function to check if two ojbects have equal values
@@ -26,22 +37,23 @@ export default {
       return false
     }
 
-    // If shiftId changed, check if documents exist
+    // If shiftId changed, remove shift with old shiftId
     if (context.getters["activeShiftId"] !== "new" && shiftIdChanged(context.getters["activeShiftId"], payload.shiftId)) {
       context.dispatch("deleteShift")
     }
 
-    // If not present, instantiate empty schedule
+    // If new shiftId not present, instantiate empty schedule
     context.commit("createEmptySchedule", payload.shiftId)
 
     // Update locally
     context.commit("updateShiftLocally", payload)
 
-    // Update DB
+    // Prepare object to update DB
     const { weekId, employeeId, day } = payload.shiftId
     const schedule = context.getters["schedules"][weekId][employeeId]
     schedule[day] = payload.shiftInfo
-
+    
+    // Update DB
     db.collection("schedules")
       .doc(weekId)
       .set({ [employeeId]: [...schedule] }, { merge: true })
@@ -69,24 +81,6 @@ export default {
         .doc(weekId)
         .update({ [employeeId]: firebase.firestore.FieldValue.delete() })
     }
-  },
-  async getSchedules(context) {
-    let schedules = {}
-
-    if (context.rootGetters["auth/admin"]) {
-      const snapshot = await db.collection("schedules").get()
-      snapshot.forEach((doc) => {
-        schedules[doc.id] = doc.data()
-      })
-    } else {
-
-      const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/getSchedules/${context.rootGetters['auth/user'].id}`)
-
-      schedules = await res.json()
-
-    }
-
-    context.commit("schedules", schedules)
   },
   async copyWeek(context, payload) {
     // Get schedule

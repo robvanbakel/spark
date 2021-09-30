@@ -7,9 +7,7 @@ export default {
   state() {
     return {
       schedules: null,
-      newShift: null,
       activeShiftId: null,
-      breaks: ['-', '15', '30', '45', '60'],
     }
   },
   mutations,

@@ -17,4 +17,7 @@ export default {
   shareWithEmployees(state) {
     return state.shareWithEmployees
   },
+  breaks(state) {
+    return state.breaks
+  },
 }
