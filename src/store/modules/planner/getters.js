@@ -2,9 +2,6 @@ export default {
   schedules(state) {
     return state.schedules
   },
-  nonEmptySchedules(state) {
-    return Object.keys(state.schedules).filter((weekId) => Object.keys(state.schedules[weekId]).length)
-  },
   activeShiftId(state) {
     return state.activeShiftId
   },

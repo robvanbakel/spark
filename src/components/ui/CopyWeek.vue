@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     weeks() {
-      return this.$store.getters["planner/nonEmptySchedules"]
+      return Object.keys(this.$store.getters["planner/schedules"])
         .map((weekId) => {
           return {
             weekId,
