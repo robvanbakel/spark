@@ -26,4 +26,7 @@ export default {
   deleteScheduleLocally(state, { weekId, employeeId }) {
     delete state.schedules[weekId][employeeId]
   },
+  deleteWeekLocally(state, weekId ) {
+    delete state.schedules[weekId]
+  },
 }

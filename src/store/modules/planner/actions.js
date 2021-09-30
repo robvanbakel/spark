@@ -3,22 +3,18 @@ import { db } from "@/firebase"
 
 export default {
   async getSchedules(context) {
-
     let schedules = {}
 
     if (context.rootGetters["auth/admin"]) {
-
       // If user is admin, get all schedules from DB
       const snapshot = await db.collection("schedules").get()
       snapshot.forEach((doc) => {
         schedules[doc.id] = doc.data()
       })
     } else {
-
-      // If user is not admin, get schedules associated with current user 
-      const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/getSchedules/${context.rootGetters['auth/user'].id}`)
+      // If user is not admin, get schedules associated with current user
+      const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/getSchedules/${context.rootGetters["auth/user"].id}`)
       schedules = await res.json()
-
     }
 
     context.commit("schedules", schedules)
@@ -52,13 +48,14 @@ export default {
     const { weekId, employeeId, day } = payload.shiftId
     const schedule = context.getters["schedules"][weekId][employeeId]
     schedule[day] = payload.shiftInfo
-    
+
     // Update DB
     db.collection("schedules")
       .doc(weekId)
       .set({ [employeeId]: [...schedule] }, { merge: true })
   },
   deleteShift(context) {
+    // Update locally
     context.commit("updateShiftLocally", {
       shiftId: context.getters["activeShiftId"],
       shiftInfo: null,
@@ -70,16 +67,31 @@ export default {
     schedule[day] = null
 
     // Pass updated schdule to DB; delete schedule if schedule is empty
-    if (schedule.filter((i) => i !== null).length) {
+
+    if (schedule.filter((day) => day !== null).length) {
+      // If schedule is not empty, update schedule
       db.collection("schedules")
         .doc(weekId)
         .set({ [employeeId]: [...schedule] }, { merge: true })
     } else {
+      // If schedule is empty, delete schedule locally
       context.commit("deleteScheduleLocally", context.getters["activeShiftId"])
 
-      db.collection("schedules")
-        .doc(weekId)
-        .update({ [employeeId]: firebase.firestore.FieldValue.delete() })
+      // If week is empty, delete weekId
+      if (!Object.keys(context.getters["schedules"][weekId]).length) {
+        // Delete weekId locally
+        context.commit("deleteWeekLocally", weekId)
+
+        // Delete weekId on DB
+        db.collection("schedules")
+          .doc(weekId)
+          .delete()
+      } else {
+        // Delete schedule on DB
+        db.collection("schedules")
+          .doc(weekId)
+          .update({ [employeeId]: firebase.firestore.FieldValue.delete() })
+      }
     }
   },
   async copyWeek(context, payload) {
