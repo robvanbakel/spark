@@ -17,7 +17,7 @@ export default {
 
     // Reset data
     context.commit("planner/schedules", null, { root: true })
-    context.commit("employees/setEmployees", null, { root: true })
+    context.commit("employees/setUsers", null, { root: true })
 
     router.push({ name: "Auth" })
   },

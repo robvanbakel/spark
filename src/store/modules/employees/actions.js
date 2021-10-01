@@ -4,31 +4,31 @@ import { db } from "@/firebase"
 import router from "@/router"
 
 export default {
-  async getEmployees(context) {
+  async getUsers(context) {
     const uid = auth.currentUser.uid
 
     if (context.rootGetters["settings/admin"].includes(uid)) {
-      // Set global auth/admin variable to false
+      // Set global auth/admin variable to true
       context.commit("auth/admin", true, { root: true })
 
-      let employees = []
+      let users = []
 
       // If user is admin, load all users from database
       const snapshot = await db.collection("users").get()
       snapshot.forEach((doc) => {
-        const employee = {
+        const user = {
           id: doc.id,
           ...doc.data(),
         }
 
-        employees.push(employee)
+        users.push(user)
 
-        if (employee.id === uid) {
-          context.commit("auth/setUser", employee, { root: true })
+        if (user.id === uid) {
+          context.commit("auth/setUser", user, { root: true })
         }
       })
 
-      context.commit("setEmployees", employees)
+      context.commit("setUsers", users)
 
       router.push({ name: "EmployeeList" })
     } else {
@@ -41,61 +41,47 @@ export default {
         .doc(uid)
         .get()
 
-      context.commit(
-        "auth/setUser",
-        {
-          id: doc.id,
-          ...doc.data(),
-        },
-        { root: true }
-      )
+      const user = {
+        id: doc.id,
+        ...doc.data(),
+      }
+
+      context.commit("auth/setUser", user, { root: true })
 
       router.push({ name: "Schedule" })
     }
   },
   async updateUser(context, payload) {
+    // Update locally
+    context.commit("updateUser", payload)
+
+    // Update DB
     db.collection("users")
       .doc(payload.id)
       .update(payload.data)
-    context.commit("updateEmployee", payload)
   },
   async createNewUser(context, payload) {
+    // Create new user on Firebase
     const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/createNewUser`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: payload.employee.email,
+        email: payload.user.email,
       }),
     })
 
+    // Get uid for new user from response object
     const { uid } = await res.json()
 
     // Update locally
     context.commit("addUser", {
       id: uid || new Date().toISOString(), // Fallback fake uid for demo environment
-      data: payload.employee,
+      data: payload.user,
     })
 
     // Update DB
     db.collection("users")
       .doc(uid)
-      .set(payload.employee)
-  },
-  async changePassword(context, payload) {
-    const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBFLbBatL0vytdPvyJyd4cXx3G-Cnm2u7Y`, {
-      method: "POST",
-      body: JSON.stringify({
-        idToken: payload.idToken,
-        password: payload.password,
-        returnSecureToken: true,
-      }),
-    })
-
-    const data = await res.json()
-
-    context.commit("auth/setAuthData", data, { root: true })
-
-    localStorage.setItem("idToken", data.idToken)
-    localStorage.setItem("localId", data.localId)
+      .set(payload.user)
   },
 }

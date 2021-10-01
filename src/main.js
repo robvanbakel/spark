@@ -25,7 +25,7 @@ let app = null
 auth.onAuthStateChanged(async (user) => {
   if (user) {
     await store.dispatch("settings/getSettings")
-    await store.dispatch("employees/getEmployees")
+    await store.dispatch("employees/getUsers")
     await store.dispatch("planner/getSchedules")
     await store.dispatch("date/setDates")
   }

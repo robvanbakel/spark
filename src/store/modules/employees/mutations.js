@@ -1,19 +1,19 @@
 export default {
-  setEmployees(state, payload) {
-    state.employees = payload
+  setUsers(state, payload) {
+    state.users = payload
   },
   addUser(state, { id, data }) {
-    state.employees.push({ id, ...data })
+    state.users.push({ id, ...data })
   },
-  updateEmployee(state, payload) {
-    const employee = state.employees.find((emp) => emp.id === payload.id)
+  updateUser(state, payload) {
+    const user = state.users.find((emp) => emp.id === payload.id)
 
-    if (employee) {
+    if (user) {
       for (const key in payload.data) {
-        employee[key] = payload.data[key]
+        user[key] = payload.data[key]
       }
     } else {
-      state.employees[payload.id] = {
+      state.users[payload.id] = {
         ...payload.data,
       }
     }
