@@ -26,8 +26,8 @@
 export default {
   data() {
     return {
-      selectedMonth: this.$store.getters["date/dates"][3].getMonth(),
-      selectedYear: this.$store.getters["date/dates"][3].getFullYear(),
+      selectedMonth: new Date().getMonth(),
+      selectedYear: new Date().getFullYear(),
     }
   },
   methods: {
@@ -108,9 +108,16 @@ export default {
     },
   },
   watch: {
-    calendarPoint() {
-      this.selectedMonth = this.$store.getters["date/dates"][3].getMonth()
-      this.selectedYear = this.$store.getters["date/dates"][3].getFullYear()
+    async calendarPoint() {
+      const currentWeekId = await this.$store.dispatch("date/getWeekId")
+
+      if (this.$store.getters["date/weekId"] === currentWeekId) {
+        this.selectedMonth = new Date().getMonth()
+        this.selectedYear = new Date().getFullYear()
+      } else {
+        this.selectedMonth = this.$store.getters["date/dates"][3].getMonth()
+        this.selectedYear = this.$store.getters["date/dates"][3].getFullYear()
+      }
     },
   },
 }
