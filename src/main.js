@@ -18,7 +18,7 @@ import TheSidebar from "@/components/layout/TheSidebar"
 
 import { auth } from "@/firebase"
 
-// Get FireBase Auth status before app instantiation
+// Get Firebase Auth status before app instantiation
 
 let app = null
 

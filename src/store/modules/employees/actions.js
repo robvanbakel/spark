@@ -35,16 +35,8 @@ export default {
       // Set global auth/admin variable to false
       context.commit("auth/admin", false, { root: true })
 
-      // If user is not admin, load only own data from database
-      const doc = await db
-        .collection("users")
-        .doc(uid)
-        .get()
-
-      const user = {
-        id: doc.id,
-        ...doc.data(),
-      }
+      const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/getUser/${uid}`)
+      const user = await res.json()
 
       context.commit("auth/setUser", user, { root: true })
 
