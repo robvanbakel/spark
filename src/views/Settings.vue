@@ -9,7 +9,10 @@
 
     <div class="settings-group">
       <h2>Share with employees</h2>
-      <p class="lead">Control whether or not employees have access to notes made by the planners. If enabled, all notes associated with an employee will immediately become  visible to them.</p>
+      <p class="lead">
+        Control whether or not employees have access to notes made by the planners. If enabled, all notes associated with an employee will immediately become
+        visible to them.
+      </p>
       <div class="setting toggle">
         <span class="label">Employee Notes</span>
         <base-switch
@@ -28,6 +31,7 @@
           @activeItem="setShareWithEmployees($event, 'shiftNotes')"
         ></base-switch>
       </div>
+      <p class="note">Changes may take up to one hour to take effect.</p>
     </div>
   </section>
 </template>
@@ -39,7 +43,7 @@ export default {
       shareWithEmployees: {
         employeeNotes: null,
         shiftNotes: null,
-      }
+      },
     }
   },
   methods: {
@@ -47,8 +51,8 @@ export default {
       this.shareWithEmployees[id] = value
     },
     saveSettings() {
-     this.$store.dispatch('settings/setShareWithEmployees', this.shareWithEmployees)
-    }
+      this.$store.dispatch("settings/setShareWithEmployees", this.shareWithEmployees)
+    },
   },
 }
 </script>

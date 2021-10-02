@@ -1262,11 +1262,17 @@ section#settings {
       margin-bottom: 1em;
       font-weight: 500;
     }
+    p {
+      max-width: 440px;
+    }
     p.lead {
       font-size: 15px;
-      max-width: 440px;
-      margin-bottom: 1.5em;
-
+      margin-bottom: 32px;
+    }
+    p.note {
+      font-size: 13px;
+      font-style: italic;
+      margin-top: 32px;
     }
     .setting {
       margin-bottom: 12px;
