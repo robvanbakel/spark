@@ -1380,6 +1380,9 @@ section#singleEmployeeCalendar .calendar .colCalendar .row .shift span.time {
 
 section#settings {
   padding: 40px;
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
 }
 section#settings .header {
   margin-bottom: 3em;
@@ -1401,14 +1404,12 @@ section#settings .header .actions button.inverted.icon-only span {
 }
 section#settings .settings-group {
   color: #2f273c;
+  width: 440px;
 }
 section#settings .settings-group h2 {
   font-size: 18px;
   margin-bottom: 1em;
   font-weight: 500;
-}
-section#settings .settings-group p {
-  max-width: 440px;
 }
 section#settings .settings-group p.lead {
   font-size: 15px;

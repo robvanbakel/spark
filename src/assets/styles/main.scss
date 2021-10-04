@@ -1237,6 +1237,7 @@ section#singleEmployeeCalendar {
 
 section#settings {
   padding: 40px;
+  width: min-content;
   .header {
     margin-bottom: 3em;
     display: flex;
@@ -1257,13 +1258,11 @@ section#settings {
   }
   .settings-group {
     color: color.$text-100;
+    width: 440px;
     h2 {
       font-size: 18px;
       margin-bottom: 1em;
       font-weight: 500;
-    }
-    p {
-      max-width: 440px;
     }
     p.lead {
       font-size: 15px;

@@ -8,7 +8,7 @@
     </div>
 
     <div class="settings-group">
-      <h2>Share with employees</h2>
+      <h2>Share notes with employees</h2>
       <p class="lead">
         Control whether or not employees have access to notes made by the planners. If enabled, all notes associated with an employee will become visible to
         them.
