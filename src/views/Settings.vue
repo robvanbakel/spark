@@ -3,15 +3,15 @@
     <div class="header">
       <h1>Settings</h1>
       <div class="actions">
-        <base-button @click="saveSettings" icon="save">Save</base-button>
+        <base-button @click="saveSettings" :disabled="!unsavedChanges" icon="save">Save</base-button>
       </div>
     </div>
 
     <div class="settings-group">
       <h2>Share with employees</h2>
       <p class="lead">
-        Control whether or not employees have access to notes made by the planners. If enabled, all notes associated with an employee will immediately become
-        visible to them.
+        Control whether or not employees have access to notes made by the planners. If enabled, all notes associated with an employee will become visible to
+        them.
       </p>
       <div class="setting toggle">
         <span class="label">Employee Notes</span>
@@ -40,6 +40,7 @@
 export default {
   data() {
     return {
+      unsavedChanges: null,
       shareWithEmployees: {
         employeeNotes: null,
         shiftNotes: null,
@@ -48,11 +49,16 @@ export default {
   },
   methods: {
     setShareWithEmployees(value, id) {
+      this.unsavedChanges = true
       this.shareWithEmployees[id] = value
     },
     saveSettings() {
+      this.unsavedChanges = false
       this.$store.dispatch("settings/setShareWithEmployees", this.shareWithEmployees)
     },
+  },
+  mounted() {
+    this.unsavedChanges = false
   },
 }
 </script>
