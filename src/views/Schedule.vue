@@ -13,7 +13,7 @@
       <div class="calendar">
         <div class="colDays">
           <div class="row" v-for="(day, index) in 7" :key="index">
-            <span class="dayName"> {{ $store.getters['date/dayNames'][index] }}</span>
+            <span class="dayName"> {{ $store.getters["date/dayNames"][index] }}</span>
             <span class="date">{{ $store.getters["date/datesShort"][index] }}</span>
           </div>
         </div>
@@ -28,6 +28,7 @@
               class="shift"
               v-if="day"
               :style="{ width: `${timeRangeToPercentage(day.start, day.end).percentage}%`, left: `${timeRangeToPercentage(day.start, day.end).startPoint}%` }"
+              @click="setActiveShift(day, index)"
             >
               <span class="place"> {{ day.place }}</span>
               <span class="time">{{ formatTime(day.start) }} - {{ formatTime(day.end) }}</span>
@@ -36,6 +37,44 @@
         </div>
       </div>
     </section>
+
+    <base-modal v-if="activeShift">
+      <div class="schedule-shift-info">
+        <div class="header">
+          <h1>Shift Info</h1>
+          <span class="clear material-icons material-icons-round" @click="closeActiveShift">clear</span>
+        </div>
+
+        <div class="main">
+          <div class="shift-info-group">
+            <span class="label">Date</span>
+            <span class="value">{{ activeShift.date }}</span>
+          </div>
+          <div class="shift-info-group">
+            <span class="label">Place</span>
+            <span class="value">{{ activeShift.place }}</span>
+          </div>
+          <div class="shift-info-group">
+            <span class="label">Times</span>
+            <span class="value">{{ formatTime(activeShift.start) }} - {{ formatTime(activeShift.end) }}</span>
+          </div>
+          <div class="shift-info-group">
+            <span class="label">Duration</span>
+            <span class="value">{{ activeShift.duration }} hours ({{ activeShift.break }} minutes break)</span>
+          </div>
+
+          <div class="shift-info-group" v-if="activeShift.notes">
+            <span class="label">Notes</span>
+            <span class="value">{{ activeShift.notes }}</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <base-button class="inverted" @click="helpActiveShift">Help</base-button>
+          <base-button @click="closeActiveShift">Close</base-button>
+        </div>
+      </div>
+    </base-modal>
 
     <base-modal v-if="showQR" @clickout="closeQR">
       <div class="qr-popup">
@@ -65,6 +104,7 @@ export default {
       calendarHeight: null,
       rows: [],
       showQR: false,
+      activeShift: null,
     }
   },
   computed: {
@@ -186,6 +226,55 @@ export default {
       let startPoint = (startHourPercentage + startMinPercentage) / 24
 
       return { startPoint, percentage }
+    },
+    setActiveShift(shift, index) {
+      // Helper functions
+
+      const calculateShiftDuration = (shift) => {
+        let total = 0
+
+        const [startHours, startMinutes] = shift.start.match(/\d{2}/g)
+        const [endHours, endMinutes] = shift.end.match(/\d{2}/g)
+
+        const start = new Date(0)
+        start.setHours(startHours)
+        start.setMinutes(startMinutes)
+
+        const end = new Date(0)
+        end.setHours(endHours)
+        end.setMinutes(endMinutes)
+
+        const totalHours = Math.abs(start - end)
+
+        total += totalHours / 1000 / 60 / 60
+        total -= shift.break / 60
+
+        return total.toFixed(2)
+      }
+
+      // Construct object
+      this.activeShift = {
+        date: this.$store.getters["date/dates"][index].toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
+        dateShort: this.$store.getters["date/dates"][index].toLocaleDateString("en-US"),
+        place: shift.place,
+        start: shift.start,
+        end: shift.end,
+        duration: calculateShiftDuration(shift),
+        break: shift.break,
+      }
+
+      if (shift.notes) {
+        this.activeShift.notes = shift.notes
+      }
+    },
+    closeActiveShift() {
+      this.activeShift = null
+    },
+    helpActiveShift() {
+      const to = "planner@company.com"
+      const subject = `${this.activeShift.dateShort}: Question about my shift (${this.activeShift.place})`
+
+      window.open(`mailto:${to}?subject=${subject}`)
     },
   },
   mounted() {

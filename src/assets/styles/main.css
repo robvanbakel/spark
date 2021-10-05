@@ -115,6 +115,7 @@ button.baseButton span {
   margin-right: 8px;
 }
 button.baseButton.inverted {
+  color: #413659;
   border: 1px solid #413659;
   background: none;
 }
@@ -130,6 +131,59 @@ button.baseButton.icon-only span {
 }
 button.baseButton.icon-only span.flipped {
   transform: scaleX(-1);
+}
+
+.base-modal {
+  position: fixed;
+  z-index: 999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 40px 40px 32px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  width: 515px;
+}
+.base-modal .schedule-shift-info .header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 40px;
+}
+.base-modal .schedule-shift-info .header h1 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #2f273c;
+}
+.base-modal .schedule-shift-info .header span.material-icons {
+  margin-left: auto;
+  cursor: pointer;
+  color: #c8c6cc;
+}
+.base-modal .schedule-shift-info .main .shift-info-group {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 80px auto;
+  margin-bottom: 28px;
+}
+.base-modal .schedule-shift-info .main .shift-info-group span.label {
+  font-weight: 500;
+  color: #2f273c;
+  font-size: 14px;
+}
+.base-modal .schedule-shift-info .main .shift-info-group span.value {
+  color: #2f273c;
+  font-size: 14px;
+}
+.base-modal .schedule-shift-info .actions {
+  margin-top: 40px;
+  display: flex;
+  justify-content: flex-end;
+}
+.base-modal .schedule-shift-info .actions button {
+  margin-left: 12px;
 }
 
 .modal {
@@ -1365,6 +1419,10 @@ section#singleEmployeeCalendar .calendar .colCalendar .row .shift {
   justify-content: center;
   text-align: center;
   height: 100%;
+  cursor: pointer;
+}
+section#singleEmployeeCalendar .calendar .colCalendar .row .shift:hover {
+  background-color: #a4c5f7;
 }
 section#singleEmployeeCalendar .calendar .colCalendar .row .shift span.place {
   font-size: 12px;

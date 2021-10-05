@@ -125,6 +125,7 @@ button.baseButton {
     margin-right: 8px;
   }
   &.inverted {
+    color: color.$main;
     border: 1px solid color.$main;
     background: none;
     &:hover:not(:disabled) {
@@ -138,6 +139,55 @@ button.baseButton {
       color: color.$main;
       &.flipped {
         transform: scaleX(-1);
+      }
+    }
+  }
+}
+
+.base-modal {
+  @include mixin.baseModal;
+  overflow: hidden;
+  width: 515px;
+  .schedule-shift-info {
+    .header {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: 40px;
+      h1 {
+        font-size: 24px;
+        font-weight: 500;
+        color: color.$text-100;
+      }
+      span.material-icons {
+        margin-left: auto;
+        cursor: pointer;
+        color: color.$text-700;
+      }
+    }
+    .main {
+      .shift-info-group {
+        display: grid;
+        align-items: center;
+        grid-template-columns: 80px auto;
+        margin-bottom: 28px;
+        span.label {
+          font-weight: 500;
+          color: color.$text-100;
+          font-size: 14px;
+        }
+        span.value {
+          color: color.$text-100;
+          font-size: 14px;
+        }
+      }
+    }
+    .actions {
+      margin-top: 40px;
+      display: flex;
+      justify-content: flex-end;
+      button {
+        margin-left: 12px;
       }
     }
   }
@@ -1216,6 +1266,10 @@ section#singleEmployeeCalendar {
           justify-content: center;
           text-align: center;
           height: 100%;
+          cursor: pointer;
+          &:hover {
+            background-color: darken(color.$blue-light, 10%);
+          }
           span {
             &.place {
               font-size: 12px;
