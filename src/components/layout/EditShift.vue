@@ -66,9 +66,10 @@
           <div class="form-control">
             <label>Break</label>
             <base-switch
-              v-if="this.shift.break"
+              id="breaks"
+              v-if="shift.break"
               :items="$store.getters['settings/breaks']"
-              :active="this.shift.break"
+              :active="shift.break"
               @activeItem="setBreak"
               :fixed="true"
             ></base-switch>
