@@ -1,6 +1,7 @@
 // UTILITIES
 @use 'utilities/colors' as color;
 @use 'utilities/mixins' as mixin;
+@use 'utilities/ui' as ui;
 
 // GOOGLE FONTS
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Material+Icons");
@@ -96,53 +97,53 @@ button {
   transition: all 120ms ease;
 }
 
-button.baseButton {
-  height: 40px;
-  padding: 0 18px;
-  font-weight: 600;
-  font-size: 14px;
-  color: #fff;
-  background-color: color.$main;
-  border-radius: 999px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  outline: none;
-  white-space: nowrap;
-  &:disabled {
-    opacity: 0.5;
-    cursor: default;
-  }
-  &:hover:not(:disabled) {
-    background-color: darken(color.$main, 5%);
-  }
-  &:active:not(:disabled) {
-    background-color: darken(color.$main, 10%);
-  }
-  span {
-    font-size: 22px;
-    margin-right: 8px;
-  }
-  &.inverted {
-    color: color.$main;
-    border: 1px solid color.$main;
-    background: none;
-    &:hover:not(:disabled) {
-      background-color: color.$select;
-    }
-  }
-  &.icon-only {
-    width: 40px;
-    span {
-      margin-right: 0;
-      color: color.$main;
-      &.flipped {
-        transform: scaleX(-1);
-      }
-    }
-  }
-}
+// button.base-button {
+//   height: 40px;
+//   padding: 0 18px;
+//   font-weight: 600;
+//   font-size: 14px;
+//   color: #fff;
+//   background-color: color.$main;
+//   border-radius: 999px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   border: none;
+//   outline: none;
+//   white-space: nowrap;
+//   &:disabled {
+//     opacity: 0.5;
+//     cursor: default;
+//   }
+//   &:hover:not(:disabled) {
+//     background-color: darken(color.$main, 5%);
+//   }
+//   &:active:not(:disabled) {
+//     background-color: darken(color.$main, 10%);
+//   }
+//   span {
+//     font-size: 22px;
+//     margin-right: 8px;
+//   }
+//   &.inverted {
+//     color: color.$main;
+//     border: 1px solid color.$main;
+//     background: none;
+//     &:hover:not(:disabled) {
+//       background-color: color.$select;
+//     }
+//   }
+//   &.icon-only {
+//     width: 40px;
+//     span {
+//       margin-right: 0;
+//       color: color.$main;
+//       &.flipped {
+//         transform: scaleX(-1);
+//       }
+//     }
+//   }
+// }
 
 .base-modal {
   @include mixin.baseModal;
@@ -835,7 +836,7 @@ div.edit-modal {
           outline: none;
           font-size: 14px;
           color: color.$text-500;
-          margin-right: 32px;
+          margin-right: 12px;
           &:hover {
             color: darken(color.$text-500, 12%);
           }

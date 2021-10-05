@@ -17,10 +17,8 @@
       <span v-if="Object.values(filters).includes(true)" class="clear material-icons material-icons-round" @click="clearFilters">clear</span>
     </div>
     <div class="actions">
-      <base-button @click="addNewShift" icon="add">Add Shift</base-button>
-      <base-button class="inverted icon-only" @click="toggleSidebar">
-        <span class="clear material-icons material-icons-round" :class="{ flipped: !$store.getters['settings/hideSidebar'] }">menu_open</span>
-      </base-button>
+      <base-button icon="add" @click="addNewShift">Add Shift</base-button>
+      <base-button inverted iconOnly :flipped="!$store.getters['settings/hideSidebar']" icon="menu_open" @click="toggleSidebar"></base-button>
     </div>
   </div>
   <main v-if="$store.getters['planner/schedules']">
@@ -35,7 +33,7 @@
           </div>
           <div class="dayWrapper" v-for="offset in 7" :key="offset">
             <span class="dayName">{{ $store.getters["date/dayNames"][offset - 1] }}</span>
-            <span class="date">{{ $store.getters['date/datesShort'][offset - 1] }}</span>
+            <span class="date">{{ $store.getters["date/datesShort"][offset - 1] }}</span>
           </div>
         </div>
         <PlannerContent :roles="displayRoles" :search="searchInput" />

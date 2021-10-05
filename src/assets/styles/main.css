@@ -1,4 +1,121 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Material+Icons");
+.base-button {
+  height: 40px;
+  padding: 0 18px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+  background-color: #413659;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: none;
+  outline: none;
+  white-space: nowrap;
+}
+.base-button:hover:not(:disabled) {
+  background-color: #352c49;
+}
+.base-button:active:not(:disabled) {
+  background-color: #2a2339;
+}
+.base-button span {
+  font-size: 22px;
+  margin-right: 8px;
+}
+.base-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.base-button.secondary {
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #a7a3ac;
+  font-weight: 500;
+}
+.base-button.secondary:hover {
+  color: #88838f;
+}
+.base-button.secondary:active {
+  color: #6a6570;
+}
+.base-button.inverted {
+  color: #413659;
+  border: 1px solid #413659;
+  background: none;
+}
+.base-button.inverted:hover {
+  background-color: #f5f5f7;
+}
+.base-button.inverted:active {
+  background-color: #e7e7ec;
+}
+.base-button.icon-only {
+  width: 40px;
+}
+.base-button.icon-only span {
+  margin-right: 0;
+}
+.base-button.icon-only span.flipped {
+  transform: scaleX(-1);
+}
+.base-button.danger {
+  background-color: #fbece7;
+  color: #de6035;
+  font-size: 18px;
+}
+.base-button.danger:hover {
+  background-color: #f7dbd1;
+}
+.base-button.danger span {
+  font-size: 18px;
+}
+
+.base-modal-new {
+  position: fixed;
+  z-index: 999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 32px 40px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+  min-width: 515px;
+}
+.base-modal-new .header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.base-modal-new .header h1 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #2f273c;
+}
+.base-modal-new .header span.material-icons {
+  margin-left: auto;
+  cursor: pointer;
+  color: #c8c6cc;
+}
+.base-modal-new .header span.material-icons:hover {
+  color: #a7a3ac;
+}
+.base-modal-new .main {
+  margin: 40px 0;
+}
+.base-modal-new .actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.base-modal-new .actions button {
+  margin-left: 12px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -83,54 +200,6 @@ a {
 button {
   cursor: pointer;
   transition: all 120ms ease;
-}
-
-button.baseButton {
-  height: 40px;
-  padding: 0 18px;
-  font-weight: 600;
-  font-size: 14px;
-  color: #fff;
-  background-color: #413659;
-  border-radius: 999px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  outline: none;
-  white-space: nowrap;
-}
-button.baseButton:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-button.baseButton:hover:not(:disabled) {
-  background-color: #352c49;
-}
-button.baseButton:active:not(:disabled) {
-  background-color: #2a2339;
-}
-button.baseButton span {
-  font-size: 22px;
-  margin-right: 8px;
-}
-button.baseButton.inverted {
-  color: #413659;
-  border: 1px solid #413659;
-  background: none;
-}
-button.baseButton.inverted:hover:not(:disabled) {
-  background-color: #f5f5f7;
-}
-button.baseButton.icon-only {
-  width: 40px;
-}
-button.baseButton.icon-only span {
-  margin-right: 0;
-  color: #413659;
-}
-button.baseButton.icon-only span.flipped {
-  transform: scaleX(-1);
 }
 
 .base-modal {
@@ -994,7 +1063,7 @@ div.edit-modal .modal .main .form-actions button.secondary {
   outline: none;
   font-size: 14px;
   color: #a7a3ac;
-  margin-right: 32px;
+  margin-right: 12px;
 }
 div.edit-modal .modal .main .form-actions button.secondary:hover {
   color: #88838f;

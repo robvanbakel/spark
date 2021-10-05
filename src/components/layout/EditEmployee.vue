@@ -52,11 +52,9 @@
         <base-confirm message="Deleting an employee cannot be undone." choiceTrue="Delete Employee" v-if="showConfirmDelete" @choice="deleteEmployee" />
 
         <div class="form-actions">
-          <button v-if="!this.new" class="delete" @click="showConfirmDelete = true">
-            <span class="material-icons material-icons-round">delete</span>
-          </button>
-          <button class="secondary" @click="closeEditEmployee">Cancel</button>
-          <base-button @click="saveEditEmployee">Save</base-button>
+            <base-button v-if="!this.new" color="danger" iconOnly icon="delete" @click="showConfirmDelete = true"></base-button>
+            <base-button secondary @click="closeEditEmployee">Cancel</base-button>
+            <base-button @click="saveEditEmployee">Save</base-button>
         </div>
       </div>
     </div>

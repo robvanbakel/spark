@@ -1,0 +1,118 @@
+@use 'colors' as color;
+
+.base-button {
+  height: 40px;
+  padding: 0 18px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+  background-color: color.$main;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: none;
+  outline: none;
+  white-space: nowrap;
+  &:hover:not(:disabled) {
+    background-color: darken(color.$main, 5%);
+  }
+  &:active:not(:disabled) {
+    background-color: darken(color.$main, 10%);
+  }
+  span {
+    font-size: 22px;
+    margin-right: 8px;
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  &.secondary {
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: color.$text-500;
+    font-weight: 500;
+    &:hover {
+      color: darken(color.$text-500, 12%);
+    }
+    &:active {
+      color: darken(color.$text-500, 24%);
+    }
+  }
+  &.inverted {
+    color: color.$main;
+    border: 1px solid color.$main;
+    background: none;
+    &:hover {
+      background-color: color.$select;
+    }
+    &:active {
+      background-color: darken(color.$select, 5%);
+    }
+  }
+  &.icon-only {
+    width: 40px;
+    span {
+      margin-right: 0;
+      &.flipped {
+        transform: scaleX(-1);
+      }
+    }
+  }
+  &.danger {
+    background-color: color.$danger-light;
+    color: color.$danger;
+    font-size: 18px;
+    &:hover {
+      background-color: darken(color.$danger-light, 5%);
+    }
+    span {
+      font-size: 18px;
+    }
+  }
+}
+
+.base-modal-new {
+  position: fixed;
+  z-index: 999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 32px 40px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+  min-width: 515px;
+  .header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    h1 {
+      font-size: 24px;
+      font-weight: 500;
+      color: color.$text-100;
+    }
+    span.material-icons {
+      margin-left: auto;
+      cursor: pointer;
+      color: color.$text-700;
+      &:hover {
+        color: color.$text-500;
+      }
+    }
+  }
+  .main {
+    margin: 40px 0;
+  }
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    button {
+      margin-left: 12px;
+    }
+  }
+}
