@@ -1424,6 +1424,9 @@ section#singleEmployeeCalendar .calendar .colCalendar .row .shift {
 section#singleEmployeeCalendar .calendar .colCalendar .row .shift:hover {
   background-color: #a4c5f7;
 }
+section#singleEmployeeCalendar .calendar .colCalendar .row .shift:hover span.notes {
+  opacity: 1;
+}
 section#singleEmployeeCalendar .calendar .colCalendar .row .shift span.place {
   font-size: 12px;
   font-weight: 700;
@@ -1434,6 +1437,14 @@ section#singleEmployeeCalendar .calendar .colCalendar .row .shift span.place {
 section#singleEmployeeCalendar .calendar .colCalendar .row .shift span.time {
   font-size: 12px;
   color: #413659;
+}
+section#singleEmployeeCalendar .calendar .colCalendar .row .shift span.notes {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  font-size: 16px;
+  color: #508df0;
+  opacity: 0.65;
 }
 
 section#settings {

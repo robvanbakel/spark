@@ -1269,6 +1269,9 @@ section#singleEmployeeCalendar {
           cursor: pointer;
           &:hover {
             background-color: darken(color.$blue-light, 10%);
+            span.notes {
+              opacity: 1
+            }
           }
           span {
             &.place {
@@ -1281,6 +1284,14 @@ section#singleEmployeeCalendar {
             &.time {
               font-size: 12px;
               color: color.$main;
+            }
+            &.notes {
+              position: absolute;
+              right: 12px;
+              top: 12px;
+              font-size: 16px;
+              color: color.$blue;
+              opacity: 0.65;
             }
           }
         }

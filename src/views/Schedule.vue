@@ -32,6 +32,7 @@
             >
               <span class="place"> {{ day.place }}</span>
               <span class="time">{{ formatTime(day.start) }} - {{ formatTime(day.end) }}</span>
+              <span class="notes material-icons material-icons-round" v-if="day.notes">description</span>
             </div>
           </div>
         </div>
@@ -55,7 +56,7 @@
             <span class="value">{{ activeShift.place }}</span>
           </div>
           <div class="shift-info-group">
-            <span class="label">Times</span>
+            <span class="label">Time</span>
             <span class="value">{{ formatTime(activeShift.start) }} - {{ formatTime(activeShift.end) }}</span>
           </div>
           <div class="shift-info-group">
