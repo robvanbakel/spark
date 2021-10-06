@@ -60,13 +60,16 @@ export default {
   sidebarAutoHidden(context, payload) {
     context.commit("sidebarAutoHidden", payload)
   },
-  setShareWithEmployees(context, payload) {
+  async setShareWithEmployees(context, payload) {
+    // Update locally
+    context.commit("shareWithEmployees", payload)
+
     // Update DB
-    db.collection("settings")
+    await db.collection("settings")
       .doc("shareWithEmployees")
       .update(payload)
 
-    // Update locally
-    context.commit("shareWithEmployees", payload)
+    // Send call to server to update stored settings
+    fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/updateSettings`)
   },
 }
