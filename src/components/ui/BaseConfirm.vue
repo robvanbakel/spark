@@ -1,15 +1,13 @@
 <template>
-  <base-overlay dark transparent></base-overlay>
-  <div class="modal confirm">
-    <div class="header">
-      <h1>{{ title }}</h1>
-    </div>
-    <div class="main">{{ message }}</div>
-    <div class="form-actions">
-      <button class="secondary" @click="confirm(false)">{{choiceFalse}}</button>
-      <base-button @click="confirm(true)">{{choiceTrue}}</base-button>
-    </div>
-  </div>
+  <base-modal tight centered :title="title">
+    <template v-slot:main>
+      {{ message }}
+    </template>
+    <template v-slot:actions>
+      <base-button secondary @click="confirm(false)">{{ choiceFalse }}</base-button>
+      <base-button @click="confirm(true)">{{ choiceTrue }}</base-button>
+    </template>
+  </base-modal>
 </template>
 
 <script>
@@ -30,7 +28,7 @@ export default {
     },
     choiceTrue: {
       type: String,
-      default: "Ok",
+      default: "I'm sure",
     },
   },
   methods: {

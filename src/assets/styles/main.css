@@ -38,9 +38,11 @@
   font-weight: 500;
 }
 .base-button.secondary:hover {
+  background: inherit;
   color: #88838f;
 }
 .base-button.secondary:active {
+  background: inherit;
   color: #6a6570;
 }
 .base-button.inverted {
@@ -75,9 +77,8 @@
   font-size: 18px;
 }
 
-.base-modal-new {
+.base-modal {
   position: fixed;
-  z-index: 999;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -87,33 +88,54 @@
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
   min-width: 515px;
 }
-.base-modal-new .header {
+.base-modal.tight {
+  min-width: 0;
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
+}
+.base-modal.tight .header {
+  margin-bottom: 24px;
+}
+.base-modal.tight .actions {
+  margin-top: 32px;
+}
+.base-modal.centered {
+  text-align: center;
+  white-space: nowrap;
+}
+.base-modal.centered > div {
+  justify-content: center;
+}
+.base-modal .header {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  margin-bottom: 40px;
 }
-.base-modal-new .header h1 {
+.base-modal .header h1 {
   font-size: 24px;
   font-weight: 500;
   color: #2f273c;
 }
-.base-modal-new .header span.material-icons {
+.base-modal .header span.material-icons {
   margin-left: auto;
   cursor: pointer;
   color: #c8c6cc;
 }
-.base-modal-new .header span.material-icons:hover {
+.base-modal .header span.material-icons:hover {
   color: #a7a3ac;
 }
-.base-modal-new .main {
-  margin: 40px 0;
-}
-.base-modal-new .actions {
+.base-modal .actions {
+  margin-top: 40px;
   display: flex;
   justify-content: flex-end;
 }
-.base-modal-new .actions button {
+.base-modal .actions button:not(:first-child) {
   margin-left: 12px;
+}
+.base-modal .actions button.left {
+  margin-right: auto;
 }
 
 * {
@@ -143,7 +165,6 @@ body {
   bottom: 0;
   left: 0;
   opacity: 1;
-  z-index: 9;
   background-color: #fff;
 }
 .overlay.dark {
@@ -200,105 +221,6 @@ a {
 button {
   cursor: pointer;
   transition: all 120ms ease;
-}
-
-.base-modal {
-  position: fixed;
-  z-index: 999;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 40px 40px 32px;
-  background-color: #fff;
-  border-radius: 20px;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
-  overflow: hidden;
-  width: 515px;
-}
-.base-modal .schedule-shift-info .header {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 40px;
-}
-.base-modal .schedule-shift-info .header h1 {
-  font-size: 24px;
-  font-weight: 500;
-  color: #2f273c;
-}
-.base-modal .schedule-shift-info .header span.material-icons {
-  margin-left: auto;
-  cursor: pointer;
-  color: #c8c6cc;
-}
-.base-modal .schedule-shift-info .main .shift-info-group {
-  display: grid;
-  align-items: center;
-  grid-template-columns: 80px auto;
-  margin-bottom: 28px;
-}
-.base-modal .schedule-shift-info .main .shift-info-group span.label {
-  font-weight: 500;
-  color: #2f273c;
-  font-size: 14px;
-}
-.base-modal .schedule-shift-info .main .shift-info-group span.value {
-  color: #2f273c;
-  font-size: 14px;
-}
-.base-modal .schedule-shift-info .actions {
-  margin-top: 40px;
-  display: flex;
-  justify-content: flex-end;
-}
-.base-modal .schedule-shift-info .actions button {
-  margin-left: 12px;
-}
-
-.modal {
-  position: fixed;
-  z-index: 999;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 40px 40px 32px;
-  background-color: #fff;
-  border-radius: 20px;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
-}
-.modal.confirm {
-  width: -webkit-min-content !important;
-  width: -moz-min-content !important;
-  width: min-content !important;
-  text-align: center;
-  padding: 32px 40px 24px !important;
-  white-space: nowrap;
-}
-.modal.confirm .header {
-  justify-content: center !important;
-  margin-bottom: 0 !important;
-}
-.modal.confirm .main {
-  margin: 24px 0 30px;
-}
-.modal.confirm .form-actions {
-  margin-top: 0 !important;
-  display: flex;
-  justify-content: center;
-}
-.modal.confirm .form-actions button.secondary {
-  background: none;
-  border: none;
-  outline: none;
-  font-size: 14px;
-  color: #a7a3ac;
-  margin-right: 32px;
-}
-.modal.confirm .form-actions button.secondary:hover {
-  color: #88838f;
-}
-.modal.confirm .form-actions button.secondary:active {
-  color: #6a6570;
 }
 
 .badge.red.inactive {
@@ -884,58 +806,29 @@ section#employeelist .row:hover {
   background-color: #f5f5f7;
 }
 
-div.edit-modal .modal {
-  position: fixed;
-  z-index: 999;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 40px 40px 32px;
-  background-color: #fff;
-  border-radius: 20px;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
-  overflow: hidden;
-  width: 515px;
-}
-div.edit-modal .modal .header {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 40px;
-}
-div.edit-modal .modal .header h1 {
-  font-size: 24px;
-  font-weight: 500;
-  color: #2f273c;
-}
-div.edit-modal .modal .header .badge {
+.base-modal.edit-employee .header .badge {
   margin-left: 20px;
 }
-div.edit-modal .modal .header span.material-icons {
-  margin-left: auto;
-  cursor: pointer;
-  color: #c8c6cc;
-}
-div.edit-modal .modal .main .form-control {
+.base-modal.edit-employee .main .form-control {
   display: grid;
   grid-template-columns: 92px auto;
   align-items: center;
   margin-bottom: 12px;
 }
-div.edit-modal .modal .main .form-control.note {
+.base-modal.edit-employee .main .form-control.note {
   margin-bottom: 0;
 }
-div.edit-modal .modal .main .form-control label {
+.base-modal.edit-employee .main .form-control label {
   font-weight: 500;
   color: #2f273c;
   font-size: 14px;
 }
-div.edit-modal .modal .main .form-control label[for=note], div.edit-modal .modal .main .form-control label[for=place] {
+.base-modal.edit-employee .main .form-control label[for=note], .base-modal.edit-employee .main .form-control label[for=place] {
   align-self: flex-start;
   margin-top: 12px;
 }
-div.edit-modal .modal .main .form-control input,
-div.edit-modal .modal .main .form-control textarea {
+.base-modal.edit-employee .main .form-control input,
+.base-modal.edit-employee .main .form-control textarea {
   width: 100%;
   border-radius: 6px;
   color: #635d6d;
@@ -944,27 +837,27 @@ div.edit-modal .modal .main .form-control textarea {
   padding: 12px 16px;
   outline: none;
 }
-div.edit-modal .modal .main .form-control input.error,
-div.edit-modal .modal .main .form-control textarea.error {
+.base-modal.edit-employee .main .form-control input.error,
+.base-modal.edit-employee .main .form-control textarea.error {
   border-color: #de6035;
   background-color: #fbece7;
 }
-div.edit-modal .modal .main .form-control input {
+.base-modal.edit-employee .main .form-control input {
   height: 40px;
 }
-div.edit-modal .modal .main .form-control textarea {
+.base-modal.edit-employee .main .form-control textarea {
   font-family: inherit;
   height: 140px;
   resize: none;
   line-height: 1.4;
 }
-div.edit-modal .modal .main .form-control .suggestions {
+.base-modal.edit-employee .main .form-control .suggestions {
   display: flex;
   flex-wrap: wrap;
   margin-top: 8px;
   margin-bottom: 14px;
 }
-div.edit-modal .modal .main .form-control .suggestions > span {
+.base-modal.edit-employee .main .form-control .suggestions > span {
   background-color: #e3e1e6;
   border-radius: 3px;
   font-weight: 500;
@@ -979,69 +872,69 @@ div.edit-modal .modal .main .form-control .suggestions > span {
           user-select: none;
   cursor: pointer;
 }
-div.edit-modal .modal .main .form-control .suggestions > span:hover {
+.base-modal.edit-employee .main .form-control .suggestions > span:hover {
   background-color: #d1ced6;
 }
-div.edit-modal .modal .main .form-control .suggestions > span.add {
+.base-modal.edit-employee .main .form-control .suggestions > span.add {
   background-color: #edecef;
   position: relative;
   padding-left: 22px;
 }
-div.edit-modal .modal .main .form-control .suggestions > span.add span.material-icons {
+.base-modal.edit-employee .main .form-control .suggestions > span.add span.material-icons {
   position: absolute;
   left: 5px;
   top: 3px;
   font-size: 15px;
   font-weight: 700;
 }
-div.edit-modal .modal .main .form-control .suggestions > span.add:hover {
+.base-modal.edit-employee .main .form-control .suggestions > span.add:hover {
   background-color: #e3e1e6;
 }
-div.edit-modal .modal .main .form-control-contract {
+.base-modal.edit-employee .main .form-control-contract {
   display: flex;
   justify-content: space-between;
 }
-div.edit-modal .modal .main .form-control-contract input {
+.base-modal.edit-employee .main .form-control-contract input {
   width: 67px;
   padding: 0;
   text-align: center;
 }
-div.edit-modal .modal .main .form-control-contract span.input-label {
+.base-modal.edit-employee .main .form-control-contract span.input-label {
   margin-left: 12px;
   font-size: 14px;
   color: #635d6d;
 }
-div.edit-modal .modal .main .form-control-date {
+.base-modal.edit-employee .main .form-control-date {
   display: flex;
   justify-content: space-between;
 }
-div.edit-modal .modal .main .form-control-date input#date {
+.base-modal.edit-employee .main .form-control-date input#date {
   width: 103px;
   text-align: center;
   padding: 0;
 }
-div.edit-modal .modal .main .form-control-date .form-control-time span.input-label-main {
+.base-modal.edit-employee .main .form-control-date .form-control-time span.input-label-main {
   font-weight: 500;
   color: #2f273c;
   font-size: 14px;
   margin-right: 14px;
 }
-div.edit-modal .modal .main .form-control-date .form-control-time input.time {
+.base-modal.edit-employee .main .form-control-date .form-control-time input.time {
   width: 67px;
   text-align: center;
   padding: 0;
 }
-div.edit-modal .modal .main .form-control-date .form-control-time span.input-label {
+.base-modal.edit-employee .main .form-control-date .form-control-time span.input-label {
   margin: 0 12px;
   font-size: 14px;
   color: #635d6d;
 }
-div.edit-modal .modal .main .form-actions {
+.base-modal.edit-employee .main .form-actions {
   margin-top: 32px;
   display: flex;
   justify-items: flex-start;
 }
-div.edit-modal .modal .main .form-actions button.delete {
+.base-modal.edit-employee .main .form-actions button.delete {
   width: 40px;
   height: 40px;
   border: none;
@@ -1050,13 +943,13 @@ div.edit-modal .modal .main .form-actions button.delete {
   background-color: #fbece7;
   color: #de6035;
 }
-div.edit-modal .modal .main .form-actions button.delete:hover {
+.base-modal.edit-employee .main .form-actions button.delete:hover {
   background-color: #f7dbd1;
 }
-div.edit-modal .modal .main .form-actions button.delete span {
+.base-modal.edit-employee .main .form-actions button.delete span {
   font-size: 18px;
 }
-div.edit-modal .modal .main .form-actions button.secondary {
+.base-modal.edit-employee .main .form-actions button.secondary {
   margin-left: auto;
   background: none;
   border: none;
@@ -1065,10 +958,10 @@ div.edit-modal .modal .main .form-actions button.secondary {
   color: #a7a3ac;
   margin-right: 12px;
 }
-div.edit-modal .modal .main .form-actions button.secondary:hover {
+.base-modal.edit-employee .main .form-actions button.secondary:hover {
   color: #88838f;
 }
-div.edit-modal .modal .main .form-actions button.secondary:active {
+.base-modal.edit-employee .main .form-actions button.secondary:active {
   color: #6a6570;
 }
 
@@ -1231,6 +1124,165 @@ section#planner .row .day .shift-info span.time {
   color: #413659;
 }
 
+.base-modal.edit-shift {
+  width: 515px;
+}
+.base-modal.edit-shift .main .form-control {
+  display: grid;
+  grid-template-columns: 92px auto;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.base-modal.edit-shift .main .form-control.note {
+  margin-bottom: 0;
+}
+.base-modal.edit-shift .main .form-control label {
+  font-weight: 500;
+  color: #2f273c;
+  font-size: 14px;
+}
+.base-modal.edit-shift .main .form-control label[for=note], .base-modal.edit-shift .main .form-control label[for=place] {
+  align-self: flex-start;
+  margin-top: 12px;
+}
+.base-modal.edit-shift .main .form-control input,
+.base-modal.edit-shift .main .form-control textarea {
+  width: 100%;
+  border-radius: 6px;
+  color: #635d6d;
+  border: 1px solid #deddde;
+  font-size: 14px;
+  padding: 12px 16px;
+  outline: none;
+}
+.base-modal.edit-shift .main .form-control input.error,
+.base-modal.edit-shift .main .form-control textarea.error {
+  border-color: #de6035;
+  background-color: #fbece7;
+}
+.base-modal.edit-shift .main .form-control input {
+  height: 40px;
+}
+.base-modal.edit-shift .main .form-control textarea {
+  font-family: inherit;
+  height: 140px;
+  resize: none;
+  line-height: 1.4;
+}
+.base-modal.edit-shift .main .form-control .suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  margin-bottom: 14px;
+}
+.base-modal.edit-shift .main .form-control .suggestions > span {
+  background-color: #e3e1e6;
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 13px;
+  color: #fff;
+  margin: 0 5px 5px 0;
+  padding: 3px 5px;
+  max-width: 100%;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer;
+}
+.base-modal.edit-shift .main .form-control .suggestions > span:hover {
+  background-color: #d1ced6;
+}
+.base-modal.edit-shift .main .form-control .suggestions > span.add {
+  background-color: #edecef;
+  position: relative;
+  padding-left: 22px;
+}
+.base-modal.edit-shift .main .form-control .suggestions > span.add span.material-icons {
+  position: absolute;
+  left: 5px;
+  top: 3px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.base-modal.edit-shift .main .form-control .suggestions > span.add:hover {
+  background-color: #e3e1e6;
+}
+.base-modal.edit-shift .main .form-control-contract {
+  display: flex;
+  justify-content: space-between;
+}
+.base-modal.edit-shift .main .form-control-contract input {
+  width: 67px;
+  padding: 0;
+  text-align: center;
+}
+.base-modal.edit-shift .main .form-control-contract span.input-label {
+  margin-left: 12px;
+  font-size: 14px;
+  color: #635d6d;
+}
+.base-modal.edit-shift .main .form-control-date {
+  display: flex;
+  justify-content: space-between;
+}
+.base-modal.edit-shift .main .form-control-date input#date {
+  width: 103px;
+  text-align: center;
+  padding: 0;
+}
+.base-modal.edit-shift .main .form-control-date .form-control-time span.input-label-main {
+  font-weight: 500;
+  color: #2f273c;
+  font-size: 14px;
+  margin-right: 14px;
+}
+.base-modal.edit-shift .main .form-control-date .form-control-time input.time {
+  width: 67px;
+  text-align: center;
+  padding: 0;
+}
+.base-modal.edit-shift .main .form-control-date .form-control-time span.input-label {
+  margin: 0 12px;
+  font-size: 14px;
+  color: #635d6d;
+}
+.base-modal.edit-shift .main .form-actions {
+  margin-top: 32px;
+  display: flex;
+  justify-items: flex-start;
+}
+.base-modal.edit-shift .main .form-actions button.delete {
+  width: 40px;
+  height: 40px;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  background-color: #fbece7;
+  color: #de6035;
+}
+.base-modal.edit-shift .main .form-actions button.delete:hover {
+  background-color: #f7dbd1;
+}
+.base-modal.edit-shift .main .form-actions button.delete span {
+  font-size: 18px;
+}
+.base-modal.edit-shift .main .form-actions button.secondary {
+  margin-left: auto;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #a7a3ac;
+  margin-right: 12px;
+}
+.base-modal.edit-shift .main .form-actions button.secondary:hover {
+  color: #88838f;
+}
+.base-modal.edit-shift .main .form-actions button.secondary:active {
+  color: #6a6570;
+}
+
 .empty-week {
   display: flex;
   flex-direction: column;
@@ -1345,7 +1397,8 @@ section#planner .row .day .shift-info span.time {
   line-height: 2.5;
 }
 .plannerCalendar .dates p.prev-month, .plannerCalendar .dates p.next-month {
-  color: #e3e1e6;
+  color: #413659;
+  opacity: 0.15;
   cursor: default;
 }
 .plannerCalendar .dates p.current-date {
@@ -1514,6 +1567,37 @@ section#singleEmployeeCalendar .calendar .colCalendar .row .shift span.notes {
   font-size: 16px;
   color: #508df0;
   opacity: 0.65;
+}
+
+.base-modal.schedule-shift-info .shift-info-group {
+  display: grid;
+  grid-template-columns: 80px auto;
+  margin-bottom: 28px;
+  font-size: 14px;
+  color: #2f273c;
+}
+.base-modal.schedule-shift-info .shift-info-group span.label {
+  font-weight: 500;
+}
+
+.base-modal.schedule-qr {
+  min-width: 0;
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.base-modal.schedule-qr p {
+  margin-bottom: 18px;
+}
+.base-modal.schedule-qr img {
+  width: 240px;
+}
+.base-modal.schedule-qr .actions {
+  margin-top: 18px;
 }
 
 section#settings {

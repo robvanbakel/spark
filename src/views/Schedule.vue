@@ -39,50 +39,43 @@
       </div>
     </section>
 
-    <base-modal v-if="activeShift">
-      <div class="schedule-shift-info">
-        <div class="header">
-          <h1>Shift Info</h1>
-          <span class="clear material-icons material-icons-round" @click="closeActiveShift">clear</span>
+    <base-modal class="schedule-shift-info" v-if="activeShift" title="Shift info" globalClose clickout @close="closeActiveShift">
+      <template v-slot:main>
+        <div class="shift-info-group">
+          <span class="label">Date</span>
+          <span class="value">{{ activeShift.date }}</span>
         </div>
-
-        <div class="main">
-          <div class="shift-info-group">
-            <span class="label">Date</span>
-            <span class="value">{{ activeShift.date }}</span>
-          </div>
-          <div class="shift-info-group">
-            <span class="label">Place</span>
-            <span class="value">{{ activeShift.place }}</span>
-          </div>
-          <div class="shift-info-group">
-            <span class="label">Time</span>
-            <span class="value">{{ formatTime(activeShift.start) }} - {{ formatTime(activeShift.end) }}</span>
-          </div>
-          <div class="shift-info-group">
-            <span class="label">Duration</span>
-            <span class="value">{{ activeShift.duration }} hours ({{ activeShift.break }} minutes break)</span>
-          </div>
-
-          <div class="shift-info-group" v-if="activeShift.notes">
-            <span class="label">Notes</span>
-            <span class="value">{{ activeShift.notes }}</span>
-          </div>
+        <div class="shift-info-group">
+          <span class="label">Place</span>
+          <span class="value">{{ activeShift.place }}</span>
         </div>
-
-        <div class="actions">
-          <base-button class="inverted" @click="helpActiveShift">Help</base-button>
-          <base-button @click="closeActiveShift">Close</base-button>
+        <div class="shift-info-group">
+          <span class="label">Time</span>
+          <span class="value">{{ formatTime(activeShift.start) }} - {{ formatTime(activeShift.end) }}</span>
         </div>
-      </div>
+        <div class="shift-info-group">
+          <span class="label">Duration</span>
+          <span class="value">{{ activeShift.duration }} hours ({{ activeShift.break }} minutes break)</span>
+        </div>
+        <div class="shift-info-group" v-if="activeShift.notes">
+          <span class="label">Notes</span>
+          <span class="value">{{ activeShift.notes }}</span>
+        </div>
+      </template>
+      <template v-slot:actions>
+        <base-button inverted @click="helpActiveShift">Help</base-button>
+        <base-button @click="closeActiveShift">Close</base-button>
+      </template>
     </base-modal>
 
-    <base-modal v-if="showQR" @clickout="closeQR">
-      <div class="qr-popup">
-        <p>Scan this QR code with your phone to add your work schedule to your calendar.</p>
+    <base-modal v-if="showQR" noHeader class="schedule-qr" clickout @close="closeQR">
+      <template v-slot:main>
+        <p>Scan with your phone to add your work schedule to your calendar.</p>
         <img :src="qrCodeImg" alt="Link to calendar subscription" />
+      </template>
+      <template v-slot:actions>
         <base-button @click="closeQR">Close</base-button>
-      </div>
+      </template>
     </base-modal>
 
     <the-sidebar>

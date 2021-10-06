@@ -37,7 +37,6 @@ body {
   bottom: 0;
   left: 0;
   opacity: 1;
-  z-index: 9;
   background-color: #fff;
   &.dark {
     background-color: #000;
@@ -97,138 +96,41 @@ button {
   transition: all 120ms ease;
 }
 
-// button.base-button {
-//   height: 40px;
-//   padding: 0 18px;
-//   font-weight: 600;
-//   font-size: 14px;
-//   color: #fff;
-//   background-color: color.$main;
-//   border-radius: 999px;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   border: none;
-//   outline: none;
-//   white-space: nowrap;
-//   &:disabled {
-//     opacity: 0.5;
-//     cursor: default;
-//   }
-//   &:hover:not(:disabled) {
-//     background-color: darken(color.$main, 5%);
-//   }
-//   &:active:not(:disabled) {
-//     background-color: darken(color.$main, 10%);
-//   }
-//   span {
-//     font-size: 22px;
-//     margin-right: 8px;
-//   }
-//   &.inverted {
-//     color: color.$main;
-//     border: 1px solid color.$main;
-//     background: none;
-//     &:hover:not(:disabled) {
-//       background-color: color.$select;
+// .modal {
+//   @include mixin.baseModal;
+//   &.confirm {
+//     width: min-content !important;
+//     text-align: center;
+//     padding: 32px 40px 24px !important;
+//     white-space: nowrap;
+//     .header {
+//       justify-content: center !important;
+//       margin-bottom: 0 !important;
 //     }
-//   }
-//   &.icon-only {
-//     width: 40px;
-//     span {
-//       margin-right: 0;
-//       color: color.$main;
-//       &.flipped {
-//         transform: scaleX(-1);
+//     .main {
+//       margin: 24px 0 30px;
+//     }
+//     .form-actions {
+//       margin-top: 0 !important;
+//       display: flex;
+//       justify-content: center;
+//       button.secondary {
+//         background: none;
+//         border: none;
+//         outline: none;
+//         font-size: 14px;
+//         color: color.$text-500;
+//         margin-right: 32px;
+//         &:hover {
+//           color: darken(color.$text-500, 12%);
+//         }
+//         &:active {
+//           color: darken(color.$text-500, 24%);
+//         }
 //       }
 //     }
 //   }
 // }
-
-.base-modal {
-  @include mixin.baseModal;
-  overflow: hidden;
-  width: 515px;
-  .schedule-shift-info {
-    .header {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      margin-bottom: 40px;
-      h1 {
-        font-size: 24px;
-        font-weight: 500;
-        color: color.$text-100;
-      }
-      span.material-icons {
-        margin-left: auto;
-        cursor: pointer;
-        color: color.$text-700;
-      }
-    }
-    .main {
-      .shift-info-group {
-        display: grid;
-        align-items: center;
-        grid-template-columns: 80px auto;
-        margin-bottom: 28px;
-        span.label {
-          font-weight: 500;
-          color: color.$text-100;
-          font-size: 14px;
-        }
-        span.value {
-          color: color.$text-100;
-          font-size: 14px;
-        }
-      }
-    }
-    .actions {
-      margin-top: 40px;
-      display: flex;
-      justify-content: flex-end;
-      button {
-        margin-left: 12px;
-      }
-    }
-  }
-}
-
-.modal {
-  @include mixin.baseModal;
-  &.confirm {
-    width: min-content !important;
-    text-align: center;
-    padding: 32px 40px 24px !important;
-    white-space: nowrap;
-    .header {
-      justify-content: center !important;
-      margin-bottom: 0 !important;
-    }
-    .main {
-      margin: 24px 0 30px;
-    }
-    .form-actions {
-      margin-top: 0 !important;
-      display: flex;
-      justify-content: center;
-      button.secondary {
-        background: none;
-        border: none;
-        outline: none;
-        font-size: 14px;
-        color: color.$text-500;
-        margin-right: 32px;
-        &:hover {
-          color: darken(color.$text-500, 12%);
-        }
-        &:active {
-          color: darken(color.$text-500, 24%);
-        }
-      }
-    }
-  }
-}
 
 // UI
 .badge.red {
@@ -665,184 +567,164 @@ section#employeelist {
   }
 }
 
-// EDIT MODAL
-div.edit-modal {
-  .modal {
-    @include mixin.baseModal;
-    overflow: hidden;
-    width: 515px;
-    .header {
-      display: flex;
-      justify-content: flex-start;
+.base-modal.edit-employee {
+  .header {
+    .badge {
+      margin-left: 20px;
+    }
+  }
+  .main {
+    .form-control {
+      display: grid;
+      grid-template-columns: 92px auto;
       align-items: center;
-      margin-bottom: 40px;
-      h1 {
-        font-size: 24px;
+      margin-bottom: 12px;
+      &.note {
+        margin-bottom: 0;
+      }
+      label {
         font-weight: 500;
         color: color.$text-100;
+        font-size: 14px;
+        &[for="note"],
+        &[for="place"] {
+          align-self: flex-start;
+          margin-top: 12px;
+        }
       }
-      .badge {
-        margin-left: 20px;
+      input,
+      textarea {
+        width: 100%;
+        border-radius: 6px;
+        color: color.$text-300;
+        border: 1px solid color.$border;
+        font-size: 14px;
+        padding: 12px 16px;
+        outline: none;
+        &.error {
+          border-color: color.$danger;
+          background-color: color.$danger-light;
+        }
       }
-      span.material-icons {
-        margin-left: auto;
-        cursor: pointer;
-        color: color.$text-700;
+      input {
+        height: 40px;
+      }
+      textarea {
+        font-family: inherit;
+        height: 140px;
+        resize: none;
+        line-height: 1.4;
+      }
+      .suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 8px;
+        margin-bottom: 14px;
+        & > span {
+          background-color: color.$main-light;
+          border-radius: 3px;
+          font-weight: 500;
+          font-size: 13px;
+          color: #fff;
+          margin: 0 5px 5px 0;
+          padding: 3px 5px;
+          max-width: 100%;
+          user-select: none;
+          cursor: pointer;
+          &:hover {
+            background-color: darken(color.$main-light, 7%);
+          }
+          &.add {
+            background-color: lighten(color.$main-light, 4%);
+            position: relative;
+            padding-left: 22px;
+            span.material-icons {
+              position: absolute;
+              left: 5px;
+              top: 3px;
+              font-size: 15px;
+              font-weight: 700;
+            }
+            &:hover {
+              background-color: color.$main-light;
+            }
+          }
+        }
       }
     }
-    .main {
-      .form-control {
-        display: grid;
-        grid-template-columns: 92px auto;
-        align-items: center;
-        margin-bottom: 12px;
-        &.note {
-          margin-bottom: 0;
-        }
-        label {
+    .form-control-contract {
+      display: flex;
+      justify-content: space-between;
+      input {
+        width: 67px;
+        padding: 0;
+        text-align: center;
+      }
+      span.input-label {
+        margin-left: 12px;
+        font-size: 14px;
+        color: color.$text-300;
+      }
+    }
+    .form-control-date {
+      display: flex;
+      justify-content: space-between;
+      input#date {
+        width: 103px;
+        text-align: center;
+        padding: 0;
+      }
+      .form-control-time {
+        span.input-label-main {
           font-weight: 500;
           color: color.$text-100;
           font-size: 14px;
-          &[for="note"],
-          &[for="place"] {
-            align-self: flex-start;
-            margin-top: 12px;
-          }
+          margin-right: 14px;
         }
-        input,
-        textarea {
-          width: 100%;
-          border-radius: 6px;
-          color: color.$text-300;
-          border: 1px solid color.$border;
-          font-size: 14px;
-          padding: 12px 16px;
-          outline: none;
-          &.error {
-            border-color: color.$danger;
-            background-color: color.$danger-light;
-          }
-        }
-        input {
-          height: 40px;
-        }
-        textarea {
-          font-family: inherit;
-          height: 140px;
-          resize: none;
-          line-height: 1.4;
-        }
-        .suggestions {
-          display: flex;
-          flex-wrap: wrap;
-          margin-top: 8px;
-          margin-bottom: 14px;
-          & > span {
-            background-color: color.$main-light;
-            border-radius: 3px;
-            font-weight: 500;
-            font-size: 13px;
-            color: #fff;
-            margin: 0 5px 5px 0;
-            padding: 3px 5px;
-            max-width: 100%;
-            user-select: none;
-            cursor: pointer;
-            &:hover {
-              background-color: darken(color.$main-light, 7%);
-            }
-            &.add {
-              background-color: lighten(color.$main-light, 4%);
-              position: relative;
-              padding-left: 22px;
-              span.material-icons {
-                position: absolute;
-                left: 5px;
-                top: 3px;
-                font-size: 15px;
-                font-weight: 700;
-              }
-              &:hover {
-                background-color: color.$main-light;
-              }
-            }
-          }
-        }
-      }
-      .form-control-contract {
-        display: flex;
-        justify-content: space-between;
-        input {
+        input.time {
           width: 67px;
-          padding: 0;
           text-align: center;
+          padding: 0;
         }
         span.input-label {
-          margin-left: 12px;
+          margin: 0 12px;
           font-size: 14px;
           color: color.$text-300;
         }
       }
-      .form-control-date {
-        display: flex;
-        justify-content: space-between;
-        input#date {
-          width: 103px;
-          text-align: center;
-          padding: 0;
+    }
+    .form-actions {
+      margin-top: 32px;
+      display: flex;
+      justify-items: flex-start;
+      button.delete {
+        width: 40px;
+        height: 40px;
+        border: none;
+        outline: none;
+        border-radius: 20px;
+        background-color: color.$danger-light;
+        color: color.$danger;
+        &:hover {
+          background-color: darken(color.$danger-light, 5%);
         }
-        .form-control-time {
-          span.input-label-main {
-            font-weight: 500;
-            color: color.$text-100;
-            font-size: 14px;
-            margin-right: 14px;
-          }
-          input.time {
-            width: 67px;
-            text-align: center;
-            padding: 0;
-          }
-          span.input-label {
-            margin: 0 12px;
-            font-size: 14px;
-            color: color.$text-300;
-          }
+        span {
+          font-size: 18px;
         }
       }
-      .form-actions {
-        margin-top: 32px;
-        display: flex;
-        justify-items: flex-start;
-        button.delete {
-          width: 40px;
-          height: 40px;
-          border: none;
-          outline: none;
-          border-radius: 20px;
-          background-color: color.$danger-light;
-          color: color.$danger;
-          &:hover {
-            background-color: darken(color.$danger-light, 5%);
-          }
-          span {
-            font-size: 18px;
-          }
+      button.secondary {
+        margin-left: auto;
+        background: none;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        color: color.$text-500;
+        margin-right: 12px;
+        &:hover {
+          color: darken(color.$text-500, 12%);
         }
-        button.secondary {
-          margin-left: auto;
-          background: none;
-          border: none;
-          outline: none;
-          font-size: 14px;
-          color: color.$text-500;
-          margin-right: 12px;
-          &:hover {
-            color: darken(color.$text-500, 12%);
-          }
-          &:active {
-            color: darken(color.$text-500, 24%);
-          }
+        &:active {
+          color: darken(color.$text-500, 24%);
         }
       }
     }
@@ -1006,6 +888,166 @@ section#planner {
   }
 }
 
+.base-modal.edit-shift {
+  width: 515px;
+  .main {
+    .form-control {
+      display: grid;
+      grid-template-columns: 92px auto;
+      align-items: center;
+      margin-bottom: 12px;
+      &.note {
+        margin-bottom: 0;
+      }
+      label {
+        font-weight: 500;
+        color: color.$text-100;
+        font-size: 14px;
+        &[for="note"],
+        &[for="place"] {
+          align-self: flex-start;
+          margin-top: 12px;
+        }
+      }
+      input,
+      textarea {
+        width: 100%;
+        border-radius: 6px;
+        color: color.$text-300;
+        border: 1px solid color.$border;
+        font-size: 14px;
+        padding: 12px 16px;
+        outline: none;
+        &.error {
+          border-color: color.$danger;
+          background-color: color.$danger-light;
+        }
+      }
+      input {
+        height: 40px;
+      }
+      textarea {
+        font-family: inherit;
+        height: 140px;
+        resize: none;
+        line-height: 1.4;
+      }
+      .suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 8px;
+        margin-bottom: 14px;
+        & > span {
+          background-color: color.$main-light;
+          border-radius: 3px;
+          font-weight: 500;
+          font-size: 13px;
+          color: #fff;
+          margin: 0 5px 5px 0;
+          padding: 3px 5px;
+          max-width: 100%;
+          user-select: none;
+          cursor: pointer;
+          &:hover {
+            background-color: darken(color.$main-light, 7%);
+          }
+          &.add {
+            background-color: lighten(color.$main-light, 4%);
+            position: relative;
+            padding-left: 22px;
+            span.material-icons {
+              position: absolute;
+              left: 5px;
+              top: 3px;
+              font-size: 15px;
+              font-weight: 700;
+            }
+            &:hover {
+              background-color: color.$main-light;
+            }
+          }
+        }
+      }
+    }
+    .form-control-contract {
+      display: flex;
+      justify-content: space-between;
+      input {
+        width: 67px;
+        padding: 0;
+        text-align: center;
+      }
+      span.input-label {
+        margin-left: 12px;
+        font-size: 14px;
+        color: color.$text-300;
+      }
+    }
+    .form-control-date {
+      display: flex;
+      justify-content: space-between;
+      input#date {
+        width: 103px;
+        text-align: center;
+        padding: 0;
+      }
+      .form-control-time {
+        span.input-label-main {
+          font-weight: 500;
+          color: color.$text-100;
+          font-size: 14px;
+          margin-right: 14px;
+        }
+        input.time {
+          width: 67px;
+          text-align: center;
+          padding: 0;
+        }
+        span.input-label {
+          margin: 0 12px;
+          font-size: 14px;
+          color: color.$text-300;
+        }
+      }
+    }
+    .form-actions {
+      margin-top: 32px;
+      display: flex;
+      justify-items: flex-start;
+      button.delete {
+        width: 40px;
+        height: 40px;
+        border: none;
+        outline: none;
+        border-radius: 20px;
+        background-color: color.$danger-light;
+        color: color.$danger;
+        &:hover {
+          background-color: darken(color.$danger-light, 5%);
+        }
+        span {
+          font-size: 18px;
+        }
+      }
+      button.secondary {
+        margin-left: auto;
+        background: none;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        color: color.$text-500;
+        margin-right: 12px;
+        &:hover {
+          color: darken(color.$text-500, 12%);
+        }
+        &:active {
+          color: darken(color.$text-500, 24%);
+        }
+      }
+    }
+  }
+}
+
 // EMPTY WEEK
 .empty-week {
   display: flex;
@@ -1122,8 +1164,10 @@ section#planner {
       line-height: 2.5;
       &.prev-month,
       &.next-month {
-        color: color.$main-light;
+        color: color.$main;
+        opacity: 0.15;
         cursor: default;
+        
       }
       &.current-date {
         font-weight: 900;
@@ -1271,7 +1315,7 @@ section#singleEmployeeCalendar {
           &:hover {
             background-color: darken(color.$blue-light, 10%);
             span.notes {
-              opacity: 1
+              opacity: 1;
             }
           }
           span {
@@ -1298,6 +1342,37 @@ section#singleEmployeeCalendar {
         }
       }
     }
+  }
+}
+
+.base-modal.schedule-shift-info {
+  .shift-info-group {
+    display: grid;
+    grid-template-columns: 80px auto;
+    margin-bottom: 28px;
+    font-size: 14px;
+    color: color.$text-100;
+    span.label {
+      font-weight: 500;
+    }
+  }
+}
+
+.base-modal.schedule-qr {
+  min-width: 0;
+  width: min-content;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  p {
+    margin-bottom: 18px;
+  }
+  img {
+    width: 240px;
+  }
+  .actions {
+    margin-top: 18px;
   }
 }
 

@@ -37,9 +37,11 @@
     color: color.$text-500;
     font-weight: 500;
     &:hover {
+      background: inherit;
       color: darken(color.$text-500, 12%);
     }
     &:active {
+      background: inherit;
       color: darken(color.$text-500, 24%);
     }
   }
@@ -76,9 +78,8 @@
   }
 }
 
-.base-modal-new {
+.base-modal {
   position: fixed;
-  z-index: 999;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -87,10 +88,28 @@
   border-radius: 20px;
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
   min-width: 515px;
+  &.tight {
+    min-width: 0;
+    width: min-content;
+    .header {
+      margin-bottom: 24px;
+    }
+    .actions {
+      margin-top: 32px;
+    }
+  }
+  &.centered {
+    text-align: center;
+    white-space: nowrap;
+    & > div {
+      justify-content: center;
+    }
+  }
   .header {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    margin-bottom: 40px;
     h1 {
       font-size: 24px;
       font-weight: 500;
@@ -105,14 +124,18 @@
       }
     }
   }
-  .main {
-    margin: 40px 0;
-  }
   .actions {
+    margin-top: 40px;
     display: flex;
     justify-content: flex-end;
+
     button {
-      margin-left: 12px;
+      &:not(:first-child) {
+        margin-left: 12px;
+      }
+      &.left {
+        margin-right: auto;
+      }
     }
   }
 }
