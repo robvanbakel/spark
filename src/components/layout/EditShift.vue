@@ -3,7 +3,6 @@
     class="edit-shift"
     :title="newShift ? 'New Shift' : 'Edit Shift'"
     globalClose
-    clickout
     @close="closeEditShift"
   >
     <template v-slot:main>
