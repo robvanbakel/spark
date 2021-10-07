@@ -138,6 +138,63 @@
   margin-right: auto;
 }
 
+.base-dropdown {
+  position: relative;
+}
+.base-dropdown .input,
+.base-dropdown .dropdown {
+  background: #fff;
+  width: 100%;
+  border-radius: 6px;
+  color: #635d6d;
+  border: 1px solid #deddde;
+  font-size: 14px;
+}
+.base-dropdown .input {
+  position: relative;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.base-dropdown .input::after {
+  font-family: "Material Icons";
+  content: "expand_more";
+  position: absolute;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  top: 0;
+  right: 12px;
+  color: #2f273c;
+  font-size: 18px;
+}
+.base-dropdown .input.focus::after {
+  transform: rotate(180deg);
+}
+.base-dropdown .dropdown {
+  border: 1px solid #deddde;
+  overflow-y: scroll;
+  margin-top: 6px;
+  max-height: 223px;
+  position: absolute;
+}
+.base-dropdown .dropdown span.item {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  cursor: pointer;
+}
+.base-dropdown .dropdown span.item.active, .base-dropdown .dropdown span.item:hover {
+  background-color: #f5f5f7;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -155,7 +212,6 @@ body {
 .container {
   margin: 0 auto;
   min-width: 880px;
-  overflow: hidden;
 }
 
 .overlay {
@@ -1312,7 +1368,7 @@ section#planner .row .day .shift-info span.time {
   display: flex;
   justify-content: space-between;
 }
-.empty-week .action-wrapper div {
+.empty-week .action-wrapper > div {
   width: 260px;
   height: 68px;
   margin: 0 20px;
@@ -1346,10 +1402,8 @@ section#planner .row .day .shift-info span.time {
   justify-content: center;
   align-items: center;
 }
-.empty-week .action-wrapper .copy-week-wrapper select {
-  width: -webkit-min-content;
-  width: -moz-min-content;
-  width: min-content;
+.empty-week .action-wrapper .copy-week-wrapper .base-dropdown {
+  width: 140px;
 }
 .empty-week .action-wrapper .copy-week-wrapper button {
   margin-left: 20px;

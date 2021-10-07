@@ -27,7 +27,6 @@ body {
 .container {
   margin: 0 auto;
   min-width: 880px;
-  overflow: hidden;
 }
 
 .overlay {
@@ -1078,7 +1077,7 @@ section#planner {
   .action-wrapper {
     display: flex;
     justify-content: space-between;
-    div {
+    & > div {
       width: 260px;
       height: 68px;
       margin: 0 20px;
@@ -1111,8 +1110,8 @@ section#planner {
       display: flex;
       justify-content: center;
       align-items: center;
-      select {
-        width: min-content;
+      .base-dropdown {
+        width: 140px;
       }
       button {
         margin-left: 20px;
@@ -1167,7 +1166,6 @@ section#planner {
         color: color.$main;
         opacity: 0.15;
         cursor: default;
-        
       }
       &.current-date {
         font-weight: 900;

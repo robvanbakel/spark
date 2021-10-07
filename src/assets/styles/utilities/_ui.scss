@@ -139,3 +139,58 @@
     }
   }
 }
+
+.base-dropdown {
+  position: relative;
+  .input,
+  .dropdown {
+    background: #fff;
+    width: 100%;
+    border-radius: 6px;
+    color: color.$text-300;
+    border: 1px solid color.$border;
+    font-size: 14px;
+  }
+  .input {
+    position: relative;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    cursor: pointer;
+    user-select: none;
+    &::after {
+      font-family: "Material Icons";
+      content: "expand_more";
+      position: absolute;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      top: 0;
+      right: 12px;
+      color: color.$text-100;
+      font-size: 18px;
+    }
+    &.focus::after {
+      transform: rotate(180deg);
+    }
+  }
+  .dropdown {
+    border: 1px solid color.$border;
+    overflow-y: scroll;
+    margin-top: 6px;
+    max-height: 223px;
+    position: absolute;
+    span.item {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      cursor: pointer;
+      &.active,
+      &:hover {
+        background-color: color.$select;
+      }
+    }
+  }
+}
