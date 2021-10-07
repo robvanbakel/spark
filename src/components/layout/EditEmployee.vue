@@ -11,46 +11,51 @@
     </template>
     <template v-slot:main>
       <div v-if="this.new">
-          <div class="form-control">
-            <label for="firstName">First name</label>
-            <input type="text" id="firstName" v-model.trim="activeEmployee.firstName" />
+        <div class="form-control">
+          <label for="firstName">First name</label>
+          <input type="text" id="firstName" v-model.trim="activeEmployee.firstName" />
+        </div>
+        <div class="form-control">
+          <label for="lastName">Last name</label>
+          <input type="text" id="lastName" v-model.trim="activeEmployee.lastName" />
+        </div>
+      </div>
+      <div class="form-control">
+        <label for="role">Role</label>
+        <base-dropdown
+          v-if="activeEmployee.role"
+          :items="roles"
+          :active="activeEmployee.role"
+          @choice="setRole"
+        ></base-dropdown>
+      </div>
+      <div class="form-control">
+        <label for="contract">Contract</label>
+        <div class="form-control-contract">
+          <div>
+            <input type="text" id="contract" v-model.trim="activeEmployee.contract" />
+            <span class="input-label">hours</span>
           </div>
-          <div class="form-control">
-            <label for="lastName">Last name</label>
-            <input type="text" id="lastName" v-model.trim="activeEmployee.lastName" />
-          </div>
+          <base-switch
+            :items="['fulltime', 'parttime']"
+            id="contractType"
+            :active="employee.contractType"
+            @active-item="setContractType"
+          ></base-switch>
         </div>
-        <div class="form-control">
-          <label for="role">Role</label>
-          <input type="text" id="role" v-model.trim="activeEmployee.role" />
-        </div>
-        <div class="form-control">
-          <label for="contract">Contract</label>
-          <div class="form-control-contract">
-            <div>
-              <input type="text" id="contract" v-model.trim="activeEmployee.contract" />
-              <span class="input-label">hours</span>
-            </div>
-            <base-switch
-              :items="['fulltime', 'parttime']"
-              id="contractType"
-              :active="employee.contractType"
-              @active-item="setContractType"
-            ></base-switch>
-          </div>
-        </div>
-        <div class="form-control">
-          <label for="email">Email</label>
-          <input type="text" id="email" v-model.trim="activeEmployee.email" />
-        </div>
-        <div class="form-control">
-          <label for="phone">Phone</label>
-          <input type="text" id="phone" v-model.trim="activeEmployee.phone" />
-        </div>
-        <div class="form-control note">
-          <label for="note">Notes</label>
-          <textarea id="note" v-model="activeEmployee.note"></textarea>
-        </div>
+      </div>
+      <div class="form-control">
+        <label for="email">Email</label>
+        <input type="text" id="email" v-model.trim="activeEmployee.email" />
+      </div>
+      <div class="form-control">
+        <label for="phone">Phone</label>
+        <input type="text" id="phone" v-model.trim="activeEmployee.phone" />
+      </div>
+      <div class="form-control note">
+        <label for="note">Notes</label>
+        <textarea id="note" v-model="activeEmployee.note"></textarea>
+      </div>
     </template>
     <template v-slot:actions>
       <base-button
@@ -155,6 +160,9 @@ export default {
     setContractType(value) {
       this.activeEmployee.contractType = value
     },
+    setRole(value) {
+      this.activeEmployee.role = value
+    },
     closeEditEmployee() {
       this.$emit("closeEditEmployee")
     },
@@ -181,6 +189,16 @@ export default {
       }
 
       this.closeEditEmployee()
+    },
+  },
+  computed: {
+    roles() {
+      return this.$store.getters["settings/roles"].map((role) => {
+        return {
+          id: role,
+          display: role,
+        }
+      })
     },
   },
   mounted() {

@@ -181,6 +181,8 @@
     margin-top: 6px;
     max-height: 223px;
     position: absolute;
+    z-index: 9;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
     span.item {
       height: 40px;
       display: flex;
