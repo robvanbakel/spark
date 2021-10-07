@@ -53,27 +53,33 @@ export default {
       .update(payload.data)
   },
   async createNewUser(context, payload) {
-    // Create new user on Firebase
-    const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/createNewUser`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: payload.user.email,
-      }),
-    })
+    // Fallback fake uid for demo environment
+    let uid = new Date().toISOString()
 
-    // Get uid for new user from response object
-    const { uid } = await res.json()
+    if (!context.rootGetters["auth/user"].demo) {
+      // Create new user on Firebase
+      const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/createNewUser`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: payload.employee.email,
+        }),
+      })
+
+      // Get uid for new user from response object
+      const userRecord = await res.json()
+      uid = userRecord.uid
+    }
 
     // Update locally
     context.commit("addUser", {
-      id: uid || new Date().toISOString(), // Fallback fake uid for demo environment
-      data: payload.user,
+      id: uid,
+      data: payload.employee,
     })
 
     // Update DB
     db.collection("users")
       .doc(uid)
-      .set(payload.user)
+      .set(payload.employee)
   },
 }
