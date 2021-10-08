@@ -1,21 +1,15 @@
 <template>
-  <base-modal
-    class="edit-shift"
-    :title="newShift ? 'New Shift' : 'Edit Shift'"
-    globalClose
-    @close="closeEditShift"
-  >
+  <base-modal class="edit-shift" :title="newShift ? 'New Shift' : 'Edit Shift'" globalClose @close="closeEditShift">
     <template v-slot:main>
       <div>
         <div class="form-control">
           <label for="name">Name</label>
-          <base-select
+          <base-dropdown
             v-if="shift.employee.id || newShift"
-            :class="{ error: error.employee }"
-            :selected="shift.employee"
-            @selectedEmployee="switchHandler"
-            @change="clearError('employee')"
-          ></base-select>
+            :items="employees"
+            :active="shift.employee.id"
+            @choice="switchHandler"
+          ></base-dropdown>
         </div>
         <div class="form-control">
           <label for="place">Place</label>
@@ -108,118 +102,6 @@
     </template>
   </base-modal>
 
-  <!-- <div class="edit-modal">
-    <base-overlay dark transparent></base-overlay>
-    <div class="modal">
-      <div class="header">
-        <h1 v-if="newShift">New Shift</h1>
-        <h1 v-else>Edit Shift</h1>
-        <span class="clear material-icons material-icons-round" @click="closeEditShift">clear</span>
-      </div>
-      <div class="main">
-        <div>
-          <div class="form-control">
-            <label for="name">Name</label>
-            <base-select
-              v-if="shift.employee.id || newShift"
-              :class="{ error: error.employee }"
-              :selected="shift.employee"
-              @selectedEmployee="switchHandler"
-              @change="clearError('employee')"
-            ></base-select>
-          </div>
-          <div class="form-control">
-            <label for="place">Place</label>
-            <div>
-              <input
-                type="text"
-                :class="{ error: error.place }"
-                id="place"
-                v-model.trim="shift.place"
-                @input="clearError('place')"
-              />
-              <div class="suggestions">
-                <span
-                  v-for="suggestion in $store.getters['settings/suggestions']"
-                  :key="suggestion"
-                  :class="{ selected: this.selectedSuggestion === suggestion }"
-                  @click="selectSuggestion(suggestion)"
-                  @click.right="$store.dispatch('settings/deleteSuggestion', { event: $event, suggestion })"
-                  >{{ suggestion }}</span
-                >
-                <span
-                  class="add"
-                  v-if="showNewSuggestion"
-                  @click="$store.dispatch('settings/addSuggestion', { suggestion: shift.place })"
-                >
-                  <span class="material-icons material-icons-round">add</span>
-                  {{ shift.place }}</span
-                >
-              </div>
-            </div>
-          </div>
-          <div class="form-control">
-            <label for="date">Date</label>
-            <div class="form-control-date">
-              <input
-                type="text"
-                :class="{ error: error.date }"
-                @input="clearError('date')"
-                id="date"
-                v-model="shift.date"
-              />
-              <div class="form-control-time">
-                <span class="input-label-main">Time</span>
-                <input
-                  type="text"
-                  :class="['time', { error: error.start }]"
-                  v-model.trim="shift.start"
-                  @blur="formatTime(shift.start, 'start')"
-                  @input="clearError('start')"
-                />
-                <span class="input-label">-</span>
-                <input
-                  type="text"
-                  :class="['time', { error: error.end }]"
-                  v-model.trim="shift.end"
-                  @blur="formatTime(shift.end, 'end')"
-                  @input="clearError('end')"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="form-control">
-            <label>Break</label>
-            <base-switch
-              id="breaks"
-              v-if="shift.break"
-              :items="$store.getters['settings/breaks']"
-              :active="shift.break"
-              @activeItem="setBreak"
-              :fixed="true"
-            ></base-switch>
-          </div>
-          <div class="form-control note">
-            <label for="note">Notes</label>
-            <textarea id="note" v-model="shift.notes"></textarea>
-          </div>
-
-          <div class="form-actions">
-            <base-button
-              v-if="!newShift"
-              color="danger"
-              iconOnly
-              icon="delete"
-              @click="showConfirmDelete = true"
-            ></base-button>
-            <base-button secondary @click="closeEditShift">Cancel</base-button>
-            <base-button @click="validate">Save</base-button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
   <base-confirm
     message="Deleting this shift cannot be undone."
     choiceTrue="Delete Shift"
@@ -268,10 +150,15 @@ export default {
         return false
       }
     },
+    employees() {
+      return this.$store.getters["employees/employees"].map((employee) => {
+        return { id: employee.id, display: `${employee.firstName} ${employee.lastName}` }
+      })
+    },
   },
   methods: {
-    switchHandler(selectedEmployee) {
-      this.shift.employee = selectedEmployee
+    switchHandler(selectedId) {
+      this.shift.employee = this.employees.find(emp => emp.id === selectedId)
     },
     setBreak(val) {
       if (val === "-") {
