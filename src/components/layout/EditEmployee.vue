@@ -23,7 +23,7 @@
       <div class="form-control">
         <label for="role">Role</label>
         <base-dropdown
-          v-if="activeEmployee.role"
+          v-if="activeEmployee.role || this.new"
           :items="roles"
           :active="activeEmployee.role"
           @choice="setRole"

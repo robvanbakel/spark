@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  emits: ['choice'],
+  emits: ["choice"],
   props: {
     items: {
       type: Array,
@@ -32,7 +32,7 @@ export default {
   data() {
     return {
       dropdownVisible: false,
-      input: this.items.find((item) => item.id === this.active),
+      input: this.items.find((item) => item.id === this.active) || '',
     }
   },
   methods: {
@@ -45,7 +45,7 @@ export default {
     selectItem(choice) {
       this.input = this.items.find((item) => item.id === choice)
       this.hideDropdown()
-      this.$emit('choice', choice)
+      this.$emit("choice", choice)
     },
   },
 }
