@@ -9,7 +9,6 @@ import "@/assets/styles/main.css"
 import BaseBadge from "@/components/ui/BaseBadge"
 import BaseButton from "@/components/ui/BaseButton"
 import BaseSwitch from "@/components/ui/BaseSwitch"
-import BaseSelect from "@/components/ui/BaseSelect"
 import BaseOverlay from "@/components/ui/BaseOverlay"
 import BaseModal from "@/components/ui/BaseModal"
 import BaseDropdown from "@/components/ui/BaseDropdown"
@@ -40,7 +39,6 @@ auth.onAuthStateChanged(async (user) => {
     app.component("base-button", BaseButton)
     app.component("base-badge", BaseBadge)
     app.component("base-switch", BaseSwitch)
-    app.component("base-select", BaseSelect)
     app.component("base-overlay", BaseOverlay)
     app.component("base-modal", BaseModal)
     app.component("base-dropdown", BaseDropdown)

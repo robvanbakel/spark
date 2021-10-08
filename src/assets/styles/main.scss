@@ -292,24 +292,6 @@ button {
   }
 }
 
-// Base Switch {
-.base-select {
-  height: 40px;
-  width: 100%;
-  border-radius: 6px;
-  color: color.$text-300;
-  border: 1px solid color.$border;
-  font-size: 14px;
-  padding: 11px 12px 12px 14px;
-  outline: none;
-  appearance: none;
-  cursor: pointer;
-  &.error {
-    border-color: color.$danger;
-    background-color: color.$danger-light;
-  }
-}
-
 // AUTH
 .auth {
   background: #f5f5f5;
