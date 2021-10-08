@@ -159,6 +159,10 @@
     padding: 0 16px;
     cursor: pointer;
     user-select: none;
+    &.error {
+      border-color: color.$danger;
+      background-color: color.$danger-light;
+    }
     &::after {
       font-family: "Material Icons";
       content: "expand_more";

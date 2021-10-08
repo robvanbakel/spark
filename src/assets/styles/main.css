@@ -162,6 +162,10 @@
       -ms-user-select: none;
           user-select: none;
 }
+.base-dropdown .input.error {
+  border-color: #de6035;
+  background-color: #fbece7;
+}
 .base-dropdown .input::after {
   font-family: "Material Icons";
   content: "expand_more";

@@ -6,9 +6,10 @@
           <label for="name">Name</label>
           <base-dropdown
             v-if="shift.employee.id || newShift"
+            :error="error.employee"
             :items="employees"
             :active="shift.employee.id"
-            @choice="switchHandler"
+            @choice="dropdownHandler"
           ></base-dropdown>
         </div>
         <div class="form-control">
@@ -157,7 +158,8 @@ export default {
     },
   },
   methods: {
-    switchHandler(selectedId) {
+    dropdownHandler(selectedId) {
+      this.error.employee = false
       this.shift.employee = this.employees.find(emp => emp.id === selectedId)
     },
     setBreak(val) {

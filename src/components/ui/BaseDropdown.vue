@@ -1,6 +1,6 @@
 <template>
   <div class="base-dropdown">
-    <div class="input" @click="showDropdown" :class="{ focus: dropdownVisible }">
+    <div class="input" @click="showDropdown" :class="{ focus: dropdownVisible, error }">
       {{ input.display }}
     </div>
     <base-overlay v-if="dropdownVisible" @clickout="hideDropdown" invisible></base-overlay>
@@ -28,6 +28,10 @@ export default {
       type: String,
       require: false,
     },
+    error: {
+      type: Boolean,
+      require: false,
+    }
   },
   data() {
     return {
