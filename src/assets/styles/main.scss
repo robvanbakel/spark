@@ -967,10 +967,8 @@ section#planner {
     .form-control-date {
       display: flex;
       justify-content: space-between;
-      input#date {
+      .base-date-picker {
         width: 103px;
-        text-align: center;
-        padding: 0;
       }
       .form-control-time {
         span.input-label-main {

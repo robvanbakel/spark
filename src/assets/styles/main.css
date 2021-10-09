@@ -201,6 +201,113 @@
   background-color: #f5f5f7;
 }
 
+.base-date-picker {
+  position: relative;
+}
+.base-date-picker .input,
+.base-date-picker .calendar {
+  background: #fff;
+  width: 100%;
+  border-radius: 6px;
+  color: #635d6d;
+  border: 1px solid #deddde;
+}
+.base-date-picker .input {
+  position: relative;
+  font-size: 14px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  overflow: hidden;
+  padding: 0 16px;
+}
+.base-date-picker .input.error {
+  border-color: #de6035;
+  background-color: #fbece7;
+}
+.base-date-picker .calendar {
+  width: 264px;
+  padding: 16px;
+  border: 1px solid #deddde;
+  margin-top: 6px;
+  position: absolute;
+  z-index: 9;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+}
+
+.base-calendar {
+  width: 100%;
+}
+.base-calendar > div {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+}
+.base-calendar #header {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.35em 0;
+}
+.base-calendar #header span {
+  cursor: pointer;
+  position: relative;
+  bottom: 3px;
+}
+.base-calendar #header h2 {
+  font-weight: 500;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+.base-calendar #days {
+  margin: 1.35em 0 0.5em;
+}
+.base-calendar #days span {
+  color: #413659;
+  font-size: 12px;
+  font-weight: 700;
+}
+.base-calendar .dates {
+  position: relative;
+}
+.base-calendar .dates p {
+  cursor: pointer;
+  font-size: 11px;
+  color: #413659;
+  line-height: 2.5;
+  position: relative;
+}
+.base-calendar .dates p.prev-month, .base-calendar .dates p.next-month {
+  color: #413659;
+  opacity: 0.15;
+  cursor: default;
+}
+.base-calendar .dates p.current-date {
+  font-weight: 900;
+  color: #de6035;
+}
+
+.base-calendar.picker .dates p:not(.prev-month):not(.next-month):hover::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  background-color: #eff5fe;
+  border: 1px solid #508df0;
+  z-index: -1;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -1269,10 +1376,8 @@ section#planner .row .day .shift-info span.time {
   display: flex;
   justify-content: space-between;
 }
-.base-modal.edit-shift .main .form-control-date input#date {
+.base-modal.edit-shift .main .form-control-date .base-date-picker {
   width: 103px;
-  text-align: center;
-  padding: 0;
 }
 .base-modal.edit-shift .main .form-control-date .form-control-time span.input-label-main {
   font-weight: 500;
