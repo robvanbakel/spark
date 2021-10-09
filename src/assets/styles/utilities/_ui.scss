@@ -200,3 +200,79 @@
     }
   }
 }
+
+.base-calendar {
+  width: 100%;
+  & > div {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+  }
+  #header {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.35em 0;
+    span {
+      cursor: pointer;
+      position: relative;
+      bottom: 3px;
+    }
+    h2 {
+      font-weight: 500;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  }
+
+  #days {
+    margin: 1.35em 0 0.5em;
+    span {
+      color: color.$main;
+      font-size: 12px;
+      font-weight: 700;
+    }
+  }
+
+  .dates {
+    position: relative;
+    p {
+      cursor: pointer;
+      font-size: 11px;
+      color: color.$main;
+      line-height: 2.5;
+      position: relative;
+      &.prev-month,
+      &.next-month {
+        color: color.$main;
+        opacity: 0.15;
+        cursor: default;
+      }
+      &.current-date {
+        font-weight: 900;
+        color: color.$danger;
+      }
+    }
+  }
+}
+
+// Styles for picker mode
+
+$indicator-size: 28px;
+
+.base-calendar.picker {
+  .dates p:not(.prev-month):not(.next-month):hover::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: $indicator-size;
+    height: $indicator-size;
+    border-radius: 6px;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background-color: lighten(color.$blue-light, 6%);
+    border: 1px solid color.$blue;
+    z-index: -1;
+  }
+}
