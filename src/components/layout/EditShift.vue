@@ -45,13 +45,11 @@
         <div class="form-control">
           <label for="date">Date</label>
           <div class="form-control-date">
-            <input
-              type="text"
-              :class="{ error: error.date }"
-              @input="clearError('date')"
-              id="date"
-              v-model="shift.date"
-            />
+            <base-date-picker
+              :active="this.$store.getters['date/dates'][this.$store.getters['planner/activeShiftId'].day]"
+              :error="error.date"
+              @date="dateHandler"
+            ></base-date-picker>
             <div class="form-control-time">
               <span class="input-label-main">Time</span>
               <input
@@ -160,7 +158,7 @@ export default {
   methods: {
     dropdownHandler(selectedId) {
       this.error.employee = false
-      this.shift.employee = this.employees.find(emp => emp.id === selectedId)
+      this.shift.employee = this.employees.find((emp) => emp.id === selectedId)
     },
     setBreak(val) {
       if (val === "-") {
@@ -180,6 +178,10 @@ export default {
       } else if (/^([0-1]?[0-9]|2[0-3])\D?([0-5][0-9])$/.test(time)) {
         this.shift[field] = `${time.slice(0, 2)}:${time.slice(-2)}`
       }
+    },
+    dateHandler(date) {
+      this.error.date = false
+      this.shift.date = date
     },
     selectSuggestion(suggestion) {
       this.shift.place = suggestion
@@ -202,7 +204,7 @@ export default {
       }
 
       // Validate field: date
-      if (/^\d{2}-\d{2}-\d{4}$/.test(this.shift.date)) {
+      if (this.shift.date) {
         this.error.date = false
       } else {
         this.error.date = true
@@ -249,12 +251,8 @@ export default {
       }
     },
     async saveEditShift() {
-      const [date, month, year] = this.shift.date.split("-")
-
-      const dateObject = new Date(year, month - 1, date)
-
-      const weekId = await this.$store.dispatch("date/getWeekId", dateObject)
-      const day = dateObject.getUTCDay()
+      const weekId = await this.$store.dispatch("date/getWeekId", this.shift.date)
+      const day = this.shift.date.getUTCDay()
 
       const stringifyTime = (time) => time.replace(":", "")
 
@@ -297,20 +295,9 @@ export default {
     // Helper functions
     const parseTime = (time) => time.substring(0, 2) + ":" + time.substring(2, 4)
 
-    const parseDate = (input) => {
-      const date = input
-        .getDate()
-        .toString()
-        .padStart(2, "0")
-      const month = (input.getMonth() + 1).toString().padStart(2, "0")
-      const year = input.getFullYear()
-
-      return `${date}-${month}-${year}`
-    }
-
     if (activeShiftId !== "new") {
       if (!activeShiftId.employeeId) {
-        this.shift.date = parseDate(this.$store.getters["date/dates"][activeShiftId.day])
+        this.shift.date = this.$store.getters["date/dates"][activeShiftId.day]
       } else {
         // Get info for selected shift
         const { weekId, day, employeeId } = activeShiftId
@@ -323,7 +310,7 @@ export default {
           fullName: `${employee.firstName} ${employee.lastName}`,
           id: employeeId,
         }
-        this.shift.date = parseDate(this.$store.getters["date/dates"][day])
+        this.shift.date = this.$store.getters["date/dates"][day]
 
         // If active shift exists, set shift info
         if (shift) {
