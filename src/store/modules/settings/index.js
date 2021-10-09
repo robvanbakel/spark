@@ -12,7 +12,7 @@ export default {
       shareWithEmployees: {},
       hideSidebar: false,
       sidebarAutoHidden: false,
-      breaks: ['-', '15', '30', '45', '60'],
+      breaks: ['0', '15', '30', '45', '60'],
     }
   },
   mutations,

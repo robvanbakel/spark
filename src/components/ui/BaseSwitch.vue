@@ -57,6 +57,7 @@ export default {
     },
   },
   mounted() {
+    
     const switchItems = document.querySelectorAll(`#${this.id}.switch-control`)
 
     if (this.toggle) {

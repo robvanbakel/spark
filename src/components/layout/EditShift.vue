@@ -120,7 +120,7 @@ export default {
         date: "",
         start: "",
         end: "",
-        break: null,
+        break: "",
         notes: "",
       },
       error: {
@@ -161,11 +161,7 @@ export default {
       this.shift.employee = this.employees.find((emp) => emp.id === selectedId)
     },
     setBreak(val) {
-      if (val === "-") {
-        this.shift.break = "0"
-      } else {
-        this.shift.break = val
-      }
+      this.shift.break = val
     },
     clearError(field) {
       this.error[field] = false
@@ -290,7 +286,7 @@ export default {
     const activeShiftId = this.$store.getters["planner/activeShiftId"]
 
     this.newShift = true
-    this.shift.break = "-"
+    this.shift.break = "0"
 
     // Helper functions
     const parseTime = (time) => time.substring(0, 2) + ":" + time.substring(2, 4)
