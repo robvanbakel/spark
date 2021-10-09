@@ -11,6 +11,9 @@ export default {
   dayNames(state, getters, rootState, rootGetters) {
     return state.dates.map((date) => date.toLocaleDateString(rootGetters['settings/dateLocale'], { weekday: "long" }))
   },
+  dayNamesShort(state, getters, rootState, rootGetters) {
+    return state.dates.map((date) => date.toLocaleDateString(rootGetters['settings/dateLocale'], { weekday: "short" }))
+  },
   datesShort(state, getters, rootState, rootGetters) {
     return state.dates.map((date) => date.toLocaleDateString(rootGetters['settings/dateLocale'], { year: "numeric", month: "short", day: "numeric" }))
   },

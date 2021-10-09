@@ -6,13 +6,13 @@
       <span class="material-icons material-icons-round" @click="next">chevron_right</span>
     </div>
     <div id="days">
-      <span v-for="day in shortDays" :key="day">{{ day }}</span>
+      <span v-for="day in $store.getters['date/dayNamesShort']" :key="day">{{ day }}</span>
     </div>
     <div class="dates">
       <p v-for="num in visibleInPrevMonth()" :key="num" class="prev-month" @click="prev()">
         {{ num }}
       </p>
-      <p v-for="num in daysInMonth()" :key="num" :class="[currentDateClass(num)]" @click="pickDate(num)">
+      <p v-for="num in daysInMonth()" :key="num" :class="dateClasses(num)" @click="pickDate(num)">
         {{ num }}
       </p>
       <p v-for="num in visibleInNextMonth()" :key="num" class="next-month" @click="next()">
@@ -25,6 +25,10 @@
 <script>
 export default {
   props: {
+    active: {
+      type: Date,
+      require: false,
+    },
     mode: {
       type: String,
       require: true,
@@ -32,8 +36,8 @@ export default {
   },
   data() {
     return {
-      selectedMonth: new Date().getMonth(),
-      selectedYear: new Date().getFullYear(),
+      selectedMonth: this.active?.getMonth() || new Date().getMonth(),
+      selectedYear: this.active?.getFullYear() || new Date().getFullYear(),
     }
   },
   methods: {
@@ -74,43 +78,36 @@ export default {
         this.selectedMonth--
       }
     },
-    currentDateClass(num) {
+    dateClasses(num) {
       const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString()
-      const currentFullDate = new Date().toDateString()
+      let classes = []
 
-      return calendarFullDate === currentFullDate ? "current-date" : ""
+      if (calendarFullDate === new Date().toDateString()) {
+        classes.push("current-date")
+      }
+
+      if (calendarFullDate === this.active?.toDateString()) {
+        classes.push("active")
+      }
+
+      return classes
     },
+
     today() {
       this.selectedMonth = new Date().getMonth()
       this.selectedYear = new Date().getFullYear()
     },
     pickDate(selectedDay) {
       const date = new Date(this.selectedYear, this.selectedMonth, selectedDay)
-      this.$emit('choice', date)
+      this.$emit("choice", date)
     },
   },
   computed: {
     selectedMonthName() {
-      return new Date(this.selectedYear, this.selectedMonth).toLocaleString(this.$store.getters['settings/dateLocale'], { month: "long" })
-    },
-    shortDays() {
-      return this.$store.getters['date/dates'].map(date => date.toLocaleDateString(this.$store.getters['settings/dateLocale'], { weekday: "short" }))
-    },
-    calendarPoint() {
-      return this.$store.getters["date/dates"][3]
-    },
-  },
-  watch: {
-    async calendarPoint() {
-      const currentWeekId = await this.$store.dispatch("date/getWeekId")
-
-      if (this.$store.getters["date/weekId"] === currentWeekId) {
-        this.selectedMonth = new Date().getMonth()
-        this.selectedYear = new Date().getFullYear()
-      } else {
-        this.selectedMonth = this.$store.getters["date/dates"][3].getMonth()
-        this.selectedYear = this.$store.getters["date/dates"][3].getFullYear()
-      }
+      return new Date(this.selectedYear, this.selectedMonth).toLocaleString(
+        this.$store.getters["settings/dateLocale"],
+        { month: "long" }
+      )
     },
   },
 }

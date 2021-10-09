@@ -297,21 +297,30 @@
 
 // Styles for picker mode
 
-$indicator-size: 28px;
-
 .base-calendar.picker {
-  .dates p:not(.prev-month):not(.next-month):hover::after {
-    content: "";
-    display: block;
-    position: absolute;
-    width: $indicator-size;
-    height: $indicator-size;
-    border-radius: 6px;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    background-color: lighten(color.$blue-light, 6%);
-    border: 1px solid color.$blue;
-    z-index: -1;
+  .dates p:not(.prev-month):not(.next-month) {
+    &:hover,
+    &.active {
+      &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        height: 24px;
+        width: 28px;
+        border-radius: 6px;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        background-color: lighten(color.$blue-light, 6%);
+        border: 1px solid color.$blue;
+        z-index: -1;
+      }
+    }
+    &.active:not(:hover) {
+      &::after {
+        background-color: color.$select;
+        border-color: color.$border;
+      }
+    }
   }
 }

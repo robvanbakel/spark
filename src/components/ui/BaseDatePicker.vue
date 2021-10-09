@@ -1,11 +1,11 @@
 <template>
   <div class="base-date-picker">
     <div class="input" @click="showCalendar" :class="{ focus: calendarVisible, error }">
-      {{ input }}
+      {{ formatDate(activeDate) }}
     </div>
     <base-overlay v-if="calendarVisible" @clickout="hideCalendar" invisible></base-overlay>
     <div class="calendar" v-if="calendarVisible">
-      <BaseCalendar mode="picker" @choice="setDate" />
+      <BaseCalendar mode="picker" :active="activeDate" @choice="setDate" />
     </div>
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       calendarVisible: false,
-      input: this.formatDate(this.active) || '',
+      activeDate: this.active || null,
     }
   },
   methods: {
@@ -39,13 +39,16 @@ export default {
       this.calendarVisible = false
     },
     formatDate(date) {
-      return date?.toLocaleDateString(this.$store.getters['settings/dateLocale'], { year: "numeric", month: "2-digit", day: "2-digit" })
+      return date?.toLocaleDateString(this.$store.getters["settings/dateLocale"], {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      })
     },
     setDate(date) {
-      this.input = this.formatDate(date)
+      this.activeDate = date
       this.hideCalendar()
-      this.$emit('date', date)
-
+      this.$emit("date", date)
     },
   },
 }

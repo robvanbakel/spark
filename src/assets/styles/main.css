@@ -297,12 +297,12 @@
   color: #de6035;
 }
 
-.base-calendar.picker .dates p:not(.prev-month):not(.next-month):hover::after {
+.base-calendar.picker .dates p:not(.prev-month):not(.next-month):hover::after, .base-calendar.picker .dates p:not(.prev-month):not(.next-month).active::after {
   content: "";
   display: block;
   position: absolute;
+  height: 24px;
   width: 28px;
-  height: 28px;
   border-radius: 6px;
   top: 50%;
   left: 50%;
@@ -310,6 +310,10 @@
   background-color: #eff5fe;
   border: 1px solid #508df0;
   z-index: -1;
+}
+.base-calendar.picker .dates p:not(.prev-month):not(.next-month).active:not(:hover)::after {
+  background-color: #f5f5f7;
+  border-color: #deddde;
 }
 
 * {
