@@ -225,7 +225,11 @@
       -ms-user-select: none;
           user-select: none;
   overflow: hidden;
-  padding: 0 16px;
+  padding: 0 12px;
+  min-width: -webkit-min-content;
+  min-width: -moz-min-content;
+  min-width: min-content;
+  white-space: nowrap;
 }
 .base-date-picker .input.error {
   border-color: #de6035;

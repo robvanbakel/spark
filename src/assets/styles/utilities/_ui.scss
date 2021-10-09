@@ -221,7 +221,9 @@
     cursor: pointer;
     user-select: none;
     overflow: hidden;
-    padding: 0 16px;
+    padding: 0 12px;
+    min-width: min-content;
+    white-space: nowrap;
     &.error {
       border-color: color.$danger;
       background-color: color.$danger-light;
