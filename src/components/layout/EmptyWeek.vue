@@ -30,7 +30,7 @@ export default {
     dateRange() {
       const dates = this.$store.getters["date/dates"]
 
-      const formatDate = (date) => date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+      const formatDate = (date) => date.toLocaleDateString(this.$store.getters['settings/dateLocale'], { year: "numeric", month: "long", day: "numeric" })
 
       return `${formatDate(dates[0])} – ${formatDate(dates[dates.length - 1])}`
     },

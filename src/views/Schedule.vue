@@ -248,8 +248,8 @@ export default {
 
       // Construct object
       this.activeShift = {
-        date: this.$store.getters["date/dates"][index].toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
-        dateShort: this.$store.getters["date/dates"][index].toLocaleDateString("en-US"),
+        date: this.$store.getters["date/dates"][index].toLocaleDateString(this.$store.getters['settings/dateLocale'], { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
+        dateShort: this.$store.getters["date/dates"][index].toLocaleDateString(this.$store.getters['settings/dateLocale']),
         place: shift.place,
         start: shift.start,
         end: shift.end,

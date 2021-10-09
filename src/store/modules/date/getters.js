@@ -8,10 +8,10 @@ export default {
   weekNumber(state) {
     return parseInt(state.weekId?.split("-")[1])
   },
-  dayNames(state) {
-    return state.dates.map((date) => date.toLocaleDateString("en-US", { weekday: "long" }))
+  dayNames(state, getters, rootState, rootGetters) {
+    return state.dates.map((date) => date.toLocaleDateString(rootGetters['settings/dateLocale'], { weekday: "long" }))
   },
-  datesShort(state) {
-    return state.dates.map((date) => date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }))
+  datesShort(state, getters, rootState, rootGetters) {
+    return state.dates.map((date) => date.toLocaleDateString(rootGetters['settings/dateLocale'], { year: "numeric", month: "short", day: "numeric" }))
   },
 }

@@ -1,4 +1,7 @@
 export default {
+  dateLocale() {
+    return 'en-US'
+  },
   suggestions(state) {
     return state.suggestions
   },

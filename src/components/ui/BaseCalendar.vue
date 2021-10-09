@@ -91,10 +91,10 @@ export default {
   },
   computed: {
     selectedMonthName() {
-      return new Date(this.selectedYear, this.selectedMonth).toLocaleString("en-US", { month: "long" })
+      return new Date(this.selectedYear, this.selectedMonth).toLocaleString(this.$store.getters['settings/dateLocale'], { month: "long" })
     },
     shortDays() {
-      return ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+      return this.$store.getters['date/dates'].map(date => date.toLocaleDateString(this.$store.getters['settings/dateLocale'], { weekday: "short" }))
     },
     calendarPoint() {
       return this.$store.getters["date/dates"][3]
