@@ -102,11 +102,18 @@
   </base-modal>
 
   <base-confirm
+    ref="confirmOverwriteShift"
+    title="Shift already exists"
+    message="Do you want to overwrite it?"
+    choiceFalse="Go back"
+    choiceTrue="Overwrite shift"
+  ></base-confirm>
+
+  <base-confirm
     ref="confirmDeleteShift"
     message="Deleting this shift cannot be undone."
     choiceTrue="Delete Shift"
   ></base-confirm>
-  
 </template>
 
 <script>
@@ -247,28 +254,33 @@ export default {
       }
     },
     async saveEditShift() {
+      const employeeId = this.shift.employee.id
       const weekId = await this.$store.dispatch("date/getWeekId", this.shift.date)
       const day = this.shift.date.getUTCDay()
 
-      const stringifyTime = (time) => time.replace(":", "")
+      if (this.$store.getters["planner/schedules"][weekId][employeeId][day]) {
+        if (await this.$refs.confirmOverwriteShift.open()) {
+          const stringifyTime = (time) => time.replace(":", "")
 
-      const shiftId = {
-        employeeId: this.shift.employee.id,
-        weekId,
-        day,
+          const shiftId = {
+            employeeId,
+            weekId,
+            day,
+          }
+
+          const shiftInfo = {
+            place: this.shift.place,
+            start: stringifyTime(this.shift.start),
+            end: stringifyTime(this.shift.end),
+            break: this.shift.break,
+            notes: this.shift.notes || "",
+          }
+
+          this.$store.dispatch("planner/saveEditShift", { shiftId, shiftInfo })
+
+          this.closeEditShift()
+        }
       }
-
-      const shiftInfo = {
-        place: this.shift.place,
-        start: stringifyTime(this.shift.start),
-        end: stringifyTime(this.shift.end),
-        break: this.shift.break,
-        notes: this.shift.notes || "",
-      }
-
-      this.$store.dispatch("planner/saveEditShift", { shiftId, shiftInfo })
-
-      this.closeEditShift()
     },
     closeEditShift() {
       this.$store.dispatch("planner/setActiveShiftId", null)
