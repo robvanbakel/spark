@@ -33,6 +33,14 @@
       </div>
     </div>
   </section>
+
+  <base-confirm
+    ref="confirmUnsavedChanges"
+    title="Unsaved Changes"
+    message="Do you want to save your unsaved changes?"
+    choiceTrue="Save changes"
+    choiceFalse="Discard"
+  ></base-confirm>
 </template>
 
 <script>
@@ -58,6 +66,16 @@ export default {
   },
   mounted() {
     this.unsavedChanges = false
+  },
+  async beforeRouteLeave(to, from, next) {
+    if (!this.unsavedChanges) {
+      next()
+    } else {
+      if (await this.$refs.confirmUnsavedChanges.open()) {
+        this.saveSettings()
+      }
+      next()
+    }
   },
 }
 </script>

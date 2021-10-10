@@ -94,7 +94,7 @@
         iconOnly
         class="left"
         icon="delete"
-        @click="showConfirmDelete = true"
+        @click="deleteShift"
       ></base-button>
       <base-button secondary @click="closeEditShift">Cancel</base-button>
       <base-button @click="validate">Save</base-button>
@@ -102,11 +102,11 @@
   </base-modal>
 
   <base-confirm
+    ref="confirmDeleteShift"
     message="Deleting this shift cannot be undone."
     choiceTrue="Delete Shift"
-    v-if="showConfirmDelete"
-    @choice="deleteShift"
-  />
+  ></base-confirm>
+  
 </template>
 
 <script>
@@ -273,13 +273,11 @@ export default {
     closeEditShift() {
       this.$store.dispatch("planner/setActiveShiftId", null)
     },
-    deleteShift(confirmed) {
-      if (confirmed) {
+    async deleteShift() {
+      if (await this.$refs.confirmDeleteShift.open()) {
         this.$store.dispatch("planner/deleteShift")
         this.closeEditShift()
       }
-
-      this.showConfirmDelete = false
     },
   },
   async mounted() {

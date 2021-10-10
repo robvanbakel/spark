@@ -679,7 +679,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
+  z-index: 0;
 }
 .switch-wrapper > div .switch-control.toggle span {
   pointer-events: none;

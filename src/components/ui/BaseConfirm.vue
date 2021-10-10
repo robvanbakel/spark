@@ -1,5 +1,5 @@
 <template>
-  <base-modal tight centered :title="title">
+  <base-modal v-if="showConfirm" tight centered :title="title">
     <template v-slot:main>
       {{ message }}
     </template>
@@ -12,7 +12,6 @@
 
 <script>
 export default {
-  emits: ["choice"],
   props: {
     title: {
       type: String,
@@ -31,9 +30,22 @@ export default {
       default: "I'm sure",
     },
   },
+  data() {
+    return {
+      showConfirm: false,
+      choice: null,
+    }
+  },
   methods: {
+    open() {
+      this.showConfirm = true
+      return new Promise((resolve) => {
+        this.choice = resolve
+      })
+    },
     confirm(choice) {
-      this.$emit("choice", choice)
+      this.showConfirm = false
+      this.choice(choice)
     },
   },
 }

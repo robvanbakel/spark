@@ -64,7 +64,7 @@
         iconOnly
         icon="delete"
         class="left"
-        @click="showConfirmDelete = true"
+        @click="deleteEmployee"
       ></base-button>
       <base-button secondary @click="closeEditEmployee">Cancel</base-button>
       <base-button @click="saveEditEmployee">Save</base-button>
@@ -72,11 +72,10 @@
   </base-modal>
 
   <base-confirm
+    ref="confirmDeleteEmployee"
     message="Deleting an employee cannot be undone."
     choiceTrue="Delete Employee"
-    v-if="showConfirmDelete"
-    @choice="deleteEmployee"
-  />
+  ></base-confirm>
 </template>
 
 <script>
@@ -120,13 +119,11 @@ export default {
     closeEditEmployee() {
       this.$emit("closeEditEmployee")
     },
-    deleteEmployee(confirmed) {
-      if (confirmed) {
+    async deleteEmployee() {
+      if (await this.$refs.confirmDeleteEmployee.open()) {
         this.activeEmployee.status = "archived"
         this.saveEditEmployee()
       }
-
-      this.showConfirmDelete = false
     },
     async saveEditEmployee() {
       // TODO verify data
