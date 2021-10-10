@@ -102,11 +102,11 @@
   </base-modal>
 
   <base-confirm
-    ref="confirmOverwriteShift"
+    ref="confirmReplaceShift"
     title="Shift already exists"
-    message="Do you want to overwrite it?"
+    message="This employee already has a shift on that day. Do you want to replace it?"
     choiceFalse="Go back"
-    choiceTrue="Overwrite shift"
+    choiceTrue="Replace shift"
   ></base-confirm>
 
   <base-confirm
@@ -258,29 +258,46 @@ export default {
       const weekId = await this.$store.dispatch("date/getWeekId", this.shift.date)
       const day = this.shift.date.getUTCDay()
 
-      if (this.$store.getters["planner/schedules"][weekId][employeeId][day]) {
-        if (await this.$refs.confirmOverwriteShift.open()) {
-          const stringifyTime = (time) => time.replace(":", "")
+      const shiftId = {
+        employeeId,
+        weekId,
+        day,
+      }
 
-          const shiftId = {
-            employeeId,
-            weekId,
-            day,
+      // Helper function to check if target shiftId is equal to active shiftId
+      const compareObjects = (obj1, obj2) => {
+        for (const key in obj1) {
+          if (obj1[key] !== obj2[key]) {
+            return false
           }
+        }
+        return true
+      }
 
-          const shiftInfo = {
-            place: this.shift.place,
-            start: stringifyTime(this.shift.start),
-            end: stringifyTime(this.shift.end),
-            break: this.shift.break,
-            notes: this.shift.notes || "",
-          }
-
-          this.$store.dispatch("planner/saveEditShift", { shiftId, shiftInfo })
-
-          this.closeEditShift()
+      // If target shiftId already exists and is not active shiftId, ask for confirmation
+      if (
+        this.$store.getters["planner/schedules"][weekId][employeeId][day] &&
+        !compareObjects(shiftId, this.$store.getters["planner/activeShiftId"])
+      ) {
+        // If user doesn't confirm, don't save current shift
+        if (!(await this.$refs.confirmReplaceShift.open())) {
+          return
         }
       }
+
+      // Save shift and exit modal
+      const stringifyTime = (time) => time.replace(":", "")
+
+      const shiftInfo = {
+        place: this.shift.place,
+        start: stringifyTime(this.shift.start),
+        end: stringifyTime(this.shift.end),
+        break: this.shift.break,
+        notes: this.shift.notes || "",
+      }
+      
+      this.$store.dispatch("planner/saveEditShift", { shiftId, shiftInfo })
+      this.closeEditShift()
     },
     closeEditShift() {
       this.$store.dispatch("planner/setActiveShiftId", null)
