@@ -31,20 +31,27 @@ export default {
     error: {
       type: Boolean,
       require: false,
-    }
+    },
   },
   data() {
     return {
       dropdownVisible: false,
-      input: this.items.find((item) => item.id === this.active) || '',
+      input: this.items.find((item) => item.id === this.active) || "",
     }
   },
   methods: {
     showDropdown() {
       this.dropdownVisible = true
+      window.addEventListener("keydown", this.keyDownHandler)
+    },
+    keyDownHandler(e) {
+      if (e.key === "Escape") {
+        this.hideDropdown()
+      }
     },
     hideDropdown() {
       this.dropdownVisible = false
+      window.removeEventListener("keydown", this.keyDownHandler)
     },
     selectItem(choice) {
       this.input = this.items.find((item) => item.id === choice)
