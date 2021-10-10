@@ -1558,6 +1558,7 @@ section#planner .row .day .shift-info span.time {
 .plannerCalendar .dates p.current-date {
   font-weight: 900;
   color: #de6035;
+  z-index: -1;
 }
 .plannerCalendar .dates p.selected::before {
   content: "";
