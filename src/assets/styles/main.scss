@@ -1160,7 +1160,7 @@ section#planner {
         height: 27px;
         left: 0;
         background-color: color.$select;
-        z-index: -1;
+        z-index: -2;
       }
       &:not(.prev-month):not(.next-month):hover::after {
         content: "";
@@ -1172,7 +1172,7 @@ section#planner {
         transform: translateY(-27px);
         left: 0;
         background-color: color.$select;
-        z-index: -1;
+        z-index: -2;
       }
     }
   }
