@@ -313,6 +313,11 @@ button {
     box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
     width: 360px;
     margin: 0 auto;
+    &.success {
+      button {
+        margin: 0 auto;
+      }
+    }
     h1 {
       font-size: 24px;
       font-weight: 500;
@@ -322,10 +327,11 @@ button {
     }
     p {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
       font-size: 14px;
       margin-top: -22px;
       &.error {
+        margin-top: 0;
         color: color.$danger;
         font-size: 13px;
         margin-bottom: 12px;
@@ -343,6 +349,7 @@ button {
         padding: 0 20px;
         outline: none;
         margin-bottom: 12px;
+
         &.error {
           border-color: color.$danger;
           background-color: color.$danger-light;

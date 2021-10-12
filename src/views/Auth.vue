@@ -3,21 +3,28 @@
     <div class="logo">
       <img src="@/assets/logo.svg" alt="Scheduler" />
     </div>
-    <SignIn />
+    <div v-if="$route.query.activationToken">
+      <ActivateAccount />
+    </div>
+    <div v-else>
+      <SignIn />
+    </div>
   </div>
 </template>
 
 <script>
-import SignIn from "@/components/layout/SignIn";
+import ActivateAccount from "@/components/layout/ActivateAccount"
+import SignIn from "@/components/layout/SignIn"
 
 export default {
   components: {
+    ActivateAccount,
     SignIn,
   },
   data() {
     return {
       userStatus: null,
-    };
+    }
   },
-};
+}
 </script>
