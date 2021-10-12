@@ -276,8 +276,10 @@ export default {
 
       // If target shiftId already exists and is not active shiftId, ask for confirmation
       if (
-        this.$store.getters["planner/schedules"][weekId][employeeId][day] &&
-        !compareObjects(shiftId, this.$store.getters["planner/activeShiftId"])
+        !compareObjects(shiftId, this.$store.getters["planner/activeShiftId"]) &&
+        this.$store.getters["planner/schedules"][weekId] &&
+        this.$store.getters["planner/schedules"][weekId][employeeId] &&
+        this.$store.getters["planner/schedules"][weekId][employeeId][day]
       ) {
         // If user doesn't confirm, don't save current shift
         if (!(await this.$refs.confirmReplaceShift.open())) {
@@ -295,7 +297,7 @@ export default {
         break: this.shift.break,
         notes: this.shift.notes || "",
       }
-      
+
       this.$store.dispatch("planner/saveEditShift", { shiftId, shiftInfo })
       this.closeEditShift()
     },
