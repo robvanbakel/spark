@@ -4,9 +4,9 @@
       <h1>Welcome</h1>
       <p>Please enter your email address and click continue to choose a password.</p>
       <p class="error" v-if="errorMessage">{{ errorMessage }}</p>
-      <form @submit.prevent="validate">
-        <input type="email" placeholder="Email" v-model.trim="email" />
-        <base-button v-if="!loading" @click="confirmEmail">Continue</base-button>
+      <form @submit.prevent="confirmEmail">
+        <input type="email" placeholder="Email" required v-model.trim="email" ref="email" autofocus />
+        <base-button v-if="!loading" type="submit">Continue</base-button>
         <base-button v-else disabled>Loading…</base-button>
       </form>
     </div>
@@ -15,10 +15,10 @@
       <h1>Hi {{ firstName }}</h1>
       <p>Choose a strong password and submit in order to activate your account and login to see your schedule.</p>
       <p class="error" v-if="errorMessage">{{ errorMessage }}</p>
-      <form @submit.prevent="validate">
-        <input type="password" placeholder="Password" v-model="password" />
-        <input type="password" placeholder="Repeat password" v-model="repeatPassword" />
-        <base-button v-if="!loading" @click="setPassword">Activate Account</base-button>
+      <form @submit.prevent="setPassword">
+        <input type="password" placeholder="Password" v-model="password" ref="password" />
+        <input type="password" placeholder="Repeat password" v-model="repeatPassword" ref="repeatPassword" />
+        <base-button v-if="!loading" type="submit">Activate Account</base-button>
         <base-button v-else disabled>Loading…</base-button>
       </form>
     </div>
@@ -73,8 +73,42 @@ export default {
 
       this.loading = false
     },
+    resetPasswordFields() {
+      this.password = ""
+      this.repeatPassword = ""
+      this.$refs.password.focus()
+    },
     async setPassword() {
+      // Validate if password field is empty
+      if (!this.password) {
+        this.errorMessage = "Please choose a password"
+        this.resetPasswordFields()
+        return
+      }
+
+      // Validate if passwords is long enough
+      if (this.password.length < 6) {
+        this.errorMessage = "Please choose a longer password"
+        this.resetPasswordFields()
+        return
+      }
+
+      // Validate repeatPassword field is empty
+      if (this.password && !this.repeatPassword) {
+        this.errorMessage = "Please repeat your password"
+        this.$refs.repeatPassword.focus()
+        return
+      }
+
+      // Check if passwords match
+      if (this.password !== this.repeatPassword) {
+        this.errorMessage = "Passwords do not match"
+        this.resetPasswordFields()
+        return
+      }
+
       this.loading = true
+      this.errorMessage = null
 
       try {
         const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/activateAccount`, {
@@ -101,6 +135,15 @@ export default {
     },
     toLogin() {
       this.$router.push({ name: "Auth" })
+    },
+  },
+  watch: {
+    emailConfirmed(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.$refs.password.focus()
+        })
+      }
     },
   },
 }
