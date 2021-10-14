@@ -1,7 +1,5 @@
 import { auth } from "@/firebase"
 
-import router from "@/router"
-
 export default {
   async login(context, payload) {
     try {
@@ -12,13 +10,8 @@ export default {
       return err
     }
   },
-  logout(context) {
+  logout() {
     auth.signOut()
-
-    // Reset data
-    context.commit("planner/schedules", null, { root: true })
-    context.commit("employees/setUsers", null, { root: true })
-
-    router.push({ name: "Auth" })
+    location.reload()
   },
 }
