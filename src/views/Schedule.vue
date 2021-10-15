@@ -103,7 +103,7 @@ export default {
   },
   computed: {
     webcalLink() {
-      return `webcal://planner.robvanbakel.com/feed/${this.$store.getters["auth/user"].id}`
+      return `webcal://demo.sparkscheduler.com/feed/${this.$store.getters["auth/user"].id}`
     },
     schedule() {
       const schedules = this.$store.getters["planner/schedules"]

@@ -67,7 +67,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  let title = "Planner"
+  let title = "Spark"
 
   if (to.meta.title) {
     title = `${to.meta.title} - ${title}`

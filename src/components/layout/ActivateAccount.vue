@@ -26,7 +26,7 @@
 
   <div class="auth-modal success" v-else>
     <h1>Success!</h1>
-    <p>Your account has been successfully activated! You can now log in to the planner to see your schedule.</p>
+    <p>Your account has been successfully activated! You can now log in to Spark to see your schedule.</p>
     <base-button icon="login" @click="toLogin">Login page</base-button>
   </div>
 </template>
