@@ -23,4 +23,7 @@ export default {
   breaks(state) {
     return state.breaks
   },
+  statuses(state) {
+    return state.statuses
+  }
 }

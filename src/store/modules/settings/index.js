@@ -13,6 +13,7 @@ export default {
       hideSidebar: false,
       sidebarAutoHidden: false,
       breaks: ['0', '15', '30', '45', '60'],
+      statuses: ['active','unavailable','sick','inactive','staged']
     }
   },
   mutations,

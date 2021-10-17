@@ -14,7 +14,12 @@
         :status="status"
         :class="{ inactive: !filters[status] }"
       ></base-badge>
-      <span v-if="Object.values(filters).includes(true)" class="clear material-icons material-icons-round" @click="clearFilters">clear</span>
+      <span
+        v-if="Object.values(filters).includes(true)"
+        class="clear material-icons material-icons-round"
+        @click="clearFilters"
+        >clear</span
+      >
     </div>
     <div class="actions">
       <base-button @click="addNewEmployee" icon="add">Add Employee</base-button>
@@ -43,7 +48,12 @@
       </div>
     </section>
   </main>
-  <EditEmployee v-if="activeEmployee" :new="newEmployee" :employee="activeEmployee" @close-edit-employee="closeEditEmployee" />
+  <EditEmployee
+    v-if="activeEmployee"
+    :new="newEmployee"
+    :employee="activeEmployee"
+    @close-edit-employee="closeEditEmployee"
+  />
 </template>
 
 <script>
@@ -58,13 +68,7 @@ export default {
       newEmployee: false,
       activeEmployee: null,
       searchInput: "",
-      filters: {
-        active: false,
-        unavailable: false,
-        sick: false,
-        inactive: false,
-        staged: false,
-      },
+      filters: {},
     }
   },
   computed: {
@@ -116,6 +120,12 @@ export default {
       this.newEmployee = true
       this.activeEmployee = true
     },
+  },
+  mounted() {
+    this.filters = this.$store.getters["settings/statuses"].reduce(
+      (filters, status) => ((filters[status.toLowerCase()] = false), filters),
+      {}
+    )
   },
 }
 </script>
