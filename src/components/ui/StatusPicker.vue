@@ -22,22 +22,26 @@ export default {
   props: ["activeStatus"],
   data() {
     return {
-      statuses: ["active", "sick", "unavailable", "inactive"],
       showDropdown: false,
-    };
+    }
   },
   methods: {
     toggleDropdown() {
-      this.showDropdown = !this.showDropdown;
+      this.showDropdown = !this.showDropdown
     },
     setStatus(status) {
       if (status != this.activeStatus) {
-        this.$emit("setActiveStatus", status);
-        this.showDropdown = false;
+        this.$emit("setActiveStatus", status)
+        this.showDropdown = false
       }
     },
   },
-};
+  computed: {
+    statuses() {
+      return this.$store.getters["settings/statuses"].filter((status) => status !== "staged")
+    },
+  },
+}
 </script>
 
 <style></style>
