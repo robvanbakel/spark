@@ -45,19 +45,19 @@ In order to login as an employee, use any of the demo employee email addresses a
 
 ###### List of employees
 
-![EmployeeList](https://i.imgur.com/CF7wd8H.jpeg)
+![EmployeeList](https://i.imgur.com/CDkqjqD.jpg)
 
 ###### Modal to edit employee details
 
-![EditEmployee](https://i.imgur.com/66qFPCK.jpeg)
+![EditEmployee](https://i.imgur.com/Mt6jfpl.jpg)
 
 ###### Weekly view of the planner
 
-![Planner](https://i.imgur.com/xmKoobt.jpeg)
+![Planner](https://i.imgur.com/M6E8ZN0.jpg)
 
 ###### Modal to edit a shift
 
-![EditShift](https://i.imgur.com/O8YSxef.jpeg)
+![EditShift](https://i.imgur.com/OtzBblf.jpg)
 
 #### Built With
 
