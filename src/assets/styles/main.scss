@@ -788,6 +788,9 @@ section#planner {
       span.hours {
         font-size: 11px;
         color: color.$text-500;
+        span.calculated {
+          font-weight: 600;
+        }
       }
     }
     .day {

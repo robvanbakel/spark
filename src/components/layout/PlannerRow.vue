@@ -4,7 +4,7 @@
       <div class="row" v-if="employeeInfo(employeeId, 'role') === role && employeeInfo(employeeId, 'status') !== 'archived'">
         <div class="employee">
           <span class="name">{{ employeeInfo(employeeId, "fullName") }}</span>
-          <span class="hours">{{ totalHours(employeeId) }} hours</span>
+          <span class="hours"><span class="calculated">{{ totalHours(employeeId) }}</span> / {{ employeeInfo(employeeId, "contract") }} hours</span>
         </div>
         <div
           v-for="(shift, day) in $store.getters['planner/currentWeekSchedule'][employeeId]"

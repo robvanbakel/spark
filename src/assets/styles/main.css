@@ -1202,6 +1202,9 @@ section#planner .row .employee span.hours {
   font-size: 11px;
   color: #a7a3ac;
 }
+section#planner .row .employee span.hours span.calculated {
+  font-weight: 600;
+}
 section#planner .row .day {
   height: 100%;
   border-radius: 3px;
