@@ -14,11 +14,22 @@
         :status="status"
         :class="{ inactive: !filters[status] }"
       ></base-badge>
-      <span v-if="Object.values(filters).includes(true)" class="clear material-icons material-icons-round" @click="clearFilters">clear</span>
+      <span
+        v-if="Object.values(filters).includes(true)"
+        class="clear material-icons material-icons-round"
+        @click="clearFilters"
+        >clear</span
+      >
     </div>
     <div class="actions">
       <base-button icon="add" @click="addNewShift">Add Shift</base-button>
-      <base-button inverted iconOnly :flipped="!$store.getters['settings/hideSidebar']" icon="menu_open" @click="toggleSidebar"></base-button>
+      <base-button
+        inverted
+        iconOnly
+        :flipped="!$store.getters['settings/hideSidebar']"
+        icon="menu_open"
+        @click="toggleSidebar"
+      ></base-button>
     </div>
   </div>
   <main v-if="$store.getters['planner/schedules']">
@@ -46,6 +57,9 @@
       <section>
         <PlannerCalendar />
       </section>
+      <section>
+        <PlusMinusHours />
+      </section>
     </the-sidebar>
   </main>
 </template>
@@ -54,6 +68,7 @@
 import PlannerContent from "@/components/layout/PlannerContent"
 import EditShift from "@/components/layout/EditShift"
 import PlannerCalendar from "@/components/layout/PlannerCalendar"
+import PlusMinusHours from "@/components/layout/PlusMinusHours"
 import EmptyWeek from "@/components/layout/EmptyWeek"
 
 export default {
@@ -62,6 +77,7 @@ export default {
     PlannerContent,
     EditShift,
     PlannerCalendar,
+    PlusMinusHours,
     EmptyWeek,
   },
   data() {
@@ -116,7 +132,10 @@ export default {
     },
   },
   mounted() {
-    this.filters = this.$store.getters["settings/roles"].reduce((filters, role) => ((filters[role.toLowerCase()] = false), filters), {})
+    this.filters = this.$store.getters["settings/roles"].reduce(
+      (filters, role) => ((filters[role.toLowerCase()] = false), filters),
+      {}
+    )
   },
 }
 </script>
