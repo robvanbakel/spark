@@ -1815,3 +1815,46 @@ section#settings .settings-group .setting.toggle {
 section#settings .settings-group .setting.toggle span.label {
   font-size: 14px;
 }
+
+.plus-minus-hours-wrapper .entry {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.plus-minus-hours-wrapper .entry:not(:last-child) {
+  margin-bottom: 16px;
+}
+.plus-minus-hours-wrapper .entry .hours {
+  width: 40px;
+  margin-right: 18px;
+  font-size: 12px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+}
+.plus-minus-hours-wrapper .entry .hours span {
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.plus-minus-hours-wrapper .entry .hours span.minus {
+  background-color: #e86a5d;
+}
+.plus-minus-hours-wrapper .entry .hours span.plus {
+  background-color: #7dcc71;
+}
+.plus-minus-hours-wrapper .entry .employee-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.plus-minus-hours-wrapper .entry .employee-info span.name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2f273c;
+  margin-bottom: 4px;
+}
+.plus-minus-hours-wrapper .entry .employee-info span.role {
+  font-size: 12px;
+  font-weight: 400;
+  color: #a7a3ac;
+}

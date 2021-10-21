@@ -1416,3 +1416,48 @@ section#settings {
     }
   }
 }
+
+.plus-minus-hours-wrapper {
+  .entry {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
+    .hours {
+      width: 40px;
+      margin-right: 18px;
+      font-size: 12px;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      span {
+        padding: 2px 6px;
+        border-radius: 3px;
+      }
+      span.minus {
+        background-color: color.$red;
+      }
+      span.plus {
+        background-color: color.$green;
+      }
+    }
+    .employee-info {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      span.name {
+        font-size: 14px;
+        font-weight: 600;
+        color: color.$text-100;
+        margin-bottom: 4px;
+      }
+      span.role {
+        font-size: 12px;
+        font-weight: 400;
+        color: color.$text-500;
+      }
+    }
+  }
+}
