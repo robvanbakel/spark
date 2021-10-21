@@ -1,10 +1,16 @@
 <template>
   <div v-if="this.role">
     <div v-for="(schedule, employeeId) in $store.getters['planner/currentWeekSchedule']" :key="schedule">
-      <div class="row" v-if="employeeInfo(employeeId, 'role') === role && employeeInfo(employeeId, 'status') !== 'archived'">
+      <div
+        class="row"
+        v-if="employeeInfo(employeeId, 'role') === role && employeeInfo(employeeId, 'status') !== 'archived'"
+      >
         <div class="employee">
           <span class="name">{{ employeeInfo(employeeId, "fullName") }}</span>
-          <span class="hours"><span class="calculated">{{ totalHours(employeeId) }}</span> / {{ employeeInfo(employeeId, "contract") }} hours</span>
+          <span class="hours"
+            ><span class="calculated">{{ $store.getters['employees/totalHours'][employeeId] }}</span> /
+            {{ employeeInfo(employeeId, "contract") }} hours</span
+          >
         </div>
         <div
           v-for="(shift, day) in $store.getters['planner/currentWeekSchedule'][employeeId]"
@@ -22,7 +28,9 @@
           <div class="shift-info" v-if="shift">
             <span class="place">{{ shift.place }}</span>
             <span class="time">
-              {{ shift.start.substring(0, 2) }}:{{ shift.start.substring(2, 4) }} - {{ shift.end.substring(0, 2) }}:{{ shift.end.substring(2, 4) }}
+              {{ shift.start.substring(0, 2) }}:{{ shift.start.substring(2, 4) }} - {{ shift.end.substring(0, 2) }}:{{
+                shift.end.substring(2, 4)
+              }}
             </span>
           </div>
         </div>
@@ -79,31 +87,6 @@ export default {
       }
 
       return output
-    },
-    totalHours(id) {
-      let total = 0
-
-      this.$store.getters["planner/currentWeekSchedule"][id].forEach((shift) => {
-        if (shift) {
-          const [startHours, startMinutes] = shift.start.match(/\d{2}/g)
-          const [endHours, endMinutes] = shift.end.match(/\d{2}/g)
-
-          const start = new Date(0)
-          start.setHours(startHours)
-          start.setMinutes(startMinutes)
-          const end = new Date(0)
-
-          end.setHours(endHours)
-          end.setMinutes(endMinutes)
-
-          const totalHours = Math.abs(start - end)
-
-          total += totalHours / 1000 / 60 / 60
-          total -= shift.break / 60
-        }
-      })
-
-      return total.toFixed(2)
     },
     shiftInfo(payload, query) {
       const shift = this.$store.getters["planner/currentWeekSchedule"][payload.employeeId][payload.day - 1]

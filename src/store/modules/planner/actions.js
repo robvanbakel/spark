@@ -13,7 +13,9 @@ export default {
       })
     } else {
       // If user is not admin, get schedules associated with current user
-      const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/getSchedules/${context.rootGetters["auth/user"].id}`)
+      const res = await fetch(
+        `${process.env.VUE_APP_ADMIN_HOST || ""}/getSchedules/${context.rootGetters["auth/user"].id}`
+      )
       schedules = await res.json()
     }
 
@@ -34,7 +36,10 @@ export default {
     }
 
     // If shiftId changed, remove shift with old shiftId
-    if (context.getters["activeShiftId"] !== "new" && shiftIdChanged(context.getters["activeShiftId"], payload.shiftId)) {
+    if (
+      context.getters["activeShiftId"] !== "new" &&
+      shiftIdChanged(context.getters["activeShiftId"], payload.shiftId)
+    ) {
       context.dispatch("deleteShift")
     }
 
