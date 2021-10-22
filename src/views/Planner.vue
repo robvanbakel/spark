@@ -57,7 +57,7 @@
       <section>
         <PlannerCalendar />
       </section>
-      <section v-if="!emptyWeek">
+      <section v-if="!emptyWeek || hideEmptyWeek">
         <PlusMinusHours v-for="role in displayRoles" :key="role" :role="role" />
       </section>
     </the-sidebar>
