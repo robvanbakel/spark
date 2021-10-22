@@ -1,6 +1,6 @@
 <template>
-  <div class="plus-minus-hours-wrapper">
-    <div class="entry" v-for="employee in $store.getters['employees/employees']" :key="employee.id">
+  <div class="plus-minus-hours-wrapper" v-for="employee in $store.getters['employees/employees']" :key="employee.id">
+    <div class="entry" v-if="employee.role.toLowerCase() === role">
       <div class="hours">
         <span :class="calculatePlusMinusHours(employee.id) < 0 ? 'minus' : 'plus'">{{
           calculatePlusMinusHours(employee.id)
@@ -16,6 +16,7 @@
 
 <script>
 export default {
+  props: ["role"],
   methods: {
     calculatePlusMinusHours(employeeId) {
       const contractHours = this.$store.getters["employees/employees"].find((employee) => employee.id === employeeId)[

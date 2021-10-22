@@ -1418,13 +1418,14 @@ section#settings {
 }
 
 .plus-minus-hours-wrapper {
+  &:last-child {
+    margin-bottom: -16px;
+  }
   .entry {
     display: flex;
     justify-content: center;
     align-items: center;
-    &:not(:last-child) {
-      margin-bottom: 16px;
-    }
+    margin-bottom: 16px;
     .hours {
       width: 40px;
       margin-right: 18px;

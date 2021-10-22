@@ -1816,12 +1816,13 @@ section#settings .settings-group .setting.toggle span.label {
   font-size: 14px;
 }
 
+.plus-minus-hours-wrapper:last-child {
+  margin-bottom: -16px;
+}
 .plus-minus-hours-wrapper .entry {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.plus-minus-hours-wrapper .entry:not(:last-child) {
   margin-bottom: 16px;
 }
 .plus-minus-hours-wrapper .entry .hours {
