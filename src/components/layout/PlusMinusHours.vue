@@ -1,6 +1,6 @@
 <template>
   <div class="plus-minus-hours-wrapper" v-for="employee in $store.getters['employees/employees']" :key="employee.id">
-    <div class="entry" v-if="employee.role.toLowerCase() === role">
+    <div class="entry" v-if="employee.role.toLowerCase() === role && calculatePlusMinusHours(employee.id) != 0">
       <div class="hours">
         <span :class="calculatePlusMinusHours(employee.id) < 0 ? 'minus' : 'plus'">{{
           calculatePlusMinusHours(employee.id)
