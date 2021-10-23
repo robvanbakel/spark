@@ -53,11 +53,11 @@ In order to login as an employee, use any of the demo employee email addresses a
 
 ###### Weekly view of the planner
 
-![Planner](https://i.imgur.com/M6E8ZN0.jpg)
+![Planner](https://i.imgur.com/qJYeze7.jpg)
 
 ###### Modal to edit a shift
 
-![EditShift](https://i.imgur.com/OtzBblf.jpg)
+![EditShift](https://i.imgur.com/8lHjFzo.jpg)
 
 #### Built With
 
