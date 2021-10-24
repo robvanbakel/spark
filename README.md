@@ -1,6 +1,6 @@
 # Spark
 
-Spark aims to make it easy for employers to create and share work schedules with their employees. Employees will be notified when their schedule changes and will be prompted to approve the updates before they are automatically added to their phone's calendar.
+Spark aims to make it easy for employers to manage their staff, as well as create and share work schedules with their employees. Weekly schedules can be made in the app, which are then being pushed to a calendar feed that employees can subscribe to.
 
 Read the [Demo section](#demo) to learn how to access the demo environment.
 
