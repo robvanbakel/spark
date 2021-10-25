@@ -1736,6 +1736,13 @@ section#singleEmployeeCalendar .calendar .colCalendar .row .shift span.notes {
   color: #508df0;
   opacity: 0.65;
 }
+section#singleEmployeeCalendar .empty-schedule {
+  padding: 24px 0;
+  text-align: center;
+}
+section#singleEmployeeCalendar .empty-schedule p {
+  font-size: 16px;
+}
 
 .base-modal.schedule-shift-info .shift-info-group {
   display: grid;

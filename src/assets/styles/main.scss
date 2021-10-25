@@ -1331,6 +1331,14 @@ section#singleEmployeeCalendar {
       }
     }
   }
+  .empty-schedule {
+    padding: 24px 0;
+    text-align: center;
+    p {
+      font-size: 16px;
+    }
+
+  }
 }
 
 .base-modal.schedule-shift-info {

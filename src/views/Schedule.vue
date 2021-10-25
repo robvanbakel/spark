@@ -10,7 +10,7 @@
           </base-button>
         </div>
       </div>
-      <div class="calendar">
+      <div class="calendar" v-if="schedule">
         <div class="colDays">
           <div class="row" v-for="(day, index) in 7" :key="index">
             <span class="dayName"> {{ $store.getters["date/dayNames"][index] }}</span>
@@ -19,7 +19,10 @@
         </div>
         <div class="colCalendar" ref="calendar">
           <div class="hours">
-            <span v-for="(hour, index) in 25" :key="index" :style="{ width: `${dayWidth}px`, '--calendarHeight': `${calendarHeight + 12}px` }"
+            <span
+              v-for="(hour, index) in 25"
+              :key="index"
+              :style="{ width: `${dayWidth}px`, '--calendarHeight': `${calendarHeight + 12}px` }"
               >{{ index.toString().padStart(2, "0") }}:00</span
             >
           </div>
@@ -27,7 +30,10 @@
             <div
               class="shift"
               v-if="day"
-              :style="{ width: `${timeRangeToPercentage(day.start, day.end).percentage}%`, left: `${timeRangeToPercentage(day.start, day.end).startPoint}%` }"
+              :style="{
+                width: `${timeRangeToPercentage(day.start, day.end).percentage}%`,
+                left: `${timeRangeToPercentage(day.start, day.end).startPoint}%`,
+              }"
               @click="setActiveShift(day, index)"
             >
               <span class="place"> {{ day.place }}</span>
@@ -37,9 +43,19 @@
           </div>
         </div>
       </div>
+      <div class="empty-schedule" v-else>
+        <p>No schedule available for week {{ $store.getters["date/weekNumber"] }}.</p>
+      </div>
     </section>
 
-    <base-modal class="schedule-shift-info" v-if="activeShift" title="Shift info" globalClose clickout @close="closeActiveShift">
+    <base-modal
+      class="schedule-shift-info"
+      v-if="activeShift"
+      title="Shift info"
+      globalClose
+      clickout
+      @close="closeActiveShift"
+    >
       <template v-slot:main>
         <div class="shift-info-group">
           <span class="label">Date</span>
@@ -248,8 +264,15 @@ export default {
 
       // Construct object
       this.activeShift = {
-        date: this.$store.getters["date/dates"][index].toLocaleDateString(this.$store.getters['settings/dateLocale'], { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
-        dateShort: this.$store.getters["date/dates"][index].toLocaleDateString(this.$store.getters['settings/dateLocale']),
+        date: this.$store.getters["date/dates"][index].toLocaleDateString(this.$store.getters["settings/dateLocale"], {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+        dateShort: this.$store.getters["date/dates"][index].toLocaleDateString(
+          this.$store.getters["settings/dateLocale"]
+        ),
         place: shift.place,
         start: shift.start,
         end: shift.end,
