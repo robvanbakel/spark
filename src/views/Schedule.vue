@@ -184,6 +184,9 @@ export default {
 
       return -startPoint * this.dayWidth
     },
+    hideSidebar() {
+      return this.$store.getters["settings/hideSidebar"]
+    },
   },
   watch: {
     $route(to) {
@@ -193,6 +196,11 @@ export default {
         this.hideEmptyWeek = false
         document.title = `Week ${parseInt(this.$route.params.weekId.split("-")[1])} - Planner`
       }
+    },
+    hideSidebar() {
+      setTimeout(() => {
+        this.checkCalendarWidth()
+      }, 260) // Wait for CSS animation to finish
     },
   },
   methods: {

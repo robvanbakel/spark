@@ -339,6 +339,7 @@ body {
 .container {
   margin: 0 auto;
   min-width: 880px;
+  overflow: hidden;
 }
 
 .overlay {
@@ -383,6 +384,7 @@ aside, aside > * {
 }
 aside.hidden {
   margin-left: -264px;
+  pointer-events: none;
 }
 aside.hidden > * {
   opacity: 0;

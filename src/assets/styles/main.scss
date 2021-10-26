@@ -27,6 +27,7 @@ body {
 .container {
   margin: 0 auto;
   min-width: 880px;
+  overflow: hidden;
 }
 
 .overlay {
@@ -71,6 +72,7 @@ aside {
   }
   &.hidden {
     margin-left: -264px;
+    pointer-events: none;
     & > * {
       opacity: 0;
       transform: translateX(304px); // width + margin-left
