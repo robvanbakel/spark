@@ -35,7 +35,7 @@ export default {
       // Set global auth/admin variable to false
       context.commit("auth/admin", false, { root: true })
 
-      const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/getUser/${uid}`)
+      const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/admin/getUser/${uid}`)
       const user = await res.json()
 
       context.commit("auth/setUser", user, { root: true })
@@ -58,7 +58,7 @@ export default {
 
     if (!context.rootGetters["auth/user"].demo) {
       // Create new user on Firebase
-      const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/createNewUser`, {
+      const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/admin/createNewUser`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

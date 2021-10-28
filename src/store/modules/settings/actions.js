@@ -70,6 +70,6 @@ export default {
       .update(payload)
 
     // Send call to server to update stored settings
-    fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/updateSettings`)
+    fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/admin/updateSettings`)
   },
 }

@@ -49,7 +49,7 @@ export default {
     async confirmEmail() {
       this.loading = true
 
-      const baseUrl = `${process.env.VUE_APP_ADMIN_HOST || ""}/activateAccount`
+      const baseUrl = `${process.env.VUE_APP_ADMIN_HOST || ""}/admin/activateAccount`
 
       const activationToken = this.$route.query.activationToken
       const email = encodeURIComponent(this.email)
@@ -111,7 +111,7 @@ export default {
       this.errorMessage = null
 
       try {
-        const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/activateAccount`, {
+        const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/admin/activateAccount`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

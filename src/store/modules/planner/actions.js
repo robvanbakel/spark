@@ -14,7 +14,7 @@ export default {
     } else {
       // If user is not admin, get schedules associated with current user
       const res = await fetch(
-        `${process.env.VUE_APP_ADMIN_HOST || ""}/getSchedules/${context.rootGetters["auth/user"].id}`
+        `${process.env.VUE_APP_ADMIN_HOST || ""}/admin/getSchedules/${context.rootGetters["auth/user"].id}`
       )
       schedules = await res.json()
     }
