@@ -4,7 +4,7 @@
       {{ message }}
     </template>
     <template v-slot:actions>
-      <base-button secondary @click="confirm(false)">{{ choiceFalse }}</base-button>
+      <base-button v-if="!noFalse" secondary @click="confirm(false)">{{ choiceFalse }}</base-button>
       <base-button @click="confirm(true)">{{ choiceTrue }}</base-button>
     </template>
   </base-modal>
@@ -28,6 +28,10 @@ export default {
     choiceTrue: {
       type: String,
       default: "I'm sure",
+    },
+    noFalse: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
