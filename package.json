@@ -11,7 +11,11 @@
     "type": "git",
     "url": "git+https://github.com/robvanbakel/spark.git"
   },
-  "author": "Rob van Bakel",
+  "author": {
+    "name": "Rob van Bakel",
+    "email": "robbakel@gmail.com",
+    "url": "https://robvanbakel.com"
+  },
   "bugs": {
     "url": "https://github.com/robvanbakel/spark/issues"
   },
