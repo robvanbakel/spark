@@ -41,6 +41,14 @@
     choiceTrue="Save changes"
     choiceFalse="Discard"
   ></base-confirm>
+
+  <base-confirm
+    ref="settingsSaved"
+    title="Success!"
+    message="Your settings have been saved."
+    choiceTrue="Ok"
+    noFalse
+  ></base-confirm>
 </template>
 
 <script>
@@ -59,9 +67,12 @@ export default {
       this.unsavedChanges = true
       this.shareWithEmployees[id] = value
     },
-    saveSettings() {
-      this.unsavedChanges = false
+    async saveSettings() {
       this.$store.dispatch("settings/setShareWithEmployees", this.shareWithEmployees)
+
+      if (await this.$refs.settingsSaved.open()) {
+        this.unsavedChanges = false
+      }
     },
   },
   mounted() {
