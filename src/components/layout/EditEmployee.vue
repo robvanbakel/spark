@@ -16,13 +16,20 @@
           <input
             type="text"
             id="firstName"
+            @input="clearError('firstName')"
             :class="{ error: error.firstName }"
             v-model.trim="activeEmployee.firstName"
           />
         </div>
         <div class="form-control">
           <label for="lastName">Last name</label>
-          <input type="text" id="lastName" :class="{ error: error.lastName }" v-model.trim="activeEmployee.lastName" />
+          <input
+            type="text"
+            id="lastName"
+            @input="clearError('lastName')"
+            :class="{ error: error.lastName }"
+            v-model.trim="activeEmployee.lastName"
+          />
         </div>
       </div>
       <div class="form-control">
@@ -42,6 +49,7 @@
             <input
               type="text"
               id="contract"
+               @input="clearError('contract')"
               :class="{ error: error.contract }"
               v-model.trim="activeEmployee.contract"
             />
@@ -57,7 +65,7 @@
       </div>
       <div class="form-control">
         <label for="email">Email</label>
-        <input type="text" id="email" :class="{ error: error.email }" v-model.trim="activeEmployee.email" />
+        <input type="text" id="email"  @input="clearError('email')" :class="{ error: error.email }" v-model.trim="activeEmployee.email" />
       </div>
       <div class="form-control">
         <label for="phone">Phone</label>
@@ -132,6 +140,7 @@ export default {
       this.activeEmployee.contractType = value
     },
     setRole(value) {
+      this.clearError('role')
       this.activeEmployee.role = value
     },
     closeEditEmployee() {
@@ -200,6 +209,9 @@ export default {
       }
 
       this.closeEditEmployee()
+    },
+    clearError(field) {
+      this.error[field] = false
     },
   },
   computed: {
