@@ -49,7 +49,7 @@
             <input
               type="text"
               id="contract"
-               @input="clearError('contract')"
+              @input="clearError('contract')"
               :class="{ error: error.contract }"
               v-model.trim="activeEmployee.contract"
             />
@@ -65,7 +65,13 @@
       </div>
       <div class="form-control">
         <label for="email">Email</label>
-        <input type="text" id="email"  @input="clearError('email')" :class="{ error: error.email }" v-model.trim="activeEmployee.email" />
+        <input
+          type="text"
+          id="email"
+          @input="clearError('email')"
+          :class="{ error: error.email }"
+          v-model.trim="activeEmployee.email"
+        />
       </div>
       <div class="form-control">
         <label for="phone">Phone</label>
@@ -140,7 +146,7 @@ export default {
       this.activeEmployee.contractType = value
     },
     setRole(value) {
-      this.clearError('role')
+      this.clearError("role")
       this.activeEmployee.role = value
     },
     closeEditEmployee() {
@@ -177,9 +183,12 @@ export default {
       }
 
       // Validate field: contract
-      if (this.activeEmployee.contract) {
+      const contractValue = parseFloat(this.activeEmployee.contract.replace(",", "."))
+
+      if (this.activeEmployee.contract && contractValue) {
         this.error.contract = false
       } else {
+        this.activeEmployee.contract = ""
         this.error.contract = true
       }
 
