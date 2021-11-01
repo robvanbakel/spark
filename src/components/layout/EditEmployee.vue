@@ -13,11 +13,16 @@
       <div v-if="this.new">
         <div class="form-control">
           <label for="firstName">First name</label>
-          <input type="text" id="firstName" v-model.trim="activeEmployee.firstName" />
+          <input
+            type="text"
+            id="firstName"
+            :class="{ error: error.firstName }"
+            v-model.trim="activeEmployee.firstName"
+          />
         </div>
         <div class="form-control">
           <label for="lastName">Last name</label>
-          <input type="text" id="lastName" v-model.trim="activeEmployee.lastName" />
+          <input type="text" id="lastName" :class="{ error: error.lastName }" v-model.trim="activeEmployee.lastName" />
         </div>
       </div>
       <div class="form-control">
@@ -26,6 +31,7 @@
           v-if="activeEmployee.role || this.new"
           :items="roles"
           :active="activeEmployee.role"
+          :error="error.role"
           @choice="setRole"
         ></base-dropdown>
       </div>
@@ -33,7 +39,12 @@
         <label for="contract">Contract</label>
         <div class="form-control-contract">
           <div>
-            <input type="text" id="contract" v-model.trim="activeEmployee.contract" />
+            <input
+              type="text"
+              id="contract"
+              :class="{ error: error.contract }"
+              v-model.trim="activeEmployee.contract"
+            />
             <span class="input-label">hours</span>
           </div>
           <base-switch
@@ -46,7 +57,7 @@
       </div>
       <div class="form-control">
         <label for="email">Email</label>
-        <input type="text" id="email" v-model.trim="activeEmployee.email" />
+        <input type="text" id="email" :class="{ error: error.email }" v-model.trim="activeEmployee.email" />
       </div>
       <div class="form-control">
         <label for="phone">Phone</label>
@@ -67,7 +78,7 @@
         @click="deleteEmployee"
       ></base-button>
       <base-button secondary @click="closeEditEmployee">Cancel</base-button>
-      <base-button @click="saveEditEmployee">Save</base-button>
+      <base-button @click="validate">Save</base-button>
     </template>
   </base-modal>
 
@@ -91,6 +102,13 @@ export default {
     return {
       activeEmployee: {},
       showConfirmDelete: false,
+      error: {
+        firstName: false,
+        lastName: false,
+        role: false,
+        contract: false,
+        email: false,
+      },
     }
   },
   methods: {
@@ -125,9 +143,51 @@ export default {
         this.saveEditEmployee()
       }
     },
-    async saveEditEmployee() {
-      // TODO verify data
+    validate() {
+      if (this.new) {
+        // Validate field: firstName
+        if (this.activeEmployee.firstName) {
+          this.error.firstName = false
+        } else {
+          this.error.firstName = true
+        }
 
+        // Validate field: lastName
+        if (this.activeEmployee.lastName) {
+          this.error.lastName = false
+        } else {
+          this.error.lastName = true
+        }
+      }
+
+      // Validate field: role
+      if (this.activeEmployee.role) {
+        this.error.role = false
+      } else {
+        this.error.role = true
+      }
+
+      // Validate field: contract
+      if (this.activeEmployee.contract) {
+        this.error.contract = false
+      } else {
+        this.error.contract = true
+      }
+
+      const emailRegex = /^.+@\w+\.\w+$/i
+
+      // Validate field: email
+      if (emailRegex.test(this.activeEmployee.email)) {
+        this.error.email = false
+      } else {
+        this.error.email = true
+      }
+
+      if (!Object.values(this.error).includes(true)) {
+        this.saveEditEmployee()
+      }
+    },
+    async saveEditEmployee() {
       if (this.new) {
         this.$store.dispatch("employees/createNewUser", {
           employee: this.activeEmployee,
