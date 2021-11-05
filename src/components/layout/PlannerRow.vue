@@ -8,7 +8,7 @@
         <div class="employee">
           <span class="name">{{ employeeInfo(employeeId, "fullName") }}</span>
           <span class="hours"
-            ><span class="calculated">{{ $store.getters['employees/totalHours'][employeeId] }}</span> /
+            ><span class="calculated">{{ $store.getters["employees/totalHours"][employeeId] }}</span> /
             {{ employeeInfo(employeeId, "contract") }} hours</span
           >
         </div>
@@ -26,12 +26,19 @@
           @click="handleClick({ day, employeeId })"
         >
           <div class="shift-info" v-if="shift">
-            <span class="place">{{ shift.place }}</span>
-            <span class="time">
-              {{ shift.start.substring(0, 2) }}:{{ shift.start.substring(2, 4) }} - {{ shift.end.substring(0, 2) }}:{{
-                shift.end.substring(2, 4)
-              }}
-            </span>
+            <div class="info-wrapper">
+              <div class="shift-info-header">
+                <span class="place"
+                  >{{ shift.place }}
+                  <span class="notes material-icons material-icons-round" v-if="shift.notes">description</span>
+                </span>
+              </div>
+              <span class="time">
+                {{ shift.start.substring(0, 2) }}:{{ shift.start.substring(2, 4) }} - {{ shift.end.substring(0, 2) }}:{{
+                  shift.end.substring(2, 4)
+                }}
+              </span>
+            </div>
           </div>
         </div>
       </div>

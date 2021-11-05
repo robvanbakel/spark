@@ -1280,19 +1280,30 @@ section#planner .row .day .shift-info {
   height: 100%;
   text-align: center;
 }
-section#planner .row .day .shift-info span {
+section#planner .row .day .shift-info .info-wrapper {
+  margin-bottom: 2px;
+}
+section#planner .row .day .shift-info .info-wrapper span {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-section#planner .row .day .shift-info span.place {
+section#planner .row .day .shift-info .info-wrapper .shift-info-header span.place {
   font-size: 12px;
   font-weight: 700;
   color: #2f273c;
-  margin-bottom: 6px;
   letter-spacing: 0.02em;
+  position: relative;
 }
-section#planner .row .day .shift-info span.time {
+section#planner .row .day .shift-info .info-wrapper .shift-info-header span.notes {
+  position: absolute;
+  top: 0;
+  right: -16px;
+  font-size: 13px;
+  color: #508df0;
+  opacity: 0.65;
+}
+section#planner .row .day .shift-info .info-wrapper span.time {
   font-size: 12px;
   color: #413659;
 }
