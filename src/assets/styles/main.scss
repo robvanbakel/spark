@@ -812,11 +812,17 @@ section#planner {
           &:hover {
             background-color: darken(color.$blue-light, 5%);
           }
+          span.notes {
+            color: color.$blue;
+          }
         }
         &.leadership {
           background-color: color.$green-light;
           &:hover {
             background-color: darken(color.$green-light, 5%);
+          }
+          span.notes {
+            color: color.$green;
           }
         }
         &.general {
@@ -824,17 +830,26 @@ section#planner {
           &:hover {
             background-color: darken(color.$yellow-light, 5%);
           }
+          span.notes {
+            color: color.$yellow;
+          }
         }
         &.restaurant {
           background-color: color.$purple-light;
           &:hover {
             background-color: darken(color.$purple-light, 5%);
           }
+          span.notes {
+            color: color.$purple;
+          }
         }
         &.cleaning {
           background-color: color.$orange-light;
           &:hover {
             background-color: darken(color.$orange-light, 5%);
+          }
+          span.notes {
+            color: color.$orange;
           }
         }
       }
@@ -876,11 +891,10 @@ section#planner {
             }
             span.notes {
               position: absolute;
-              top: 0;
-              right: -16px;
-              font-size: 13px;
-              color: color.$blue;
-              opacity: 0.65;
+              top: 8px;
+              right: 8px;
+              font-size: 12px;
+              opacity: 0.75;
             }
           }
           span.time {

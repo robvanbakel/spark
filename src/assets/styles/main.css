@@ -1234,11 +1234,17 @@ section#planner .row .day.active.management {
 section#planner .row .day.active.management:hover {
   background-color: #bcd4f9;
 }
+section#planner .row .day.active.management span.notes {
+  color: #508df0;
+}
 section#planner .row .day.active.leadership {
   background-color: #dff2db;
 }
 section#planner .row .day.active.leadership:hover {
   background-color: #ceebc8;
+}
+section#planner .row .day.active.leadership span.notes {
+  color: #7dcc71;
 }
 section#planner .row .day.active.general {
   background-color: #fbf3d9;
@@ -1246,17 +1252,26 @@ section#planner .row .day.active.general {
 section#planner .row .day.active.general:hover {
   background-color: #f9ecc2;
 }
+section#planner .row .day.active.general span.notes {
+  color: #f1ce67;
+}
 section#planner .row .day.active.restaurant {
   background-color: #eaddf3;
 }
 section#planner .row .day.active.restaurant:hover {
   background-color: #decaec;
 }
+section#planner .row .day.active.restaurant span.notes {
+  color: #aa75ce;
+}
 section#planner .row .day.active.cleaning {
   background-color: #fbe8d7;
 }
 section#planner .row .day.active.cleaning:hover {
   background-color: #f9dbc0;
+}
+section#planner .row .day.active.cleaning span.notes {
+  color: #eda55d;
 }
 section#planner .row .day:hover:not(.active) {
   opacity: 0.65;
@@ -1297,11 +1312,10 @@ section#planner .row .day .shift-info .info-wrapper .shift-info-header span.plac
 }
 section#planner .row .day .shift-info .info-wrapper .shift-info-header span.notes {
   position: absolute;
-  top: 0;
-  right: -16px;
-  font-size: 13px;
-  color: #508df0;
-  opacity: 0.65;
+  top: 8px;
+  right: 8px;
+  font-size: 12px;
+  opacity: 0.75;
 }
 section#planner .row .day .shift-info .info-wrapper span.time {
   font-size: 12px;
