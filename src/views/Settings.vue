@@ -32,6 +32,18 @@
         ></base-switch>
       </div>
     </div>
+
+    <div class="settings-group">
+      <h2>Date notation</h2>
+      <div class="setting dropdown">
+        <span class="label">Date notation</span>
+        <base-dropdown
+          :items="dateNotations"
+          :active="$store.getters['settings/dateNotation']"
+          @choice="setDateNotation"
+        ></base-dropdown>
+      </div>
+    </div>
   </section>
 
   <base-confirm
@@ -60,6 +72,7 @@ export default {
         employeeNotes: null,
         shiftNotes: null,
       },
+      dateNotation: null,
     }
   },
   methods: {
@@ -67,12 +80,35 @@ export default {
       this.unsavedChanges = true
       this.shareWithEmployees[id] = value
     },
+    setDateNotation(locale) {
+      this.unsavedChanges = true
+      this.dateNotation = locale
+    },
     async saveSettings() {
       this.$store.dispatch("settings/setShareWithEmployees", this.shareWithEmployees)
+      this.$store.dispatch("settings/dateNotation", this.dateNotation)
 
       if (await this.$refs.settingsSaved.open()) {
         this.unsavedChanges = false
       }
+    },
+  },
+  computed: {
+    dateNotations() {
+      return [
+        {
+          id: "en-US",
+          display: "MM/DD/YYYY",
+        },
+        {
+          id: "en-GB",
+          display: "DD/MM/YYYY",
+        },
+        {
+          id: "nl-NL",
+          display: "DD-MM-YYYY",
+        },
+      ]
     },
   },
   mounted() {

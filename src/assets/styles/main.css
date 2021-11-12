@@ -155,7 +155,7 @@
   height: 40px;
   display: flex;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 36px 0 16px;
   cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -1807,6 +1807,7 @@ section#settings {
   width: -webkit-min-content;
   width: -moz-min-content;
   width: min-content;
+  margin-bottom: 125px;
 }
 section#settings .header {
   margin-bottom: 3em;
@@ -1829,6 +1830,8 @@ section#settings .header .actions button.inverted.icon-only span {
 section#settings .settings-group {
   color: #2f273c;
   width: 440px;
+}
+section#settings .settings-group:not(:last-child) {
   margin-bottom: 60px;
 }
 section#settings .settings-group h2 {

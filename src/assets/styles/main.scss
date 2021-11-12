@@ -1403,6 +1403,7 @@ section#singleEmployeeCalendar {
 section#settings {
   padding: 40px;
   width: min-content;
+  margin-bottom: 125px;
   .header {
     margin-bottom: 3em;
     display: flex;
@@ -1424,7 +1425,10 @@ section#settings {
   .settings-group {
     color: color.$text-100;
     width: 440px;
-    margin-bottom: 60px;
+    &:not(:last-child) {
+      margin-bottom: 60px;
+    }
+
     h2 {
       font-size: 18px;
       margin-bottom: 1em;

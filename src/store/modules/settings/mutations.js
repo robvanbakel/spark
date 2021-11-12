@@ -20,7 +20,7 @@ export default {
   shareWithEmployees(state, payload) {
     state.shareWithEmployees = payload
   },
-  dateNotation(state, {dateNotation}) {
+  dateNotation(state, dateNotation) {
     state.dateNotation = dateNotation
   },
 }

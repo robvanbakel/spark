@@ -21,7 +21,7 @@ export default {
           context.commit("shareWithEmployees", data)
           break
         case "dateNotation":
-          context.commit("dateNotation", data)
+          context.commit("dateNotation", data.dateNotation)
           break
       }
     })
@@ -63,12 +63,26 @@ export default {
   sidebarAutoHidden(context, payload) {
     context.commit("sidebarAutoHidden", payload)
   },
+  async dateNotation(context, payload) {
+    // Update locally
+    context.commit("dateNotation", payload)
+
+    // Update DB
+    await db
+      .collection("settings")
+      .doc("dateNotation")
+      .update({ dateNotation: payload })
+
+    // Send call to server to update stored settings
+    fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/admin/updateSettings`)
+  },
   async setShareWithEmployees(context, payload) {
     // Update locally
     context.commit("shareWithEmployees", payload)
 
     // Update DB
-    await db.collection("settings")
+    await db
+      .collection("settings")
       .doc("shareWithEmployees")
       .update(payload)
 
