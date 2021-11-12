@@ -1829,6 +1829,7 @@ section#settings .header .actions button.inverted.icon-only span {
 section#settings .settings-group {
   color: #2f273c;
   width: 440px;
+  margin-bottom: 60px;
 }
 section#settings .settings-group h2 {
   font-size: 18px;
@@ -1846,14 +1847,11 @@ section#settings .settings-group p.note {
 }
 section#settings .settings-group .setting {
   margin-bottom: 12px;
-}
-section#settings .settings-group .setting.toggle {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 210px;
 }
-section#settings .settings-group .setting.toggle span.label {
+section#settings .settings-group .setting span.label {
+  width: 140px;
   font-size: 14px;
 }
 
