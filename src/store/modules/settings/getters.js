@@ -2,6 +2,9 @@ export default {
   dateLocale() {
     return 'en-US'
   },
+  dateNotation(state) {
+    return state.dateNotation
+  },
   suggestions(state) {
     return state.suggestions
   },

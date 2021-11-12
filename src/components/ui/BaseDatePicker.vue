@@ -39,7 +39,7 @@ export default {
       this.calendarVisible = false
     },
     formatDate(date) {
-      return date?.toLocaleDateString(this.$store.getters["settings/dateLocale"], {
+      return date?.toLocaleDateString(this.$store.getters["settings/dateNotation"], {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",

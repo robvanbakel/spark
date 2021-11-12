@@ -20,6 +20,9 @@ export default {
         case "shareWithEmployees":
           context.commit("shareWithEmployees", data)
           break
+        case "dateNotation":
+          context.commit("dateNotation", data)
+          break
       }
     })
   },
