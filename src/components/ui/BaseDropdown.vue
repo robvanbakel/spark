@@ -5,13 +5,16 @@
     </div>
     <base-overlay v-if="dropdownVisible" @clickout="hideDropdown" invisible></base-overlay>
     <div class="dropdown" v-if="dropdownVisible">
-      <span
-        v-for="item in filteredItems"
-        :key="item.id"
-        :class="['item', { active: item.id === input.id }]"
-        @click="selectItem(item.id)"
-        >{{ item.display }}</span
-      >
+      <div v-if="this.filteredItems.length">
+        <span
+          v-for="item in filteredItems"
+          :key="item.id"
+          :class="['item', { active: item.id === input.id }]"
+          @click="selectItem(item.id)"
+          >{{ item.display }}</span
+        >
+      </div>
+      <span class="item no-match" v-else @click="showDropdown" >No matches</span>
     </div>
   </div>
 </template>

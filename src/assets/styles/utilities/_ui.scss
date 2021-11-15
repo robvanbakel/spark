@@ -177,6 +177,7 @@
       right: 12px;
       color: color.$text-100;
       font-size: 18px;
+      pointer-events: none;
     }
     &.focus::after {
       transform: rotate(180deg);
@@ -196,9 +197,13 @@
       display: flex;
       align-items: center;
       padding: 0 16px;
-      cursor: pointer;
+      user-select: none;
+      &.no-match {
+        color: color.$text-700;
+      }
       &.active,
-      &:hover {
+      &:not(.no-match):hover {
+        cursor: pointer;
         background-color: color.$select;
       }
     }
