@@ -151,18 +151,21 @@
     border: 1px solid color.$border;
     font-size: 14px;
   }
-  .input {
-    position: relative;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    padding: 0 36px 0 16px;
-    cursor: pointer;
-    user-select: none;
-    &.error {
-      border-color: color.$danger;
-      background-color: color.$danger-light;
+  .input-wrapper {
+    .input {
+      position: relative;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0 36px 0 16px;
+      cursor: pointer;
+      outline: none;
+      &.error {
+        border-color: color.$danger;
+        background-color: color.$danger-light;
+      }
     }
+
     &::after {
       font-family: "Material Icons";
       content: "expand_more";
@@ -179,6 +182,7 @@
       transform: rotate(180deg);
     }
   }
+
   .dropdown {
     border: 1px solid color.$border;
     overflow-y: scroll;

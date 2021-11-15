@@ -150,23 +150,20 @@
   border: 1px solid #deddde;
   font-size: 14px;
 }
-.base-dropdown .input {
+.base-dropdown .input-wrapper .input {
   position: relative;
   height: 40px;
   display: flex;
   align-items: center;
   padding: 0 36px 0 16px;
   cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  outline: none;
 }
-.base-dropdown .input.error {
+.base-dropdown .input-wrapper .input.error {
   border-color: #de6035;
   background-color: #fbece7;
 }
-.base-dropdown .input::after {
+.base-dropdown .input-wrapper::after {
   font-family: "Material Icons";
   content: "expand_more";
   position: absolute;
@@ -178,7 +175,7 @@
   color: #2f273c;
   font-size: 18px;
 }
-.base-dropdown .input.focus::after {
+.base-dropdown .input-wrapper.focus::after {
   transform: rotate(180deg);
 }
 .base-dropdown .dropdown {

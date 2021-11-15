@@ -1,12 +1,12 @@
 <template>
   <div class="base-dropdown">
-    <div class="input" @click="showDropdown" :class="{ focus: dropdownVisible, error }">
-      {{ input.display }}
+    <div class="input-wrapper" :class="{ focus: dropdownVisible }">
+      <input type="text" class="input" @click="showDropdown" :class="{ error }" ref="input" v-model="input" />
     </div>
     <base-overlay v-if="dropdownVisible" @clickout="hideDropdown" invisible></base-overlay>
     <div class="dropdown" v-if="dropdownVisible">
       <span
-        v-for="item in items"
+        v-for="item in filteredItems"
         :key="item.id"
         :class="['item', { active: item.id === input.id }]"
         @click="selectItem(item.id)"
@@ -36,12 +36,23 @@ export default {
   data() {
     return {
       dropdownVisible: false,
-      input: this.items.find((item) => item.id === this.active) || "",
+      selected: this.active,
+      input: this.items.find((item) => item.id === this.active)?.display || "",
     }
+  },
+  computed: {
+    selectedDisplay() {
+      return this.items.find((item) => item.id === this.selected)?.display || ""
+    },
+    filteredItems() {
+      return this.items.filter((item) => item.display.toLowerCase().includes(this.input.toLowerCase()))
+    },
   },
   methods: {
     showDropdown() {
+      this.input = ""
       this.dropdownVisible = true
+      this.$refs.input.focus()
       window.addEventListener("keydown", this.keyDownHandler)
     },
     keyDownHandler(e) {
@@ -50,11 +61,13 @@ export default {
       }
     },
     hideDropdown() {
+      this.input = this.selectedDisplay
       this.dropdownVisible = false
+      this.$refs.input.blur()
       window.removeEventListener("keydown", this.keyDownHandler)
     },
     selectItem(choice) {
-      this.input = this.items.find((item) => item.id === choice)
+      this.selected = choice
       this.hideDropdown()
       this.$emit("choice", choice)
     },
