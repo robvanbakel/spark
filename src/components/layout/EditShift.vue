@@ -9,6 +9,7 @@
             :error="error.employee"
             :items="employees"
             :active="shift.employee.id"
+            icon="search"
             @choice="dropdownHandler"
           ></base-dropdown>
         </div>

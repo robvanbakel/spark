@@ -1,6 +1,6 @@
 <template>
   <div class="base-dropdown">
-    <div class="input-wrapper" :class="{ focus: dropdownVisible }">
+    <div class="input-wrapper" :class="[icon, { focus: dropdownVisible }]" :data-icon="icon">
       <input type="text" class="input" @click="showDropdown" :class="{ error }" ref="input" v-model="input" />
     </div>
     <base-overlay v-if="dropdownVisible" @clickout="hideDropdown" invisible></base-overlay>
@@ -14,7 +14,7 @@
           >{{ item.display }}</span
         >
       </div>
-      <span class="item no-match" v-else @click="showDropdown" >No matches</span>
+      <span class="item no-match" v-else @click="showDropdown">No matches</span>
     </div>
   </div>
 </template>
@@ -30,6 +30,11 @@ export default {
     active: {
       type: String,
       require: false,
+    },
+    icon: {
+      type: String,
+      require: false,
+      default: "expand_more",
     },
     error: {
       type: Boolean,
@@ -77,5 +82,3 @@ export default {
   },
 }
 </script>
-
-<style></style>

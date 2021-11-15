@@ -165,10 +165,9 @@
         background-color: color.$danger-light;
       }
     }
-
     &::after {
       font-family: "Material Icons";
-      content: "expand_more";
+      content: attr(data-icon);
       position: absolute;
       height: 100%;
       display: flex;
@@ -179,7 +178,7 @@
       font-size: 18px;
       pointer-events: none;
     }
-    &.focus::after {
+    &.expand_more.focus::after {
       transform: rotate(180deg);
     }
   }
