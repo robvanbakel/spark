@@ -160,6 +160,7 @@
       padding: 0 36px 0 16px;
       cursor: pointer;
       outline: none;
+ 
       &.error {
         border-color: color.$danger;
         background-color: color.$danger-light;
@@ -167,7 +168,7 @@
     }
     &::after {
       font-family: "Material Icons";
-      content: attr(data-icon);
+      content: "search";
       position: absolute;
       height: 100%;
       display: flex;
@@ -178,8 +179,13 @@
       font-size: 18px;
       pointer-events: none;
     }
-    &.expand_more.focus::after {
-      transform: rotate(180deg);
+    &.disableSearch {
+      &:after {
+        content: "expand_more";
+      }
+      &.focus:after {
+        transform: rotate(180deg);
+      }
     }
   }
 

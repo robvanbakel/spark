@@ -1,7 +1,14 @@
 <template>
   <div class="base-dropdown">
-    <div class="input-wrapper" :class="[icon, { focus: dropdownVisible }]" :data-icon="icon">
-      <input type="text" class="input" @click="showDropdown" :class="{ error }" ref="input" v-model="input" />
+    <div class="input-wrapper" :class="{ focus: dropdownVisible, disableSearch }" @click="showDropdown">
+      <input
+        type="text"
+        :class="['input', { error }]"
+        @click="showDropdown"
+        :readonly="disableSearch"
+        ref="input"
+        v-model="input"
+      />
     </div>
     <base-overlay v-if="dropdownVisible" @clickout="hideDropdown" invisible></base-overlay>
     <div class="dropdown" v-if="dropdownVisible">
@@ -31,10 +38,10 @@ export default {
       type: String,
       require: false,
     },
-    icon: {
-      type: String,
+    disableSearch: {
+      type: Boolean,
       require: false,
-      default: "expand_more",
+      default: false,
     },
     error: {
       type: Boolean,
@@ -53,12 +60,18 @@ export default {
       return this.items.find((item) => item.id === this.selected)?.display || ""
     },
     filteredItems() {
-      return this.items.filter((item) => item.display.toLowerCase().includes(this.input.toLowerCase()))
+      if (this.disableSearch) {
+        return this.items
+      } else {
+        return this.items.filter((item) => item.display.toLowerCase().includes(this.input.toLowerCase()))
+      }
     },
   },
   methods: {
     showDropdown() {
-      this.input = ""
+      if (!this.disableSearch) {
+        this.input = ""
+      }
       this.dropdownVisible = true
       this.$refs.input.focus()
       window.addEventListener("keydown", this.keyDownHandler)

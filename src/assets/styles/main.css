@@ -165,7 +165,7 @@
 }
 .base-dropdown .input-wrapper::after {
   font-family: "Material Icons";
-  content: attr(data-icon);
+  content: "search";
   position: absolute;
   height: 100%;
   display: flex;
@@ -176,7 +176,10 @@
   font-size: 18px;
   pointer-events: none;
 }
-.base-dropdown .input-wrapper.expand_more.focus::after {
+.base-dropdown .input-wrapper.disableSearch:after {
+  content: "expand_more";
+}
+.base-dropdown .input-wrapper.disableSearch.focus:after {
   transform: rotate(180deg);
 }
 .base-dropdown .dropdown {
