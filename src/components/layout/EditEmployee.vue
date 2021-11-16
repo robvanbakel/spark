@@ -40,6 +40,7 @@
           :active="activeEmployee.role"
           :error="error.role"
           @choice="setRole"
+          disableSearch
         ></base-dropdown>
       </div>
       <div class="form-control">
