@@ -1,6 +1,6 @@
 <template>
   <div class="copy-week-wrapper">
-    <base-dropdown disableSearch :items="weeks" :active="weeks[0].id" @choice="selectWeek"></base-dropdown>
+    <base-dropdown :items="weeks" :active="weeks[0].id" @choice="selectWeek"></base-dropdown>
     <base-button @click="copyWeek">Copy</base-button>
   </div>
 </template>

@@ -1,11 +1,11 @@
 <template>
   <div class="base-dropdown">
-    <div class="input-wrapper" :class="{ focus: dropdownVisible, disableSearch }" @click="showDropdown">
+    <div class="input-wrapper" :class="{ focus: dropdownVisible, enableSearch }" @click="showDropdown">
       <input
         type="text"
         :class="['input', { error }]"
         @click="showDropdown"
-        :readonly="disableSearch"
+        :readonly="!enableSearch"
         ref="input"
         v-model="input"
       />
@@ -38,7 +38,7 @@ export default {
       type: String,
       require: false,
     },
-    disableSearch: {
+    enableSearch: {
       type: Boolean,
       require: false,
       default: false,
@@ -60,16 +60,16 @@ export default {
       return this.items.find((item) => item.id === this.selected)?.display || ""
     },
     filteredItems() {
-      if (this.disableSearch) {
-        return this.items
-      } else {
+      if (this.enableSearch) {
         return this.items.filter((item) => item.display.toLowerCase().includes(this.input.toLowerCase()))
+        } else {
+        return this.items
       }
     },
   },
   methods: {
     showDropdown() {
-      if (!this.disableSearch) {
+      if (this.enableSearch) {
         this.input = ""
       }
       this.dropdownVisible = true

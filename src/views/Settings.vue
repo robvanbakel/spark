@@ -41,7 +41,6 @@
           :items="dateNotations"
           :active="$store.getters['settings/dateNotation']"
           @choice="setDateNotation"
-          disableSearch
         ></base-dropdown>
       </div>
     </div>

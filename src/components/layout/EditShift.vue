@@ -10,6 +10,7 @@
             :items="employees"
             :active="shift.employee.id"
             @choice="dropdownHandler"
+            enableSearch
           ></base-dropdown>
         </div>
         <div class="form-control">
