@@ -183,9 +183,9 @@ export default {
       }
 
       // Validate field: contract
-      const contractValue = parseFloat(this.activeEmployee.contract.replace(",", "."))
+      this.activeEmployee.contract = parseFloat(this.activeEmployee.contract.toString().replace(",", "."))
 
-      if (this.activeEmployee.contract && contractValue) {
+      if (this.activeEmployee.contract) {
         this.error.contract = false
       } else {
         this.activeEmployee.contract = ""
