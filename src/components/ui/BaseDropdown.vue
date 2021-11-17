@@ -13,13 +13,15 @@
     <base-overlay v-if="dropdownVisible" @clickout="hideDropdown" invisible></base-overlay>
     <div class="dropdown" v-if="dropdownVisible">
       <div v-if="this.filteredItems.length">
-        <span
+        <div
           v-for="item in filteredItems"
           :key="item.id"
           :class="['item', { active: item.id === input.id }]"
           @click="selectItem(item.id)"
-          >{{ item.display }}</span
         >
+          <span>{{ item.display }}</span>
+          <span v-if="employeeStatus" :class="['status', getStatus(item.id)]">{{ getStatus(item.id, { capitalize: true }) }}</span>
+        </div>
       </div>
       <span class="item no-match" v-else @click="showDropdown">No matches</span>
     </div>
@@ -47,6 +49,10 @@ export default {
       type: Boolean,
       require: false,
     },
+    employeeStatus: {
+      type: Boolean,
+      require: false,
+    },
   },
   data() {
     return {
@@ -62,7 +68,7 @@ export default {
     filteredItems() {
       if (this.enableSearch) {
         return this.items.filter((item) => item.display.toLowerCase().includes(this.input.toLowerCase()))
-        } else {
+      } else {
         return this.items
       }
     },
@@ -91,6 +97,15 @@ export default {
       this.selected = choice
       this.hideDropdown()
       this.$emit("choice", choice)
+    },
+    getStatus(id, opt = {}) {
+      const status = this.$store.getters["employees/employees"].find((emp) => emp.id === id).status
+
+      if (opt.capitalize) {
+        return status.charAt(0).toUpperCase() + status.slice(1)
+      } else {
+        return status
+      }
     },
   },
 }

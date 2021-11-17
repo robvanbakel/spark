@@ -11,6 +11,7 @@
             :active="shift.employee.id"
             @choice="dropdownHandler"
             enableSearch
+            employeeStatus
           ></base-dropdown>
         </div>
         <div class="form-control">

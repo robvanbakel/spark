@@ -191,22 +191,45 @@
   z-index: 9;
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
 }
-.base-dropdown .dropdown span.item {
+.base-dropdown .dropdown .item {
   height: 40px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 16px;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
 }
-.base-dropdown .dropdown span.item.no-match {
+.base-dropdown .dropdown .item.no-match {
   color: #c8c6cc;
 }
-.base-dropdown .dropdown span.item.active, .base-dropdown .dropdown span.item:not(.no-match):hover {
+.base-dropdown .dropdown .item.active, .base-dropdown .dropdown .item:not(.no-match):hover {
   cursor: pointer;
   background-color: #f5f5f7;
+}
+.base-dropdown .dropdown .item span.status {
+  font-size: 12px;
+  color: #635d6d;
+  padding: 0.2em 0.35em;
+  font-weight: 500;
+  border-radius: 4px;
+}
+.base-dropdown .dropdown .item span.status.active {
+  display: none;
+}
+.base-dropdown .dropdown .item span.status.sick {
+  color: #aa75ce;
+  background-color: #eaddf3;
+}
+.base-dropdown .dropdown .item span.status.inactive {
+  color: #f1ce67;
+  background-color: #fbf3d9;
+}
+.base-dropdown .dropdown .item span.status.unavailable {
+  color: #eda55d;
+  background-color: #fbe8d7;
 }
 
 .base-date-picker {
