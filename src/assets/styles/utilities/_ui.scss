@@ -225,13 +225,17 @@
           color: color.$purple;
           background-color: color.$purple-light;
         }
-        &.inactive {
+        &.unavailable {
           color: color.$yellow;
           background-color: color.$yellow-light;
         }
-        &.unavailable {
+        &.inactive {
           color: color.$orange;
           background-color: color.$orange-light;
+        }
+        &.staged {
+          color: color.$blue;
+          background-color: color.$blue-light;
         }
       }
     }

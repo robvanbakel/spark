@@ -223,13 +223,17 @@
   color: #aa75ce;
   background-color: #eaddf3;
 }
-.base-dropdown .dropdown .item span.status.inactive {
+.base-dropdown .dropdown .item span.status.unavailable {
   color: #f1ce67;
   background-color: #fbf3d9;
 }
-.base-dropdown .dropdown .item span.status.unavailable {
+.base-dropdown .dropdown .item span.status.inactive {
   color: #eda55d;
   background-color: #fbe8d7;
+}
+.base-dropdown .dropdown .item span.status.staged {
+  color: #508df0;
+  background-color: #d3e3fb;
 }
 
 .base-date-picker {
