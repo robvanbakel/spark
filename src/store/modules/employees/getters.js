@@ -3,7 +3,9 @@ export default {
     return state.users
   },
   employees(state) {
-    return state.users.filter((emp) => emp.status != "archived" && emp.status != "admin")
+    return state.users
+      .filter((emp) => emp.status != "archived" && emp.status != "admin")
+      .sort((a,b) => b.createdAt - a.createdAt)
   },
   totalHours(state, getters, rootState, rootGetters) {
     const totalHours = {}
