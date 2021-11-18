@@ -72,6 +72,10 @@ export default {
       uid = userRecord.uid
     }
 
+    // Add timestamp to employee data
+    const employeeData = payload.employee
+    employeeData["createdAt"] = Date.now()
+
     // Update locally
     context.commit("addUser", {
       id: uid,
