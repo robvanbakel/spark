@@ -97,42 +97,6 @@ button {
   transition: all 120ms ease;
 }
 
-// .modal {
-//   @include mixin.baseModal;
-//   &.confirm {
-//     width: min-content !important;
-//     text-align: center;
-//     padding: 32px 40px 24px !important;
-//     white-space: nowrap;
-//     .header {
-//       justify-content: center !important;
-//       margin-bottom: 0 !important;
-//     }
-//     .main {
-//       margin: 24px 0 30px;
-//     }
-//     .form-actions {
-//       margin-top: 0 !important;
-//       display: flex;
-//       justify-content: center;
-//       button.secondary {
-//         background: none;
-//         border: none;
-//         outline: none;
-//         font-size: 14px;
-//         color: color.$text-500;
-//         margin-right: 32px;
-//         &:hover {
-//           color: darken(color.$text-500, 12%);
-//         }
-//         &:active {
-//           color: darken(color.$text-500, 24%);
-//         }
-//       }
-//     }
-//   }
-// }
-
 // UI
 .badge.red {
   @include mixin.badge;
