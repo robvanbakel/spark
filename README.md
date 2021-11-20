@@ -45,7 +45,7 @@ In order to login as an employee, use any of the demo employee email addresses a
 
 ###### List of employees
 
-![EmployeeList](https://i.imgur.com/CDkqjqD.jpg)
+![EmployeeList](https://robvanbakel.com/images/spark_employeelist.jpg)
 
 ###### Modal to edit employee details
 
@@ -53,7 +53,7 @@ In order to login as an employee, use any of the demo employee email addresses a
 
 ###### Weekly view of the planner
 
-![Planner](https://i.imgur.com/qJYeze7.jpg)
+![Planner](https://robvanbakel.com/images/spark_planner.jpg)
 
 ###### Modal to edit a shift
 
