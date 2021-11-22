@@ -18,6 +18,7 @@
           <label for="place">Place</label>
           <div>
             <input
+              autocomplete="off"
               type="text"
               :class="{ error: error.place }"
               id="place"
@@ -55,6 +56,7 @@
             <div class="form-control-time">
               <span class="input-label-main">Time</span>
               <input
+                autocomplete="off"
                 type="text"
                 :class="['time', { error: error.start }]"
                 v-model.trim="shift.start"
@@ -63,6 +65,7 @@
               />
               <span class="input-label">-</span>
               <input
+                autocomplete="off"
                 type="text"
                 :class="['time', { error: error.end }]"
                 v-model.trim="shift.end"

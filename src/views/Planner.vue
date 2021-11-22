@@ -1,7 +1,7 @@
 <template>
   <div class="actionbar">
     <div class="search">
-      <input type="text" v-model.trim="searchInput" placeholder="Search Planner" ref="searchInput" />
+      <input autocomplete="off" type="text" v-model.trim="searchInput" placeholder="Search Planner" ref="searchInput" />
       <span v-if="!searchInput" class="material-icons material-icons-round">search</span>
       <span v-else class="clear material-icons material-icons-round" @click="clearSearchInput">clear</span>
     </div>

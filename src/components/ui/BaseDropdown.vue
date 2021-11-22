@@ -2,6 +2,7 @@
   <div class="base-dropdown">
     <div class="input-wrapper" :class="{ focus: dropdownVisible, enableSearch }" @click="showDropdown">
       <input
+        autocomplete="off"
         type="text"
         :class="['input', { error }]"
         @click="showDropdown"
@@ -20,7 +21,9 @@
           @click="selectItem(item.id)"
         >
           <span>{{ item.display }}</span>
-          <span v-if="employeeStatus" :class="['status', getStatus(item.id)]">{{ getStatus(item.id, { capitalize: true }) }}</span>
+          <span v-if="employeeStatus" :class="['status', getStatus(item.id)]">{{
+            getStatus(item.id, { capitalize: true })
+          }}</span>
         </div>
       </div>
       <span class="item no-match" v-else @click="showDropdown">No matches</span>

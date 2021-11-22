@@ -14,6 +14,7 @@
         <div class="form-control">
           <label for="firstName">First name</label>
           <input
+            autocomplete="off"
             type="text"
             id="firstName"
             @input="clearError('firstName')"
@@ -24,6 +25,7 @@
         <div class="form-control">
           <label for="lastName">Last name</label>
           <input
+            autocomplete="off"
             type="text"
             id="lastName"
             @input="clearError('lastName')"
@@ -47,6 +49,7 @@
         <div class="form-control-contract">
           <div>
             <input
+              autocomplete="off"
               type="text"
               id="contract"
               @input="clearError('contract')"
@@ -66,6 +69,7 @@
       <div class="form-control">
         <label for="email">Email</label>
         <input
+          autocomplete="off"
           type="text"
           id="email"
           @input="clearError('email')"
@@ -75,7 +79,7 @@
       </div>
       <div class="form-control">
         <label for="phone">Phone</label>
-        <input type="text" id="phone" v-model.trim="activeEmployee.phone" />
+        <input autocomplete="off" type="text" id="phone" v-model.trim="activeEmployee.phone" />
       </div>
       <div class="form-control note">
         <label for="note">Notes</label>
