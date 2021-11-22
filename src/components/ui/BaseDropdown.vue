@@ -16,7 +16,7 @@
         <div
           v-for="item in filteredItems"
           :key="item.id"
-          :class="['item', { active: item.id === input.id }]"
+          :class="['item', { active: item.id === this.selected }]"
           @click="selectItem(item.id)"
         >
           <span>{{ item.display }}</span>
