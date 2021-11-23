@@ -1002,7 +1002,7 @@ section#employeelist .row .name {
   font-weight: 500;
   color: #413659;
 }
-section#employeelist .row .note {
+section#employeelist .row .notes {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -1020,7 +1020,7 @@ section#employeelist .row:hover {
   align-items: center;
   margin-bottom: 12px;
 }
-.base-modal.edit-employee .main .form-control.note {
+.base-modal.edit-employee .main .form-control.notes {
   margin-bottom: 0;
 }
 .base-modal.edit-employee .main .form-control label {
@@ -1028,7 +1028,7 @@ section#employeelist .row:hover {
   color: #2f273c;
   font-size: 14px;
 }
-.base-modal.edit-employee .main .form-control label[for=note], .base-modal.edit-employee .main .form-control label[for=place] {
+.base-modal.edit-employee .main .form-control label[for=notes], .base-modal.edit-employee .main .form-control label[for=place] {
   align-self: flex-start;
   margin-top: 12px;
 }
@@ -1366,7 +1366,7 @@ section#planner .row .day .shift-info .info-wrapper span.time {
   align-items: center;
   margin-bottom: 12px;
 }
-.base-modal.edit-shift .main .form-control.note {
+.base-modal.edit-shift .main .form-control.notes {
   margin-bottom: 0;
 }
 .base-modal.edit-shift .main .form-control label {
@@ -1374,7 +1374,7 @@ section#planner .row .day .shift-info .info-wrapper span.time {
   color: #2f273c;
   font-size: 14px;
 }
-.base-modal.edit-shift .main .form-control label[for=note], .base-modal.edit-shift .main .form-control label[for=place] {
+.base-modal.edit-shift .main .form-control label[for=notes], .base-modal.edit-shift .main .form-control label[for=place] {
   align-self: flex-start;
   margin-top: 12px;
 }
@@ -1878,7 +1878,7 @@ section#settings .settings-group p.lead {
   font-size: 15px;
   margin-bottom: 32px;
 }
-section#settings .settings-group p.note {
+section#settings .settings-group p.notes {
   font-size: 13px;
   font-style: italic;
   margin-top: 32px;

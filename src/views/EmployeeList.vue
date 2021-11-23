@@ -44,7 +44,7 @@
         <div>{{ employee.email }}</div>
         <div>{{ employee.phone }}</div>
         <div>{{ employee.role }}</div>
-        <div class="note">{{ employee.note }}</div>
+        <div class="notes">{{ employee.notes }}</div>
       </div>
     </section>
   </main>

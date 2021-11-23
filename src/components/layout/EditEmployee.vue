@@ -81,9 +81,9 @@
         <label for="phone">Phone</label>
         <input autocomplete="off" type="text" id="phone" v-model.trim="activeEmployee.phone" />
       </div>
-      <div class="form-control note">
-        <label for="note">Notes</label>
-        <textarea id="note" v-model="activeEmployee.note"></textarea>
+      <div class="form-control notes">
+        <label for="notes">Notes</label>
+        <textarea id="notes" v-model="activeEmployee.notes"></textarea>
       </div>
     </template>
     <template v-slot:actions>
@@ -144,7 +144,7 @@ export default {
       this.activeEmployee.role = this.employee.role || ""
       this.activeEmployee.contract = this.employee.contract || ""
       this.activeEmployee.contractType = this.employee.contractType || ""
-      this.activeEmployee.note = this.employee.note || ""
+      this.activeEmployee.notes = this.employee.notes || ""
     },
     setContractType(value) {
       this.activeEmployee.contractType = value

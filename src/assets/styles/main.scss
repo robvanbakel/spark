@@ -509,7 +509,7 @@ section#employeelist {
       font-weight: 500;
       color: color.$main;
     }
-    .note {
+    .notes {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -532,14 +532,14 @@ section#employeelist {
       grid-template-columns: 92px auto;
       align-items: center;
       margin-bottom: 12px;
-      &.note {
+      &.notes {
         margin-bottom: 0;
       }
       label {
         font-weight: 500;
         color: color.$text-100;
         font-size: 14px;
-        &[for="note"],
+        &[for="notes"],
         &[for="place"] {
           align-self: flex-start;
           margin-top: 12px;
@@ -879,14 +879,14 @@ section#planner {
       grid-template-columns: 92px auto;
       align-items: center;
       margin-bottom: 12px;
-      &.note {
+      &.notes {
         margin-bottom: 0;
       }
       label {
         font-weight: 500;
         color: color.$text-100;
         font-size: 14px;
-        &[for="note"],
+        &[for="notes"],
         &[for="place"] {
           align-self: flex-start;
           margin-top: 12px;
@@ -1402,7 +1402,7 @@ section#settings {
       font-size: 15px;
       margin-bottom: 32px;
     }
-    p.note {
+    p.notes {
       font-size: 13px;
       font-style: italic;
       margin-top: 32px;

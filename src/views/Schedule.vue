@@ -96,6 +96,8 @@
 
     <the-sidebar>
       <section><PlannerCalendar /></section>
+      <section><EmployeeInfo /></section>
+      
     </the-sidebar>
   </main>
 </template>
@@ -104,9 +106,10 @@
 import QRCode from "qrcode"
 
 import PlannerCalendar from "@/components/layout/PlannerCalendar"
+import EmployeeInfo from "@/components/layout/EmployeeInfo"
 
 export default {
-  components: { PlannerCalendar },
+  components: { PlannerCalendar,EmployeeInfo },
   data() {
     return {
       qrCodeImg: null,

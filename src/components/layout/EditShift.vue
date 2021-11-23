@@ -86,9 +86,9 @@
             :fixed="true"
           ></base-switch>
         </div>
-        <div class="form-control note">
-          <label for="note">Notes</label>
-          <textarea id="note" v-model="shift.notes"></textarea>
+        <div class="form-control notes">
+          <label for="notes">Notes</label>
+          <textarea id="notes" v-model="shift.notes"></textarea>
         </div>
       </div>
     </template>
