@@ -1464,3 +1464,20 @@ section#settings {
     }
   }
 }
+
+.employee-info-wrapper {
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: color.$main;
+    margin-bottom: 1.5em;
+  }
+  h4 {
+    margin-bottom: 0.15em;
+    font-size: 14px;
+    color: color.$main;
+  }
+  p:not(:last-child) {
+    margin-bottom: 1em;
+  }
+}

@@ -1936,3 +1936,18 @@ section#settings .settings-group .setting span.label {
   font-weight: 400;
   color: #a7a3ac;
 }
+
+.employee-info-wrapper h3 {
+  font-size: 18px;
+  font-weight: 500;
+  color: #413659;
+  margin-bottom: 1.5em;
+}
+.employee-info-wrapper h4 {
+  margin-bottom: 0.15em;
+  font-size: 14px;
+  color: #413659;
+}
+.employee-info-wrapper p:not(:last-child) {
+  margin-bottom: 1em;
+}
