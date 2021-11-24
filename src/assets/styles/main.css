@@ -1893,9 +1893,6 @@ section#settings .settings-group .setting span.label {
   font-size: 14px;
 }
 
-.plus-minus-hours-wrapper:last-child {
-  margin-bottom: -16px;
-}
 .plus-minus-hours-wrapper .entry {
   display: flex;
   justify-content: center;
@@ -1934,6 +1931,27 @@ section#settings .settings-group .setting span.label {
 .plus-minus-hours-wrapper .entry .employee-info span.role {
   font-size: 12px;
   font-weight: 400;
+  color: #a7a3ac;
+}
+.plus-minus-hours-wrapper .show-all {
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #c8c6cc;
+  font-size: 12px;
+  padding-top: 12px;
+  cursor: pointer;
+}
+.plus-minus-hours-wrapper .show-all > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.plus-minus-hours-wrapper .show-all span.material-icons {
+  font-size: 16px;
+  margin-left: 0.2em;
+  margin-bottom: 0.125em;
+}
+.plus-minus-hours-wrapper .show-all:hover {
   color: #a7a3ac;
 }
 
