@@ -398,6 +398,7 @@ body {
 
 main {
   display: flex;
+  align-items: flex-start;
 }
 main > section {
   flex-grow: 1;

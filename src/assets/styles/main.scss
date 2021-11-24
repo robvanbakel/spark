@@ -51,6 +51,7 @@ body {
 
 main {
   display: flex;
+  align-items: flex-start;
   & > section {
     flex-grow: 1;
   }
