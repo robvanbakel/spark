@@ -10,14 +10,19 @@
     </form>
   </div>
 
-  <transition name="demo">
-    <div v-if="showDemo" class="auth-modal demo">
-      <h1>No account yet?</h1>
-      <p>Click the button below to enter a demo account. Any changes you make won't be stored and will be lost when existing the demo environment.</p>
-      <base-button v-if="!demoLoading" icon="login" @click="enterDemo">Enter Demo</base-button>
-      <base-button v-else disabled icon="login">Loading…</base-button>
-    </div>
-  </transition>
+  <div v-if="$store.getters['settings/mode'] === 'demo'">
+    <transition name="demo">
+      <div v-if="showDemo" class="auth-modal demo">
+        <h1>No account yet?</h1>
+        <p>
+          Click the button below to enter a demo account. Any changes you make won't be stored and will be lost when
+          existing the demo environment.
+        </p>
+        <base-button v-if="!demoLoading" icon="login" @click="enterDemo">Enter Demo</base-button>
+        <base-button v-else disabled icon="login">Loading…</base-button>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -25,8 +30,8 @@ export default {
   data() {
     return {
       errorMessage: null,
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       isLoading: false,
       showDemo: false,
       demoLoading: false,
@@ -36,15 +41,15 @@ export default {
     async enterDemo() {
       this.demoLoading = true
 
-      await this.$store.dispatch("auth/login", {
-        email: "demo@company.com",
-        password: "demo@company.com",
+      await this.$store.dispatch('auth/login', {
+        email: 'demo@company.com',
+        password: 'demo@company.com',
       })
     },
     async handleSubmit() {
       this.isLoading = true
 
-      const res = await this.$store.dispatch("auth/login", {
+      const res = await this.$store.dispatch('auth/login', {
         email: this.email,
         password: this.password,
       })
@@ -53,14 +58,14 @@ export default {
         this.isLoading = false
 
         switch (res.code) {
-          case "auth/user-not-found":
-            this.errorMessage = "User not found"
+          case 'auth/user-not-found':
+            this.errorMessage = 'User not found'
             break
-          case "auth/wrong-password":
-            this.errorMessage = "Password incorrect"
+          case 'auth/wrong-password':
+            this.errorMessage = 'Password incorrect'
             break
           default:
-            this.errorMessage = "Login failed"
+            this.errorMessage = 'Login failed'
         }
       }
     },
