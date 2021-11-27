@@ -19,6 +19,11 @@ import TheSidebar from "@/components/layout/TheSidebar"
 
 import { auth } from "@/firebase"
 
+// Sign user out before demo environment is reloaded
+if(window.location.hostname.split('.')[0] === 'demo') {
+  auth.signOut()
+}
+
 // Get Firebase Auth status before app instantiation
 
 let app = null
