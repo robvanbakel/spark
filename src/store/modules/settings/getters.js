@@ -1,4 +1,7 @@
 export default {
+  mode() {
+    return window.location.hostname.split('.')[0]
+  },
   dateLocale() {
     return 'en-US'
   },

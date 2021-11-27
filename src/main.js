@@ -20,7 +20,7 @@ import TheSidebar from "@/components/layout/TheSidebar"
 import { auth } from "@/firebase"
 
 // Sign user out before demo environment is reloaded
-if(window.location.hostname.split('.')[0] === 'demo') {
+if(store.getters['settings/mode'] === 'demo') {
   auth.signOut()
 }
 
