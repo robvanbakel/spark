@@ -22,6 +22,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizelegibility;
   padding: 0 40px;
+  &.noscroll {
+    height: 100%;
+    overflow: hidden;
+  }
 }
 
 .container {

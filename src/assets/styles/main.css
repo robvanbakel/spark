@@ -370,6 +370,10 @@ body {
   text-rendering: optimizelegibility;
   padding: 0 40px;
 }
+body.noscroll {
+  height: 100%;
+  overflow: hidden;
+}
 
 .container {
   margin: 0 auto;
