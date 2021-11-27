@@ -167,8 +167,8 @@
       }
     }
     &::after {
-      font-family: "Material Icons";
-      content: "expand_more";
+      font-family: 'Material Icons';
+      content: 'expand_more';
       position: absolute;
       height: 100%;
       display: flex;
@@ -184,7 +184,7 @@
     }
     &.enableSearch {
       &:after {
-        content: "search";
+        content: 'search';
       }
     }
   }
@@ -197,45 +197,48 @@
     position: absolute;
     z-index: 9;
     box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
-    .item {
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      user-select: none;
-      &.no-match {
-        color: color.$text-700;
-      }
-      &.active,
-      &:not(.no-match):hover {
-        cursor: pointer;
-        background-color: color.$select;
-      }
-      span.status {
-        font-size: 12px;
-        color: color.$text-300;
-        padding: 0.2em 0.35em;
-        font-weight: 500;
-        border-radius: 4px;
-        &.active {
-          display: none;
+    .dropdown-inner {
+      position: relative;
+      .item {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        user-select: none;
+        &.no-match {
+          color: color.$text-700;
         }
-        &.sick {
-          color: color.$purple;
-          background-color: color.$purple-light;
+        &.active,
+        &:not(.no-match):hover {
+          cursor: pointer;
+          background-color: color.$select;
         }
-        &.unavailable {
-          color: color.$yellow;
-          background-color: color.$yellow-light;
-        }
-        &.inactive {
-          color: color.$orange;
-          background-color: color.$orange-light;
-        }
-        &.staged {
-          color: color.$blue;
-          background-color: color.$blue-light;
+        span.status {
+          font-size: 12px;
+          color: color.$text-300;
+          padding: 0.2em 0.35em;
+          font-weight: 500;
+          border-radius: 4px;
+          &.active {
+            display: none;
+          }
+          &.sick {
+            color: color.$purple;
+            background-color: color.$purple-light;
+          }
+          &.unavailable {
+            color: color.$yellow;
+            background-color: color.$yellow-light;
+          }
+          &.inactive {
+            color: color.$orange;
+            background-color: color.$orange-light;
+          }
+          &.staged {
+            color: color.$blue;
+            background-color: color.$blue-light;
+          }
         }
       }
     }
@@ -351,7 +354,7 @@
       &:hover,
       &.active {
         &::after {
-          content: "";
+          content: '';
           display: block;
           position: absolute;
           height: 24px;
