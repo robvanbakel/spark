@@ -15,9 +15,13 @@
     <div class="dropdown" v-if="dropdownVisible">
       <div v-if="this.filteredItems.length">
         <div
-          v-for="item in filteredItems"
+          v-for="(item, index) in filteredItems"
           :key="item.id"
-          :class="['item', { active: item.id === this.selected }]"
+          :class="[
+            'item',
+            { active: item.id === this.selected && this.hoveredIndex === null },
+            { active: index === this.hoveredIndex },
+          ]"
           @click="selectItem(item.id)"
         >
           <span>{{ item.display }}</span>
@@ -61,6 +65,7 @@ export default {
     return {
       dropdownVisible: false,
       selected: this.active,
+      hoveredIndex: null,
       input: this.items.find((item) => item.id === this.active)?.display || "",
     }
   },
@@ -86,20 +91,47 @@ export default {
       window.addEventListener("keydown", this.keyDownHandler)
     },
     keyDownHandler(e) {
-      if (e.key === "Escape") {
-        this.hideDropdown()
+      switch (e.key) {
+        case "Escape":
+          this.hideDropdown()
+          break
+        case "Enter":
+          this.selectItem(this.filteredItems[this.hoveredIndex].id)
+          break
+        case "ArrowUp":
+          if (this.hoveredIndex === null) {
+            this.hoveredIndex = this.filteredItems.length - 1
+          } else if (this.hoveredIndex === 0) {
+            break
+          } else {
+            this.hoveredIndex--
+          }
+          break
+        case "ArrowDown":
+          if (this.hoveredIndex === null) {
+            this.hoveredIndex = 0
+          } else if (this.hoveredIndex === this.filteredItems.length - 1) {
+            break
+          } else {
+            this.hoveredIndex++
+          }
+          break
       }
     },
     hideDropdown() {
       this.input = this.selectedDisplay
       this.dropdownVisible = false
       this.$refs.input.blur()
+      this.hoveredIndex = null
       window.removeEventListener("keydown", this.keyDownHandler)
     },
     selectItem(choice) {
       this.selected = choice
       this.hideDropdown()
       this.$emit("choice", choice)
+    },
+    hoverItem(choice) {
+      this.hovered = choice
     },
     getStatus(id, opt = {}) {
       const status = this.$store.getters["employees/employees"].find((emp) => emp.id === id).status
