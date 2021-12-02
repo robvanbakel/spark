@@ -1,0 +1,201 @@
+@use '../utilities/colors' as color;
+@use '../utilities/mixins' as mixin;
+
+// EMPLOYEELIST
+section#employeelist {
+  padding-bottom: 8px;
+  .header {
+    @include mixin.employeeListGrid;
+    padding-bottom: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    color: color.$text-100;
+  }
+  .row {
+    @include mixin.employeeListGrid;
+    font-size: 14px;
+    font-weight: 400;
+    color: color.$text-500;
+    margin: 0 -12px;
+    padding: 0 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    .name {
+      font-size: 16px;
+      font-weight: 500;
+      color: color.$main;
+    }
+    .notes {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    &:hover {
+      background-color: color.$select;
+    }
+  }
+}
+
+.base-modal.edit-employee {
+  .header {
+    .badge {
+      margin-left: 20px;
+    }
+  }
+  .main {
+    .form-control {
+      display: grid;
+      grid-template-columns: 92px auto;
+      align-items: center;
+      margin-bottom: 12px;
+      &.notes {
+        margin-bottom: 0;
+      }
+      label {
+        font-weight: 500;
+        color: color.$text-100;
+        font-size: 14px;
+        &[for='notes'],
+        &[for='place'] {
+          align-self: flex-start;
+          margin-top: 12px;
+        }
+      }
+      input,
+      textarea {
+        width: 100%;
+        border-radius: 6px;
+        color: color.$text-300;
+        border: 1px solid color.$border;
+        font-size: 14px;
+        padding: 12px 16px;
+        outline: none;
+        &.error {
+          border-color: color.$danger;
+          background-color: color.$danger-light;
+        }
+      }
+      input {
+        height: 40px;
+      }
+      textarea {
+        font-family: inherit;
+        height: 140px;
+        resize: none;
+        line-height: 1.4;
+      }
+      .suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 8px;
+        margin-bottom: 14px;
+        & > span {
+          background-color: color.$main-light;
+          border-radius: 3px;
+          font-weight: 500;
+          font-size: 13px;
+          color: #fff;
+          margin: 0 5px 5px 0;
+          padding: 3px 5px;
+          max-width: 100%;
+          user-select: none;
+          cursor: pointer;
+          &:hover {
+            background-color: darken(color.$main-light, 7%);
+          }
+          &.add {
+            background-color: lighten(color.$main-light, 4%);
+            position: relative;
+            padding-left: 22px;
+            span.material-icons {
+              position: absolute;
+              left: 5px;
+              top: 3px;
+              font-size: 15px;
+              font-weight: 700;
+            }
+            &:hover {
+              background-color: color.$main-light;
+            }
+          }
+        }
+      }
+    }
+    .form-control-contract {
+      display: flex;
+      justify-content: space-between;
+      input {
+        width: 67px;
+        padding: 0;
+        text-align: center;
+      }
+      span.input-label {
+        margin-left: 12px;
+        font-size: 14px;
+        color: color.$text-300;
+      }
+    }
+    .form-control-date {
+      display: flex;
+      justify-content: space-between;
+      input#date {
+        width: 103px;
+        text-align: center;
+        padding: 0;
+      }
+      .form-control-time {
+        span.input-label-main {
+          font-weight: 500;
+          color: color.$text-100;
+          font-size: 14px;
+          margin-right: 14px;
+        }
+        input.time {
+          width: 67px;
+          text-align: center;
+          padding: 0;
+        }
+        span.input-label {
+          margin: 0 12px;
+          font-size: 14px;
+          color: color.$text-300;
+        }
+      }
+    }
+    .form-actions {
+      margin-top: 32px;
+      display: flex;
+      justify-items: flex-start;
+      button.delete {
+        width: 40px;
+        height: 40px;
+        border: none;
+        outline: none;
+        border-radius: 20px;
+        background-color: color.$danger-light;
+        color: color.$danger;
+        &:hover {
+          background-color: darken(color.$danger-light, 5%);
+        }
+        span {
+          font-size: 18px;
+        }
+      }
+      button.secondary {
+        margin-left: auto;
+        background: none;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        color: color.$text-500;
+        margin-right: 12px;
+        &:hover {
+          color: darken(color.$text-500, 12%);
+        }
+        &:active {
+          color: darken(color.$text-500, 24%);
+        }
+      }
+    }
+  }
+}

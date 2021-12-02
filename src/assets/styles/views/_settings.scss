@@ -1,0 +1,56 @@
+@use '../utilities/colors' as color;
+
+section#settings {
+  padding: 40px;
+  width: min-content;
+  margin-bottom: 125px;
+  .header {
+    margin-bottom: 3em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h1 {
+      color: color.$text-100;
+    }
+    .actions {
+      display: flex;
+      & > * {
+        margin-left: 12px;
+      }
+      button.inverted.icon-only span {
+        font-size: 26px;
+      }
+    }
+  }
+  .settings-group {
+    color: color.$text-100;
+    width: 440px;
+    &:not(:last-child) {
+      margin-bottom: 60px;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-bottom: 1em;
+      font-weight: 500;
+    }
+    p.lead {
+      font-size: 15px;
+      margin-bottom: 32px;
+    }
+    p.notes {
+      font-size: 13px;
+      font-style: italic;
+      margin-top: 32px;
+    }
+    .setting {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      span.label {
+        width: 140px;
+        font-size: 14px;
+      }
+    }
+  }
+}

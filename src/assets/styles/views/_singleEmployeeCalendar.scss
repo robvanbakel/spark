@@ -1,0 +1,175 @@
+@use '../utilities/colors' as color;
+@use '../utilities/mixins' as mixin;
+
+section#singleEmployeeCalendar {
+  padding: 40px;
+  .header {
+    margin-bottom: 3em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h1 {
+      color: color.$text-100;
+    }
+    .actions {
+      display: flex;
+      & > * {
+        margin-left: 12px;
+      }
+      button.inverted.icon-only span {
+        font-size: 26px;
+      }
+    }
+  }
+  .calendar {
+    display: flex;
+    margin-top: 72px;
+    .row {
+      height: 60px;
+      margin-bottom: 12px;
+    }
+    .colDays {
+      width: 120px;
+      .row {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        span.dayName {
+          font-size: 14px;
+          font-weight: 700;
+          color: color.$text-100;
+          margin-bottom: 6px;
+        }
+        span.date {
+          font-size: 11px;
+          color: color.$text-500;
+        }
+      }
+    }
+    .hours {
+      display: grid;
+      grid-template-columns: repeat(25, 1fr);
+      font-size: 11px;
+      color: color.$text-700;
+      text-align: center;
+      position: absolute;
+      span {
+        position: relative;
+        left: -50%;
+        top: -32px;
+        &::after {
+          content: '';
+          width: 1px;
+          background-color: lighten(color.$border, 6%);
+          display: block;
+          position: absolute;
+          top: 20px;
+          left: 50%;
+        }
+      }
+    }
+    .colCalendar {
+      width: 100%;
+      position: relative;
+      .row {
+        @include mixin.scheduleGrid;
+        font-size: 14px;
+        position: relative;
+        width: 100%;
+        .shift {
+          position: absolute;
+          background-color: color.$blue-light;
+          border-radius: 6px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+          height: 100%;
+          cursor: pointer;
+          &:hover {
+            background-color: darken(color.$blue-light, 10%);
+            span.notes {
+              opacity: 1;
+            }
+          }
+          span {
+            &.place {
+              font-size: 12px;
+              font-weight: 700;
+              color: color.$text-100;
+              margin-bottom: 6px;
+              letter-spacing: 0.02em;
+            }
+            &.time {
+              font-size: 12px;
+              color: color.$main;
+            }
+            &.notes {
+              position: absolute;
+              right: 12px;
+              top: 12px;
+              font-size: 16px;
+              color: color.$blue;
+              opacity: 0.65;
+            }
+          }
+        }
+      }
+    }
+  }
+  .empty-schedule {
+    padding: 24px 0;
+    text-align: center;
+    p {
+      font-size: 16px;
+    }
+  }
+}
+
+.base-modal.schedule-shift-info {
+  .shift-info-group {
+    display: grid;
+    grid-template-columns: 80px auto;
+    margin-bottom: 28px;
+    font-size: 14px;
+    color: color.$text-100;
+    span.label {
+      font-weight: 500;
+    }
+  }
+}
+
+.base-modal.schedule-qr {
+  min-width: 0;
+  width: min-content;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  p {
+    margin-bottom: 18px;
+  }
+  img {
+    width: 240px;
+  }
+  .actions {
+    margin-top: 18px;
+  }
+}
+
+.employee-info-wrapper {
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: color.$main;
+    margin-bottom: 1.5em;
+  }
+  h4 {
+    margin-bottom: 0.15em;
+    font-size: 14px;
+    color: color.$main;
+  }
+  p:not(:last-child) {
+    margin-bottom: 1em;
+  }
+}

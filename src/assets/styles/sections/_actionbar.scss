@@ -1,0 +1,61 @@
+@use '../utilities/colors' as color;
+
+div.actionbar {
+  padding: 20px 0;
+  display: flex;
+  justify-content: flex-start;
+  div.search {
+    width: 360px;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    input {
+      height: 40px;
+      width: 100%;
+      border-radius: 20px;
+      border: 1px solid color.$border;
+      font-size: 12px;
+      padding: 0 40px 0 20px;
+      outline: none;
+      &::placeholder {
+        color: color.$text-500;
+      }
+    }
+    span {
+      position: absolute;
+      font-size: 20px;
+      color: color.$text-500;
+      right: 16px;
+      &.clear {
+        cursor: pointer;
+      }
+    }
+  }
+  .filter {
+    margin-left: 40px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: color.$main;
+    overflow-y: scroll;
+    .badge {
+      margin-left: 12px;
+    }
+    span.clear {
+      font-size: 18px;
+      margin-left: 12px;
+      color: color.$text-500;
+      cursor: pointer;
+    }
+  }
+  .actions {
+    display: flex;
+    margin-left: auto;
+    padding-left: 40px;
+    & > *:not(:first-child) {
+      margin-left: 12px;
+    }
+  }
+}

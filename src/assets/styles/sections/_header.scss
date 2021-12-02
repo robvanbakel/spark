@@ -1,0 +1,70 @@
+@use '../utilities/colors' as color;
+
+// HEADER
+header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 32px 0;
+  div#logo {
+    img {
+      height: 20px;
+    }
+  }
+  nav {
+    margin-left: 100px;
+    font-weight: 500;
+    font-size: 16px;
+    ul {
+      list-style: none;
+      display: flex;
+      li {
+        margin-right: 60px;
+        a {
+          color: color.$main-light;
+          &:hover,
+          &.router-link-active {
+            color: color.$main;
+          }
+        }
+      }
+    }
+  }
+  #profile {
+    margin-left: auto;
+    display: flex;
+    cursor: pointer;
+    .profile-info {
+      display: flex;
+      text-align: right;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      .profile-name {
+        color: color.$text-100;
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 2px;
+      }
+      .profile-account {
+        color: color.$text-700;
+        font-weight: 400;
+        font-size: 10px;
+      }
+    }
+    .profile-avatar {
+      margin-left: 14px;
+      width: 40px;
+      height: 40px;
+      background-color: #e3a948;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span {
+        font-size: 24px;
+        color: #fff;
+      }
+    }
+  }
+}

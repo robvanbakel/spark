@@ -1,0 +1,90 @@
+@use 'utilities/colors' as color;
+
+// GOOGLE FONTS
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Material+Icons');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizelegibility;
+  padding: 0 40px;
+  &.noscroll {
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+.container {
+  margin: 0 auto;
+  min-width: 880px;
+  overflow: hidden;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 1;
+  background-color: #fff;
+  &.dark {
+    background-color: #000;
+  }
+  &.transparent {
+    opacity: 0.35;
+  }
+  &.invisible {
+    opacity: 0;
+  }
+}
+
+main {
+  display: flex;
+  align-items: flex-start;
+  & > section {
+    flex-grow: 1;
+  }
+}
+
+section {
+  border-radius: 20px;
+  border: 1px solid color.$border;
+  padding: 22px;
+  margin-bottom: 40px;
+}
+
+aside {
+  width: 264px;
+  margin-left: 40px;
+  &,
+  & > * {
+    transition: all 260ms ease-in;
+  }
+  &.hidden {
+    margin-left: -264px;
+    pointer-events: none;
+    & > * {
+      opacity: 0;
+      transform: translateX(304px); // width + margin-left
+      position: relative;
+    }
+  }
+}
+
+p {
+  color: color.$text-300;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  transition: all 120ms ease;
+}
