@@ -31,5 +31,8 @@ export default {
   },
   statuses(state) {
     return state.statuses
+  },
+  location(state) {
+    return state.location
   }
 }

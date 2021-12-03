@@ -23,6 +23,9 @@ export default {
         case "dateNotation":
           context.commit("dateNotation", data.dateNotation)
           break
+        case "location":
+          context.commit("location", data)
+          break
       }
     })
   },
@@ -72,6 +75,19 @@ export default {
       .collection("settings")
       .doc("dateNotation")
       .update({ dateNotation: payload })
+
+    // Send call to server to update stored settings
+    fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/admin/updateSettings`)
+  },
+  async location(context, payload) {
+    // Update locally
+    context.commit("location", payload)
+
+    // Update DB
+    await db
+      .collection("settings")
+      .doc("location")
+      .update(payload)
 
     // Send call to server to update stored settings
     fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/admin/updateSettings`)

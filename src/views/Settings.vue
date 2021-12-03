@@ -33,6 +33,8 @@
       </div>
     </div>
 
+
+
     <div class="settings-group">
       <h2>Date notation</h2>
       <div class="setting dropdown">
@@ -42,6 +44,33 @@
           :active="$store.getters['settings/dateNotation']"
           @choice="setDateNotation"
         ></base-dropdown>
+      </div>
+    </div>
+
+        <div class="settings-group">
+      <h2>Address</h2>
+      <p class="lead">
+        This addres will be visible in the calendar feed for each employee.
+      </p>
+      <div class="setting address">
+        <span class="label">Address</span>
+        <div class="input-wrapper">
+          <input
+            id="address"
+            type="text"
+            placeholder="Address"
+            v-model="location.address"
+            @input="this.unsavedChanges = true"
+          />
+          <input
+            id="postalCode"
+            type="text"
+            placeholder="ZIP Code"
+            v-model="location.postalCode"
+            @input="this.unsavedChanges = true"
+          />
+          <input id="city" type="text" placeholder="City" v-model="location.city" @input="this.unsavedChanges = true" />
+        </div>
       </div>
     </div>
   </section>
@@ -72,6 +101,7 @@ export default {
         employeeNotes: null,
         shiftNotes: null,
       },
+      location: this.$store.getters['settings/location'],
       dateNotation: null,
     }
   },
@@ -85,8 +115,9 @@ export default {
       this.dateNotation = locale
     },
     async saveSettings() {
-      this.$store.dispatch("settings/setShareWithEmployees", this.shareWithEmployees)
-      this.$store.dispatch("settings/dateNotation", this.dateNotation)
+      this.$store.dispatch('settings/setShareWithEmployees', this.shareWithEmployees)
+      this.$store.dispatch('settings/dateNotation', this.dateNotation)
+      this.$store.dispatch('settings/location', this.location)
 
       if (await this.$refs.settingsSaved.open()) {
         this.unsavedChanges = false
@@ -97,16 +128,16 @@ export default {
     dateNotations() {
       return [
         {
-          id: "en-US",
-          display: "MM/DD/YYYY",
+          id: 'en-US',
+          display: 'MM/DD/YYYY',
         },
         {
-          id: "en-GB",
-          display: "DD/MM/YYYY",
+          id: 'en-GB',
+          display: 'DD/MM/YYYY',
         },
         {
-          id: "nl-NL",
-          display: "DD-MM-YYYY",
+          id: 'nl-NL',
+          display: 'DD-MM-YYYY',
         },
       ]
     },

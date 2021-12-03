@@ -26,7 +26,7 @@ section#settings {
     color: color.$text-100;
     width: 440px;
     &:not(:last-child) {
-      margin-bottom: 60px;
+      margin-bottom: 80px;
     }
 
     h2 {
@@ -45,11 +45,44 @@ section#settings {
     }
     .setting {
       margin-bottom: 12px;
-      display: flex;
+      display: grid;
+      grid-template-columns: 140px auto;
       align-items: center;
       span.label {
-        width: 140px;
         font-size: 14px;
+      }
+      &.address {
+        span.label {
+          align-self: flex-start;
+          margin-top: 12px;
+        }
+        .input-wrapper {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          input {
+            height: 40px;
+            border-radius: 6px;
+            color: color.$text-300;
+            border: 1px solid color.$border;
+            font-size: 14px;
+            padding: 12px 16px;
+            outline: none;
+            &.error {
+              border-color: color.$danger;
+              background-color: color.$danger-light;
+            }
+            &#address {
+              width: 100%;
+            }
+            &#postalCode {
+              width: 92px;
+            }
+            &#city {
+              flex-grow: 1;
+            }
+          }
+        }
       }
     }
   }

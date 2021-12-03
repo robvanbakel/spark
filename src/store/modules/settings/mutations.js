@@ -23,4 +23,7 @@ export default {
   dateNotation(state, dateNotation) {
     state.dateNotation = dateNotation
   },
+  location(state, location) {
+    state.location = location
+  },
 }

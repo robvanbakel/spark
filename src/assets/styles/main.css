@@ -1821,7 +1821,7 @@ section#settings .settings-group {
   width: 440px;
 }
 section#settings .settings-group:not(:last-child) {
-  margin-bottom: 60px;
+  margin-bottom: 80px;
 }
 section#settings .settings-group h2 {
   font-size: 18px;
@@ -1839,12 +1839,43 @@ section#settings .settings-group p.notes {
 }
 section#settings .settings-group .setting {
   margin-bottom: 12px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 140px auto;
   align-items: center;
 }
 section#settings .settings-group .setting span.label {
-  width: 140px;
   font-size: 14px;
+}
+section#settings .settings-group .setting.address span.label {
+  align-self: flex-start;
+  margin-top: 12px;
+}
+section#settings .settings-group .setting.address .input-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+section#settings .settings-group .setting.address .input-wrapper input {
+  height: 40px;
+  border-radius: 6px;
+  color: #635d6d;
+  border: 1px solid #deddde;
+  font-size: 14px;
+  padding: 12px 16px;
+  outline: none;
+}
+section#settings .settings-group .setting.address .input-wrapper input.error {
+  border-color: #de6035;
+  background-color: #fbece7;
+}
+section#settings .settings-group .setting.address .input-wrapper input#address {
+  width: 100%;
+}
+section#settings .settings-group .setting.address .input-wrapper input#postalCode {
+  width: 92px;
+}
+section#settings .settings-group .setting.address .input-wrapper input#city {
+  flex-grow: 1;
 }
 
 div.actionbar {
