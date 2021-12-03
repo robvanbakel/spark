@@ -102,7 +102,7 @@ export default {
         shiftNotes: null,
       },
       location: this.$store.getters['settings/location'],
-      dateNotation: null,
+      dateNotation: this.$store.getters['settings/dateNotation'],
     }
   },
   methods: {
