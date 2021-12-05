@@ -34,9 +34,18 @@ export default {
   methods: {
     showCalendar() {
       this.calendarVisible = true
+      window.addEventListener('keydown', this.keyDownHandler)
     },
     hideCalendar() {
       this.calendarVisible = false
+      window.removeEventListener('keydown', this.keyDownHandler)
+    },
+    keyDownHandler(e) {
+      switch (e.key) {
+        case 'Escape':
+          this.hideCalendar()
+          break
+      }
     },
     formatDate(date) {
       return date?.toLocaleDateString(this.$store.getters["settings/dateNotation"], {
