@@ -178,12 +178,10 @@ export default {
     clearError(field) {
       this.error[field] = false
     },
-    formatTime(time, field) {
-      if (/^([0-9])$/.test(time)) {
-        this.shift[field] = `0${time}:00`
-      } else if (/^([0-1][0-9]|2[0-3])$/.test(time)) {
-        this.shift[field] = `${time}:00`
-      } else if (/^([0-1]?[0-9]|2[0-3])\D?([0-5][0-9])$/.test(time)) {
+    formatTime(time,field) {
+      if (/^\d{1,2}$/.test(time) && time < 24) {
+        this.shift[field] = `${time.padStart(2, '0')}:00`
+      } if (/^\d{1,2}\D?[0-5][0-9]$/.test(time)) {
         this.shift[field] = `${time.slice(0, 2)}:${time.slice(-2)}`
       }
     },
