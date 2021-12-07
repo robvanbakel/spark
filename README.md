@@ -57,7 +57,7 @@ In order to login as an employee, use any of the demo employee email addresses a
 
 ###### Modal to edit a shift
 
-![EditShift](https://i.imgur.com/8lHjFzo.jpg)
+![EditShift](https://robvanbakel.com/images/spark_editshift.jpg)
 
 #### Built With
 
