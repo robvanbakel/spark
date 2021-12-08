@@ -57,29 +57,27 @@ section#settings {
           margin-top: 12px;
         }
         .input-wrapper {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 12px;
-          input {
-            height: 40px;
-            border-radius: 6px;
-            color: color.$text-300;
-            border: 1px solid color.$border;
-            font-size: 14px;
-            padding: 12px 16px;
-            outline: none;
-            &.error {
-              border-color: color.$danger;
-              background-color: color.$danger-light;
-            }
-            &#address {
-              width: 100%;
-            }
-            &#postalCode {
-              width: 92px;
-            }
-            &#city {
+
+          .input-row{ 
+            margin-bottom: 12px;
+            display: flex;
+            gap: 12px;
+            input {
+              height: 40px;
+              border-radius: 6px;
+              color: color.$text-300;
+              border: 1px solid color.$border;
+              font-size: 14px;
+              padding: 12px 16px;
+              outline: none;
               flex-grow: 1;
+              &.error {
+                border-color: color.$danger;
+                background-color: color.$danger-light;
+              }
+              &#postalCode {
+                width: 92px;
+              }
             }
           }
         }
