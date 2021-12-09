@@ -49,7 +49,7 @@ In order to login as an employee, use any of the demo employee email addresses a
 
 ###### Modal to edit employee details
 
-![EditEmployee](https://i.imgur.com/Mt6jfpl.jpg)
+![EditEmployee](https://robvanbakel.com/images/spark_editemployee.jpg)
 
 ###### Weekly view of the planner
 
