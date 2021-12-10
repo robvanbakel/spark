@@ -58,7 +58,14 @@
               <week-switch v-if="$store.getters['settings/hideSidebar']" />
             </transition>
           </div>
-          <div class="dayWrapper" v-for="(offset, index) in 7" :key="offset">
+          <div
+            v-for="(offset, index) in 7"
+            :key="offset"
+            :class="[
+              'dayWrapper',
+              { today: today($store.getters['date/dates'][index]) },
+            ]"
+          >
             <span class="dayName">{{
               $store.getters["date/dayNames"][index]
             }}</span>
@@ -127,6 +134,11 @@ export default {
     toggleSidebar() {
       this.$store.dispatch("settings/toggleSidebar");
       this.$store.dispatch("settings/sidebarAutoHidden", false);
+    },
+    today(date) {
+      if (date.toLocaleDateString() === new Date().toLocaleDateString()) {
+        return true;
+      }
     },
   },
   computed: {
