@@ -9,6 +9,8 @@
         :readonly="!enableSearch"
         ref="input"
         v-model="input"
+        @focus="showDropdown"
+        @blur="hideDropdown"
       />
     </div>
     <base-overlay v-if="dropdownVisible" @clickout="hideDropdown" invisible></base-overlay>
