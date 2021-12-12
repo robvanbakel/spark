@@ -567,7 +567,8 @@ button {
   align-items: center;
   cursor: pointer;
   overflow: hidden;
-  padding: 0 12px;
+  padding: 0 12px !important;
+  text-align: center;
   min-width: -webkit-min-content;
   min-width: -moz-min-content;
   min-width: min-content;

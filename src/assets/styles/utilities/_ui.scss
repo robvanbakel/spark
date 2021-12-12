@@ -352,7 +352,8 @@
     align-items: center;
     cursor: pointer;
     overflow: hidden;
-    padding: 0 12px;
+    padding: 0 12px !important;
+    text-align: center;
     min-width: min-content;
     white-space: nowrap;
     user-select: none;
