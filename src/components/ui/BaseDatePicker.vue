@@ -1,7 +1,17 @@
 <template>
   <div class="base-date-picker">
-    <input @click="showCalendar" readonly :class="{ focus: calendarVisible, error }" :value="formatDate(activeDate)">
-    <base-overlay v-if="calendarVisible" @clickout="hideCalendar" invisible></base-overlay>
+    <input
+      @click="showCalendar"
+      readonly
+      :class="{ focus: calendarVisible, error }"
+      :value="formatDate(activeDate)"
+      @focus="showCalendar"
+    />
+    <base-overlay
+      v-if="calendarVisible"
+      @clickout="hideCalendar"
+      invisible
+    ></base-overlay>
     <div class="calendar" v-if="calendarVisible">
       <BaseCalendar mode="picker" :active="activeDate" @choice="setDate" />
     </div>
@@ -9,7 +19,7 @@
 </template>
 
 <script>
-import BaseCalendar from "@/components/ui/BaseCalendar"
+import BaseCalendar from "@/components/ui/BaseCalendar";
 export default {
   components: { BaseCalendar },
   emits: ["date"],
@@ -27,36 +37,39 @@ export default {
     return {
       calendarVisible: false,
       activeDate: this.active || null,
-    }
+    };
   },
   methods: {
     showCalendar() {
-      this.calendarVisible = true
-      window.addEventListener('keydown', this.keyDownHandler)
+      this.calendarVisible = true;
+      window.addEventListener("keydown", this.keyDownHandler);
     },
     hideCalendar() {
-      this.calendarVisible = false
-      window.removeEventListener('keydown', this.keyDownHandler)
+      this.calendarVisible = false;
+      window.removeEventListener("keydown", this.keyDownHandler);
     },
     keyDownHandler(e) {
       switch (e.key) {
-        case 'Escape':
-          this.hideCalendar()
-          break
+        case "Escape":
+          this.hideCalendar();
+          break;
       }
     },
     formatDate(date) {
-      return date?.toLocaleDateString(this.$store.getters["settings/dateNotation"], {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      })
+      return date?.toLocaleDateString(
+        this.$store.getters["settings/dateNotation"],
+        {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }
+      );
     },
     setDate(date) {
-      this.activeDate = date
-      this.hideCalendar()
-      this.$emit("date", date)
+      this.activeDate = date;
+      this.hideCalendar();
+      this.$emit("date", date);
     },
   },
-}
+};
 </script>
