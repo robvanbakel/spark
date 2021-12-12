@@ -1,8 +1,6 @@
 <template>
   <div class="base-date-picker">
-    <div class="input" @click="showCalendar" :class="{ focus: calendarVisible, error }">
-      {{ formatDate(activeDate) }}
-    </div>
+    <input @click="showCalendar" readonly :class="{ focus: calendarVisible, error }" :value="formatDate(activeDate)">
     <base-overlay v-if="calendarVisible" @clickout="hideCalendar" invisible></base-overlay>
     <div class="calendar" v-if="calendarVisible">
       <BaseCalendar mode="picker" :active="activeDate" @choice="setDate" />

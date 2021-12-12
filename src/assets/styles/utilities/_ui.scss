@@ -335,7 +335,7 @@
 
 .base-date-picker {
   position: relative;
-  .input,
+  input,
   .calendar {
     background: #fff;
     width: 100%;
@@ -343,7 +343,7 @@
     color: color.$text-300;
     border: 1px solid color.$border;
   }
-  .input {
+  input {
     position: relative;
     font-size: 14px;
     height: 40px;
@@ -351,11 +351,11 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    user-select: none;
     overflow: hidden;
     padding: 0 12px;
     min-width: min-content;
     white-space: nowrap;
+    user-select: none;
     &.error {
       border-color: color.$danger;
       background-color: color.$danger-light;

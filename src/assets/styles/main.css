@@ -550,7 +550,7 @@ button {
 .base-date-picker {
   position: relative;
 }
-.base-date-picker .input,
+.base-date-picker input,
 .base-date-picker .calendar {
   background: #fff;
   width: 100%;
@@ -558,7 +558,7 @@ button {
   color: #635d6d;
   border: 1px solid #deddde;
 }
-.base-date-picker .input {
+.base-date-picker input {
   position: relative;
   font-size: 14px;
   height: 40px;
@@ -566,18 +566,18 @@ button {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
   overflow: hidden;
   padding: 0 12px;
   min-width: -webkit-min-content;
   min-width: -moz-min-content;
   min-width: min-content;
   white-space: nowrap;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
-.base-date-picker .input.error {
+.base-date-picker input.error {
   border-color: #de6035;
   background-color: #fbece7;
 }
