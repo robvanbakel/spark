@@ -6,8 +6,15 @@
       <div class="header">
         <h1>Hi {{ $store.getters["auth/user"].firstName }}</h1>
         <div class="week-info">
-          <div>Week: <span>{{ $store.getters["date/weekNumber"] }}</span></div>
-          <div>Total: <span>{{ totalHours }} hours</span></div>
+          <div>
+            Week: <span>{{ $store.getters["date/weekNumber"] }}</span>
+          </div>
+          <div>
+            Days: <span>{{ workingDays }}</span>
+          </div>
+          <div>
+            Total: <span>{{ totalHours }} hours</span>
+          </div>
         </div>
         <div class="actions">
           <base-button @click="openCalendar" icon="calendar_today"
@@ -170,6 +177,17 @@ export default {
       const weekId = this.$store.getters["date/weekId"];
 
       return schedules[weekId];
+    },
+    workingDays() {
+      const scheduleArray = [...this.schedule];
+
+      let workingDays = scheduleArray.map((day, index) => {
+        if (day) {
+          return this.$store.getters['date/dayNamesShort'][index];
+        }
+      });
+
+      return workingDays.filter(day => day != null).join(" / ");
     },
     totalHours() {
       let total = 0;
