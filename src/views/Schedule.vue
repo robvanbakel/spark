@@ -10,7 +10,7 @@
             Week: <span>{{ $store.getters["date/weekNumber"] }}</span>
           </div>
           <div>
-            Days: <span>{{ workingDays }}</span>
+            Scheduled: <span>{{ workingDays }} days</span>
           </div>
           <div>
             Total: <span>{{ totalHours }} hours</span>
@@ -181,13 +181,7 @@ export default {
     workingDays() {
       const scheduleArray = [...this.schedule];
 
-      let workingDays = scheduleArray.map((day, index) => {
-        if (day) {
-          return this.$store.getters['date/dayNamesShort'][index];
-        }
-      });
-
-      return workingDays.filter(day => day != null).join(" / ");
+      return scheduleArray.filter((day) => day).length;
     },
     totalHours() {
       let total = 0;
