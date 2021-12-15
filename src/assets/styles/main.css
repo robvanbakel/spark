@@ -1628,13 +1628,28 @@ section#singleEmployeeCalendar {
 section#singleEmployeeCalendar .header {
   margin-bottom: 3em;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 }
 section#singleEmployeeCalendar .header h1 {
   color: #2f273c;
 }
+section#singleEmployeeCalendar .header .week-info {
+  display: flex;
+  margin-bottom: -6px;
+  margin-left: 40px;
+  font-size: 14px;
+  color: #635d6d;
+}
+section#singleEmployeeCalendar .header .week-info > div {
+  margin-right: 32px;
+}
+section#singleEmployeeCalendar .header .week-info > div span {
+  font-weight: 600;
+  color: #2f273c;
+}
 section#singleEmployeeCalendar .header .actions {
+  margin-left: auto;
   display: flex;
 }
 section#singleEmployeeCalendar .header .actions > * {
