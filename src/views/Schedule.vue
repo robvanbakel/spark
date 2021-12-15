@@ -6,6 +6,7 @@
       <div class="header">
         <h1>Hi {{ $store.getters["auth/user"].firstName }}</h1>
         <div class="week-info">
+          <div>Week: <span>{{ $store.getters["date/weekNumber"] }}</span></div>
           <div>Total: <span>{{ totalHours }} hours</span></div>
         </div>
         <div class="actions">
