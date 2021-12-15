@@ -5,7 +5,7 @@
     <section id="singleEmployeeCalendar">
       <div class="header">
         <h1>Hi {{ $store.getters["auth/user"].firstName }}</h1>
-        <div class="week-info">
+        <div class="week-info" v-if="schedule">
           <div>
             Week: <span>{{ $store.getters["date/weekNumber"] }}</span>
           </div>
