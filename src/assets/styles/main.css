@@ -1985,7 +1985,6 @@ header nav ul li a:hover, header nav ul li a.router-link-active {
 header #profile {
   margin-left: auto;
   display: flex;
-  cursor: pointer;
 }
 header #profile .profile-info {
   display: flex;
@@ -2006,6 +2005,7 @@ header #profile .profile-info .profile-account {
   font-size: 10px;
 }
 header #profile .profile-avatar {
+  cursor: pointer;
   margin-left: 14px;
   width: 40px;
   height: 40px;
