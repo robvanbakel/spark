@@ -59,6 +59,14 @@ In order to login as an employee, use any of the demo employee email addresses a
 
 ![EditShift](https://robvanbakel.com/images/spark_editshift.jpg)
 
+###### Single employees' schedule
+
+![Planner](https://robvanbakel.com/images/spark_schedule.jpg)
+
+###### Modal to view employees' shift details
+
+![EditShift](https://robvanbakel.com/images/spark_shiftinfo.jpg)
+
 #### Built With
 
 - Vue 3
