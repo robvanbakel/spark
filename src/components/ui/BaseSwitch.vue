@@ -18,7 +18,14 @@
     </div>
 
     <div v-else>
-      <div v-for="item in items" :id="id" :class="['switch-control', { fixed: this.fixed }]" :key="item" @click="setActive($event, item)" ref="item">
+      <div
+        v-for="item in items"
+        :id="id"
+        :class="['switch-control', { fixed: this.fixed }]"
+        :key="item"
+        @click="setActive($event, item)"
+        ref="item"
+      >
         {{ item }}
       </div>
     </div>
@@ -57,7 +64,6 @@ export default {
     },
   },
   mounted() {
-    
     const switchItems = document.querySelectorAll(`#${this.id}.switch-control`)
 
     if (this.toggle) {

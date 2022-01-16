@@ -21,44 +21,39 @@ export default {
   },
   computed: {
     formatContent() {
-      return (
-        this.status.substring(0, 1).toUpperCase() +
-        this.status.substring(1).toLowerCase()
-      );
+      return this.status.substring(0, 1).toUpperCase() + this.status.substring(1).toLowerCase()
     },
   },
   methods: {
     getBadgeColor() {
       switch (this.status) {
-
         // Employee Status
         case "staged":
-          return "blue";
+          return "blue"
         case "active":
-          return "green";
+          return "green"
         case "unavailable":
-          return "yellow";
+          return "yellow"
         case "sick":
-          return "purple";
+          return "purple"
         case "inactive":
-          return "orange";
+          return "orange"
         case "archived":
-          return "red";
+          return "red"
 
         // Employee Role
         case "management":
-          return "blue";
+          return "blue"
         case "leadership":
-          return "green";
+          return "green"
         case "general":
-          return "yellow";
+          return "yellow"
         case "restaurant":
-          return "purple";
+          return "purple"
         case "cleaning":
-          return "orange";
+          return "orange"
       }
     },
   },
-};
+}
 </script>
-

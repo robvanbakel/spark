@@ -38,7 +38,7 @@
 
 <script>
 export default {
-  emits: ['choice'],
+  emits: ["choice"],
   props: {
     items: {
       type: Array,
@@ -67,12 +67,12 @@ export default {
       dropdownVisible: false,
       selected: this.active,
       hoveredIndex: null,
-      input: this.items.find((item) => item.id === this.active)?.display || '',
+      input: this.items.find((item) => item.id === this.active)?.display || "",
     }
   },
   computed: {
     selectedDisplay() {
-      return this.items.find((item) => item.id === this.selected)?.display || ''
+      return this.items.find((item) => item.id === this.selected)?.display || ""
     },
     filteredItems() {
       if (this.enableSearch) {
@@ -92,21 +92,21 @@ export default {
   methods: {
     showDropdown() {
       if (this.enableSearch) {
-        this.input = ''
+        this.input = ""
       }
       this.dropdownVisible = true
       this.$refs.input.focus()
-      window.addEventListener('keydown', this.keyDownHandler)
+      window.addEventListener("keydown", this.keyDownHandler)
     },
     keyDownHandler(e) {
       switch (e.key) {
-        case 'Escape':
+        case "Escape":
           this.hideDropdown()
           break
-        case 'Enter':
+        case "Enter":
           this.selectItem(this.filteredItems[this.hoveredIndex].id)
           break
-        case 'ArrowUp':
+        case "ArrowUp":
           if (this.hoveredIndex === null) {
             this.hoveredIndex = this.filteredItems.length - 1
           } else if (this.hoveredIndex === 0) {
@@ -116,7 +116,7 @@ export default {
           }
 
           break
-        case 'ArrowDown':
+        case "ArrowDown":
           if (this.hoveredIndex === null) {
             this.hoveredIndex = 0
           } else if (this.hoveredIndex === this.filteredItems.length - 1) {
@@ -133,18 +133,18 @@ export default {
       this.dropdownVisible = false
       this.$refs.input.blur()
       this.hoveredIndex = null
-      window.removeEventListener('keydown', this.keyDownHandler)
+      window.removeEventListener("keydown", this.keyDownHandler)
     },
     selectItem(choice) {
       this.selected = choice
       this.hideDropdown()
-      this.$emit('choice', choice)
+      this.$emit("choice", choice)
     },
     hoverItem(choice) {
       this.hovered = choice
     },
     getStatus(id, opt = {}) {
-      const status = this.$store.getters['employees/employees'].find((emp) => emp.id === id).status
+      const status = this.$store.getters["employees/employees"].find((emp) => emp.id === id).status
 
       if (opt.capitalize) {
         return status.charAt(0).toUpperCase() + status.slice(1)

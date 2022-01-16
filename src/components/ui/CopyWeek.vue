@@ -1,10 +1,6 @@
 <template>
   <div class="copy-week-wrapper">
-    <base-dropdown
-      :items="weeks"
-      :active="weeks[0].id"
-      @choice="selectWeek"
-    ></base-dropdown>
+    <base-dropdown :items="weeks" :active="weeks[0].id" @choice="selectWeek"></base-dropdown>
     <base-button @click="copyWeek">Copy</base-button>
   </div>
 </template>
@@ -14,17 +10,17 @@ export default {
   data() {
     return {
       selectedWeek: null,
-    };
+    }
   },
   methods: {
     selectWeek(week) {
-      this.selectedWeek = week;
+      this.selectedWeek = week
     },
     copyWeek() {
       this.$store.dispatch("planner/copyWeek", {
         to: this.$store.getters["date/weekId"],
         from: this.selectedWeek,
-      });
+      })
     },
   },
   computed: {
@@ -34,13 +30,13 @@ export default {
           return {
             id: weekId,
             display: `Week ${parseInt(weekId.split("-")[1])}`,
-          };
+          }
         })
-        .reverse();
+        .reverse()
     },
   },
   mounted() {
-    this.selectedWeek = this.weeks[0].id;
+    this.selectedWeek = this.weeks[0].id
   },
-};
+}
 </script>
