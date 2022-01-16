@@ -12,7 +12,12 @@
       <p v-for="num in visibleInPrevMonth()" :key="num" class="prev-month" @click="prev()">
         {{ num }}
       </p>
-      <p v-for="num in daysInMonth()" :key="num" :class="[currentDateClass(num), calendarPointClass(num)]" @click="setWeek(num)">
+      <p
+        v-for="num in daysInMonth()"
+        :key="num"
+        :class="[currentDateClass(num), calendarPointClass(num)]"
+        @click="setWeek(num)"
+      >
         {{ num }}
       </p>
       <p v-for="num in visibleInNextMonth()" :key="num" class="next-month" @click="next()">
@@ -98,10 +103,15 @@ export default {
   },
   computed: {
     selectedMonthName() {
-      return new Date(this.selectedYear, this.selectedMonth).toLocaleString(this.$store.getters['settings/dateLocale'], { month: "long" })
+      return new Date(this.selectedYear, this.selectedMonth).toLocaleString(
+        this.$store.getters["settings/dateLocale"],
+        { month: "long" }
+      )
     },
     shortDays() {
-      return this.$store.getters['date/dates'].map(date => date.toLocaleDateString(this.$store.getters['settings/dateLocale'], { weekday: "short" }))
+      return this.$store.getters["date/dates"].map((date) =>
+        date.toLocaleDateString(this.$store.getters["settings/dateLocale"], { weekday: "short" })
+      )
     },
     calendarPoint() {
       return this.$store.getters["date/dates"][3]
