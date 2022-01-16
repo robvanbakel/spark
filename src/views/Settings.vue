@@ -3,32 +3,22 @@
     <div class="header">
       <h1>Settings</h1>
       <div class="actions">
-        <base-button
-          @click="saveSettings"
-          :disabled="!unsavedChanges"
-          icon="save"
-          >Save</base-button
-        >
+        <base-button @click="saveSettings" :disabled="!unsavedChanges" icon="save">Save</base-button>
       </div>
     </div>
 
     <div class="settings-group">
       <h2>Share notes with employees</h2>
       <p class="lead">
-        Control whether or not employees have access to notes made by the
-        planners. If enabled, all notes associated with an employee will
-        immediately become visible to them.
+        Control whether or not employees have access to notes made by the planners. If enabled, all notes associated
+        with an employee will immediately become visible to them.
       </p>
       <div class="setting toggle">
         <span class="label">Employee Notes</span>
         <base-switch
           toggle
           id="employeeNotes"
-          :active="
-            $store.getters[
-              'settings/shareWithEmployees'
-            ].employeeNotes.toString()
-          "
+          :active="$store.getters['settings/shareWithEmployees'].employeeNotes.toString()"
           @activeItem="setShareWithEmployees($event, 'employeeNotes')"
         ></base-switch>
       </div>
@@ -37,9 +27,7 @@
         <base-switch
           toggle
           id="shiftNotes"
-          :active="
-            $store.getters['settings/shareWithEmployees'].shiftNotes.toString()
-          "
+          :active="$store.getters['settings/shareWithEmployees'].shiftNotes.toString()"
           @activeItem="setShareWithEmployees($event, 'shiftNotes')"
         ></base-switch>
       </div>
@@ -123,27 +111,24 @@ export default {
       },
       location: this.$store.getters["settings/location"],
       dateNotation: this.$store.getters["settings/dateNotation"],
-    };
+    }
   },
   methods: {
     setShareWithEmployees(value, id) {
-      this.unsavedChanges = true;
-      this.shareWithEmployees[id] = value;
+      this.unsavedChanges = true
+      this.shareWithEmployees[id] = value
     },
     setDateNotation(locale) {
-      this.unsavedChanges = true;
-      this.dateNotation = locale;
+      this.unsavedChanges = true
+      this.dateNotation = locale
     },
     async saveSettings() {
-      this.$store.dispatch(
-        "settings/setShareWithEmployees",
-        this.shareWithEmployees
-      );
-      this.$store.dispatch("settings/dateNotation", this.dateNotation);
-      this.$store.dispatch("settings/location", this.location);
+      this.$store.dispatch("settings/setShareWithEmployees", this.shareWithEmployees)
+      this.$store.dispatch("settings/dateNotation", this.dateNotation)
+      this.$store.dispatch("settings/location", this.location)
 
       if (await this.$refs.settingsSaved.open()) {
-        this.unsavedChanges = false;
+        this.unsavedChanges = false
       }
     },
   },
@@ -162,23 +147,21 @@ export default {
           id: "nl-NL",
           display: "DD-MM-YYYY",
         },
-      ];
+      ]
     },
   },
   mounted() {
-    this.unsavedChanges = false;
+    this.unsavedChanges = false
   },
   async beforeRouteLeave(to, from, next) {
     if (!this.unsavedChanges) {
-      next();
+      next()
     } else {
       if (await this.$refs.confirmUnsavedChanges.open()) {
-        this.saveSettings();
+        this.saveSettings()
       }
-      next();
+      next()
     }
   },
-};
+}
 </script>
-
-<style></style>

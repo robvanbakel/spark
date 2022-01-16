@@ -1,22 +1,9 @@
 <template>
   <div class="actionbar">
     <div class="search">
-      <input
-        autocomplete="off"
-        type="text"
-        v-model.trim="searchInput"
-        placeholder="Search Planner"
-        ref="searchInput"
-      />
-      <span v-if="!searchInput" class="material-icons material-icons-round"
-        >search</span
-      >
-      <span
-        v-else
-        class="clear material-icons material-icons-round"
-        @click="clearSearchInput"
-        >clear</span
-      >
+      <input autocomplete="off" type="text" v-model.trim="searchInput" placeholder="Search Planner" ref="searchInput" />
+      <span v-if="!searchInput" class="material-icons material-icons-round">search</span>
+      <span v-else class="clear material-icons material-icons-round" @click="clearSearchInput">clear</span>
     </div>
     <div class="filter">
       Filter:
@@ -47,10 +34,7 @@
   </div>
   <main v-if="$store.getters['planner/schedules']">
     <section id="planner">
-      <EmptyWeek
-        v-if="emptyWeek && !hideEmptyWeek"
-        @hide-empty-week="hideEmptyWeek = true"
-      />
+      <EmptyWeek v-if="emptyWeek && !hideEmptyWeek" @hide-empty-week="hideEmptyWeek = true" />
       <div v-else>
         <div class="header">
           <div>
@@ -61,17 +45,10 @@
           <div
             v-for="(offset, index) in 7"
             :key="offset"
-            :class="[
-              'dayWrapper',
-              { today: today($store.getters['date/dates'][index]) },
-            ]"
+            :class="['dayWrapper', { today: today($store.getters['date/dates'][index]) }]"
           >
-            <span class="dayName">{{
-              $store.getters["date/dayNames"][index]
-            }}</span>
-            <span class="date">{{
-              $store.getters["date/datesShort"][index]
-            }}</span>
+            <span class="dayName">{{ $store.getters["date/dayNames"][index] }}</span>
+            <span class="date">{{ $store.getters["date/datesShort"][index] }}</span>
           </div>
         </div>
         <PlannerContent :roles="displayRoles" :search="searchInput" />
@@ -92,11 +69,11 @@
 </template>
 
 <script>
-import PlannerContent from "@/components/layout/PlannerContent";
-import EditShift from "@/components/layout/EditShift";
-import PlannerCalendar from "@/components/layout/PlannerCalendar";
-import PlusMinusHours from "@/components/layout/PlusMinusHours";
-import EmptyWeek from "@/components/layout/EmptyWeek";
+import PlannerContent from "@/components/layout/PlannerContent"
+import EditShift from "@/components/layout/EditShift"
+import PlannerCalendar from "@/components/layout/PlannerCalendar"
+import PlusMinusHours from "@/components/layout/PlusMinusHours"
+import EmptyWeek from "@/components/layout/EmptyWeek"
 
 export default {
   props: ["weekId"],
@@ -112,58 +89,54 @@ export default {
       searchInput: "",
       hideEmptyWeek: false,
       filters: {},
-    };
+    }
   },
   methods: {
     closeEditShift() {
-      this.activeShiftId = null;
+      this.activeShiftId = null
     },
     clearSearchInput() {
-      this.searchInput = "";
-      this.$refs.searchInput.focus();
+      this.searchInput = ""
+      this.$refs.searchInput.focus()
     },
     addNewShift() {
-      this.$store.dispatch("planner/setActiveShiftId", "new");
+      this.$store.dispatch("planner/setActiveShiftId", "new")
     },
     setFilter(status) {
-      this.filters[status] = !this.filters[status];
+      this.filters[status] = !this.filters[status]
     },
     clearFilters() {
-      Object.keys(this.filters).forEach((key) => (this.filters[key] = false));
+      Object.keys(this.filters).forEach((key) => (this.filters[key] = false))
     },
     toggleSidebar() {
-      this.$store.dispatch("settings/toggleSidebar");
-      this.$store.dispatch("settings/sidebarAutoHidden", false);
+      this.$store.dispatch("settings/toggleSidebar")
+      this.$store.dispatch("settings/sidebarAutoHidden", false)
     },
     today(date) {
       if (date.toLocaleDateString() === new Date().toLocaleDateString()) {
-        return true;
+        return true
       }
     },
   },
   computed: {
     displayRoles() {
       if (Object.values(this.filters).includes(true)) {
-        return Object.keys(this.filters).filter(
-          (role) => this.filters[role] === true
-        );
+        return Object.keys(this.filters).filter((role) => this.filters[role] === true)
       } else {
-        return Object.keys(this.filters);
+        return Object.keys(this.filters)
       }
     },
     emptyWeek() {
-      return !this.$store.getters["planner/currentWeekSchedule"];
+      return !this.$store.getters["planner/currentWeekSchedule"]
     },
   },
   watch: {
     $route(to) {
       if (to.name === "Planner") {
-        const weekId = this.$route.params.weekId;
-        this.$store.dispatch("date/setDates", weekId);
-        this.hideEmptyWeek = false;
-        document.title = `Week ${parseInt(
-          this.$route.params.weekId.split("-")[1]
-        )} - Planner`;
+        const weekId = this.$route.params.weekId
+        this.$store.dispatch("date/setDates", weekId)
+        this.hideEmptyWeek = false
+        document.title = `Week ${parseInt(this.$route.params.weekId.split("-")[1])} - Planner`
       }
     },
   },
@@ -171,9 +144,9 @@ export default {
     this.filters = this.$store.getters["settings/roles"].reduce(
       (filters, role) => ((filters[role.toLowerCase()] = false), filters),
       {}
-    );
+    )
   },
-};
+}
 </script>
 
 <style scoped>
