@@ -319,7 +319,6 @@ export default {
     const activeShiftId = this.$store.getters["planner/activeShiftId"]
 
     this.newShift = true
-    this.shift.break = "0"
 
     // Helper functions
     const parseTime = (time) => time.substring(0, 2) + ":" + time.substring(2, 4)
@@ -349,7 +348,7 @@ export default {
           this.shift.start = parseTime(shift.start)
           this.shift.end = parseTime(shift.end)
           this.shift.notes = shift.notes
-          this.shift.break = shift.break
+          this.shift.break = shift.break || "0"
         }
       }
     }
