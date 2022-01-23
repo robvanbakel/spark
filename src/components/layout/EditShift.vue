@@ -48,11 +48,11 @@
         <div class="form-control">
           <label for="date">Date</label>
           <div class="form-control-date">
-            <base-date-picker
+            <BaseDatePicker
               :active="this.$store.getters['date/dates'][this.$store.getters['planner/activeShiftId'].day]"
               :error="error.date"
               @date="dateHandler"
-            ></base-date-picker>
+            />
             <div class="form-control-time">
               <span class="input-label-main">Time</span>
               <input
