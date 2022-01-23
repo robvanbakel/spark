@@ -106,19 +106,19 @@
     </template>
   </base-modal>
 
-  <base-confirm
+  <BaseConfirm
     ref="confirmReplaceShift"
     title="Shift already exists"
     message="This employee already has a shift on that day. Do you want to replace it?"
     choiceFalse="Go back"
     choiceTrue="Replace shift"
-  ></base-confirm>
+  />
 
-  <base-confirm
+  <BaseConfirm
     ref="confirmDeleteShift"
     message="Deleting this shift cannot be undone."
     choiceTrue="Delete Shift"
-  ></base-confirm>
+  />
 </template>
 
 <script>

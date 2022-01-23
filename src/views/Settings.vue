@@ -83,21 +83,21 @@
     </div>
   </section>
 
-  <base-confirm
+  <BaseConfirm
     ref="confirmUnsavedChanges"
     title="Unsaved Changes"
     message="Do you want to save your unsaved changes?"
     choiceTrue="Save changes"
     choiceFalse="Discard"
-  ></base-confirm>
+  />
 
-  <base-confirm
+  <BaseConfirm
     ref="settingsSaved"
     title="Success!"
     message="Your settings have been saved."
     choiceTrue="Ok"
     noFalse
-  ></base-confirm>
+  />
 </template>
 
 <script>

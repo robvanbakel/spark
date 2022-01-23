@@ -48,7 +48,7 @@ auth.onAuthStateChanged(async (user) => {
     app.component("base-overlay", BaseOverlay)
     app.component("base-modal", BaseModal)
     app.component("base-dropdown", BaseDropdown)
-    app.component("base-confirm", BaseConfirm)
+    app.component("BaseConfirm", BaseConfirm)
     app.component("base-date-picker", BaseDatePicker)
     app.component("week-switch", WeekSwitch)
     app.component("the-sidebar", TheSidebar)

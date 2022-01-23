@@ -100,11 +100,11 @@
     </template>
   </base-modal>
 
-  <base-confirm
+  <BaseConfirm
     ref="confirmDeleteEmployee"
     message="Deleting an employee cannot be undone."
     choiceTrue="Delete Employee"
-  ></base-confirm>
+  />
 </template>
 
 <script>
