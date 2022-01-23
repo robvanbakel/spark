@@ -1,6 +1,6 @@
 <template>
   <div class="empty-week">
-    <week-switch></week-switch>
+    <WeekSwitch />
     <h5>{{ dateRange }}</h5>
     <p>
       No planning has been made for this week yet!<br />

@@ -39,7 +39,7 @@
         <div class="header">
           <div>
             <transition name="weekSwitch">
-              <week-switch v-if="$store.getters['settings/hideSidebar']" />
+              <WeekSwitch v-if="$store.getters['settings/hideSidebar']" />
             </transition>
           </div>
           <div
