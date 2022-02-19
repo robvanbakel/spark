@@ -3,13 +3,13 @@
     <span v-for="day in $store.getters['date/dayNamesShort']" :key="day">{{ day }}</span>
   </div>
   <div class="dates">
-    <p v-for="num in visibleInPrevMonth()" :key="num" class="prev-month" @click="prev()">
+    <p v-for="num in visibleInPrevMonth()" :key="num" class="prev-month" @click="$emit('prev')">
       {{ num }}
     </p>
     <p v-for="num in daysInMonth()" :key="num" :class="dateClasses(num)" @click="pickDate(num)">
       {{ num }}
     </p>
-    <p v-for="num in visibleInNextMonth()" :key="num" class="next-month" @click="next()">
+    <p v-for="num in visibleInNextMonth()" :key="num" class="next-month" @click="$emit('next')">
       {{ num }}
     </p>
   </div>
@@ -18,7 +18,7 @@
 <script>
 export default {
   props: ['selectedMonth', 'selectedYear', 'active'],
-  emits: ['choice'],
+  emits: ['choice','prev','next'],
   methods: {
     daysInMonth() {
       return new Date(this.selectedYear, this.selectedMonth + 1, 0).getDate()

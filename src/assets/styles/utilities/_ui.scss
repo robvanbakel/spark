@@ -375,6 +375,7 @@
 
 .base-calendar {
   width: 100%;
+  user-select: none;
   & > div {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -433,6 +434,32 @@
       }
     }
   }
+
+  #months {
+    margin-top: 16px;
+    display: grid;
+    gap: 5px;
+    grid-template-columns: repeat(3, 1fr);
+    span {
+      border: 1px solid transparent;
+      background-color: color.$select;
+      border-radius: 3px;
+      color: color.$main;
+      padding: 8px 0;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      &.current {
+        border: 1px solid color.$main-light;
+        background-color: transparent;
+        color: color.$main;
+      }
+      &:hover {
+        background-color: color.$main;
+        color: #fff;
+      }
+    }
+  }
 }
 
 // Styles for picker mode
@@ -460,6 +487,14 @@
     }
     &:hover p:not(:hover).active::after {
       opacity: 0.5;
+    }
+  }
+  #months {
+    &:not(:hover) {
+      span.active {
+        background-color: color.$main;
+        color: #fff;
+      }
     }
   }
 }

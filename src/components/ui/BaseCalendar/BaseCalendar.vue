@@ -2,21 +2,33 @@
   <div :class="['base-calendar', mode]">
     <div id="header">
       <span class="material-icons material-icons-round" @click="prev">chevron_left</span>
-      <h2 @click="today">{{ selectedMonthName }} {{ selectedYear }}</h2>
+      <h2 @click="changeView">{{ header }}</h2>
       <span class="material-icons material-icons-round" @click="next">chevron_right</span>
     </div>
-    <component
-      :is="currentView"
+    <DayPicker
+      v-if="currentView === 'DayPicker'"
       :selectedMonth="selectedMonth"
       :selectedYear="selectedYear"
-      @choice="choice"
       :active="active"
-    ></component>
+      @prev="prev"
+      @next="next"
+      @choice="choice"
+    />
+    <MonthPicker
+      v-if="currentView === 'MonthPicker'"
+      :selectedMonth="selectedMonth"
+      :selectedYear="selectedYear"
+      :active="active"
+      @prev="prev"
+      @next="next"
+      @choice="pickMonth"
+    />
   </div>
 </template>
 
 <script>
 import DayPicker from '@/components/ui/BaseCalendar/DayPicker'
+import MonthPicker from '@/components/ui/BaseCalendar/MonthPicker'
 
 export default {
   props: {
@@ -32,6 +44,7 @@ export default {
   emits: ['choice'],
   components: {
     DayPicker,
+    MonthPicker,
   },
   data() {
     return {
@@ -42,22 +55,41 @@ export default {
   },
   methods: {
     choice(date) {
-      this.$emit('choice',date)
+      this.$emit('choice', date)
+    },
+    pickMonth(month) {
+      this.selectedMonth = month
+      this.currentView = 'DayPicker'
     },
     next() {
-      if (this.selectedMonth === 11) {
-        this.selectedMonth = 0
-        this.selectedYear++
+      if (this.currentView === 'DayPicker') {
+        if (this.selectedMonth === 11) {
+          this.selectedMonth = 0
+          this.selectedYear++
+        } else {
+          this.selectedMonth++
+        }
       } else {
-        this.selectedMonth++
+        this.selectedYear++
       }
     },
     prev() {
-      if (this.selectedMonth === 0) {
-        this.selectedMonth = 11
-        this.selectedYear--
+      if (this.currentView === 'DayPicker') {
+        if (this.selectedMonth === 0) {
+          this.selectedMonth = 11
+          this.selectedYear--
+        } else {
+          this.selectedMonth--
+        }
       } else {
-        this.selectedMonth--
+        this.selectedYear--
+      }
+    },
+    changeView() {
+      if (this.currentView === 'DayPicker') {
+        this.currentView = 'MonthPicker'
+      } else {
+        this.currentView = 'DayPicker'
       }
     },
     today() {
@@ -66,6 +98,12 @@ export default {
     },
   },
   computed: {
+    header() {
+      if (this.currentView === 'MonthPicker') {
+        return `${this.selectedYear}`
+      }
+      return `${this.selectedMonthName} ${this.selectedYear}`
+    },
     selectedMonthName() {
       return new Date(this.selectedYear, this.selectedMonth).toLocaleString(
         this.$store.getters['settings/dateLocale'],
