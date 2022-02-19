@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import BaseCalendar from "@/components/ui/BaseCalendar"
+import BaseCalendar from "@/components/ui/BaseCalendar/BaseCalendar"
 export default {
   components: { BaseCalendar },
   emits: ["date"],
