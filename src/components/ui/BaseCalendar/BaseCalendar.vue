@@ -63,24 +63,16 @@ export default {
     },
     next() {
       if (this.currentView === 'DayPicker') {
-        if (this.selectedMonth === 11) {
-          this.selectedMonth = 0
-          this.selectedYear++
-        } else {
-          this.selectedMonth++
-        }
+        this.selectedMonth = (this.selectedMonth + 1) % 12
+        this.selectedMonth % 12 === 0 && this.selectedYear++
       } else {
         this.selectedYear++
       }
     },
     prev() {
       if (this.currentView === 'DayPicker') {
-        if (this.selectedMonth === 0) {
-          this.selectedMonth = 11
-          this.selectedYear--
-        } else {
-          this.selectedMonth--
-        }
+        this.selectedMonth = (this.selectedMonth + 11) % 12
+        this.selectedMonth % 12 === 11 && this.selectedYear--
       } else {
         this.selectedYear--
       }
