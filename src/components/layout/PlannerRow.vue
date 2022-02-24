@@ -3,26 +3,25 @@
     <div v-for="(schedule, employeeId) in $store.getters['planner/currentWeekSchedule']" :key="schedule">
       <div
         class="row"
-        v-if="employeeInfo(employeeId, 'role') === role && employeeInfo(employeeId, 'status') !== 'archived'"
+        v-if="
+          employeeInfo(employeeId, 'role') === role &&
+            employeeInfo(employeeId, 'status') !== 'archived' &&
+            employeeInfo(employeeId, 'fullName')
+              .toLowerCase()
+              .includes(searchInput.toLowerCase())
+        "
       >
         <div class="employee">
-          <span class="name">{{ employeeInfo(employeeId, "fullName") }}</span>
+          <span class="name">{{ employeeInfo(employeeId, 'fullName') }}</span>
           <span class="hours"
-            ><span class="calculated">{{ $store.getters["employees/totalHours"][employeeId] }}</span> /
-            {{ employeeInfo(employeeId, "contract") }} hours</span
+            ><span class="calculated">{{ $store.getters['employees/totalHours'][employeeId] }}</span> /
+            {{ employeeInfo(employeeId, 'contract') }} hours</span
           >
         </div>
         <div
           v-for="(shift, day) in $store.getters['planner/currentWeekSchedule'][employeeId]"
           :key="day"
-          :class="[
-            'day',
-            role,
-            {
-              active: shift,
-              hidden: !shift?.place.toLowerCase().includes(searchInput.toLowerCase()),
-            },
-          ]"
+          :class="['day', role, { active: shift }]"
           @click="handleClick({ day, employeeId })"
         >
           <div class="shift-info" v-if="shift">
@@ -62,7 +61,7 @@
 
 <script>
 export default {
-  props: ["role", "search"],
+  props: ['role', 'search'],
   watch: {
     search: function(query) {
       this.searchInput = query
@@ -70,23 +69,23 @@ export default {
   },
   data() {
     return {
-      searchInput: "",
+      searchInput: '',
     }
   },
   methods: {
     employeeInfo(id, query) {
-      const employee = this.$store.getters["employees/users"].find((emp) => emp.id === id)
+      const employee = this.$store.getters['employees/users'].find((emp) => emp.id === id)
 
       let output = employee[query] || employee
 
       switch (query) {
-        case "fullName":
+        case 'fullName':
           output = `${employee.firstName} ${employee.lastName}`
           break
-        case "role":
+        case 'role':
           output = employee.role.toLowerCase()
           break
-        case "status":
+        case 'status':
           output = employee.status
           break
       }
@@ -94,15 +93,15 @@ export default {
       return output
     },
     shiftInfo(payload, query) {
-      const shift = this.$store.getters["planner/currentWeekSchedule"][payload.employeeId][payload.day - 1]
+      const shift = this.$store.getters['planner/currentWeekSchedule'][payload.employeeId][payload.day - 1]
 
-      const formatTime = (time) => time.substring(0, 2) + ":" + time.substring(2, 4)
+      const formatTime = (time) => time.substring(0, 2) + ':' + time.substring(2, 4)
 
       if (shift) {
         let output = shift[query] || shift
 
         switch (query) {
-          case "time":
+          case 'time':
             output = `${formatTime(shift.start)} - ${formatTime(shift.end)}`
             break
         }
@@ -111,8 +110,8 @@ export default {
       }
     },
     handleClick(payload) {
-      this.$store.dispatch("planner/setActiveShiftId", {
-        weekId: this.$store.getters["date/weekId"],
+      this.$store.dispatch('planner/setActiveShiftId', {
+        weekId: this.$store.getters['date/weekId'],
         ...payload,
       })
     },
