@@ -7,7 +7,10 @@
           v-if="
             employee.role.toLowerCase() === role &&
               calculatePlusMinusHours(employee.id) != 0 &&
-              computedShowAll(employee.id)
+              computedShowAll(employee.id) &&
+              employeeFullName(employee)
+                .toLowerCase()
+                .includes(searchInput.toLowerCase())
           "
         >
           <div class="hours">
@@ -37,11 +40,17 @@
 
 <script>
 export default {
-  props: ["roles"],
+  props: ['roles', 'search'],
   data() {
     return {
       showAll: true,
+      searchInput: '',
     }
+  },
+  watch: {
+    search: function(query) {
+      this.searchInput = query
+    },
   },
   methods: {
     calculatePlusMinusHours(employeeId) {
@@ -57,6 +66,9 @@ export default {
       }
 
       return plusMinusHours
+    },
+    employeeFullName(employee) {
+      return `${employee.firstName} ${employee.lastName}`
     },
     toggleShowAll() {
       this.showAll = !this.showAll

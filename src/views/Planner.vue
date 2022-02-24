@@ -62,7 +62,7 @@
         <PlannerCalendar />
       </section>
       <section class="plus-minus-hours" v-if="!emptyWeek || hideEmptyWeek">
-        <PlusMinusHours :roles="displayRoles" />
+        <PlusMinusHours :roles="displayRoles" :search="searchInput" />
       </section>
     </the-sidebar>
   </main>
