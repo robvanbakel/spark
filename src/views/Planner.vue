@@ -45,7 +45,7 @@
           <div
             v-for="(offset, index) in 7"
             :key="offset"
-            :class="['dayWrapper', { today: today($store.getters['date/dates'][index]) }]"
+            :class="['dayWrapper', { today: $dayjs().isSame($store.getters['date/dates'][index], 'day') }]"
           >
             <span class="dayName">{{ $store.getters["date/dayNames"][index] }}</span>
             <span class="date">{{ $store.getters["date/datesShort"][index] }}</span>
@@ -111,11 +111,6 @@ export default {
     toggleSidebar() {
       this.$store.dispatch("settings/toggleSidebar")
       this.$store.dispatch("settings/sidebarAutoHidden", false)
-    },
-    today(date) {
-      if (date.toLocaleDateString() === new Date().toLocaleDateString()) {
-        return true
-      }
     },
   },
   computed: {

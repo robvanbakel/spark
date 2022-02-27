@@ -91,16 +91,15 @@ export default {
   },
   computed: {
     header() {
+      const date = this.$dayjs()
+        .year(this.selectedYear)
+        .month(this.selectedMonth)
+
       if (this.currentView === 'MonthPicker') {
-        return `${this.selectedYear}`
+        return date.format('YYYY')
       }
-      return `${this.selectedMonthName} ${this.selectedYear}`
-    },
-    selectedMonthName() {
-      return new Date(this.selectedYear, this.selectedMonth).toLocaleString(
-        this.$store.getters['settings/dateLocale'],
-        { month: 'long' }
-      )
+
+      return date.format('MMMM YYYY')
     },
   },
 }

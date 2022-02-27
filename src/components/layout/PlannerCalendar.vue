@@ -2,7 +2,7 @@
   <div class="plannerCalendar">
     <div id="header">
       <span class="material-icons material-icons-round" @click="prev">chevron_left</span>
-      <h2 @click="today">{{ selectedMonthName }} {{ selectedYear }}</h2>
+      <h2 @click="today">{{ calendarHeader }}</h2>
       <span class="material-icons material-icons-round" @click="next">chevron_right</span>
     </div>
     <div id="days">
@@ -102,16 +102,14 @@ export default {
     },
   },
   computed: {
-    selectedMonthName() {
-      return new Date(this.selectedYear, this.selectedMonth).toLocaleString(
-        this.$store.getters["settings/dateLocale"],
-        { month: "long" }
-      )
+    calendarHeader() {
+      return this.$dayjs()
+        .year(this.selectedYear)
+        .month(this.selectedMonth)
+        .format('MMMM YYYY')
     },
     shortDays() {
-      return this.$store.getters["date/dates"].map((date) =>
-        date.toLocaleDateString(this.$store.getters["settings/dateLocale"], { weekday: "short" })
-      )
+      return this.$store.getters["date/dates"].map((date) => this.$dayjs(date).format('ddd'))
     },
     calendarPoint() {
       return this.$store.getters["date/dates"][3]

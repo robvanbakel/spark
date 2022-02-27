@@ -1,7 +1,7 @@
 <template>
   <div id="months">
     <span v-for="(month, index) in 12" :key="month" @click="pickMonth(index)" :class="monthClasses(index)">{{
-      selectedMonthName(index)
+      $dayjs().month(index).format('MMM')
     }}</span>
   </div>
 </template>
@@ -13,11 +13,6 @@ export default {
   props: ['selectedMonth', 'selectedYear', 'active'],
   emits: ['choice'],
   methods: {
-    selectedMonthName(month) {
-      return new Date(this.selectedYear, month).toLocaleString(this.$store.getters['settings/dateLocale'], {
-        month: 'short',
-      })
-    },
     pickMonth(selectedMonth) {
       this.$emit('choice', selectedMonth)
     },

@@ -33,15 +33,7 @@ export default {
   computed: {
     dateRange() {
       const dates = this.$store.getters["date/dates"]
-
-      const formatDate = (date) =>
-        date.toLocaleDateString(this.$store.getters["settings/dateLocale"], {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })
-
-      return `${formatDate(dates[0])} – ${formatDate(dates[dates.length - 1])}`
+      return `${this.$dayjs(dates[0]).format('LL')} – ${this.$dayjs(dates[dates.length - 1]).format('LL')}`
     },
   },
   watch: {
