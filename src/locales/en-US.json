@@ -1,1 +1,5 @@
-{}
+{
+  "general": {
+    "smallScreenWarning": "Currently Spark only works on larger screens"
+  }
+}

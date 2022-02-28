@@ -1,1 +1,5 @@
-{}
+{
+  "general": {
+    "smallScreenWarning": "Spark werkt momenteel alleen op grotere schermen"
+  }
+}

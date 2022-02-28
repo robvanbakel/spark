@@ -4,7 +4,7 @@
     <router-view></router-view>
   </div>
   <div v-else style="text-align: center; padding: 3em 1em;">
-    Currently Spark only works on larger screens
+    {{ $t('general.smallScreenWarning') }}
   </div>
 </template>
 
