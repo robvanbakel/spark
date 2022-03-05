@@ -26,6 +26,10 @@
     "menuLabel": "Staff",
     "hours": "hours"
   },
+  "schedule": {
+    "profile": "Profile",
+    "hours": "hours"
+  },
   "settings": {
     "title": "Settings",
     "shareNotes": {
