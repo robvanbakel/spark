@@ -3,6 +3,7 @@
     "smallScreenWarning": "Currently Spark only works on larger screens",
     "actions": {
       "save": "Save",
+      "cancel": "Cancel",
       "filter": "Filter",
       "add": "Add {resource}"
     }
@@ -15,6 +16,16 @@
       "phone": "Phone",
       "role": "Role",
       "notes": "Notes"
+    },
+    "editModal": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "role": "Role",
+      "contract": "Contract",
+      "email": "Email",
+      "phone": "Phone",
+      "notes": "Notes",
+      "hours": "hours"
     }
   },
   "settings": {

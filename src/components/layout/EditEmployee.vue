@@ -1,7 +1,7 @@
 <template>
   <base-modal class="edit-employee" globalClose @close="closeEditEmployee">
     <template v-slot:header>
-      <h1 v-if="this.new">Add Employee</h1>
+      <h1 v-if="this.new">{{ $t('general.actions.add', { resource: 'Employee' }) }}</h1>
       <h1 v-else>{{ employee.firstName }} {{ employee.lastName }}</h1>
       <StatusPicker
         v-if="!this.new && activeEmployee.status"
@@ -12,7 +12,7 @@
     <template v-slot:main>
       <div v-if="this.new">
         <div class="form-control">
-          <label for="firstName">First name</label>
+          <label for="firstName">{{ $t('staff.editModal.firstName') }}</label>
           <input
             autocomplete="off"
             type="text"
@@ -23,7 +23,7 @@
           />
         </div>
         <div class="form-control">
-          <label for="lastName">Last name</label>
+          <label for="lastName">{{ $t('staff.editModal.lastName') }}</label>
           <input
             autocomplete="off"
             type="text"
@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="form-control">
-        <label for="role">Role</label>
+        <label for="role">{{ $t('staff.editModal.role') }}</label>
         <base-dropdown
           v-if="activeEmployee.role || this.new"
           :items="roles"
@@ -45,7 +45,7 @@
         ></base-dropdown>
       </div>
       <div class="form-control">
-        <label for="contract">Contract</label>
+        <label for="contract">{{ $t('staff.editModal.contract') }}</label>
         <div class="form-control-contract">
           <div>
             <input
@@ -56,7 +56,7 @@
               :class="{ error: error.contract }"
               v-model.trim="activeEmployee.contract"
             />
-            <span class="input-label">hours</span>
+            <span class="input-label">{{ $t('staff.editModal.hours') }}</span>
           </div>
           <base-switch
             :items="['fulltime', 'parttime']"
@@ -67,7 +67,7 @@
         </div>
       </div>
       <div class="form-control">
-        <label for="email">Email</label>
+        <label for="email">{{ $t('staff.editModal.email') }}</label>
         <input
           autocomplete="off"
           type="text"
@@ -78,11 +78,11 @@
         />
       </div>
       <div class="form-control">
-        <label for="phone">Phone</label>
+        <label for="phone">{{ $t('staff.editModal.phone') }}</label>
         <input autocomplete="off" type="text" id="phone" v-model.trim="activeEmployee.phone" />
       </div>
       <div class="form-control notes">
-        <label for="notes">Notes</label>
+        <label for="notes">{{ $t('staff.editModal.notes') }}</label>
         <textarea id="notes" v-model="activeEmployee.notes"></textarea>
       </div>
     </template>
@@ -95,8 +95,8 @@
         class="left"
         @click="deleteEmployee"
       ></base-button>
-      <base-button secondary @click="closeEditEmployee">Cancel</base-button>
-      <base-button @click="validate">Save</base-button>
+      <base-button secondary @click="closeEditEmployee">{{ $t('general.actions.cancel') }}</base-button>
+      <base-button @click="validate">{{ $t('general.actions.save') }}</base-button>
     </template>
   </base-modal>
 
