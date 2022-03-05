@@ -6,7 +6,7 @@
       <span v-else class="clear material-icons material-icons-round" @click="clearSearchInput">clear</span>
     </div>
     <div class="filter">
-      {{ $t('staff.filter') }}:
+      {{ $t('general.actions.filter') }}:
       <base-badge
         @click="setFilter(status)"
         v-for="status in Object.keys(filters)"
@@ -22,7 +22,7 @@
       >
     </div>
     <div class="actions">
-      <base-button @click="addNewEmployee" icon="add">{{ $t('staff.addEmployee') }}</base-button>
+      <base-button @click="addNewEmployee" icon="add">{{ $t('general.actions.add', { resource: 'Employee' }) }}</base-button>
     </div>
   </div>
   <main>

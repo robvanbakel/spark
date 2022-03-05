@@ -2,13 +2,13 @@
   "general": {
     "smallScreenWarning": "Currently Spark only works on larger screens",
     "actions": {
-      "save": "Save"
+      "save": "Save",
+      "filter": "Filter",
+      "add": "Add {resource}"
     }
   },
   "staff": {
     "menuLabel": "Staff",
-    "filter": "Filter",
-    "addEmployee": "Add Employee",
     "tableHeaders": {
       "name": "Name",
       "email": "Email",
