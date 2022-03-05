@@ -8,16 +8,16 @@
     <nav>
       <ul>
         <li v-if="employee">
-          <router-link :to="{ name: 'Schedule' }">Schedule</router-link>
+          <router-link :to="{ name: 'Schedule' }">{{ $t('schedule.menuLabel') }}</router-link>
         </li>
         <li v-if="admin">
-          <router-link :to="{ name: 'EmployeeList' }">Staff</router-link>
+          <router-link :to="{ name: 'EmployeeList' }">{{ $t('staff.menuLabel') }}</router-link>
         </li>
         <li v-if="admin">
-          <router-link :to="{ name: 'Planner' }">Planner</router-link>
+          <router-link :to="{ name: 'Planner' }">{{ $t('planner.menuLabel') }}</router-link>
         </li>
         <li v-if="admin">
-          <router-link :to="{ name: 'Settings' }">Settings</router-link>
+          <router-link :to="{ name: 'Settings' }">{{ $t('settings.menuLabel') }}</router-link>
         </li>
       </ul>
     </nav>
@@ -27,7 +27,7 @@
         <span class="profile-account">{{ user.email }}</span>
       </div>
       <div class="profile-info" v-else>
-        <span class="profile-name">Logout</span>
+        <span class="profile-name">{{ $t('general.actions.logout') }}</span>
       </div>
       <div class="profile-avatar" @click="logout" @mouseover="icon = 'logout'" @mouseleave="icon = 'person'">
         <span class="material-icons material-icons-round">{{ icon }}</span>
