@@ -29,11 +29,11 @@
     <section id="employeelist">
       <div class="header">
         <div></div>
-        <div>{{ $t('staff.tableHeaders.name') }}</div>
-        <div>{{ $t('staff.tableHeaders.email') }}</div>
-        <div>{{ $t('staff.tableHeaders.phone') }}</div>
-        <div>{{ $t('staff.tableHeaders.role') }}</div>
-        <div>{{ $t('staff.tableHeaders.notes') }}</div>
+        <div>{{ $t('general.labels.name') }}</div>
+        <div>{{ $t('general.labels.email') }}</div>
+        <div>{{ $t('general.labels.phone') }}</div>
+        <div>{{ $t('general.labels.role') }}</div>
+        <div>{{ $t('general.labels.notes') }}</div>
       </div>
 
       <div class="row" v-for="employee in employees" :key="employee" @click="editEmployee(employee)">

@@ -6,27 +6,24 @@
       "cancel": "Cancel",
       "filter": "Filter",
       "add": "Add {resource}"
+    },
+    "labels": {
+      "name": "Name",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role",
+      "place": "Place",
+      "date": "Date",
+      "time": "Time",
+      "notes": "Notes",
+      "contract": "Contract"
     }
   },
   "staff": {
     "menuLabel": "Staff",
-    "tableHeaders": {
-      "name": "Name",
-      "email": "Email",
-      "phone": "Phone",
-      "role": "Role",
-      "notes": "Notes"
-    },
-    "editModal": {
-      "firstName": "First name",
-      "lastName": "Last name",
-      "role": "Role",
-      "contract": "Contract",
-      "email": "Email",
-      "phone": "Phone",
-      "notes": "Notes",
-      "hours": "hours"
-    }
+    "hours": "hours"
   },
   "settings": {
     "title": "Settings",
