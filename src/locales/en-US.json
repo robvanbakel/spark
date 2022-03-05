@@ -16,6 +16,7 @@
       "role": "Role",
       "place": "Place",
       "date": "Date",
+      "break": "Break",
       "time": "Time",
       "notes": "Notes",
       "contract": "Contract"

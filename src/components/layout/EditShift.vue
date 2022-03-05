@@ -3,7 +3,7 @@
     <template v-slot:main>
       <div>
         <div class="form-control">
-          <label for="name">Name</label>
+          <label for="name">{{ $t('general.labels.name') }}</label>
           <base-dropdown
             v-if="shift.employee.id || newShift"
             :error="error.employee"
@@ -15,7 +15,7 @@
           ></base-dropdown>
         </div>
         <div class="form-control">
-          <label for="place">Place</label>
+          <label for="place">{{ $t('general.labels.plae') }}</label>
           <div>
             <input
               autocomplete="off"
@@ -46,7 +46,7 @@
           </div>
         </div>
         <div class="form-control">
-          <label for="date">Date</label>
+          <label for="date">{{ $t('general.labels.date') }}</label>
           <div class="form-control-date">
             <BaseDatePicker
               :active="this.$store.getters['date/dates'][this.$store.getters['planner/activeShiftId'].day]"
@@ -54,7 +54,7 @@
               @date="dateHandler"
             />
             <div class="form-control-time">
-              <span class="input-label-main">Time</span>
+              <span class="input-label-main">{{ $t('general.labels.time') }}</span>
               <input
                 autocomplete="off"
                 type="text"
@@ -76,7 +76,7 @@
           </div>
         </div>
         <div class="form-control">
-          <label>Break</label>
+          <label>{{ $t('general.labels.break') }}</label>
           <base-switch
             id="breaks"
             v-if="shift.break"
@@ -87,7 +87,7 @@
           ></base-switch>
         </div>
         <div class="form-control notes">
-          <label for="notes">Notes</label>
+          <label for="notes">{{ $t('general.labels.notes') }}</label>
           <textarea id="notes" v-model="shift.notes"></textarea>
         </div>
       </div>
@@ -101,8 +101,8 @@
         icon="delete"
         @click="deleteShift"
       ></base-button>
-      <base-button secondary @click="closeEditShift">Cancel</base-button>
-      <base-button @click="validate">Save</base-button>
+      <base-button secondary @click="closeEditShift">{{ $t('general.actions.cancel') }}</base-button>
+      <base-button @click="validate">{{ $t('general.actions.save') }}</base-button>
     </template>
   </base-modal>
 
