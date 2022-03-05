@@ -1,20 +1,19 @@
 <template>
   <section id="settings">
     <div class="header">
-      <h1>Settings</h1>
+      <h1>{{ $t('settings.title') }}</h1>
       <div class="actions">
-        <base-button @click="saveSettings" :disabled="!unsavedChanges" icon="save">Save</base-button>
+        <base-button @click="saveSettings" :disabled="!unsavedChanges" icon="save">{{ $t('general.actions.save') }}</base-button>
       </div>
     </div>
 
     <div class="settings-group">
-      <h2>Share notes with employees</h2>
+      <h2>{{ $t('settings.shareNotes.title') }}</h2>
       <p class="lead">
-        Control whether or not employees have access to notes made by the planners. If enabled, all notes associated
-        with an employee will immediately become visible to them.
+        {{ $t('settings.shareNotes.description') }}
       </p>
       <div class="setting toggle">
-        <span class="label">Employee Notes</span>
+        <span class="label">{{ $t('settings.shareNotes.employeeNotes') }}</span>
         <base-switch
           toggle
           id="employeeNotes"
@@ -23,7 +22,7 @@
         ></base-switch>
       </div>
       <div class="setting toggle">
-        <span class="label">Shift Notes</span>
+        <span class="label">{{ $t('settings.shareNotes.shiftNotes') }}</span>
         <base-switch
           toggle
           id="shiftNotes"
@@ -34,9 +33,9 @@
     </div>
 
     <div class="settings-group">
-      <h2>Date notation</h2>
+      <h2>{{ $t('settings.dateNotation.title') }}</h2>
       <div class="setting dropdown">
-        <span class="label">Date notation</span>
+        <span class="label">{{ $t('settings.dateNotation.dateNotation') }}</span>
         <base-dropdown
           :items="dateNotations"
           :active="$store.getters['settings/dateNotation']"
@@ -46,12 +45,12 @@
     </div>
 
     <div class="settings-group">
-      <h2>Address</h2>
+      <h2>{{ $t('settings.address.title') }}</h2>
       <p class="lead">
-        This addres will be visible in the calendar feed for each employee.
+        {{ $t('settings.address.description') }}
       </p>
       <div class="setting address">
-        <span class="label">Address</span>
+        <span class="label">{{ $t('settings.address.address') }}</span>
         <div class="input-wrapper">
           <div class="input-row">
             <input

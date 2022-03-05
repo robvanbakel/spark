@@ -1,5 +1,26 @@
 {
   "general": {
-    "smallScreenWarning": "Currently Spark only works on larger screens"
+    "smallScreenWarning": "Currently Spark only works on larger screens",
+    "actions": {
+      "save": "Save"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "shareNotes": {
+      "title": "Share notes with employees",
+      "description": "Control whether or not employees have access to notes made by the planners. If enabled, all notes associated with an employee will immediately become visible to them.",
+      "employeeNotes": "Employee notes",
+      "shiftNotes": "Shift notes"
+    },
+    "dateNotation": {
+      "title": "Date notation",
+      "dateNotation": "Date notation"
+    },
+    "address": {
+      "title": "Address",
+      "description": "This addres will be visible in the calendar feed for each employee.",
+      "address": "Address"
+    }
   }
 }
