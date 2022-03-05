@@ -6,7 +6,7 @@
       <span v-else class="clear material-icons material-icons-round" @click="clearSearchInput">clear</span>
     </div>
     <div class="filter">
-      Filter:
+      {{ $t('staff.filter') }}:
       <base-badge
         @click="setFilter(status)"
         v-for="status in Object.keys(filters)"
@@ -22,18 +22,18 @@
       >
     </div>
     <div class="actions">
-      <base-button @click="addNewEmployee" icon="add">Add Employee</base-button>
+      <base-button @click="addNewEmployee" icon="add">{{ $t('staff.addEmployee') }}</base-button>
     </div>
   </div>
   <main>
     <section id="employeelist">
       <div class="header">
         <div></div>
-        <div>Name</div>
-        <div>Email</div>
-        <div>Phone</div>
-        <div>Role</div>
-        <div>Notes</div>
+        <div>{{ $t('staff.tableHeaders.name') }}</div>
+        <div>{{ $t('staff.tableHeaders.email') }}</div>
+        <div>{{ $t('staff.tableHeaders.phone') }}</div>
+        <div>{{ $t('staff.tableHeaders.role') }}</div>
+        <div>{{ $t('staff.tableHeaders.notes') }}</div>
       </div>
 
       <div class="row" v-for="employee in employees" :key="employee" @click="editEmployee(employee)">

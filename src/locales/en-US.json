@@ -5,6 +5,18 @@
       "save": "Save"
     }
   },
+  "staff": {
+    "menuLabel": "Staff",
+    "filter": "Filter",
+    "addEmployee": "Add Employee",
+    "tableHeaders": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role",
+      "notes": "Notes"
+    }
+  },
   "settings": {
     "title": "Settings",
     "shareNotes": {
