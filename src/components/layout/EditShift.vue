@@ -15,7 +15,7 @@
           ></base-dropdown>
         </div>
         <div class="form-control">
-          <label for="place">{{ $t('general.labels.plae') }}</label>
+          <label for="place">{{ $t('general.labels.place') }}</label>
           <div>
             <input
               autocomplete="off"
