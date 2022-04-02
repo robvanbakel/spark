@@ -111,13 +111,13 @@
     title="Shift already exists"
     message="This employee already has a shift on that day. Do you want to replace it?"
     choiceFalse="Go back"
-    choiceTrue="Replace shift"
+    :choiceTrue="$t('general.actions.replace', {resource: 'shift'})"
   />
 
   <BaseConfirm
     ref="confirmDeleteShift"
     message="Deleting this shift cannot be undone."
-    choiceTrue="Delete Shift"
+    :choiceTrue="$t('general.actions.delete', {resource: 'shift'})"
   />
 </template>
 

@@ -2,11 +2,14 @@
   "general": {
     "smallScreenWarning": "Currently Spark only works on larger screens",
     "actions": {
-      "save": "Save",
+      "save": "Save {resource}",
       "logout": "Log Out",
       "cancel": "Cancel",
       "filter": "Filter",
-      "add": "Add {resource}"
+      "discard": "Discard",
+      "add": "Add {resource}",
+      "replace": "Replace {resource}",
+      "delete": "Delete {resource}"
     },
     "labels": {
       "name": "Name",

@@ -103,7 +103,7 @@
   <BaseConfirm
     ref="confirmDeleteEmployee"
     message="Deleting an employee cannot be undone."
-    choiceTrue="Delete Employee"
+    :choiceTrue="$t('general.actions.delete', {resource: 'employee'})"
   />
 </template>
 

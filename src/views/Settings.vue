@@ -86,8 +86,8 @@
     ref="confirmUnsavedChanges"
     title="Unsaved Changes"
     message="Do you want to save your unsaved changes?"
-    choiceTrue="Save changes"
-    choiceFalse="Discard"
+    :choiceTrue="$t('general.actions.save', {resource: 'changes'})"
+    :choiceFalse="$t('general.actions.discard')"
   />
 
   <BaseConfirm
