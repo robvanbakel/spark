@@ -76,6 +76,7 @@
 }
 
 .badge.large {
+  user-select: none;
   cursor: pointer;
   .outer {
     min-width: 22px;

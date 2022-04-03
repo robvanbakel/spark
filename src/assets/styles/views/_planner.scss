@@ -223,6 +223,12 @@ section#planner {
 
 .base-modal.edit-shift {
   width: 515px;
+  .header {
+    .badge {
+      cursor: default;
+      margin-left: 12px;
+    }
+  }
   .main {
     .form-control {
       display: grid;

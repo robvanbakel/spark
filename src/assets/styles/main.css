@@ -295,6 +295,10 @@ button {
 }
 
 .badge.large {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   cursor: pointer;
 }
 .badge.large .outer {
@@ -1302,6 +1306,10 @@ section#planner .row .day .shift-info .info-wrapper span.time {
 
 .base-modal.edit-shift {
   width: 515px;
+}
+.base-modal.edit-shift .header .badge {
+  cursor: default;
+  margin-left: 12px;
 }
 .base-modal.edit-shift .main .form-control {
   display: grid;

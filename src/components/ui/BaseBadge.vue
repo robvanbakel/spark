@@ -52,6 +52,12 @@ export default {
           return "purple"
         case "cleaning":
           return "orange"
+
+        // Shift status
+        case "accepted":
+          return "green"
+        case "not accepted yet":
+          return "orange"
       }
     },
   },

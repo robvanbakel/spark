@@ -1,5 +1,11 @@
 <template>
   <base-modal class="edit-shift" :title="newShift ? 'New Shift' : 'Edit Shift'" globalClose @close="closeEditShift">
+    <template v-slot:header>
+      <base-badge
+        :status="shift.accepted ? 'accepted' : 'not accepted yet'"
+        class="active"
+      ></base-badge>
+    </template>
     <template v-slot:main>
       <div>
         <div class="form-control">
@@ -350,6 +356,7 @@ export default {
           this.shift.end = parseTime(shift.end)
           this.shift.notes = shift.notes
           this.shift.break = shift.break
+          this.shift.accepted = shift.accepted
         }
       }
     }
