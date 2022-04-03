@@ -21,7 +21,7 @@
         <div
           v-for="(shift, day) in $store.getters['planner/currentWeekSchedule'][employeeId]"
           :key="day"
-          :class="['day', role, { active: shift }]"
+          :class="['day', role, { active: shift, proposed: shift && !shift.accepted }]"
           @click="handleClick({ day, employeeId })"
         >
           <div class="shift-info" v-if="shift">

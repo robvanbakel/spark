@@ -1167,18 +1167,22 @@ section#planner .row .day {
   padding: 6px;
   cursor: pointer;
 }
-section#planner .row .day.active.proposed {
-  opacity: 0.5;
-}
 section#planner .row .day.active {
   background-color: #f5f5f7;
-  transition: background-color 60 ease-in-out;
+  transition: background-color 60ms ease-in-out;
 }
 section#planner .row .day.active.management {
   background-color: #d3e3fb;
 }
 section#planner .row .day.active.management:hover {
   background-color: #bcd4f9;
+}
+section#planner .row .day.active.management.proposed {
+  background-color: rgba(211, 227, 251, 0.35);
+  border: 1px solid transparent;
+}
+section#planner .row .day.active.management.proposed:hover {
+  border-color: #d3e3fb;
 }
 section#planner .row .day.active.management span.notes {
   color: #508df0;
@@ -1189,6 +1193,13 @@ section#planner .row .day.active.leadership {
 section#planner .row .day.active.leadership:hover {
   background-color: #ceebc8;
 }
+section#planner .row .day.active.leadership.proposed {
+  background-color: rgba(223, 242, 219, 0.35);
+  border: 1px solid transparent;
+}
+section#planner .row .day.active.leadership.proposed:hover {
+  border-color: #dff2db;
+}
 section#planner .row .day.active.leadership span.notes {
   color: #7dcc71;
 }
@@ -1197,6 +1208,13 @@ section#planner .row .day.active.general {
 }
 section#planner .row .day.active.general:hover {
   background-color: #f9ecc2;
+}
+section#planner .row .day.active.general.proposed {
+  background-color: rgba(251, 243, 217, 0.35);
+  border: 1px solid transparent;
+}
+section#planner .row .day.active.general.proposed:hover {
+  border-color: #fbf3d9;
 }
 section#planner .row .day.active.general span.notes {
   color: #f1ce67;
@@ -1207,6 +1225,13 @@ section#planner .row .day.active.restaurant {
 section#planner .row .day.active.restaurant:hover {
   background-color: #decaec;
 }
+section#planner .row .day.active.restaurant.proposed {
+  background-color: rgba(234, 221, 243, 0.35);
+  border: 1px solid transparent;
+}
+section#planner .row .day.active.restaurant.proposed:hover {
+  border-color: #eaddf3;
+}
 section#planner .row .day.active.restaurant span.notes {
   color: #aa75ce;
 }
@@ -1215,6 +1240,13 @@ section#planner .row .day.active.cleaning {
 }
 section#planner .row .day.active.cleaning:hover {
   background-color: #f9dbc0;
+}
+section#planner .row .day.active.cleaning.proposed {
+  background-color: rgba(251, 232, 215, 0.35);
+  border: 1px solid transparent;
+}
+section#planner .row .day.active.cleaning.proposed:hover {
+  border-color: #fbe8d7;
 }
 section#planner .row .day.active.cleaning span.notes {
   color: #eda55d;
