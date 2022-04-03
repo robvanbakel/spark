@@ -1,76 +1,76 @@
-@use 'colors' as color;
-@use 'mixins' as mixin;
+@use 'colors';
+@use 'mixins';
 
 // UI
 .badge.red {
-  @include mixin.badge;
+  @include mixins.badge;
   .outer {
-    @include mixin.badgeOuter;
-    background-color: color.$red-light;
-    border-color: color.$red;
+    @include mixins.badgeOuter;
+    background-color: colors.$red-light;
+    border-color: colors.$red;
     .inner {
-      @include mixin.badgeInner;
-      background-color: color.$red;
+      @include mixins.badgeInner;
+      background-color: colors.$red;
     }
   }
 }
 .badge.orange {
-  @include mixin.badge;
+  @include mixins.badge;
   .outer {
-    @include mixin.badgeOuter;
-    background-color: color.$orange-light;
-    border-color: color.$orange;
+    @include mixins.badgeOuter;
+    background-color: colors.$orange-light;
+    border-color: colors.$orange;
     .inner {
-      @include mixin.badgeInner;
-      background-color: color.$orange;
+      @include mixins.badgeInner;
+      background-color: colors.$orange;
     }
   }
 }
 .badge.yellow {
-  @include mixin.badge;
+  @include mixins.badge;
   .outer {
-    @include mixin.badgeOuter;
-    background-color: color.$yellow-light;
-    border-color: color.$yellow;
+    @include mixins.badgeOuter;
+    background-color: colors.$yellow-light;
+    border-color: colors.$yellow;
     .inner {
-      @include mixin.badgeInner;
-      background-color: color.$yellow;
+      @include mixins.badgeInner;
+      background-color: colors.$yellow;
     }
   }
 }
 .badge.green {
-  @include mixin.badge;
+  @include mixins.badge;
   .outer {
-    @include mixin.badgeOuter;
-    background-color: color.$green-light;
-    border-color: color.$green;
+    @include mixins.badgeOuter;
+    background-color: colors.$green-light;
+    border-color: colors.$green;
     .inner {
-      @include mixin.badgeInner;
-      background-color: color.$green;
+      @include mixins.badgeInner;
+      background-color: colors.$green;
     }
   }
 }
 .badge.blue {
-  @include mixin.badge;
+  @include mixins.badge;
   .outer {
-    @include mixin.badgeOuter;
-    background-color: color.$blue-light;
-    border-color: color.$blue;
+    @include mixins.badgeOuter;
+    background-color: colors.$blue-light;
+    border-color: colors.$blue;
     .inner {
-      @include mixin.badgeInner;
-      background-color: color.$blue;
+      @include mixins.badgeInner;
+      background-color: colors.$blue;
     }
   }
 }
 .badge.purple {
-  @include mixin.badge;
+  @include mixins.badge;
   .outer {
-    @include mixin.badgeOuter;
-    background-color: color.$purple-light;
-    border-color: color.$purple;
+    @include mixins.badgeOuter;
+    background-color: colors.$purple-light;
+    border-color: colors.$purple;
     .inner {
-      @include mixin.badgeInner;
-      background-color: color.$purple;
+      @include mixins.badgeInner;
+      background-color: colors.$purple;
     }
   }
 }
@@ -94,7 +94,7 @@
   font-weight: 600;
   font-size: 14px;
   color: #fff;
-  background-color: color.$main;
+  background-color: colors.$main;
   border-radius: 20px;
   display: flex;
   justify-content: center;
@@ -104,10 +104,10 @@
   outline: none;
   white-space: nowrap;
   &:hover:not(:disabled) {
-    background-color: darken(color.$main, 5%);
+    background-color: darken(colors.$main, 5%);
   }
   &:active:not(:disabled) {
-    background-color: darken(color.$main, 10%);
+    background-color: darken(colors.$main, 10%);
   }
   span {
     font-size: 22px;
@@ -122,26 +122,26 @@
     border: none;
     outline: none;
     font-size: 14px;
-    color: color.$text-500;
+    color: colors.$text-500;
     font-weight: 500;
     &:hover {
       background: inherit;
-      color: darken(color.$text-500, 12%);
+      color: darken(colors.$text-500, 12%);
     }
     &:active {
       background: inherit;
-      color: darken(color.$text-500, 24%);
+      color: darken(colors.$text-500, 24%);
     }
   }
   &.inverted {
-    color: color.$main;
-    border: 1px solid color.$main;
+    color: colors.$main;
+    border: 1px solid colors.$main;
     background: none;
     &:hover {
-      background-color: color.$select;
+      background-color: colors.$select;
     }
     &:active {
-      background-color: darken(color.$select, 5%);
+      background-color: darken(colors.$select, 5%);
     }
   }
   &.icon-only {
@@ -154,11 +154,11 @@
     }
   }
   &.danger {
-    background-color: color.$danger-light;
-    color: color.$danger;
+    background-color: colors.$danger-light;
+    color: colors.$danger;
     font-size: 18px;
     &:hover {
-      background-color: darken(color.$danger-light, 5%);
+      background-color: darken(colors.$danger-light, 5%);
     }
     span {
       font-size: 18px;
@@ -201,14 +201,14 @@
     h1 {
       font-size: 24px;
       font-weight: 500;
-      color: color.$text-100;
+      color: colors.$text-100;
     }
     span.material-icons {
       margin-left: auto;
       cursor: pointer;
-      color: color.$text-700;
+      color: colors.$text-700;
       &:hover {
-        color: color.$text-500;
+        color: colors.$text-500;
       }
     }
   }
@@ -235,8 +235,8 @@
     background: #fff;
     width: 100%;
     border-radius: 6px;
-    color: color.$text-300;
-    border: 1px solid color.$border;
+    color: colors.$text-300;
+    border: 1px solid colors.$border;
     font-size: 14px;
   }
   .input-wrapper {
@@ -250,20 +250,20 @@
       outline: none;
 
       &.error {
-        border-color: color.$danger;
-        background-color: color.$danger-light;
+        border-color: colors.$danger;
+        background-color: colors.$danger-light;
       }
     }
     &::after {
-      font-family: 'Material Icons';
-      content: 'expand_more';
+      font-family: "Material Icons";
+      content: "expand_more";
       position: absolute;
       height: 100%;
       display: flex;
       align-items: center;
       top: 0;
       right: 12px;
-      color: color.$text-100;
+      color: colors.$text-100;
       font-size: 18px;
       pointer-events: none;
     }
@@ -272,13 +272,13 @@
     }
     &.enableSearch {
       &:after {
-        content: 'search';
+        content: "search";
       }
     }
   }
 
   .dropdown {
-    border: 1px solid color.$border;
+    border: 1px solid colors.$border;
     overflow-y: scroll;
     margin-top: 6px;
     max-height: 223px;
@@ -295,16 +295,16 @@
         padding: 0 16px;
         user-select: none;
         &.no-match {
-          color: color.$text-700;
+          color: colors.$text-700;
         }
         &.active,
         &:not(.no-match):hover {
           cursor: pointer;
-          background-color: color.$select;
+          background-color: colors.$select;
         }
         span.status {
           font-size: 12px;
-          color: color.$text-300;
+          color: colors.$text-300;
           padding: 0.2em 0.35em;
           font-weight: 500;
           border-radius: 4px;
@@ -312,20 +312,20 @@
             display: none;
           }
           &.sick {
-            color: color.$purple;
-            background-color: color.$purple-light;
+            color: colors.$purple;
+            background-color: colors.$purple-light;
           }
           &.unavailable {
-            color: color.$yellow;
-            background-color: color.$yellow-light;
+            color: colors.$yellow;
+            background-color: colors.$yellow-light;
           }
           &.inactive {
-            color: color.$orange;
-            background-color: color.$orange-light;
+            color: colors.$orange;
+            background-color: colors.$orange-light;
           }
           &.staged {
-            color: color.$blue;
-            background-color: color.$blue-light;
+            color: colors.$blue;
+            background-color: colors.$blue-light;
           }
         }
       }
@@ -340,8 +340,8 @@
     background: #fff;
     width: 100%;
     border-radius: 6px;
-    color: color.$text-300;
-    border: 1px solid color.$border;
+    color: colors.$text-300;
+    border: 1px solid colors.$border;
   }
   input {
     position: relative;
@@ -358,14 +358,14 @@
     white-space: nowrap;
     user-select: none;
     &.error {
-      border-color: color.$danger;
-      background-color: color.$danger-light;
+      border-color: colors.$danger;
+      background-color: colors.$danger-light;
     }
   }
   .calendar {
     width: 264px;
     padding: 16px;
-    border: 1px solid color.$border;
+    border: 1px solid colors.$border;
     margin-top: 6px;
     position: absolute;
     z-index: 9;
@@ -389,7 +389,7 @@
       cursor: pointer;
       position: relative;
       bottom: 3px;
-      color: color.$main;
+      color: colors.$main;
       opacity: 0.65;
       transition: all 240ms ease;
       &:hover {
@@ -400,7 +400,7 @@
       font-weight: 500;
       text-align: center;
       font-size: 16px;
-      color: color.$main;
+      color: colors.$main;
       cursor: pointer;
     }
   }
@@ -408,7 +408,7 @@
   #days {
     margin: 1.35em 0 0.5em;
     span {
-      color: color.$main;
+      color: colors.$main;
       font-size: 12px;
       font-weight: 700;
     }
@@ -419,18 +419,18 @@
     p {
       cursor: pointer;
       font-size: 11px;
-      color: color.$main;
+      color: colors.$main;
       line-height: 2.5;
       position: relative;
       &.prev-month,
       &.next-month {
-        color: color.$main;
+        color: colors.$main;
         opacity: 0.15;
         cursor: default;
       }
       &.current-date {
         font-weight: 900;
-        color: color.$danger;
+        color: colors.$danger;
       }
     }
   }
@@ -442,20 +442,20 @@
     grid-template-columns: repeat(3, 1fr);
     span {
       border: 1px solid transparent;
-      background-color: color.$select;
+      background-color: colors.$select;
       border-radius: 3px;
-      color: color.$main;
+      color: colors.$main;
       padding: 8px 0;
       font-weight: 600;
       font-size: 12px;
       cursor: pointer;
       &.current {
-        border: 1px solid color.$main-light;
+        border: 1px solid colors.$main-light;
         background-color: transparent;
-        color: color.$main;
+        color: colors.$main;
       }
       &:hover {
-        background-color: color.$main;
+        background-color: colors.$main;
         color: #fff;
       }
     }
@@ -470,7 +470,7 @@
       &:hover,
       &.active {
         &::after {
-          content: '';
+          content: "";
           display: block;
           position: absolute;
           height: 24px;
@@ -479,8 +479,8 @@
           top: 50%;
           left: 50%;
           transform: translateX(-50%) translateY(-50%);
-          background-color: lighten(color.$blue-light, 6%);
-          border: 1px solid color.$blue;
+          background-color: lighten(colors.$blue-light, 6%);
+          border: 1px solid colors.$blue;
           z-index: -1;
         }
       }
@@ -492,7 +492,7 @@
   #months {
     &:not(:hover) {
       span.active {
-        background-color: color.$main;
+        background-color: colors.$main;
         color: #fff;
       }
     }
@@ -507,7 +507,7 @@
     left: 7px;
     padding: 8px 12px;
     background-color: #fff;
-    border: 1px solid color.$border;
+    border: 1px solid colors.$border;
     border-radius: 12px;
     z-index: 99;
     box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
@@ -531,7 +531,7 @@
 
 .switch-wrapper {
   position: relative;
-  background-color: color.$main-light;
+  background-color: colors.$main-light;
   border-radius: 6px;
   height: 40px;
   font-size: 14px;
@@ -565,7 +565,7 @@
   }
   .indicator {
     position: absolute;
-    background-color: color.$main;
+    background-color: colors.$main;
     border-radius: 6px;
     height: 100%;
     left: 0%;

@@ -1,4 +1,4 @@
-@use '../utilities/colors' as color;
+@use '../utilities/colors';
 
 div.actionbar {
   padding: 20px 0;
@@ -14,18 +14,18 @@ div.actionbar {
       height: 40px;
       width: 100%;
       border-radius: 20px;
-      border: 1px solid color.$border;
+      border: 1px solid colors.$border;
       font-size: 12px;
       padding: 0 40px 0 20px;
       outline: none;
       &::placeholder {
-        color: color.$text-500;
+        color: colors.$text-500;
       }
     }
     span {
       position: absolute;
       font-size: 20px;
-      color: color.$text-500;
+      color: colors.$text-500;
       right: 16px;
       &.clear {
         cursor: pointer;
@@ -38,7 +38,7 @@ div.actionbar {
     align-items: center;
     font-size: 14px;
     font-weight: 500;
-    color: color.$main;
+    color: colors.$main;
     overflow-y: scroll;
     .badge {
       margin-left: 12px;
@@ -46,7 +46,7 @@ div.actionbar {
     span.clear {
       font-size: 18px;
       margin-left: 12px;
-      color: color.$text-500;
+      color: colors.$text-500;
       cursor: pointer;
     }
   }

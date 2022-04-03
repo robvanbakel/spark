@@ -1,4 +1,4 @@
-@use '../utilities/colors' as color;
+@use '../utilities/colors';
 
 section#settings {
   padding: 40px;
@@ -10,7 +10,7 @@ section#settings {
     justify-content: space-between;
     align-items: center;
     h1 {
-      color: color.$text-100;
+      color: colors.$text-100;
     }
     .actions {
       display: flex;
@@ -23,7 +23,7 @@ section#settings {
     }
   }
   .settings-group {
-    color: color.$text-100;
+    color: colors.$text-100;
     width: 440px;
     &:not(:last-child) {
       margin-bottom: 80px;
@@ -57,23 +57,22 @@ section#settings {
           margin-top: 12px;
         }
         .input-wrapper {
-
-          .input-row{ 
+          .input-row {
             margin-bottom: 12px;
             display: flex;
             gap: 12px;
             input {
               height: 40px;
               border-radius: 6px;
-              color: color.$text-300;
-              border: 1px solid color.$border;
+              color: colors.$text-300;
+              border: 1px solid colors.$border;
               font-size: 14px;
               padding: 12px 16px;
               outline: none;
               flex-grow: 1;
               &.error {
-                border-color: color.$danger;
-                background-color: color.$danger-light;
+                border-color: colors.$danger;
+                background-color: colors.$danger-light;
               }
               &#postalCode {
                 width: 92px;

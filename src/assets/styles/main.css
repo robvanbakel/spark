@@ -1167,8 +1167,8 @@ section#planner .row .day {
   padding: 6px;
   cursor: pointer;
 }
-section#planner .row .day.active.hidden {
-  opacity: 0.15;
+section#planner .row .day.active.proposed {
+  opacity: 0.5;
 }
 section#planner .row .day.active {
   background-color: #f5f5f7;

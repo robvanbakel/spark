@@ -1,10 +1,10 @@
-@use 'utilities/colors' as color;
+@use 'utilities/colors';
 
 // GOOGLE FONTS
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Material+Icons');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Material+Icons");
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizelegibility;
@@ -50,7 +50,7 @@ main {
 
 section {
   border-radius: 20px;
-  border: 1px solid color.$border;
+  border: 1px solid colors.$border;
   padding: 22px;
   margin-bottom: 40px;
 }
@@ -74,7 +74,7 @@ aside {
 }
 
 p {
-  color: color.$text-300;
+  color: colors.$text-300;
   font-size: 14px;
   line-height: 1.5;
 }

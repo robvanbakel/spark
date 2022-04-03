@@ -3,8 +3,8 @@
 @use 'general';
 
 // UTILITIES
-@use 'utilities/colors' as color;
-@use 'utilities/mixins' as mixin;
+@use 'utilities/colors';
+@use 'utilities/mixins';
 @use 'utilities/ui' as ui;
 
 // VIEWS

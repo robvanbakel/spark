@@ -1,21 +1,21 @@
-@use '../utilities/colors' as color;
-@use '../utilities/mixins' as mixin;
+@use '../utilities/colors';
+@use '../utilities/mixins';
 
 // EMPLOYEELIST
 section#employeelist {
   padding-bottom: 8px;
   .header {
-    @include mixin.employeeListGrid;
+    @include mixins.employeeListGrid;
     padding-bottom: 16px;
     font-size: 16px;
     font-weight: 700;
-    color: color.$text-100;
+    color: colors.$text-100;
   }
   .row {
-    @include mixin.employeeListGrid;
+    @include mixins.employeeListGrid;
     font-size: 14px;
     font-weight: 400;
-    color: color.$text-500;
+    color: colors.$text-500;
     margin: 0 -12px;
     padding: 0 12px;
     border-radius: 3px;
@@ -23,7 +23,7 @@ section#employeelist {
     .name {
       font-size: 16px;
       font-weight: 500;
-      color: color.$main;
+      color: colors.$main;
     }
     .notes {
       overflow: hidden;
@@ -31,7 +31,7 @@ section#employeelist {
       text-overflow: ellipsis;
     }
     &:hover {
-      background-color: color.$select;
+      background-color: colors.$select;
     }
   }
 }
@@ -53,10 +53,10 @@ section#employeelist {
       }
       label {
         font-weight: 500;
-        color: color.$text-100;
+        color: colors.$text-100;
         font-size: 14px;
-        &[for='notes'],
-        &[for='place'] {
+        &[for="notes"],
+        &[for="place"] {
           align-self: flex-start;
           margin-top: 12px;
         }
@@ -65,14 +65,14 @@ section#employeelist {
       textarea {
         width: 100%;
         border-radius: 6px;
-        color: color.$text-300;
-        border: 1px solid color.$border;
+        color: colors.$text-300;
+        border: 1px solid colors.$border;
         font-size: 14px;
         padding: 12px 16px;
         outline: none;
         &.error {
-          border-color: color.$danger;
-          background-color: color.$danger-light;
+          border-color: colors.$danger;
+          background-color: colors.$danger-light;
         }
       }
       input {
@@ -90,7 +90,7 @@ section#employeelist {
         margin-top: 8px;
         margin-bottom: 14px;
         & > span {
-          background-color: color.$main-light;
+          background-color: colors.$main-light;
           border-radius: 3px;
           font-weight: 500;
           font-size: 13px;
@@ -101,10 +101,10 @@ section#employeelist {
           user-select: none;
           cursor: pointer;
           &:hover {
-            background-color: darken(color.$main-light, 7%);
+            background-color: darken(colors.$main-light, 7%);
           }
           &.add {
-            background-color: lighten(color.$main-light, 4%);
+            background-color: lighten(colors.$main-light, 4%);
             position: relative;
             padding-left: 22px;
             span.material-icons {
@@ -115,7 +115,7 @@ section#employeelist {
               font-weight: 700;
             }
             &:hover {
-              background-color: color.$main-light;
+              background-color: colors.$main-light;
             }
           }
         }
@@ -132,7 +132,7 @@ section#employeelist {
       span.input-label {
         margin-left: 12px;
         font-size: 14px;
-        color: color.$text-300;
+        color: colors.$text-300;
       }
     }
     .form-control-date {
@@ -146,7 +146,7 @@ section#employeelist {
       .form-control-time {
         span.input-label-main {
           font-weight: 500;
-          color: color.$text-100;
+          color: colors.$text-100;
           font-size: 14px;
           margin-right: 14px;
         }
@@ -158,7 +158,7 @@ section#employeelist {
         span.input-label {
           margin: 0 12px;
           font-size: 14px;
-          color: color.$text-300;
+          color: colors.$text-300;
         }
       }
     }
@@ -172,10 +172,10 @@ section#employeelist {
         border: none;
         outline: none;
         border-radius: 20px;
-        background-color: color.$danger-light;
-        color: color.$danger;
+        background-color: colors.$danger-light;
+        color: colors.$danger;
         &:hover {
-          background-color: darken(color.$danger-light, 5%);
+          background-color: darken(colors.$danger-light, 5%);
         }
         span {
           font-size: 18px;
@@ -187,13 +187,13 @@ section#employeelist {
         border: none;
         outline: none;
         font-size: 14px;
-        color: color.$text-500;
+        color: colors.$text-500;
         margin-right: 12px;
         &:hover {
-          color: darken(color.$text-500, 12%);
+          color: darken(colors.$text-500, 12%);
         }
         &:active {
-          color: darken(color.$text-500, 24%);
+          color: darken(colors.$text-500, 24%);
         }
       }
     }
