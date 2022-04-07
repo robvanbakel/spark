@@ -28,7 +28,7 @@ export default {
 
       const dates = [];
 
-      for (let i = 0; i < amount; i++) {
+      for (let i = 0; i < amount; i += 1) {
         dates.unshift(new Date(this.selectedYear, this.selectedMonth, -i).getDate());
       }
 
@@ -37,7 +37,7 @@ export default {
     visibleInNextMonth() {
       const lastDayInMonth = new Date(this.selectedYear, this.selectedMonth + 1, 0).getDay();
 
-      if (lastDayInMonth != 0) {
+      if (lastDayInMonth !== 0) {
         return 7 - lastDayInMonth;
       }
     },

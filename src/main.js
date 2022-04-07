@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 
-import router from '@/router.js';
-import store from '@/store/index.js';
+import router from '@/router';
+import store from '@/store';
 import App from '@/App.vue';
 
 import '@/assets/styles/main.scss';
@@ -9,16 +9,16 @@ import '@/assets/styles/main.scss';
 import dayjs from '@/plugins/dayjs';
 import i18n from '@/plugins/i18n';
 
-import BaseBadge from '@/components/ui/BaseBadge';
-import BaseButton from '@/components/ui/BaseButton';
-import BaseSwitch from '@/components/ui/BaseSwitch';
-import BaseOverlay from '@/components/ui/BaseOverlay';
-import BaseModal from '@/components/ui/BaseModal';
-import BaseDropdown from '@/components/ui/BaseDropdown';
-import BaseConfirm from '@/components/ui/BaseConfirm';
-import BaseDatePicker from '@/components/ui/BaseDatePicker';
-import WeekSwitch from '@/components/ui/WeekSwitch';
-import TheSidebar from '@/components/layout/TheSidebar';
+import BaseBadge from '@/components/ui/BaseBadge.vue';
+import BaseButton from '@/components/ui/BaseButton.vue';
+import BaseSwitch from '@/components/ui/BaseSwitch.vue';
+import BaseOverlay from '@/components/ui/BaseOverlay.vue';
+import BaseModal from '@/components/ui/BaseModal.vue';
+import BaseDropdown from '@/components/ui/BaseDropdown.vue';
+import BaseConfirm from '@/components/ui/BaseConfirm.vue';
+import BaseDatePicker from '@/components/ui/BaseDatePicker.vue';
+import WeekSwitch from '@/components/ui/WeekSwitch.vue';
+import TheSidebar from '@/components/layout/TheSidebar.vue';
 
 import { auth } from '@/firebase';
 

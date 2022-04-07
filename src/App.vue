@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import TheHeader from '@/components/layout/TheHeader';
+import TheHeader from '@/components/layout/TheHeader.vue';
 
 export default {
   name: 'App',
@@ -49,9 +49,9 @@ export default {
       }
     },
     setActiveBreakpoint(selected) {
-      for (const key in this.breakpoints) {
-        this.breakpoints[key].active = false;
-      }
+      Object.keys(this.breakpoints).forEach((breakpoint) => {
+        this.breakpoints[breakpoint].active = false;
+      });
       if (selected) {
         this.breakpoints[selected].active = true;
       }

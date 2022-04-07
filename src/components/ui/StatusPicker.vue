@@ -30,7 +30,7 @@ export default {
       this.showDropdown = !this.showDropdown;
     },
     setStatus(status) {
-      if (status != this.activeStatus) {
+      if (status !== this.activeStatus) {
         this.$emit('setActiveStatus', status);
         this.showDropdown = false;
       }

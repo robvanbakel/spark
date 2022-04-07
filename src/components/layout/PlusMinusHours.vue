@@ -6,7 +6,7 @@
           class="entry"
           v-if="
             employee.role.toLowerCase() === role &&
-              calculatePlusMinusHours(employee.id) != 0 &&
+              calculatePlusMinusHours(employee.id) !== 0 &&
               computedShowAll(employee.id) &&
               employeeFullName(employee)
                 .toLowerCase()

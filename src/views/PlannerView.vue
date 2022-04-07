@@ -69,11 +69,11 @@
 </template>
 
 <script>
-import PlannerContent from '@/components/layout/PlannerContent';
-import EditShift from '@/components/layout/EditShift';
-import PlannerCalendar from '@/components/layout/PlannerCalendar';
-import PlusMinusHours from '@/components/layout/PlusMinusHours';
-import EmptyWeek from '@/components/layout/EmptyWeek';
+import PlannerContent from '@/components/layout/PlannerContent.vue';
+import EditShift from '@/components/layout/EditShift.vue';
+import PlannerCalendar from '@/components/layout/PlannerCalendar.vue';
+import PlusMinusHours from '@/components/layout/PlusMinusHours.vue';
+import EmptyWeek from '@/components/layout/EmptyWeek.vue';
 
 export default {
   props: ['weekId'],

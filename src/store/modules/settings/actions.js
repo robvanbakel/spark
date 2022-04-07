@@ -26,6 +26,8 @@ export default {
         case 'location':
           context.commit('location', data);
           break;
+        default:
+          break;
       }
     });
   },
@@ -54,7 +56,7 @@ export default {
 
     // Update locally
     let { suggestions } = context.getters;
-    suggestions = suggestions.filter((suggestion) => suggestion != payload.suggestion);
+    suggestions = suggestions.filter((suggestion) => suggestion !== payload.suggestion);
     context.commit('suggestions', suggestions);
   },
   toggleSidebar(context) {

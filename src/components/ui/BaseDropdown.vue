@@ -120,9 +120,10 @@ export default {
           } else if (this.hoveredIndex === this.filteredItems.length - 1) {
             break;
           } else {
-            this.hoveredIndex++;
+            this.hoveredIndex += 1;
           }
-
+          break;
+        default:
           break;
       }
     },

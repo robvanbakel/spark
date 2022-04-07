@@ -19,7 +19,7 @@
             id="firstName"
             @input="clearError('firstName')"
             :class="{ error: error.firstName }"
-            v-model.trim="activeEgmployee.firstName"
+            v-model.trim="activeEmployee.firstName"
           />
         </div>
         <div class="form-control">
@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import StatusPicker from '@/components/ui/StatusPicker';
+import StatusPicker from '@/components/ui/StatusPicker.vue';
 
 export default {
   props: ['employee', 'new'],

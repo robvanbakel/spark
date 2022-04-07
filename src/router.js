@@ -3,12 +3,12 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { auth } from '@/firebase';
 import store from '@/store';
 
-import HomeView from '@/views/HomeView';
-import EmployeesView from '@/views/EmployeesView';
-import PlannerView from '@/views/PlannerView';
-import ScheduleView from '@/views/ScheduleView';
-import AuthView from '@/views/AuthView';
-import SettingsView from '@/views/SettingsView';
+import HomeView from '@/views/HomeView.vue';
+import EmployeesView from '@/views/EmployeesView.vue';
+import PlannerView from '@/views/PlannerView.vue';
+import ScheduleView from '@/views/ScheduleView.vue';
+import AuthView from '@/views/AuthView.vue';
+import SettingsView from '@/views/SettingsView.vue';
 
 const router = createRouter({
   history: createWebHistory(),

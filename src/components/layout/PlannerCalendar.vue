@@ -44,7 +44,7 @@ export default {
 
       const dates = [];
 
-      for (let i = 0; i < amount; i++) {
+      for (let i = 0; i < amount; i += 1) {
         dates.unshift(new Date(this.selectedYear, this.selectedMonth, -i).getDate());
       }
 
@@ -53,24 +53,24 @@ export default {
     visibleInNextMonth() {
       const lastDayInMonth = new Date(this.selectedYear, this.selectedMonth + 1, 0).getDay();
 
-      if (lastDayInMonth != 0) {
+      if (lastDayInMonth !== 0) {
         return 7 - lastDayInMonth;
       }
     },
     next() {
       if (this.selectedMonth === 11) {
         this.selectedMonth = 0;
-        this.selectedYear++;
+        this.selectedYear += 1;
       } else {
-        this.selectedMonth++;
+        this.selectedMonth += 1;
       }
     },
     prev() {
       if (this.selectedMonth === 0) {
         this.selectedMonth = 11;
-        this.selectedYear--;
+        this.selectedYear -= 1;
       } else {
-        this.selectedMonth--;
+        this.selectedMonth -= 1;
       }
     },
     calendarPointClass(num) {

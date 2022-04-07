@@ -121,8 +121,8 @@
 <script>
 import QRCode from 'qrcode';
 
-import PlannerCalendar from '@/components/layout/PlannerCalendar';
-import EmployeeInfo from '@/components/layout/EmployeeInfo';
+import PlannerCalendar from '@/components/layout/PlannerCalendar.vue';
+import EmployeeInfo from '@/components/layout/EmployeeInfo.vue';
 
 export default {
   components: { PlannerCalendar, EmployeeInfo },
@@ -228,7 +228,7 @@ export default {
       const startMin = showStart.substring(2, 4);
 
       // Calculate starting point
-      const startHourPercentage = parseInt(startHour);
+      const startHourPercentage = parseInt(startHour, 10);
       const startMinPercentage = startMin / 60;
       const startPoint = startHourPercentage + startMinPercentage;
 
@@ -244,7 +244,7 @@ export default {
         const { weekId } = this.$route.params;
         this.$store.dispatch('date/setDates', weekId);
         this.hideEmptyWeek = false;
-        document.title = `Week ${parseInt(this.$route.params.weekId.split('-')[1])} - Planner`;
+        document.title = `Week ${parseInt(this.$route.params.weekId.split('-')[1], 10)} - Planner`;
       }
     },
     hideSidebar() {

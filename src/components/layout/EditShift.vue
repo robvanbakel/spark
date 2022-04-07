@@ -155,7 +155,7 @@ export default {
   computed: {
     showNewSuggestion() {
       if (
-        this.shift.place != ''
+        this.shift.place !== ''
         && !this.$store.getters['settings/suggestions']
           .map((sug) => sug.toLowerCase())
           .includes(this.shift.place.toLowerCase())
@@ -247,7 +247,7 @@ export default {
         end.setHours(endHour);
         end.setMinutes(endMin);
 
-        if (end <= start && this.shift.end != '00:00') {
+        if (end <= start && this.shift.end !== '00:00') {
           this.error.end = true;
         } else {
           this.error.end = false;

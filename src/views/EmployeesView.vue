@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import EditEmployee from '@/components/layout/EditEmployee';
+import EditEmployee from '@/components/layout/EditEmployee.vue';
 
 export default {
   components: {

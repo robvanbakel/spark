@@ -64,17 +64,17 @@ export default {
     next() {
       if (this.currentView === 'DayPicker') {
         this.selectedMonth = (this.selectedMonth + 1) % 12;
-        this.selectedMonth % 12 === 0 && this.selectedYear++;
+        this.selectedMonth % 12 === 0 ? this.selectedYear += 1 : '';
       } else {
-        this.selectedYear++;
+        this.selectedYear += 1;
       }
     },
     prev() {
       if (this.currentView === 'DayPicker') {
         this.selectedMonth = (this.selectedMonth + 11) % 12;
-        this.selectedMonth % 12 === 11 && this.selectedYear--;
+        this.selectedMonth % 12 === 11 ? this.selectedYear -= 1 : '';
       } else {
-        this.selectedYear--;
+        this.selectedYear -= 1;
       }
     },
     changeView() {

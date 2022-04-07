@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import ActivateAccount from '@/components/layout/ActivateAccount';
-import SignIn from '@/components/layout/SignIn';
+import ActivateAccount from '@/components/layout/ActivateAccount.vue';
+import SignIn from '@/components/layout/SignIn.vue';
 
 export default {
   components: {
