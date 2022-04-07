@@ -4,21 +4,21 @@
 
 <script>
 export default {
-  emits: ["clickout"],
+  emits: ['clickout'],
   props: {
     dark: Boolean,
     transparent: Boolean,
     invisible: Boolean,
   },
   mounted() {
-    document.body.classList.add("noscroll")
+    document.body.classList.add('noscroll');
   },
   unmounted() {
-    if (!document.querySelector(".overlay")) {
-      document.body.classList.remove("noscroll")
+    if (!document.querySelector('.overlay')) {
+      document.body.classList.remove('noscroll');
     }
   },
-}
+};
 </script>
 
 <style></style>

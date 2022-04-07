@@ -1,12 +1,5 @@
-// const webpack = require('webpack')
+const { defineConfig } = require('@vue/cli-service');
 
-// module.exports = {
-//   configureWebpack: {
-//     plugins: [
-//       new webpack.DefinePlugin({
-//         __VUE_OPTIONS_API__: false,
-//         __VUE_PROD_DEVTOOLS__: false,
-//       }),
-//     ],
-//   },
-// }
+module.exports = defineConfig({
+  transpileDependencies: true,
+});

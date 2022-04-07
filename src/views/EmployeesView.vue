@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import EditEmployee from "@/components/layout/EditEmployee"
+import EditEmployee from '@/components/layout/EditEmployee';
 
 export default {
   components: {
@@ -67,65 +67,64 @@ export default {
     return {
       newEmployee: false,
       activeEmployee: null,
-      searchInput: "",
+      searchInput: '',
       filters: {},
-    }
+    };
   },
   computed: {
     employees() {
       // Get all non-archived employees
-      const employees = this.$store.getters["employees/employees"]
+      const employees = this.$store.getters['employees/employees'];
 
       // Apply filter & search
       return employees.filter((emp) => {
         if (Object.values(this.filters).includes(true)) {
           return (
-            this.filters[emp.status] === true &&
-            this.getFullName(emp)
+            this.filters[emp.status] === true
+            && this.getFullName(emp)
               .toLowerCase()
               .includes(this.searchInput.toLowerCase())
-          )
-        } else {
-          return this.getFullName(emp)
-            .toLowerCase()
-            .includes(this.searchInput.toLowerCase())
+          );
         }
-      })
+        return this.getFullName(emp)
+          .toLowerCase()
+          .includes(this.searchInput.toLowerCase());
+      });
     },
   },
   methods: {
     editEmployee(employee) {
-      this.activeEmployee = employee
+      this.activeEmployee = employee;
     },
     closeEditEmployee() {
-      this.activeEmployee = null
-      this.newEmployee = false
+      this.activeEmployee = null;
+      this.newEmployee = false;
     },
     getFullName(employee) {
-      return employee.firstName + " " + employee.lastName
+      return `${employee.firstName} ${employee.lastName}`;
     },
     setFilter(status) {
-      this.filters[status] = !this.filters[status]
+      this.filters[status] = !this.filters[status];
     },
     clearFilters() {
       Object.keys(this.filters).forEach((key) => {
-        this.filters[key] = false
-      })
+        this.filters[key] = false;
+      });
     },
     clearSearchInput() {
-      this.searchInput = ""
-      this.$refs.searchInput.focus()
+      this.searchInput = '';
+      this.$refs.searchInput.focus();
     },
     addNewEmployee() {
-      this.newEmployee = true
-      this.activeEmployee = true
+      this.newEmployee = true;
+      this.activeEmployee = true;
     },
   },
   mounted() {
-    this.filters = this.$store.getters["settings/statuses"].reduce(
+    this.filters = this.$store.getters['settings/statuses'].reduce(
       (filters, status) => ((filters[status.toLowerCase()] = false), filters),
-      {}
-    )
+      {},
+    );
   },
-}
+};
 </script>

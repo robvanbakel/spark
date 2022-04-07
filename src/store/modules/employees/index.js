@@ -6,10 +6,10 @@ export default {
   namespaced: true,
   state() {
     return {
-      users: []
-    }
+      users: [],
+    };
   },
   mutations,
   actions,
-  getters
-}
+  getters,
+};

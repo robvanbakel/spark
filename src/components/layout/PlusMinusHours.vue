@@ -45,43 +45,40 @@ export default {
     return {
       showAll: true,
       searchInput: '',
-    }
+    };
   },
   watch: {
-    search: function(query) {
-      this.searchInput = query
+    search(query) {
+      this.searchInput = query;
     },
   },
   methods: {
     calculatePlusMinusHours(employeeId) {
-      const contractHours = this.$store.getters["employees/employees"].find((employee) => employee.id === employeeId)[
-        "contract"
-      ]
-      const calculatedHours = this.$store.getters["employees/totalHours"][employeeId]
+      const contractHours = this.$store.getters['employees/employees'].find((employee) => employee.id === employeeId).contract;
+      const calculatedHours = this.$store.getters['employees/totalHours'][employeeId];
 
-      let plusMinusHours = (calculatedHours - contractHours).toFixed(2)
+      let plusMinusHours = (calculatedHours - contractHours).toFixed(2);
 
       if (plusMinusHours > 0) {
-        plusMinusHours = `+${plusMinusHours}`
+        plusMinusHours = `+${plusMinusHours}`;
       }
 
-      return plusMinusHours
+      return plusMinusHours;
     },
     employeeFullName(employee) {
-      return `${employee.firstName} ${employee.lastName}`
+      return `${employee.firstName} ${employee.lastName}`;
     },
     toggleShowAll() {
-      this.showAll = !this.showAll
+      this.showAll = !this.showAll;
     },
     computedShowAll(employeeId) {
-      if (this.showAll || this.$store.getters["employees/totalHours"][employeeId] > 0) {
-        return true
-      } else {
-        return false
+      if (this.showAll || this.$store.getters['employees/totalHours'][employeeId] > 0) {
+        return true;
       }
+      return false;
     },
   },
-}
+};
 </script>
 
 <style></style>

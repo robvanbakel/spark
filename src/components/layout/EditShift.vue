@@ -134,12 +134,12 @@ export default {
       newShift: null,
       shift: {
         employee: {},
-        place: "",
-        date: "",
-        start: "",
-        end: "",
-        break: "",
-        notes: "",
+        place: '',
+        date: '',
+        start: '',
+        end: '',
+        break: '',
+        notes: '',
       },
       error: {
         employee: false,
@@ -150,216 +150,211 @@ export default {
       },
       selectedSuggestion: null,
       showConfirmDelete: false,
-    }
+    };
   },
   computed: {
     showNewSuggestion() {
       if (
-        this.shift.place != "" &&
-        !this.$store.getters["settings/suggestions"]
-          .map((sug) => {
-            return sug.toLowerCase()
-          })
+        this.shift.place != ''
+        && !this.$store.getters['settings/suggestions']
+          .map((sug) => sug.toLowerCase())
           .includes(this.shift.place.toLowerCase())
       ) {
-        return true
-      } else {
-        return false
+        return true;
       }
+      return false;
     },
     employees() {
-      return this.$store.getters["employees/employees"].map((employee) => {
-        return { id: employee.id, display: `${employee.firstName} ${employee.lastName}` }
-      })
+      return this.$store.getters['employees/employees'].map((employee) => ({ id: employee.id, display: `${employee.firstName} ${employee.lastName}` }));
     },
   },
   methods: {
     dropdownHandler(selectedId) {
-      this.error.employee = false
-      this.shift.employee = this.employees.find((emp) => emp.id === selectedId)
+      this.error.employee = false;
+      this.shift.employee = this.employees.find((emp) => emp.id === selectedId);
     },
     setBreak(val) {
-      this.shift.break = val
+      this.shift.break = val;
     },
     clearError(field) {
-      this.error[field] = false
+      this.error[field] = false;
     },
     formatTime(time, field) {
       if (/^\d{1,2}$/.test(time) && time < 24) {
-        this.shift[field] = `${time.padStart(2, "0")}:00`
+        this.shift[field] = `${time.padStart(2, '0')}:00`;
       }
       if (/^\d{1,2}\D?[0-5][0-9]$/.test(time)) {
-        this.shift[field] = `${time.slice(0, 2)}:${time.slice(-2)}`
+        this.shift[field] = `${time.slice(0, 2)}:${time.slice(-2)}`;
       }
     },
     dateHandler(date) {
-      this.error.date = false
-      this.shift.date = date
+      this.error.date = false;
+      this.shift.date = date;
     },
     selectSuggestion(suggestion) {
-      this.shift.place = suggestion
-      this.error.place = false
-      this.selectedSuggestion = suggestion
+      this.shift.place = suggestion;
+      this.error.place = false;
+      this.selectedSuggestion = suggestion;
     },
     validate() {
       // Validate field: employee
       if (this.shift.employee.id) {
-        this.error.employee = false
+        this.error.employee = false;
       } else {
-        this.error.employee = true
+        this.error.employee = true;
       }
 
       // Validate field: place
       if (this.shift.place) {
-        this.error.place = false
+        this.error.place = false;
       } else {
-        this.error.place = true
+        this.error.place = true;
       }
 
       // Validate field: date
       if (this.shift.date) {
-        this.error.date = false
+        this.error.date = false;
       } else {
-        this.error.date = true
+        this.error.date = true;
       }
 
-      const timeRegex = /^([0-1][0-9]|2[0-3]):([0-5][0-9])$/
+      const timeRegex = /^([0-1][0-9]|2[0-3]):([0-5][0-9])$/;
 
       // Validate field: start
       if (timeRegex.test(this.shift.start)) {
-        this.error.start = false
+        this.error.start = false;
       } else {
-        this.error.start = true
+        this.error.start = true;
       }
 
       // Validate field: end
       if (timeRegex.test(this.shift.end)) {
-        this.error.end = false
+        this.error.end = false;
       } else {
-        this.error.end = true
+        this.error.end = true;
       }
 
       // Check if start is before end
       if (!this.error.start && !this.error.start) {
-        const [startHour, startMin] = this.shift.start.split(":")
-        const [endHour, endMin] = this.shift.end.split(":")
+        const [startHour, startMin] = this.shift.start.split(':');
+        const [endHour, endMin] = this.shift.end.split(':');
 
-        const start = new Date()
-        start.setHours(startHour)
-        start.setMinutes(startMin)
+        const start = new Date();
+        start.setHours(startHour);
+        start.setMinutes(startMin);
 
-        const end = new Date()
-        end.setHours(endHour)
-        end.setMinutes(endMin)
+        const end = new Date();
+        end.setHours(endHour);
+        end.setMinutes(endMin);
 
-        if (end <= start && this.shift.end != "00:00") {
-          this.error.end = true
+        if (end <= start && this.shift.end != '00:00') {
+          this.error.end = true;
         } else {
-          this.error.end = false
+          this.error.end = false;
         }
       }
 
       if (!Object.values(this.error).includes(true)) {
-        this.saveEditShift()
+        this.saveEditShift();
       }
     },
     async saveEditShift() {
-      const employeeId = this.shift.employee.id
-      const weekId = await this.$store.dispatch("date/getWeekId", this.shift.date)
-      const day = this.shift.date.getUTCDay()
+      const employeeId = this.shift.employee.id;
+      const weekId = await this.$store.dispatch('date/getWeekId', this.shift.date);
+      const day = this.shift.date.getUTCDay();
 
       const shiftId = {
         employeeId,
         weekId,
         day,
-      }
+      };
 
       // Helper function to check if target shiftId is equal to active shiftId
       const compareObjects = (obj1, obj2) => {
         for (const key in obj1) {
           if (obj1[key] !== obj2[key]) {
-            return false
+            return false;
           }
         }
-        return true
-      }
+        return true;
+      };
 
       // If target shiftId already exists and is not active shiftId, ask for confirmation
       if (
-        !compareObjects(shiftId, this.$store.getters["planner/activeShiftId"]) &&
-        this.$store.getters["planner/schedules"][weekId] &&
-        this.$store.getters["planner/schedules"][weekId][employeeId] &&
-        this.$store.getters["planner/schedules"][weekId][employeeId][day]
+        !compareObjects(shiftId, this.$store.getters['planner/activeShiftId'])
+        && this.$store.getters['planner/schedules'][weekId]
+        && this.$store.getters['planner/schedules'][weekId][employeeId]
+        && this.$store.getters['planner/schedules'][weekId][employeeId][day]
       ) {
         // If user doesn't confirm, don't save current shift
         if (!(await this.$refs.confirmReplaceShift.open())) {
-          return
+          return;
         }
       }
 
       // Save shift and exit modal
-      const stringifyTime = (time) => time.replace(":", "")
+      const stringifyTime = (time) => time.replace(':', '');
 
       const shiftInfo = {
         place: this.shift.place,
         start: stringifyTime(this.shift.start),
         end: stringifyTime(this.shift.end),
         break: this.shift.break,
-        notes: this.shift.notes || "",
-      }
+        notes: this.shift.notes || '',
+      };
 
-      this.$store.dispatch("planner/saveEditShift", { shiftId, shiftInfo })
-      this.closeEditShift()
+      this.$store.dispatch('planner/saveEditShift', { shiftId, shiftInfo });
+      this.closeEditShift();
     },
     closeEditShift() {
-      this.$store.dispatch("planner/setActiveShiftId", null)
+      this.$store.dispatch('planner/setActiveShiftId', null);
     },
     async deleteShift() {
       if (await this.$refs.confirmDeleteShift.open()) {
-        this.$store.dispatch("planner/deleteShift")
-        this.closeEditShift()
+        this.$store.dispatch('planner/deleteShift');
+        this.closeEditShift();
       }
     },
   },
   async mounted() {
-    const activeShiftId = this.$store.getters["planner/activeShiftId"]
+    const activeShiftId = this.$store.getters['planner/activeShiftId'];
 
-    this.newShift = true
-    this.shift.break = "0"
+    this.newShift = true;
+    this.shift.break = '0';
 
     // Helper functions
-    const parseTime = (time) => time.substring(0, 2) + ":" + time.substring(2, 4)
+    const parseTime = (time) => `${time.substring(0, 2)}:${time.substring(2, 4)}`;
 
-    if (activeShiftId !== "new") {
+    if (activeShiftId !== 'new') {
       if (!activeShiftId.employeeId) {
-        this.shift.date = this.$store.getters["date/dates"][activeShiftId.day]
+        this.shift.date = this.$store.getters['date/dates'][activeShiftId.day];
       } else {
         // Get info for selected shift
-        const { weekId, day, employeeId } = activeShiftId
+        const { weekId, day, employeeId } = activeShiftId;
 
-        const shift = this.$store.getters["planner/schedules"][weekId][employeeId][day]
-        const employee = this.$store.getters["employees/employees"].find((emp) => emp.id === employeeId)
+        const shift = this.$store.getters['planner/schedules'][weekId][employeeId][day];
+        const employee = this.$store.getters['employees/employees'].find((emp) => emp.id === employeeId);
 
         // Set boilerplate shift info
         this.shift.employee = {
           fullName: `${employee.firstName} ${employee.lastName}`,
           id: employeeId,
-        }
-        this.shift.date = this.$store.getters["date/dates"][day]
+        };
+        this.shift.date = this.$store.getters['date/dates'][day];
 
         // If active shift exists, set shift info
         if (shift) {
-          this.newShift = false
+          this.newShift = false;
 
-          this.shift.place = shift.place
-          this.shift.start = parseTime(shift.start)
-          this.shift.end = parseTime(shift.end)
-          this.shift.notes = shift.notes
-          this.shift.break = shift.break
-          this.shift.accepted = shift.accepted
+          this.shift.place = shift.place;
+          this.shift.start = parseTime(shift.start);
+          this.shift.end = parseTime(shift.end);
+          this.shift.notes = shift.notes;
+          this.shift.break = shift.break;
+          this.shift.accepted = shift.accepted;
         }
       }
     }
   },
-}
+};
 </script>

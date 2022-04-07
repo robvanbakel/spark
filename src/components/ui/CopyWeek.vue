@@ -10,33 +10,31 @@ export default {
   data() {
     return {
       selectedWeek: null,
-    }
+    };
   },
   methods: {
     selectWeek(week) {
-      this.selectedWeek = week
+      this.selectedWeek = week;
     },
     copyWeek() {
-      this.$store.dispatch("planner/copyWeek", {
-        to: this.$store.getters["date/weekId"],
+      this.$store.dispatch('planner/copyWeek', {
+        to: this.$store.getters['date/weekId'],
         from: this.selectedWeek,
-      })
+      });
     },
   },
   computed: {
     weeks() {
-      return Object.keys(this.$store.getters["planner/schedules"])
-        .map((weekId) => {
-          return {
-            id: weekId,
-            display: `Week ${parseInt(weekId.split("-")[1])}`,
-          }
-        })
-        .reverse()
+      return Object.keys(this.$store.getters['planner/schedules'])
+        .map((weekId) => ({
+          id: weekId,
+          display: `Week ${parseInt(weekId.split('-')[1])}`,
+        }))
+        .reverse();
     },
   },
   mounted() {
-    this.selectedWeek = this.weeks[0].id
+    this.selectedWeek = this.weeks[0].id;
   },
-}
+};
 </script>

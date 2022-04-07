@@ -15,10 +15,11 @@
 </template>
 
 <script>
-import BaseCalendar from "@/components/ui/BaseCalendar/BaseCalendar"
+import BaseCalendar from '@/components/ui/BaseCalendar/BaseCalendar';
+
 export default {
   components: { BaseCalendar },
-  emits: ["date"],
+  emits: ['date'],
   props: {
     active: {
       type: Date,
@@ -33,36 +34,36 @@ export default {
     return {
       calendarVisible: false,
       activeDate: this.active || null,
-    }
+    };
   },
   methods: {
     showCalendar() {
-      this.calendarVisible = true
-      window.addEventListener("keydown", this.keyDownHandler)
+      this.calendarVisible = true;
+      window.addEventListener('keydown', this.keyDownHandler);
     },
     hideCalendar() {
-      this.calendarVisible = false
-      window.removeEventListener("keydown", this.keyDownHandler)
+      this.calendarVisible = false;
+      window.removeEventListener('keydown', this.keyDownHandler);
     },
     keyDownHandler(e) {
       switch (e.key) {
-        case "Escape":
-          this.hideCalendar()
-          break
+        case 'Escape':
+          this.hideCalendar();
+          break;
       }
     },
     formatDate(date) {
-      return date?.toLocaleDateString(this.$store.getters["settings/dateNotation"], {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      })
+      return date?.toLocaleDateString(this.$store.getters['settings/dateNotation'], {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
     },
     setDate(date) {
-      this.activeDate = date
-      this.hideCalendar()
-      this.$emit("date", date)
+      this.activeDate = date;
+      this.hideCalendar();
+      this.$emit('date', date);
     },
   },
-}
+};
 </script>

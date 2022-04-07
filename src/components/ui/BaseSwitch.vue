@@ -51,38 +51,38 @@ export default {
       type: String,
     },
   },
-  emits: ["activeItem"],
+  emits: ['activeItem'],
   methods: {
     setActive(e, item) {
-      const activeLeft = e.target.getBoundingClientRect().left - this.$refs.wrapper.getBoundingClientRect().left + "px"
-      const activeWidth = e.target.getBoundingClientRect().width + "px"
+      const activeLeft = `${e.target.getBoundingClientRect().left - this.$refs.wrapper.getBoundingClientRect().left}px`;
+      const activeWidth = `${e.target.getBoundingClientRect().width}px`;
 
-      this.$refs.indicator.style.left = activeLeft
-      this.$refs.indicator.style.width = activeWidth
+      this.$refs.indicator.style.left = activeLeft;
+      this.$refs.indicator.style.width = activeWidth;
 
-      this.$emit("activeItem", item)
+      this.$emit('activeItem', item);
     },
   },
   mounted() {
-    const switchItems = document.querySelectorAll(`#${this.id}.switch-control`)
+    const switchItems = document.querySelectorAll(`#${this.id}.switch-control`);
 
     if (this.toggle) {
       switchItems.forEach((item) => {
-        if (item.attributes["data-value"].value === this.active) {
-          item.click()
+        if (item.attributes['data-value'].value === this.active) {
+          item.click();
         }
-      })
+      });
     } else {
       switchItems.forEach((item) => {
         if (item.innerText === this.active) {
-          item.click()
+          item.click();
         }
-      })
+      });
     }
 
     setTimeout(() => {
-      this.$refs.indicator.style.transition = "all 120ms ease-in-out"
-    }, 120)
+      this.$refs.indicator.style.transition = 'all 120ms ease-in-out';
+    }, 120);
   },
-}
+};
 </script>

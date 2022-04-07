@@ -108,26 +108,26 @@ export default {
         employeeNotes: null,
         shiftNotes: null,
       },
-      location: this.$store.getters["settings/location"],
-      dateNotation: this.$store.getters["settings/dateNotation"],
-    }
+      location: this.$store.getters['settings/location'],
+      dateNotation: this.$store.getters['settings/dateNotation'],
+    };
   },
   methods: {
     setShareWithEmployees(value, id) {
-      this.unsavedChanges = true
-      this.shareWithEmployees[id] = value
+      this.unsavedChanges = true;
+      this.shareWithEmployees[id] = value;
     },
     setDateNotation(locale) {
-      this.unsavedChanges = true
-      this.dateNotation = locale
+      this.unsavedChanges = true;
+      this.dateNotation = locale;
     },
     async saveSettings() {
-      this.$store.dispatch("settings/setShareWithEmployees", this.shareWithEmployees)
-      this.$store.dispatch("settings/dateNotation", this.dateNotation)
-      this.$store.dispatch("settings/location", this.location)
+      this.$store.dispatch('settings/setShareWithEmployees', this.shareWithEmployees);
+      this.$store.dispatch('settings/dateNotation', this.dateNotation);
+      this.$store.dispatch('settings/location', this.location);
 
       if (await this.$refs.settingsSaved.open()) {
-        this.unsavedChanges = false
+        this.unsavedChanges = false;
       }
     },
   },
@@ -135,32 +135,32 @@ export default {
     dateNotations() {
       return [
         {
-          id: "en-US",
-          display: "MM/DD/YYYY",
+          id: 'en-US',
+          display: 'MM/DD/YYYY',
         },
         {
-          id: "en-GB",
-          display: "DD/MM/YYYY",
+          id: 'en-GB',
+          display: 'DD/MM/YYYY',
         },
         {
-          id: "nl-NL",
-          display: "DD-MM-YYYY",
+          id: 'nl-NL',
+          display: 'DD-MM-YYYY',
         },
-      ]
+      ];
     },
   },
   mounted() {
-    this.unsavedChanges = false
+    this.unsavedChanges = false;
   },
   async beforeRouteLeave(to, from, next) {
     if (!this.unsavedChanges) {
-      next()
+      next();
     } else {
       if (await this.$refs.confirmUnsavedChanges.open()) {
-        this.saveSettings()
+        this.saveSettings();
       }
-      next()
+      next();
     }
   },
-}
+};
 </script>

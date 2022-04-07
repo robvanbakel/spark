@@ -51,13 +51,13 @@ export default {
       require: false,
     },
   },
-  emits: ["close"],
+  emits: ['close'],
   methods: {
     close(bool) {
       if (bool) {
-        this.$emit("close")
+        this.$emit('close');
       }
     },
   },
-}
+};
 </script>

@@ -1,9 +1,9 @@
 export default {
   user(state) {
-    return state.user
+    return state.user;
   },
   admin(state) {
-    return state.admin
+    return state.admin;
   },
 
-}
+};

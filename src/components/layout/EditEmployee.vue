@@ -108,11 +108,11 @@
 </template>
 
 <script>
-import StatusPicker from "@/components/ui/StatusPicker"
+import StatusPicker from '@/components/ui/StatusPicker';
 
 export default {
-  props: ["employee", "new"],
-  emits: ["closeEditEmployee"],
+  props: ['employee', 'new'],
+  emits: ['closeEditEmployee'],
   components: {
     StatusPicker,
   },
@@ -127,115 +127,113 @@ export default {
         contract: false,
         email: false,
       },
-    }
+    };
   },
   methods: {
     setActiveStatus(status) {
-      this.activeEmployee.status = status
+      this.activeEmployee.status = status;
     },
     setCurrentEmployeeData() {
       if (this.new) {
-        this.activeEmployee.status = "staged"
+        this.activeEmployee.status = 'staged';
       } else {
-        this.activeEmployee.status = this.employee.status
+        this.activeEmployee.status = this.employee.status;
       }
-      this.activeEmployee.email = this.employee.email || ""
-      this.activeEmployee.phone = this.employee.phone || ""
-      this.activeEmployee.role = this.employee.role || ""
-      this.activeEmployee.contract = this.employee.contract || ""
-      this.activeEmployee.contractType = this.employee.contractType || ""
-      this.activeEmployee.notes = this.employee.notes || ""
+      this.activeEmployee.email = this.employee.email || '';
+      this.activeEmployee.phone = this.employee.phone || '';
+      this.activeEmployee.role = this.employee.role || '';
+      this.activeEmployee.contract = this.employee.contract || '';
+      this.activeEmployee.contractType = this.employee.contractType || '';
+      this.activeEmployee.notes = this.employee.notes || '';
     },
     setContractType(value) {
-      this.activeEmployee.contractType = value
+      this.activeEmployee.contractType = value;
     },
     setRole(value) {
-      this.clearError("role")
-      this.activeEmployee.role = value
+      this.clearError('role');
+      this.activeEmployee.role = value;
     },
     closeEditEmployee() {
-      this.$emit("closeEditEmployee")
+      this.$emit('closeEditEmployee');
     },
     async deleteEmployee() {
       if (await this.$refs.confirmDeleteEmployee.open()) {
-        this.activeEmployee.status = "archived"
-        this.saveEditEmployee()
+        this.activeEmployee.status = 'archived';
+        this.saveEditEmployee();
       }
     },
     validate() {
       if (this.new) {
         // Validate field: firstName
         if (this.activeEmployee.firstName) {
-          this.error.firstName = false
+          this.error.firstName = false;
         } else {
-          this.error.firstName = true
+          this.error.firstName = true;
         }
 
         // Validate field: lastName
         if (this.activeEmployee.lastName) {
-          this.error.lastName = false
+          this.error.lastName = false;
         } else {
-          this.error.lastName = true
+          this.error.lastName = true;
         }
       }
 
       // Validate field: role
       if (this.activeEmployee.role) {
-        this.error.role = false
+        this.error.role = false;
       } else {
-        this.error.role = true
+        this.error.role = true;
       }
 
       // Validate field: contract
-      this.activeEmployee.contract = parseFloat(this.activeEmployee.contract.toString().replace(",", "."))
+      this.activeEmployee.contract = parseFloat(this.activeEmployee.contract.toString().replace(',', '.'));
 
       if (this.activeEmployee.contract) {
-        this.error.contract = false
+        this.error.contract = false;
       } else {
-        this.activeEmployee.contract = ""
-        this.error.contract = true
+        this.activeEmployee.contract = '';
+        this.error.contract = true;
       }
 
-      const emailRegex = /^.+@\w+\.\w+$/i
+      const emailRegex = /^.+@\w+\.\w+$/i;
 
       // Validate field: email
       if (emailRegex.test(this.activeEmployee.email)) {
-        this.error.email = false
+        this.error.email = false;
       } else {
-        this.error.email = true
+        this.error.email = true;
       }
 
       if (!Object.values(this.error).includes(true)) {
-        this.saveEditEmployee()
+        this.saveEditEmployee();
       }
     },
     async saveEditEmployee() {
       if (this.new) {
-        this.$store.dispatch("employees/createNewUser", {
+        this.$store.dispatch('employees/createNewUser', {
           employee: this.activeEmployee,
-        })
+        });
       } else {
-        this.$store.dispatch("employees/updateUser", {
+        this.$store.dispatch('employees/updateUser', {
           id: this.employee.id,
           data: this.activeEmployee,
-        })
+        });
       }
 
-      this.closeEditEmployee()
+      this.closeEditEmployee();
     },
     clearError(field) {
-      this.error[field] = false
+      this.error[field] = false;
     },
   },
   computed: {
     roles() {
-      return this.$store.getters["settings/roles"].map((role) => {
-        return { id: role, display: role }
-      })
+      return this.$store.getters['settings/roles'].map((role) => ({ id: role, display: role }));
     },
   },
   mounted() {
-    this.setCurrentEmployeeData()
+    this.setCurrentEmployeeData();
   },
-}
+};
 </script>

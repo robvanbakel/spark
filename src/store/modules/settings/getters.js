@@ -1,38 +1,38 @@
 export default {
   mode() {
-    return window.location.hostname.split('.')[0]
+    return window.location.hostname.split('.')[0];
   },
   dateLocale() {
-    return 'en-US'
+    return 'en-US';
   },
   dateNotation(state) {
-    return state.dateNotation
+    return state.dateNotation;
   },
   suggestions(state) {
-    return state.suggestions
+    return state.suggestions;
   },
   admin(state) {
-    return state.admin
+    return state.admin;
   },
   roles(state) {
-    return state.roles
+    return state.roles;
   },
   hideSidebar(state) {
-    return state.hideSidebar
+    return state.hideSidebar;
   },
   sidebarAutoHidden(state) {
-    return state.sidebarAutoHidden
+    return state.sidebarAutoHidden;
   },
   shareWithEmployees(state) {
-    return state.shareWithEmployees
+    return state.shareWithEmployees;
   },
   breaks(state) {
-    return state.breaks
+    return state.breaks;
   },
   statuses(state) {
-    return state.statuses
+    return state.statuses;
   },
   location(state) {
-    return state.location
-  }
-}
+    return state.location;
+  },
+};

@@ -33,72 +33,72 @@ export default {
     return {
       selectedMonth: new Date().getMonth(),
       selectedYear: new Date().getFullYear(),
-    }
+    };
   },
   methods: {
     daysInMonth() {
-      return new Date(this.selectedYear, this.selectedMonth + 1, 0).getDate()
+      return new Date(this.selectedYear, this.selectedMonth + 1, 0).getDate();
     },
     visibleInPrevMonth() {
-      const amount = new Date(this.selectedYear, this.selectedMonth, 0).getDay()
+      const amount = new Date(this.selectedYear, this.selectedMonth, 0).getDay();
 
-      let dates = []
+      const dates = [];
 
       for (let i = 0; i < amount; i++) {
-        dates.unshift(new Date(this.selectedYear, this.selectedMonth, -i).getDate())
+        dates.unshift(new Date(this.selectedYear, this.selectedMonth, -i).getDate());
       }
 
-      return dates
+      return dates;
     },
     visibleInNextMonth() {
-      const lastDayInMonth = new Date(this.selectedYear, this.selectedMonth + 1, 0).getDay()
+      const lastDayInMonth = new Date(this.selectedYear, this.selectedMonth + 1, 0).getDay();
 
       if (lastDayInMonth != 0) {
-        return 7 - lastDayInMonth
+        return 7 - lastDayInMonth;
       }
     },
     next() {
       if (this.selectedMonth === 11) {
-        this.selectedMonth = 0
-        this.selectedYear++
+        this.selectedMonth = 0;
+        this.selectedYear++;
       } else {
-        this.selectedMonth++
+        this.selectedMonth++;
       }
     },
     prev() {
       if (this.selectedMonth === 0) {
-        this.selectedMonth = 11
-        this.selectedYear--
+        this.selectedMonth = 11;
+        this.selectedYear--;
       } else {
-        this.selectedMonth--
+        this.selectedMonth--;
       }
     },
     calendarPointClass(num) {
-      const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString()
+      const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString();
 
-      let dateClass = ""
+      let dateClass = '';
 
-      this.$store.getters["date/dates"].forEach((date) => {
-        calendarFullDate === date.toDateString() ? (dateClass = "selected") : ""
-      })
+      this.$store.getters['date/dates'].forEach((date) => {
+        calendarFullDate === date.toDateString() ? (dateClass = 'selected') : '';
+      });
 
-      return dateClass
+      return dateClass;
     },
     currentDateClass(num) {
-      const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString()
-      const currentFullDate = new Date().toDateString()
+      const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString();
+      const currentFullDate = new Date().toDateString();
 
-      return calendarFullDate === currentFullDate ? "current-date" : ""
+      return calendarFullDate === currentFullDate ? 'current-date' : '';
     },
     today() {
-      this.selectedMonth = new Date().getMonth()
-      this.selectedYear = new Date().getFullYear()
+      this.selectedMonth = new Date().getMonth();
+      this.selectedYear = new Date().getFullYear();
     },
     async setWeek(selectedDay) {
-      const date = new Date(this.selectedYear, this.selectedMonth, selectedDay)
-      const selectedWeekId = await this.$store.dispatch("date/getWeekId", date)
+      const date = new Date(this.selectedYear, this.selectedMonth, selectedDay);
+      const selectedWeekId = await this.$store.dispatch('date/getWeekId', date);
 
-      this.$router.push({ params: { weekId: selectedWeekId } })
+      this.$router.push({ params: { weekId: selectedWeekId } });
     },
   },
   computed: {
@@ -106,27 +106,27 @@ export default {
       return this.$dayjs()
         .year(this.selectedYear)
         .month(this.selectedMonth)
-        .format('MMMM YYYY')
+        .format('MMMM YYYY');
     },
     shortDays() {
-      return this.$store.getters["date/dates"].map((date) => this.$dayjs(date).format('ddd'))
+      return this.$store.getters['date/dates'].map((date) => this.$dayjs(date).format('ddd'));
     },
     calendarPoint() {
-      return this.$store.getters["date/dates"][3]
+      return this.$store.getters['date/dates'][3];
     },
   },
   watch: {
     async calendarPoint() {
-      const currentWeekId = await this.$store.dispatch("date/getWeekId")
+      const currentWeekId = await this.$store.dispatch('date/getWeekId');
 
-      if (this.$store.getters["date/weekId"] === currentWeekId) {
-        this.selectedMonth = new Date().getMonth()
-        this.selectedYear = new Date().getFullYear()
+      if (this.$store.getters['date/weekId'] === currentWeekId) {
+        this.selectedMonth = new Date().getMonth();
+        this.selectedYear = new Date().getFullYear();
       } else {
-        this.selectedMonth = this.$store.getters["date/dates"][3].getMonth()
-        this.selectedYear = this.$store.getters["date/dates"][3].getFullYear()
+        this.selectedMonth = this.$store.getters['date/dates'][3].getMonth();
+        this.selectedYear = this.$store.getters['date/dates'][3].getFullYear();
       }
     },
   },
-}
+};
 </script>

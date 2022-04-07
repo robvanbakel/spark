@@ -40,111 +40,111 @@ export default {
       loading: false,
       firstName: null,
       success: false,
-      email: "",
-      password: "",
-      repeatPassword: "",
-    }
+      email: '',
+      password: '',
+      repeatPassword: '',
+    };
   },
   methods: {
     async confirmEmail() {
-      this.loading = true
+      this.loading = true;
 
-      const baseUrl = `${process.env.VUE_APP_ADMIN_HOST || ""}/admin/activateAccount`
+      const baseUrl = `${process.env.VUE_APP_ADMIN_HOST || ''}/admin/activateAccount`;
 
-      const activationToken = this.$route.query.activationToken
-      const email = encodeURIComponent(this.email)
+      const { activationToken } = this.$route.query;
+      const email = encodeURIComponent(this.email);
 
       try {
-        const res = await fetch(`${baseUrl}?activationToken=${activationToken}&email=${email}`)
+        const res = await fetch(`${baseUrl}?activationToken=${activationToken}&email=${email}`);
 
         if (res.ok) {
-          const { firstName } = await res.json()
-          this.emailConfirmed = true
+          const { firstName } = await res.json();
+          this.emailConfirmed = true;
 
-          this.firstName = firstName
-          this.errorMessage = null
+          this.firstName = firstName;
+          this.errorMessage = null;
         } else {
-          const { error } = await res.json()
-          this.errorMessage = error
+          const { error } = await res.json();
+          this.errorMessage = error;
         }
       } catch {
-        this.errorMessage = "Something went wrong"
+        this.errorMessage = 'Something went wrong';
       }
 
-      this.loading = false
+      this.loading = false;
     },
     resetPasswordFields() {
-      this.password = ""
-      this.repeatPassword = ""
-      this.$refs.password.focus()
+      this.password = '';
+      this.repeatPassword = '';
+      this.$refs.password.focus();
     },
     async setPassword() {
       // Validate if password field is empty
       if (!this.password) {
-        this.errorMessage = "Please choose a password"
-        this.resetPasswordFields()
-        return
+        this.errorMessage = 'Please choose a password';
+        this.resetPasswordFields();
+        return;
       }
 
       // Validate if passwords is long enough
       if (this.password.length < 6) {
-        this.errorMessage = "Please choose a longer password"
-        this.resetPasswordFields()
-        return
+        this.errorMessage = 'Please choose a longer password';
+        this.resetPasswordFields();
+        return;
       }
 
       // Validate repeatPassword field is empty
       if (this.password && !this.repeatPassword) {
-        this.errorMessage = "Please repeat your password"
-        this.$refs.repeatPassword.focus()
-        return
+        this.errorMessage = 'Please repeat your password';
+        this.$refs.repeatPassword.focus();
+        return;
       }
 
       // Check if passwords match
       if (this.password !== this.repeatPassword) {
-        this.errorMessage = "Passwords do not match"
-        this.resetPasswordFields()
-        return
+        this.errorMessage = 'Passwords do not match';
+        this.resetPasswordFields();
+        return;
       }
 
-      this.loading = true
-      this.errorMessage = null
+      this.loading = true;
+      this.errorMessage = null;
 
       try {
-        const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ""}/admin/activateAccount`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/activateAccount`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             activationToken: this.$route.query.activationToken,
             email: this.email,
             password: this.password,
           }),
-        })
+        });
 
         if (res.ok) {
-          this.success = true
+          this.success = true;
         } else {
-          const { error } = await res.json()
-          this.errorMessage = error
+          const { error } = await res.json();
+          this.errorMessage = error;
         }
       } catch {
-        this.errorMessage = "Something went wrong"
+        this.errorMessage = 'Something went wrong';
       }
 
-      this.loading = false
+      this.loading = false;
     },
     toLogin() {
-      this.$router.push({ name: "Auth" })
+      this.$router.push({ name: 'Auth' });
     },
   },
   watch: {
     emailConfirmed(val) {
       if (val) {
         this.$nextTick(() => {
-          this.$refs.password.focus()
-        })
+          this.$refs.password.focus();
+        });
       }
     },
   },
-}
+};
 </script>

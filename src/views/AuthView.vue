@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import ActivateAccount from "@/components/layout/ActivateAccount"
-import SignIn from "@/components/layout/SignIn"
+import ActivateAccount from '@/components/layout/ActivateAccount';
+import SignIn from '@/components/layout/SignIn';
 
 export default {
   components: {
@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       userStatus: null,
-    }
+    };
   },
-}
+};
 </script>

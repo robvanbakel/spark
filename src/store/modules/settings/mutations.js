@@ -1,29 +1,29 @@
 export default {
   suggestions(state, suggestions) {
-    state.suggestions = suggestions
+    state.suggestions = suggestions;
   },
   admin(state, admin) {
-    state.admin = admin
+    state.admin = admin;
   },
   roles(state, roles) {
-    state.roles = roles
+    state.roles = roles;
   },
   toggleSidebar(state) {
-    state.hideSidebar = !state.hideSidebar
+    state.hideSidebar = !state.hideSidebar;
   },
   hideSidebar(state, payload) {
-    state.hideSidebar = payload
+    state.hideSidebar = payload;
   },
   sidebarAutoHidden(state, payload) {
-    state.sidebarAutoHidden = payload
+    state.sidebarAutoHidden = payload;
   },
   shareWithEmployees(state, payload) {
-    state.shareWithEmployees = payload
+    state.shareWithEmployees = payload;
   },
   dateNotation(state, dateNotation) {
-    state.dateNotation = dateNotation
+    state.dateNotation = dateNotation;
   },
   location(state, location) {
-    state.location = location
+    state.location = location;
   },
-}
+};

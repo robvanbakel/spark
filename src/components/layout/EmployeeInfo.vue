@@ -22,10 +22,10 @@
 export default {
   computed: {
     user() {
-      return this.$store.getters["auth/user"]
+      return this.$store.getters['auth/user'];
     },
   },
-}
+};
 </script>
 
 <style></style>

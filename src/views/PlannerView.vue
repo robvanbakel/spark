@@ -69,14 +69,14 @@
 </template>
 
 <script>
-import PlannerContent from "@/components/layout/PlannerContent"
-import EditShift from "@/components/layout/EditShift"
-import PlannerCalendar from "@/components/layout/PlannerCalendar"
-import PlusMinusHours from "@/components/layout/PlusMinusHours"
-import EmptyWeek from "@/components/layout/EmptyWeek"
+import PlannerContent from '@/components/layout/PlannerContent';
+import EditShift from '@/components/layout/EditShift';
+import PlannerCalendar from '@/components/layout/PlannerCalendar';
+import PlusMinusHours from '@/components/layout/PlusMinusHours';
+import EmptyWeek from '@/components/layout/EmptyWeek';
 
 export default {
-  props: ["weekId"],
+  props: ['weekId'],
   components: {
     PlannerContent,
     EditShift,
@@ -86,62 +86,61 @@ export default {
   },
   data() {
     return {
-      searchInput: "",
+      searchInput: '',
       hideEmptyWeek: false,
       filters: {},
-    }
+    };
   },
   methods: {
     closeEditShift() {
-      this.activeShiftId = null
+      this.activeShiftId = null;
     },
     clearSearchInput() {
-      this.searchInput = ""
-      this.$refs.searchInput.focus()
+      this.searchInput = '';
+      this.$refs.searchInput.focus();
     },
     addNewShift() {
-      this.$store.dispatch("planner/setActiveShiftId", "new")
+      this.$store.dispatch('planner/setActiveShiftId', 'new');
     },
     setFilter(status) {
-      this.filters[status] = !this.filters[status]
+      this.filters[status] = !this.filters[status];
     },
     clearFilters() {
-      Object.keys(this.filters).forEach((key) => (this.filters[key] = false))
+      Object.keys(this.filters).forEach((key) => (this.filters[key] = false));
     },
     toggleSidebar() {
-      this.$store.dispatch("settings/toggleSidebar")
-      this.$store.dispatch("settings/sidebarAutoHidden", false)
+      this.$store.dispatch('settings/toggleSidebar');
+      this.$store.dispatch('settings/sidebarAutoHidden', false);
     },
   },
   computed: {
     displayRoles() {
       if (Object.values(this.filters).includes(true)) {
-        return Object.keys(this.filters).filter((role) => this.filters[role] === true)
-      } else {
-        return Object.keys(this.filters)
+        return Object.keys(this.filters).filter((role) => this.filters[role] === true);
       }
+      return Object.keys(this.filters);
     },
     emptyWeek() {
-      return !this.$store.getters["planner/currentWeekSchedule"]
+      return !this.$store.getters['planner/currentWeekSchedule'];
     },
   },
   watch: {
     $route(to) {
-      if (to.name === "Planner") {
-        const weekId = this.$route.params.weekId
-        this.$store.dispatch("date/setDates", weekId)
-        this.hideEmptyWeek = false
-        document.title = `Week ${parseInt(this.$route.params.weekId.split("-")[1])} - Planner`
+      if (to.name === 'Planner') {
+        const { weekId } = this.$route.params;
+        this.$store.dispatch('date/setDates', weekId);
+        this.hideEmptyWeek = false;
+        document.title = `Week ${parseInt(this.$route.params.weekId.split('-')[1])} - Planner`;
       }
     },
   },
   mounted() {
-    this.filters = this.$store.getters["settings/roles"].reduce(
+    this.filters = this.$store.getters['settings/roles'].reduce(
       (filters, role) => ((filters[role.toLowerCase()] = false), filters),
-      {}
-    )
+      {},
+    );
   },
-}
+};
 </script>
 
 <style scoped>

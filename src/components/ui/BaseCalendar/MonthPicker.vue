@@ -7,31 +7,31 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
 
 export default {
   props: ['selectedMonth', 'selectedYear', 'active'],
   emits: ['choice'],
   methods: {
     pickMonth(selectedMonth) {
-      this.$emit('choice', selectedMonth)
+      this.$emit('choice', selectedMonth);
     },
     monthClasses(num) {
-      const calendarFullDate = dayjs(new Date(this.selectedYear, num)).format('YYYYMM')
-      let classes = []
+      const calendarFullDate = dayjs(new Date(this.selectedYear, num)).format('YYYYMM');
+      const classes = [];
 
       if (calendarFullDate === dayjs().format('YYYYMM')) {
-        classes.push('current')
+        classes.push('current');
       }
 
       if (calendarFullDate === dayjs(this.active).format('YYYYMM')) {
-        classes.push('active')
+        classes.push('active');
       }
 
-      return classes
+      return classes;
     },
   },
-}
+};
 </script>
 
 <style></style>

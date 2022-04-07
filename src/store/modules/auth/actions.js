@@ -1,17 +1,16 @@
-import { auth } from "@/firebase"
+import { auth } from '@/firebase';
 
 export default {
   async login(context, payload) {
     try {
-      const res = await auth.signInWithEmailAndPassword(payload.email, payload.password)
-      return res
+      const res = await auth.signInWithEmailAndPassword(payload.email, payload.password);
+      return res;
     } catch (err) {
-      console.log(err)
-      return err
+      return err;
     }
   },
   logout() {
-    auth.signOut()
-    location.reload()
+    auth.signOut();
+    location.reload();
   },
-}
+};

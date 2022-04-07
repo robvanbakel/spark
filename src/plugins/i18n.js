@@ -1,7 +1,7 @@
-import { createI18n } from 'vue-i18n'
+import { createI18n } from 'vue-i18n';
 
-import en_US from '@/locales/en-US'
-import nl_NL from '@/locales/nl-NL'
+import en_US from '@/locales/en-US';
+import nl_NL from '@/locales/nl-NL';
 
 const i18n = createI18n({
   locale: 'en-US',
@@ -10,6 +10,6 @@ const i18n = createI18n({
     'en-US': en_US,
     'nl-NL': nl_NL,
   },
-})
+});
 
-export default i18n
+export default i18n;

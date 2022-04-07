@@ -18,49 +18,49 @@
 <script>
 export default {
   props: ['selectedMonth', 'selectedYear', 'active'],
-  emits: ['choice','prev','next'],
+  emits: ['choice', 'prev', 'next'],
   methods: {
     daysInMonth() {
-      return new Date(this.selectedYear, this.selectedMonth + 1, 0).getDate()
+      return new Date(this.selectedYear, this.selectedMonth + 1, 0).getDate();
     },
     visibleInPrevMonth() {
-      const amount = new Date(this.selectedYear, this.selectedMonth, 0).getDay()
+      const amount = new Date(this.selectedYear, this.selectedMonth, 0).getDay();
 
-      let dates = []
+      const dates = [];
 
       for (let i = 0; i < amount; i++) {
-        dates.unshift(new Date(this.selectedYear, this.selectedMonth, -i).getDate())
+        dates.unshift(new Date(this.selectedYear, this.selectedMonth, -i).getDate());
       }
 
-      return dates
+      return dates;
     },
     visibleInNextMonth() {
-      const lastDayInMonth = new Date(this.selectedYear, this.selectedMonth + 1, 0).getDay()
+      const lastDayInMonth = new Date(this.selectedYear, this.selectedMonth + 1, 0).getDay();
 
       if (lastDayInMonth != 0) {
-        return 7 - lastDayInMonth
+        return 7 - lastDayInMonth;
       }
     },
     dateClasses(num) {
-      const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString()
-      let classes = []
+      const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString();
+      const classes = [];
 
       if (calendarFullDate === new Date().toDateString()) {
-        classes.push('current-date')
+        classes.push('current-date');
       }
 
       if (calendarFullDate === this.active?.toDateString()) {
-        classes.push('active')
+        classes.push('active');
       }
 
-      return classes
+      return classes;
     },
     pickDate(selectedDay) {
-      const date = new Date(this.selectedYear, this.selectedMonth, selectedDay)
-      this.$emit('choice', date)
+      const date = new Date(this.selectedYear, this.selectedMonth, selectedDay);
+      this.$emit('choice', date);
     },
   },
-}
+};
 </script>
 
 <style></style>

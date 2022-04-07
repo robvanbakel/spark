@@ -1,10 +1,10 @@
 import { createStore } from 'vuex';
 
-import employees from './modules/employees'
-import auth from './modules/auth'
-import planner from './modules/planner'
-import date from './modules/date'
-import settings from './modules/settings'
+import employees from './modules/employees';
+import auth from './modules/auth';
+import planner from './modules/planner';
+import date from './modules/date';
+import settings from './modules/settings';
 
 const store = createStore({
   modules: {
@@ -16,4 +16,4 @@ const store = createStore({
   },
 });
 
-export default store
+export default store;

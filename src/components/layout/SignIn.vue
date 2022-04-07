@@ -30,52 +30,52 @@ export default {
   data() {
     return {
       errorMessage: null,
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       isLoading: false,
       showDemo: false,
       demoLoading: false,
-    }
+    };
   },
   methods: {
     async enterDemo() {
-      this.demoLoading = true
+      this.demoLoading = true;
 
-      await this.$store.dispatch("auth/login", {
-        email: "demo@company.com",
-        password: "demo@company.com",
-      })
+      await this.$store.dispatch('auth/login', {
+        email: 'demo@company.com',
+        password: 'demo@company.com',
+      });
     },
     async handleSubmit() {
-      this.isLoading = true
+      this.isLoading = true;
 
-      const res = await this.$store.dispatch("auth/login", {
+      const res = await this.$store.dispatch('auth/login', {
         email: this.email,
         password: this.password,
-      })
+      });
 
       if (!res.user) {
-        this.isLoading = false
+        this.isLoading = false;
 
         switch (res.code) {
-          case "auth/user-not-found":
-            this.errorMessage = "User not found"
-            break
-          case "auth/wrong-password":
-            this.errorMessage = "Password incorrect"
-            break
+          case 'auth/user-not-found':
+            this.errorMessage = 'User not found';
+            break;
+          case 'auth/wrong-password':
+            this.errorMessage = 'Password incorrect';
+            break;
           default:
-            this.errorMessage = "Login failed"
+            this.errorMessage = 'Login failed';
         }
       }
     },
   },
   mounted() {
     setTimeout(() => {
-      this.showDemo = true
-    }, 650)
+      this.showDemo = true;
+    }, 650);
   },
-}
+};
 </script>
 
 <style>

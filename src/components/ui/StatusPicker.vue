@@ -19,29 +19,29 @@
 
 <script>
 export default {
-  props: ["activeStatus"],
+  props: ['activeStatus'],
   data() {
     return {
       showDropdown: false,
-    }
+    };
   },
   methods: {
     toggleDropdown() {
-      this.showDropdown = !this.showDropdown
+      this.showDropdown = !this.showDropdown;
     },
     setStatus(status) {
       if (status != this.activeStatus) {
-        this.$emit("setActiveStatus", status)
-        this.showDropdown = false
+        this.$emit('setActiveStatus', status);
+        this.showDropdown = false;
       }
     },
   },
   computed: {
     statuses() {
-      return this.$store.getters["settings/statuses"].filter((status) => status !== "staged")
+      return this.$store.getters['settings/statuses'].filter((status) => status !== 'staged');
     },
   },
-}
+};
 </script>
 
 <style></style>

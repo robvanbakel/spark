@@ -63,60 +63,60 @@
 export default {
   props: ['role', 'search'],
   watch: {
-    search: function(query) {
-      this.searchInput = query
+    search(query) {
+      this.searchInput = query;
     },
   },
   data() {
     return {
       searchInput: '',
-    }
+    };
   },
   methods: {
     employeeInfo(id, query) {
-      const employee = this.$store.getters['employees/users'].find((emp) => emp.id === id)
+      const employee = this.$store.getters['employees/users'].find((emp) => emp.id === id);
 
-      let output = employee[query] || employee
+      let output = employee[query] || employee;
 
       switch (query) {
         case 'fullName':
-          output = `${employee.firstName} ${employee.lastName}`
-          break
+          output = `${employee.firstName} ${employee.lastName}`;
+          break;
         case 'role':
-          output = employee.role.toLowerCase()
-          break
+          output = employee.role.toLowerCase();
+          break;
         case 'status':
-          output = employee.status
-          break
+          output = employee.status;
+          break;
       }
 
-      return output
+      return output;
     },
     shiftInfo(payload, query) {
-      const shift = this.$store.getters['planner/currentWeekSchedule'][payload.employeeId][payload.day - 1]
+      const shift = this.$store.getters['planner/currentWeekSchedule'][payload.employeeId][payload.day - 1];
 
-      const formatTime = (time) => time.substring(0, 2) + ':' + time.substring(2, 4)
+      const formatTime = (time) => `${time.substring(0, 2)}:${time.substring(2, 4)}`;
 
       if (shift) {
-        let output = shift[query] || shift
+        let output = shift[query] || shift;
 
         switch (query) {
           case 'time':
-            output = `${formatTime(shift.start)} - ${formatTime(shift.end)}`
-            break
+            output = `${formatTime(shift.start)} - ${formatTime(shift.end)}`;
+            break;
         }
 
-        return output
+        return output;
       }
     },
     handleClick(payload) {
       this.$store.dispatch('planner/setActiveShiftId', {
         weekId: this.$store.getters['date/weekId'],
         ...payload,
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style></style>

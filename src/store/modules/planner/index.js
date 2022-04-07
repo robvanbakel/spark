@@ -8,9 +8,9 @@ export default {
     return {
       schedules: null,
       activeShiftId: null,
-    }
+    };
   },
   mutations,
   actions,
-  getters
-}
+  getters,
+};

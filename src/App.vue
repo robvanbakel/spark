@@ -9,10 +9,10 @@
 </template>
 
 <script>
-import TheHeader from "@/components/layout/TheHeader"
+import TheHeader from '@/components/layout/TheHeader';
 
 export default {
-  name: "App",
+  name: 'App',
   data() {
     return {
       breakpoints: {
@@ -25,7 +25,7 @@ export default {
           active: false,
         },
       },
-    }
+    };
   },
   components: {
     TheHeader,
@@ -33,35 +33,35 @@ export default {
   methods: {
     checkScreenSize() {
       if (window.innerWidth < this.breakpoints.sm.width) {
-        this.setActiveBreakpoint("sm")
+        this.setActiveBreakpoint('sm');
       } else if (window.innerWidth < this.breakpoints.md.width) {
-        this.setActiveBreakpoint("md")
+        this.setActiveBreakpoint('md');
 
-        if (!this.$store.getters["settings/hideSidebar"]) {
-          this.$store.dispatch("settings/hideSidebar", true)
-          this.$store.dispatch("settings/sidebarAutoHidden", true)
+        if (!this.$store.getters['settings/hideSidebar']) {
+          this.$store.dispatch('settings/hideSidebar', true);
+          this.$store.dispatch('settings/sidebarAutoHidden', true);
         }
       } else {
-        this.setActiveBreakpoint(null)
-        if (this.$store.getters["settings/sidebarAutoHidden"]) {
-          this.$store.dispatch("settings/hideSidebar", false)
+        this.setActiveBreakpoint(null);
+        if (this.$store.getters['settings/sidebarAutoHidden']) {
+          this.$store.dispatch('settings/hideSidebar', false);
         }
       }
     },
     setActiveBreakpoint(selected) {
       for (const key in this.breakpoints) {
-        this.breakpoints[key].active = false
+        this.breakpoints[key].active = false;
       }
       if (selected) {
-        this.breakpoints[selected].active = true
+        this.breakpoints[selected].active = true;
       }
     },
   },
   mounted() {
-    this.checkScreenSize()
-    window.addEventListener("resize", this.checkScreenSize)
+    this.checkScreenSize();
+    window.addEventListener('resize', this.checkScreenSize);
   },
-}
+};
 </script>
 
 <style></style>

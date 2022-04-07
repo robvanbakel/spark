@@ -12,13 +12,13 @@ export default {
       shareWithEmployees: {},
       hideSidebar: false,
       sidebarAutoHidden: false,
-      location: {}, 
+      location: {},
       dateNotation: null,
       breaks: ['0', '15', '30', '45', '60'],
-      statuses: ['active','unavailable','sick','inactive','staged']
-    }
+      statuses: ['active', 'unavailable', 'sick', 'inactive', 'staged'],
+    };
   },
   mutations,
   actions,
-  getters
-}
+  getters,
+};

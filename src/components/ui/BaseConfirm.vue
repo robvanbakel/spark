@@ -15,15 +15,15 @@ export default {
   props: {
     title: {
       type: String,
-      default: "Are you sure?",
+      default: 'Are you sure?',
     },
     message: {
       type: String,
-      default: "This action cannot be undone.",
+      default: 'This action cannot be undone.',
     },
     choiceFalse: {
       type: String,
-      default: "Cancel",
+      default: 'Cancel',
     },
     choiceTrue: {
       type: String,
@@ -38,21 +38,21 @@ export default {
     return {
       showConfirm: false,
       choice: null,
-    }
+    };
   },
   methods: {
     open() {
-      this.showConfirm = true
+      this.showConfirm = true;
       return new Promise((resolve) => {
-        this.choice = resolve
-      })
+        this.choice = resolve;
+      });
     },
     confirm(choice) {
-      this.showConfirm = false
-      this.choice(choice)
+      this.showConfirm = false;
+      this.choice(choice);
     },
   },
-}
+};
 </script>
 
 <style></style>

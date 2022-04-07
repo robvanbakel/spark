@@ -38,7 +38,7 @@
 
 <script>
 export default {
-  emits: ["choice"],
+  emits: ['choice'],
   props: {
     items: {
       type: Array,
@@ -67,91 +67,88 @@ export default {
       dropdownVisible: false,
       selected: this.active,
       hoveredIndex: null,
-      input: this.items.find((item) => item.id === this.active)?.display || "",
-    }
+      input: this.items.find((item) => item.id === this.active)?.display || '',
+    };
   },
   computed: {
     selectedDisplay() {
-      return this.items.find((item) => item.id === this.selected)?.display || ""
+      return this.items.find((item) => item.id === this.selected)?.display || '';
     },
     filteredItems() {
       if (this.enableSearch) {
-        return this.items.filter((item) => item.display.toLowerCase().includes(this.input.toLowerCase()))
-      } else {
-        return this.items
+        return this.items.filter((item) => item.display.toLowerCase().includes(this.input.toLowerCase()));
       }
+      return this.items;
     },
     dropdownScrollOffset() {
       if (this.hoveredIndex > 4) {
-        return 4 * 40 - this.hoveredIndex * 40
-      } else {
-        return 0
+        return 4 * 40 - this.hoveredIndex * 40;
       }
+      return 0;
     },
   },
   methods: {
     showDropdown() {
       if (this.enableSearch) {
-        this.input = ""
+        this.input = '';
       }
-      this.dropdownVisible = true
-      this.$refs.input.focus()
-      window.addEventListener("keydown", this.keyDownHandler)
+      this.dropdownVisible = true;
+      this.$refs.input.focus();
+      window.addEventListener('keydown', this.keyDownHandler);
     },
     keyDownHandler(e) {
       switch (e.key) {
-        case "Escape":
-          this.hideDropdown()
-          break
-        case "Enter":
-          this.selectItem(this.filteredItems[this.hoveredIndex].id)
-          break
-        case "ArrowUp":
+        case 'Escape':
+          this.hideDropdown();
+          break;
+        case 'Enter':
+          this.selectItem(this.filteredItems[this.hoveredIndex].id);
+          break;
+        case 'ArrowUp':
           if (this.hoveredIndex === null) {
-            this.hoveredIndex = this.filteredItems.length - 1
+            this.hoveredIndex = this.filteredItems.length - 1;
           } else if (this.hoveredIndex === 0) {
-            break
+            break;
           } else {
-            this.hoveredIndex--
+            this.hoveredIndex--;
           }
 
-          break
-        case "ArrowDown":
+          break;
+        case 'ArrowDown':
           if (this.hoveredIndex === null) {
-            this.hoveredIndex = 0
+            this.hoveredIndex = 0;
           } else if (this.hoveredIndex === this.filteredItems.length - 1) {
-            break
+            break;
           } else {
-            this.hoveredIndex++
+            this.hoveredIndex++;
           }
 
-          break
+          break;
       }
     },
     hideDropdown() {
-      this.input = this.selectedDisplay
-      this.dropdownVisible = false
-      this.$refs.input.blur()
-      this.hoveredIndex = null
-      window.removeEventListener("keydown", this.keyDownHandler)
+      this.input = this.selectedDisplay;
+      this.dropdownVisible = false;
+      this.$refs.input.blur();
+      this.hoveredIndex = null;
+      window.removeEventListener('keydown', this.keyDownHandler);
     },
     selectItem(choice) {
-      this.selected = choice
-      this.hideDropdown()
-      this.$emit("choice", choice)
+      this.selected = choice;
+      this.hideDropdown();
+      this.$emit('choice', choice);
     },
     hoverItem(choice) {
-      this.hovered = choice
+      this.hovered = choice;
     },
     getStatus(id, opt = {}) {
-      const status = this.$store.getters["employees/employees"].find((emp) => emp.id === id).status
+      const { status } = this.$store.getters['employees/employees'].find((emp) => emp.id === id);
 
       if (opt.capitalize) {
-        return status.charAt(0).toUpperCase() + status.slice(1)
-      } else {
-        return status
+        return status.charAt(0).toUpperCase() + status.slice(1);
       }
+      return status;
     },
   },
-}
+};
 </script>

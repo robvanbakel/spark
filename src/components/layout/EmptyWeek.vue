@@ -20,28 +20,28 @@
 </template>
 
 <script>
-import CopyWeek from "@/components/ui/CopyWeek"
+import CopyWeek from '@/components/ui/CopyWeek';
 
 export default {
-  emits: ["hideEmptyWeek"],
+  emits: ['hideEmptyWeek'],
   components: { CopyWeek },
   data() {
     return {
       showCopyWeek: false,
-    }
+    };
   },
   computed: {
     dateRange() {
-      const dates = this.$store.getters["date/dates"]
-      return `${this.$dayjs(dates[0]).format('LL')} – ${this.$dayjs(dates[dates.length - 1]).format('LL')}`
+      const dates = this.$store.getters['date/dates'];
+      return `${this.$dayjs(dates[0]).format('LL')} – ${this.$dayjs(dates[dates.length - 1]).format('LL')}`;
     },
   },
   watch: {
     $route(to) {
-      if (to.name === "Planner") {
-        this.showCopyWeek = false
+      if (to.name === 'Planner') {
+        this.showCopyWeek = false;
       }
     },
   },
-}
+};
 </script>

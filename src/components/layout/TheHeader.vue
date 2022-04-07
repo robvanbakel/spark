@@ -40,24 +40,24 @@
 export default {
   data() {
     return {
-      icon: "person",
-    }
+      icon: 'person',
+    };
   },
   computed: {
     user() {
-      return this.$store.getters["auth/user"]
+      return this.$store.getters['auth/user'];
     },
     admin() {
-      return this.$store.getters["auth/admin"]
+      return this.$store.getters['auth/admin'];
     },
     employee() {
-      return this.$store.getters["auth/user"].status !== "admin"
+      return this.$store.getters['auth/user'].status !== 'admin';
     },
   },
   methods: {
     logout() {
-      this.$store.dispatch("auth/logout")
+      this.$store.dispatch('auth/logout');
     },
   },
-}
+};
 </script>

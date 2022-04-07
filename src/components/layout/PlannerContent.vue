@@ -4,10 +4,10 @@
 </template>
 
 <script>
-import PlannerRow from "@/components/layout/PlannerRow"
+import PlannerRow from '@/components/layout/PlannerRow';
 
 export default {
-  props: ["roles", "search"],
+  props: ['roles', 'search'],
   components: { PlannerRow },
-}
+};
 </script>
