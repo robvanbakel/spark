@@ -4,7 +4,7 @@ import router from "@/router.js"
 import store from "@/store/index.js"
 import App from "@/App.vue"
 
-import "@/assets/styles/main.css"
+import "@/assets/styles/main.scss"
 
 import dayjs from "@/plugins/dayjs"
 import i18n from "@/plugins/i18n"
