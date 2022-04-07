@@ -7,6 +7,19 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robvanbakel/spark.git"
+  },
+  "author": {
+    "name": "Rob van Bakel",
+    "email": "robbakel@gmail.com",
+    "url": "https://robvanbakel.com"
+  },
+  "bugs": {
+    "url": "https://github.com/robvanbakel/spark/issues"
+  },
+  "homepage": "https://github.com/robvanbakel/spark#readme",
   "dependencies": {
     "core-js": "^3.8.3",
     "dayjs": "^1.11.0",
