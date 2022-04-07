@@ -1,14 +1,14 @@
 import { createI18n } from 'vue-i18n';
 
-import en_US from '@/locales/en-US';
-import nl_NL from '@/locales/nl-NL';
+import en from '@/locales/en.json';
+import nl from '@/locales/nl.json';
 
 const i18n = createI18n({
-  locale: 'en-US',
-  fallbackLocale: 'en-US',
+  locale: 'en',
+  fallbackLocale: 'en',
   messages: {
-    'en-US': en_US,
-    'nl-NL': nl_NL,
+    en,
+    nl,
   },
 });
 
