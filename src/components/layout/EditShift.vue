@@ -260,7 +260,7 @@ export default {
     },
     async saveEditShift() {
       const employeeId = this.shift.employee.id;
-      const weekId = await this.$store.dispatch('date/getWeekId', this.shift.date);
+      const weekId = this.$dayjs(this.shift.date).weekId();
       const day = this.shift.date.getUTCDay();
 
       const shiftId = {

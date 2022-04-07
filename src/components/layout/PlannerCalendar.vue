@@ -96,8 +96,7 @@ export default {
     },
     async setWeek(selectedDay) {
       const date = new Date(this.selectedYear, this.selectedMonth, selectedDay);
-      const selectedWeekId = await this.$store.dispatch('date/getWeekId', date);
-
+      const selectedWeekId = this.$dayjs(date).weekId();
       this.$router.push({ params: { weekId: selectedWeekId } });
     },
   },
@@ -117,7 +116,7 @@ export default {
   },
   watch: {
     async calendarPoint() {
-      const currentWeekId = await this.$store.dispatch('date/getWeekId');
+      const currentWeekId = this.$dayjs().weekId();
 
       if (this.$store.getters['date/weekId'] === currentWeekId) {
         this.selectedMonth = new Date().getMonth();
