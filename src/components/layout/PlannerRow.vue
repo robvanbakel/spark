@@ -88,6 +88,8 @@ export default {
         case 'status':
           output = employee.status;
           break;
+        default:
+          break;
       }
 
       return output;
@@ -97,17 +99,19 @@ export default {
 
       const formatTime = (time) => `${time.substring(0, 2)}:${time.substring(2, 4)}`;
 
-      if (shift) {
-        let output = shift[query] || shift;
+      if (!shift) return null;
 
-        switch (query) {
-          case 'time':
-            output = `${formatTime(shift.start)} - ${formatTime(shift.end)}`;
-            break;
-        }
+      let output = shift[query] || shift;
 
-        return output;
+      switch (query) {
+        case 'time':
+          output = `${formatTime(shift.start)} - ${formatTime(shift.end)}`;
+          break;
+        default:
+          break;
       }
+
+      return output;
     },
     handleClick(payload) {
       this.$store.dispatch('planner/setActiveShiftId', {

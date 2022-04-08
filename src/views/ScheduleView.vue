@@ -262,7 +262,7 @@ export default {
       this.showQR = false;
     },
     openCalendar() {
-      location.replace(this.webcalLink);
+      window.location.replace(this.webcalLink);
     },
     formatTime(time) {
       return `${time.substring(0, 2)}:${time.substring(2, 4)}`;
@@ -298,11 +298,11 @@ export default {
     setActiveShift(shift, index) {
       // Helper functions
 
-      const calculateShiftDuration = (shift) => {
+      const calculateShiftDuration = (selectedShift) => {
         let total = 0;
 
-        const [startHours, startMinutes] = shift.start.match(/\d{2}/g);
-        const [endHours, endMinutes] = shift.end.match(/\d{2}/g);
+        const [startHours, startMinutes] = selectedShift.start.match(/\d{2}/g);
+        const [endHours, endMinutes] = selectedShift.end.match(/\d{2}/g);
 
         const start = new Date(0);
         start.setHours(startHours);
@@ -315,7 +315,7 @@ export default {
         const totalHours = Math.abs(start - end);
 
         total += totalHours / 1000 / 60 / 60;
-        total -= shift.break / 60;
+        total -= selectedShift.break / 60;
 
         return total.toFixed(2);
       };

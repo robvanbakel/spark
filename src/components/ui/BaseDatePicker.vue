@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import BaseCalendar from '@/components/ui/BaseCalendar/BaseCalendar';
+import BaseCalendar from '@/components/ui/BaseCalendar/BaseCalendar.vue';
 
 export default {
   components: { BaseCalendar },
@@ -49,6 +49,8 @@ export default {
       switch (e.key) {
         case 'Escape':
           this.hideCalendar();
+          break;
+        default:
           break;
       }
     },

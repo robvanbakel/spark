@@ -37,9 +37,9 @@ export default {
     visibleInNextMonth() {
       const lastDayInMonth = new Date(this.selectedYear, this.selectedMonth + 1, 0).getDay();
 
-      if (lastDayInMonth !== 0) {
-        return 7 - lastDayInMonth;
-      }
+      if (lastDayInMonth === 0) return null;
+
+      return 7 - lastDayInMonth;
     },
     dateClasses(num) {
       const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString();

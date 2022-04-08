@@ -73,7 +73,7 @@ export default {
 
     // Pass updated schdule to DB; delete schedule if schedule is empty
 
-    if (schedule.filter((day) => day !== null).length) {
+    if (schedule.filter((v) => v !== null).length) {
       // If schedule is not empty, update schedule
       db.collection('schedules')
         .doc(weekId)

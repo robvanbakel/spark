@@ -5,7 +5,8 @@ import advancedFormat from 'dayjs/plugin/advancedFormat';
 import isoWeek from 'dayjs/plugin/isoWeek';
 
 const weekId = (option, dayjsClass) => {
-  dayjsClass.prototype.weekId = function() {
+  const proto = dayjsClass.prototype;
+  proto.weekId = function () {
     return this.format('GGGG-WW');
   };
 };

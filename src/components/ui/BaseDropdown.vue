@@ -110,7 +110,7 @@ export default {
           } else if (this.hoveredIndex === 0) {
             break;
           } else {
-            this.hoveredIndex--;
+            this.hoveredIndex -= 1;
           }
 
           break;

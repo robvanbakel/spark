@@ -11,6 +11,6 @@ export default {
   },
   logout() {
     auth.signOut();
-    location.reload();
+    window.location.reload();
   },
 };

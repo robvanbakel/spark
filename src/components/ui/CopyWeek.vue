@@ -28,7 +28,7 @@ export default {
       return Object.keys(this.$store.getters['planner/schedules'])
         .map((weekId) => ({
           id: weekId,
-          display: `Week ${parseInt(weekId.split('-')[1])}`,
+          display: `Week ${parseInt(weekId.split('-')[1], 10)}`,
         }))
         .reverse();
     },

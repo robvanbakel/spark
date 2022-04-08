@@ -5,7 +5,7 @@ module.exports = {
   },
   extends: [
     'plugin:vue/vue3-essential',
-    // '@vue/airbnb',
+    '@vue/airbnb',
   ],
   parserOptions: {
     parser: '@babel/eslint-parser',
@@ -18,6 +18,8 @@ module.exports = {
     'vuejs-accessibility/form-control-has-label': 0,
     'vuejs-accessibility/label-has-for': 0,
     'vuejs-accessibility/no-autofocus': 0,
+    'import/no-cycle': 0,
     'max-len': 0,
+    'func-names': 0,
   },
 };

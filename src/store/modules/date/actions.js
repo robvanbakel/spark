@@ -2,7 +2,6 @@ import dayjs from '@/plugins/dayjs';
 
 export default {
   async setDates(context, weekId = dayjs().weekId()) {
-
     // Find first day of week
     const [year, week] = weekId.split('-');
 

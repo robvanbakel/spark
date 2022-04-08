@@ -8,9 +8,9 @@ export default {
   currentWeekSchedule(state, getters, rootState, rootGetters) {
     const schedule = state.schedules[rootGetters['date/weekId']];
 
-    if (schedule && Object.keys(schedule).length) {
-      return schedule;
-    }
+    if (!schedule || !Object.keys(schedule).length) return null;
+
+    return schedule;
   },
 
 };

@@ -58,6 +58,8 @@ export default {
           return 'green';
         case 'not accepted yet':
           return 'orange';
+        default:
+          return 'green';
       }
     },
   },

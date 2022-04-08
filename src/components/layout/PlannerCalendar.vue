@@ -53,9 +53,9 @@ export default {
     visibleInNextMonth() {
       const lastDayInMonth = new Date(this.selectedYear, this.selectedMonth + 1, 0).getDay();
 
-      if (lastDayInMonth !== 0) {
-        return 7 - lastDayInMonth;
-      }
+      if (lastDayInMonth === 0) return null;
+
+      return 7 - lastDayInMonth;
     },
     next() {
       if (this.selectedMonth === 11) {
@@ -79,7 +79,9 @@ export default {
       let dateClass = '';
 
       this.$store.getters['date/dates'].forEach((date) => {
-        calendarFullDate === date.toDateString() ? (dateClass = 'selected') : '';
+        if (calendarFullDate === date.toDateString()) {
+          dateClass = 'selected';
+        }
       });
 
       return dateClass;

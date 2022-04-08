@@ -27,9 +27,9 @@ export default {
             end.setHours(endHours);
             end.setMinutes(endMinutes);
 
-            const totalHours = Math.abs(start - end);
+            const hours = Math.abs(start - end);
 
-            total += totalHours / 1000 / 60 / 60;
+            total += hours / 1000 / 60 / 60;
             total -= shift.break / 60;
           }
         });

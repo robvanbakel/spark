@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import DayPicker from '@/components/ui/BaseCalendar/DayPicker';
-import MonthPicker from '@/components/ui/BaseCalendar/MonthPicker';
+import DayPicker from '@/components/ui/BaseCalendar/DayPicker.vue';
+import MonthPicker from '@/components/ui/BaseCalendar/MonthPicker.vue';
 
 export default {
   props: {
@@ -64,7 +64,9 @@ export default {
     next() {
       if (this.currentView === 'DayPicker') {
         this.selectedMonth = (this.selectedMonth + 1) % 12;
-        this.selectedMonth % 12 === 0 ? this.selectedYear += 1 : '';
+        if (this.selectedMonth % 12 === 0) {
+          this.selectedYear += 1;
+        }
       } else {
         this.selectedYear += 1;
       }
@@ -72,7 +74,9 @@ export default {
     prev() {
       if (this.currentView === 'DayPicker') {
         this.selectedMonth = (this.selectedMonth + 11) % 12;
-        this.selectedMonth % 12 === 11 ? this.selectedYear -= 1 : '';
+        if (this.selectedMonth % 12 === 11) {
+          this.selectedYear -= 1;
+        }
       } else {
         this.selectedYear -= 1;
       }

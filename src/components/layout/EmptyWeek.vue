@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import CopyWeek from '@/components/ui/CopyWeek';
+import CopyWeek from '@/components/ui/CopyWeek.vue';
 
 export default {
   emits: ['hideEmptyWeek'],

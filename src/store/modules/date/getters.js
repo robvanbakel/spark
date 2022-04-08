@@ -6,7 +6,7 @@ export default {
     return state.dates;
   },
   weekNumber(state) {
-    return parseInt(state.weekId?.split('-')[1]);
+    return parseInt(state.weekId?.split('-')[1], 10);
   },
   dayNames(state, getters, rootState, rootGetters) {
     return state.dates.map((date) => date.toLocaleDateString(rootGetters['settings/dateLocale'], { weekday: 'long' }));

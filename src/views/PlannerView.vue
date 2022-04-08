@@ -106,7 +106,9 @@ export default {
       this.filters[status] = !this.filters[status];
     },
     clearFilters() {
-      Object.keys(this.filters).forEach((key) => (this.filters[key] = false));
+      Object.keys(this.filters).forEach((key) => {
+        this.filters[key] = false;
+      });
     },
     toggleSidebar() {
       this.$store.dispatch('settings/toggleSidebar');
@@ -130,7 +132,7 @@ export default {
         const { weekId } = this.$route.params;
         this.$store.dispatch('date/setDates', weekId);
         this.hideEmptyWeek = false;
-        document.title = `Week ${parseInt(this.$route.params.weekId.split('-')[1])} - Planner`;
+        document.title = `Week ${parseInt(this.$route.params.weekId.split('-')[1], 10)} - Planner`;
       }
     },
   },

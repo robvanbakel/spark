@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import PlannerRow from '@/components/layout/PlannerRow';
+import PlannerRow from '@/components/layout/PlannerRow.vue';
 
 export default {
   props: ['roles', 'search'],
