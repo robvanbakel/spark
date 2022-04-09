@@ -27,8 +27,6 @@ export default {
       });
 
       context.commit('setUsers', users);
-
-      router.push({ name: 'EmployeeList' });
     } else {
       // Set global auth/admin variable to false
       context.commit('auth/admin', false, { root: true });

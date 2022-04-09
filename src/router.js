@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
+import dayjs from '@/plugins/dayjs';
+
 import { auth } from '@/firebase';
 import store from '@/store';
 
@@ -44,7 +46,7 @@ const router = createRouter({
         admin: true,
       },
       async beforeEnter(to) {
-        store.dispatch('date/setDates', to.params.weekId);
+        store.dispatch('date/setDates', to.params.weekId || dayjs().weekId());
       },
     },
     {
@@ -52,7 +54,7 @@ const router = createRouter({
       component: ScheduleView,
       name: 'Schedule',
       async beforeEnter(to) {
-        store.dispatch('date/setDates', to.params.weekId);
+        store.dispatch('date/setDates', to.params.weekId || dayjs().weekId());
       },
     },
     {
