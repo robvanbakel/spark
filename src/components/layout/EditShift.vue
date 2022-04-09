@@ -271,6 +271,7 @@ export default {
 
       // Helper function to check if target shiftId is equal to active shiftId
       const compareObjects = (obj1, obj2) => {
+        // eslint-disable-next-line no-restricted-syntax
         for (const key in obj1) {
           if (obj1[key] !== obj2[key]) {
             return false;

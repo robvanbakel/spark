@@ -137,10 +137,7 @@ export default {
     },
   },
   mounted() {
-    this.filters = this.$store.getters['settings/roles'].reduce(
-      (filters, role) => ((filters[role.toLowerCase()] = false), filters),
-      {},
-    );
+    this.filters = this.$store.getters['settings/roles'].reduce((acc, curr) => ({ ...acc, [curr.toLowerCase()]: false }), {});
   },
 };
 </script>

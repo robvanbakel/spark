@@ -27,6 +27,7 @@ export default {
   async saveEditShift(context, payload) {
     // Helper function to check if two ojbects have equal values
     const shiftIdChanged = (obj1, obj2) => {
+      // eslint-disable-next-line no-restricted-syntax
       for (const key in obj1) {
         if (obj1[key] !== obj2[key]) {
           return true;

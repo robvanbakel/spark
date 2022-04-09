@@ -121,10 +121,7 @@ export default {
     },
   },
   mounted() {
-    this.filters = this.$store.getters['settings/statuses'].reduce(
-      (filters, status) => ((filters[status.toLowerCase()] = false), filters),
-      {},
-    );
+    this.filters = this.$store.getters['settings/statuses'].reduce((acc, curr) => ({ ...acc, [curr.toLowerCase()]: false }), {});
   },
 };
 </script>
