@@ -2,6 +2,7 @@
   <base-modal class="edit-shift" :title="newShift ? 'New Shift' : 'Edit Shift'" globalClose @close="closeEditShift">
     <template v-slot:header>
       <base-badge
+        v-if="!newShift"
         :status="shift.accepted ? 'accepted' : 'not accepted yet'"
         class="active"
       ></base-badge>
