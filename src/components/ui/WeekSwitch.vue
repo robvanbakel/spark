@@ -10,9 +10,8 @@
 export default {
   methods: {
     async shiftWeek(amount) {
-      const date = this.$store.getters['date/dates'][3];
-      const newDate = new Date(date.setDate(date.getDate() + 7 * amount));
-      const newWeekId = this.$dayjs(newDate).weekId();
+      const midpoint = this.$store.getters['date/dates'][3];
+      const newWeekId = midpoint.add(amount, 'week').weekId();
 
       this.$router.push({ name: 'Planner', params: { weekId: newWeekId } });
     },
