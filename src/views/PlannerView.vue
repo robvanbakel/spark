@@ -43,12 +43,12 @@
             </transition>
           </div>
           <div
-            v-for="(offset, index) in 7"
-            :key="offset"
-            :class="['dayWrapper', { today: $dayjs().isSame($store.getters['date/dates'][index], 'day') }]"
+            v-for="date in $store.getters['date/dates']"
+            :key="date"
+            :class="['dayWrapper', { today: date.isSame($dayjs(), 'date') }]"
           >
-            <span class="dayName">{{ $store.getters["date/dayNames"][index] }}</span>
-            <span class="date">{{ $store.getters["date/datesShort"][index] }}</span>
+            <span class="dayName">{{ date.format('dddd') }}</span>
+            <span class="date">{{ date.format('LL') }}</span>
           </div>
         </div>
         <PlannerContent :roles="displayRoles" :search="searchInput" />
@@ -76,7 +76,6 @@ import PlusMinusHours from '@/components/layout/PlusMinusHours.vue';
 import EmptyWeek from '@/components/layout/EmptyWeek.vue';
 
 export default {
-  props: ['weekId'],
   components: {
     PlannerContent,
     EditShift,

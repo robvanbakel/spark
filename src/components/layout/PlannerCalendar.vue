@@ -79,7 +79,7 @@ export default {
       let dateClass = '';
 
       this.$store.getters['date/dates'].forEach((date) => {
-        if (calendarFullDate === date.toDateString()) {
+        if (calendarFullDate === date.toDate().toDateString()) {
           dateClass = 'selected';
         }
       });
@@ -124,8 +124,8 @@ export default {
         this.selectedMonth = new Date().getMonth();
         this.selectedYear = new Date().getFullYear();
       } else {
-        this.selectedMonth = this.$store.getters['date/dates'][3].getMonth();
-        this.selectedYear = this.$store.getters['date/dates'][3].getFullYear();
+        this.selectedMonth = this.$store.getters['date/dates'][3].toDate().getMonth();
+        this.selectedYear = this.$store.getters['date/dates'][3].toDate().getFullYear();
       }
     },
   },
