@@ -172,8 +172,8 @@ section#planner {
         background-color: lighten(colors.$border, 10%);
         border: 1px solid colors.$border;
         &::after {
-          font-family: "Material Icons";
-          content: "add";
+          font-family: 'Material Icons';
+          content: 'add';
           position: absolute;
           left: 50%;
           top: 50%;
@@ -242,34 +242,11 @@ section#planner {
         font-weight: 500;
         color: colors.$text-100;
         font-size: 14px;
-        &[for="notes"],
-        &[for="place"] {
+        &[for='notes'],
+        &[for='place'] {
           align-self: flex-start;
           margin-top: 12px;
         }
-      }
-      input,
-      textarea {
-        width: 100%;
-        border-radius: 6px;
-        color: colors.$text-300;
-        border: 1px solid colors.$border;
-        font-size: 14px;
-        padding: 12px 16px;
-        outline: none;
-        &.error {
-          border-color: colors.$danger;
-          background-color: colors.$danger-light;
-        }
-      }
-      input {
-        height: 40px;
-      }
-      textarea {
-        font-family: inherit;
-        height: 140px;
-        resize: none;
-        line-height: 1.4;
       }
       .suggestions {
         display: flex;
@@ -511,7 +488,7 @@ section#planner {
         z-index: -1;
       }
       &.selected::before {
-        content: "";
+        content: '';
         display: block;
         border-radius: 6px;
         position: absolute;
@@ -522,7 +499,7 @@ section#planner {
         z-index: -2;
       }
       &:not(.prev-month):not(.next-month):hover::after {
-        content: "";
+        content: '';
         display: block;
         border-radius: 6px;
         position: absolute;

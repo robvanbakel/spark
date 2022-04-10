@@ -242,6 +242,7 @@
   }
   .input-wrapper {
     .input {
+      @include mixins.input;
       position: relative;
       height: 40px;
       display: flex;
@@ -249,15 +250,14 @@
       padding: 0 36px 0 16px;
       cursor: pointer;
       outline: none;
-
       &.error {
         border-color: colors.$danger;
         background-color: colors.$danger-light;
       }
     }
     &::after {
-      font-family: "Material Icons";
-      content: "expand_more";
+      font-family: 'Material Icons';
+      content: 'expand_more';
       position: absolute;
       height: 100%;
       display: flex;
@@ -273,7 +273,7 @@
     }
     &.enableSearch {
       &:after {
-        content: "search";
+        content: 'search';
       }
     }
   }
@@ -345,6 +345,7 @@
     border: 1px solid colors.$border;
   }
   input {
+    @include mixins.input;
     position: relative;
     font-size: 14px;
     height: 40px;
@@ -471,7 +472,7 @@
       &:hover,
       &.active {
         &::after {
-          content: "";
+          content: '';
           display: block;
           position: absolute;
           height: 24px;

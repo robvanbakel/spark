@@ -1,10 +1,11 @@
 @use 'utilities/colors';
+@use 'utilities/mixins';
 
 // GOOGLE FONTS
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Material+Icons");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Material+Icons');
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizelegibility;
@@ -87,4 +88,21 @@ a {
 button {
   cursor: pointer;
   transition: all 120ms ease;
+}
+
+input,
+textarea,
+.input {
+  @include mixins.input;
+}
+
+input {
+  height: 40px;
+}
+
+textarea {
+  font-family: inherit;
+  height: 140px;
+  resize: none;
+  line-height: 1.4;
 }
