@@ -38,6 +38,7 @@
         <label for="role">{{ $t('general.labels.role') }}</label>
         <base-dropdown
           v-if="activeEmployee.role || this.new"
+          id="role"
           :items="roles"
           :active="activeEmployee.role"
           :error="error.role"

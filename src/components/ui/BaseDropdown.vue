@@ -3,6 +3,7 @@
     <div class="input-wrapper" :class="{ focus: dropdownVisible, enableSearch }" @click="showDropdown">
       <input
         autocomplete="off"
+        :id="id"
         type="text"
         :class="['input', { error }]"
         @click="showDropdown"
@@ -41,6 +42,9 @@
 export default {
   emits: ['choice'],
   props: {
+    id: {
+      type: String,
+    },
     items: {
       type: Array,
       require: true,

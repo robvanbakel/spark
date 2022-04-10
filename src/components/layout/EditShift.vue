@@ -13,6 +13,7 @@
           <label for="name">{{ $t('general.labels.name') }}</label>
           <base-dropdown
             v-if="shift.employee.id || newShift"
+            id="name"
             :error="error.employee"
             :items="employees"
             :active="shift.employee.id"
