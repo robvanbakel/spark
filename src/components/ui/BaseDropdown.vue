@@ -10,6 +10,7 @@
         ref="input"
         v-model="input"
         @focus="showDropdown"
+        @keydown.tab="hideDropdown"
       />
     </div>
     <base-overlay v-if="dropdownVisible" @clickout="hideDropdown" invisible></base-overlay>
