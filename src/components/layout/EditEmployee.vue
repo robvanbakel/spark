@@ -95,6 +95,7 @@
         icon="delete"
         class="left"
         @click="deleteEmployee"
+        tabindex="-1"
       ></base-button>
       <base-button secondary @click="closeEditEmployee">{{ $t('general.actions.cancel') }}</base-button>
       <base-button @click="validate">{{ $t('general.actions.save') }}</base-button>

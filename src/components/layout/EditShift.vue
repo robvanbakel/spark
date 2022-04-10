@@ -108,6 +108,7 @@
         iconOnly
         class="left"
         icon="delete"
+        tabindex="-1"
         @click="deleteShift"
       ></base-button>
       <base-button secondary @click="closeEditShift">{{ $t('general.actions.cancel') }}</base-button>

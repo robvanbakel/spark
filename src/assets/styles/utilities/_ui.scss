@@ -101,7 +101,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  border: none;
+  border: 1px solid transparent;
   outline: none;
   white-space: nowrap;
   &:hover:not(:disabled) {
@@ -118,6 +118,11 @@
     opacity: 0.5;
     cursor: default;
   }
+  &:focus {
+    background-color: colors.$select;
+    border-color: colors.$main;
+    color: colors.$main;
+  }
   &.secondary {
     background: none;
     border: none;
@@ -132,6 +137,9 @@
     &:active {
       background: inherit;
       color: darken(colors.$text-500, 24%);
+    }
+    &:focus {
+      background-color: colors.$select;
     }
   }
   &.inverted {
