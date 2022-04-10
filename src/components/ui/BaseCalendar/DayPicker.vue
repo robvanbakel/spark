@@ -21,42 +21,58 @@ export default {
   emits: ['choice', 'prev', 'next'],
   methods: {
     daysInMonth() {
-      return new Date(this.selectedYear, this.selectedMonth + 1, 0).getDate();
+      return this.$dayjs()
+        .year(this.selectedYear)
+        .month(this.selectedMonth)
+        .endOf('month')
+        .date();
     },
     visibleInPrevMonth() {
-      const amount = new Date(this.selectedYear, this.selectedMonth, 0).getDay();
+      const amount = this.$dayjs()
+        .year(this.selectedYear)
+        .month(this.selectedMonth)
+        .subtract(1, 'month')
+        .endOf('month')
+        .isoWeekday();
 
       const dates = [];
 
-      for (let i = 0; i < amount; i += 1) {
-        dates.unshift(new Date(this.selectedYear, this.selectedMonth, -i).getDate());
+      for (let i = 1; i < amount + 1; i += 1) {
+        dates.unshift(this.$dayjs()
+          .year(this.selectedYear)
+          .month(this.selectedMonth)
+          .startOf('month')
+          .subtract(i, 'day')
+          .date());
       }
 
       return dates;
     },
     visibleInNextMonth() {
-      const lastDayInMonth = new Date(this.selectedYear, this.selectedMonth + 1, 0).getDay();
-
-      if (lastDayInMonth === 0) return null;
+      const lastDayInMonth = this.$dayjs()
+        .year(this.selectedYear)
+        .month(this.selectedMonth)
+        .endOf('month')
+        .isoWeekday();
 
       return 7 - lastDayInMonth;
     },
-    dateClasses(num) {
-      const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString();
+    dateClasses(selectedDate) {
+      const calendarFullDate = this.$dayjs().year(this.selectedYear).month(this.selectedMonth).date(selectedDate);
       const classes = [];
 
-      if (calendarFullDate === new Date().toDateString()) {
+      if (calendarFullDate.isSame(this.$dayjs(), 'date')) {
         classes.push('current-date');
       }
 
-      if (calendarFullDate === this.active?.toDateString()) {
+      if (calendarFullDate.isSame(this.active, 'date')) {
         classes.push('active');
       }
 
       return classes;
     },
-    pickDate(selectedDay) {
-      const date = new Date(this.selectedYear, this.selectedMonth, selectedDay);
+    pickDate(selectedDate) {
+      const date = this.$dayjs().year(this.selectedYear).month(this.selectedMonth).date(selectedDate);
       this.$emit('choice', date);
     },
   },

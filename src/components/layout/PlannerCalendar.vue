@@ -6,7 +6,7 @@
       <span class="material-icons material-icons-round" @click="next">chevron_right</span>
     </div>
     <div id="days">
-      <span v-for="day in shortDays" :key="day">{{ day }}</span>
+      <span v-for="day in this.$store.getters['date/dayNamesShort']" :key="day">{{ day }}</span>
     </div>
     <div class="dates">
       <p v-for="num in visibleInPrevMonth()" :key="num" class="prev-month" @click="prev()">
@@ -108,9 +108,6 @@ export default {
         .year(this.selectedYear)
         .month(this.selectedMonth)
         .format('MMMM YYYY');
-    },
-    shortDays() {
-      return this.$store.getters['date/dates'].map((date) => this.$dayjs(date).format('ddd'));
     },
     calendarPoint() {
       return this.$store.getters['date/dates'][3];

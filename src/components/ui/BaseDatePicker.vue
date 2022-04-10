@@ -4,7 +4,7 @@
       @click="showCalendar"
       readonly
       :class="{ focus: calendarVisible, error }"
-      :value="formatDate(activeDate)"
+      :value="activeDate.format('DD-MM-YYYY')"
       @focus="showCalendar"
     />
     <base-overlay v-if="calendarVisible" @clickout="hideCalendar" invisible></base-overlay>
@@ -22,7 +22,7 @@ export default {
   emits: ['date'],
   props: {
     active: {
-      type: Date,
+      type: Object,
       require: false,
     },
     error: {
@@ -53,13 +53,6 @@ export default {
         default:
           break;
       }
-    },
-    formatDate(date) {
-      return date?.toLocaleDateString(this.$store.getters['settings/dateNotation'], {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-      });
     },
     setDate(date) {
       this.activeDate = date;

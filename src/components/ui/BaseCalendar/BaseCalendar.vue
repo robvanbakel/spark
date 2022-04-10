@@ -33,7 +33,7 @@ import MonthPicker from '@/components/ui/BaseCalendar/MonthPicker.vue';
 export default {
   props: {
     active: {
-      type: Date,
+      type: Object,
       require: false,
     },
     mode: {
@@ -48,8 +48,8 @@ export default {
   },
   data() {
     return {
-      selectedMonth: this.active?.getMonth() || new Date().getMonth(),
-      selectedYear: this.active?.getFullYear() || new Date().getFullYear(),
+      selectedMonth: this.active?.month() || this.$dayjs().month(),
+      selectedYear: this.active?.year() || this.$dayjs().year(),
       currentView: 'DayPicker',
     };
   },
