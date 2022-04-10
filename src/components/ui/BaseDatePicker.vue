@@ -6,6 +6,7 @@
       :class="{ focus: calendarVisible, error }"
       :value="activeDate.format('DD-MM-YYYY')"
       @focus="showCalendar"
+      @keydown.tab="hideCalendar"
     />
     <base-overlay v-if="calendarVisible" @clickout="hideCalendar" invisible></base-overlay>
     <div class="calendar" v-if="calendarVisible">
