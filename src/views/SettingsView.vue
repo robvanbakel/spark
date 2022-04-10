@@ -135,15 +135,15 @@ export default {
     dateNotations() {
       return [
         {
-          id: 'en-US',
+          id: 'MM/DD/YYYY',
           display: 'MM/DD/YYYY',
         },
         {
-          id: 'en-GB',
+          id: 'DD/MM/YYYY',
           display: 'DD/MM/YYYY',
         },
         {
-          id: 'nl-NL',
+          id: 'DD-MM-YYYY',
           display: 'DD-MM-YYYY',
         },
       ];
