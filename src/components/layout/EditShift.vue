@@ -92,6 +92,7 @@
             :active="shift.break"
             @activeItem="setBreak"
             :fixed="true"
+            tabindex="0"
           ></base-switch>
         </div>
         <div class="form-control notes">

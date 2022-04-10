@@ -1,5 +1,5 @@
 <template>
-  <div class="switch-wrapper" ref="wrapper">
+  <div class="switch-wrapper" ref="wrapper" @keydown="keydownHandler">
     <div class="indicator" ref="indicator"></div>
 
     <div v-if="toggle">
@@ -62,23 +62,39 @@ export default {
 
       this.$emit('activeItem', item);
     },
+    keydownHandler(e) {
+      const activeIndex = this.items.indexOf(this.active);
+      switch (e.code) {
+        case 'ArrowLeft':
+          this.findAndSetActive(this.items[activeIndex - 1]);
+          break;
+        case 'ArrowRight':
+          this.findAndSetActive(this.items[activeIndex + 1]);
+          break;
+        default:
+          break;
+      }
+    },
+    findAndSetActive(activeItem = this.active) {
+      const switchItems = document.querySelectorAll(`#${this.id}.switch-control`);
+
+      if (this.toggle) {
+        switchItems.forEach((item) => {
+          if (item.attributes['data-value'].value === activeItem) {
+            item.click();
+          }
+        });
+      } else {
+        switchItems.forEach((item) => {
+          if (item.innerText === activeItem) {
+            item.click();
+          }
+        });
+      }
+    },
   },
   mounted() {
-    const switchItems = document.querySelectorAll(`#${this.id}.switch-control`);
-
-    if (this.toggle) {
-      switchItems.forEach((item) => {
-        if (item.attributes['data-value'].value === this.active) {
-          item.click();
-        }
-      });
-    } else {
-      switchItems.forEach((item) => {
-        if (item.innerText === this.active) {
-          item.click();
-        }
-      });
-    }
+    this.findAndSetActive();
 
     setTimeout(() => {
       this.$refs.indicator.style.transition = 'all 120ms ease-in-out';

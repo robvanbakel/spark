@@ -542,6 +542,11 @@
   width: min-content;
   user-select: none;
   cursor: pointer;
+  transition: box-shadow 80ms;
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px lighten(colors.$main, 35%) inset;
+  }
   & > div {
     display: flex;
     height: 100%;
