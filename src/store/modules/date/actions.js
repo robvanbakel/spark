@@ -4,7 +4,7 @@ export default {
   async setDates(context, weekId = dayjs().weekId()) {
     const [year, week] = weekId.split('-');
 
-    const monday = dayjs().year(year).isoWeek(week).day(1);
+    const monday = dayjs().year(year).isoWeek(week).isoWeekday(1);
     const dates = Array.from({ length: 7 }, (element, index) => monday.add(index, 'day').toDate());
 
     // Store in global state
