@@ -5,7 +5,7 @@ export default {
     const [year, week] = weekId.split('-');
 
     const monday = dayjs().year(year).isoWeek(week).isoWeekday(1);
-    const dates = Array.from({ length: 7 }, (element, index) => monday.add(index, 'day').toDate());
+    const dates = Array.from({ length: 7 }, (element, index) => monday.add(index, 'day'));
 
     // Store in global state
 
