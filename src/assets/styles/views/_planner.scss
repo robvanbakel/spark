@@ -86,6 +86,16 @@ section#planner {
       &.active {
         background-color: colors.$select;
         transition: background-color 60ms ease-in-out;
+        &.proposed {
+          &::after {
+            content: '?';
+            font-size: 11px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 5px 7px;
+          }
+        }
         &.management {
           background-color: colors.$blue-light;
           &:hover {
@@ -94,6 +104,9 @@ section#planner {
           &.proposed {
             background-color: color.adjust(colors.$blue-light, $alpha: -0.65);
             border: 1px solid transparent;
+            &:after {
+              color: colors.$blue;
+            }
             &:hover {
               border-color: colors.$blue-light;
             }
@@ -110,6 +123,9 @@ section#planner {
           &.proposed {
             background-color: color.adjust(colors.$green-light, $alpha: -0.65);
             border: 1px solid transparent;
+            &:after {
+              color: colors.$green;
+            }
             &:hover {
               border-color: colors.$green-light;
             }
@@ -126,6 +142,9 @@ section#planner {
           &.proposed {
             background-color: color.adjust(colors.$yellow-light, $alpha: -0.65);
             border: 1px solid transparent;
+            &:after {
+              color: colors.$yellow;
+            }
             &:hover {
               border-color: colors.$yellow-light;
             }
@@ -142,6 +161,9 @@ section#planner {
           &.proposed {
             background-color: color.adjust(colors.$purple-light, $alpha: -0.65);
             border: 1px solid transparent;
+            &:after {
+              color: colors.$purple;
+            }
             &:hover {
               border-color: colors.$purple-light;
             }
@@ -158,6 +180,9 @@ section#planner {
           &.proposed {
             background-color: color.adjust(colors.$orange-light, $alpha: -0.65);
             border: 1px solid transparent;
+            &:after {
+              color: colors.$orange;
+            }
             &:hover {
               border-color: colors.$orange-light;
             }
