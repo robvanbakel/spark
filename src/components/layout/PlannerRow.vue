@@ -28,7 +28,7 @@
             <div class="info-wrapper">
               <div class="shift-info-header">
                 <span class="place">{{ shift.place }} </span>
-                <span class="notes material-icons material-icons-round" v-if="shift.notes">description</span>
+                <span class="notes material-icons material-icons-round" v-if="shift.notes && shift.accepted">description</span>
               </div>
               <span class="time">
                 {{ shift.start.substring(0, 2) }}:{{ shift.start.substring(2, 4) }} - {{ shift.end.substring(0, 2) }}:{{
