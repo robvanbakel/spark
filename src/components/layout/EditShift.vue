@@ -265,7 +265,7 @@ export default {
     async saveEditShift() {
       const employeeId = this.shift.employee.id;
       const weekId = this.$dayjs(this.shift.date).weekId();
-      const day = this.$dayjs(this.shift.date).day() - 1;
+      const day = this.$dayjs(this.shift.date).isoWeekday() - 1;
 
       const shiftId = {
         employeeId,
