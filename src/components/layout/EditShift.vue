@@ -307,22 +307,22 @@ export default {
 
       // If employee, date, start or end time changed, inform the employer
       // that a new acceptance notification will be sent
-      const oldShiftId = this.$store.getters['planner/activeShiftId'];
+      if (!this.newShift) {
+        const oldShiftId = this.$store.getters['planner/activeShiftId'];
 
-      const oldShift = this.$store.getters['planner/schedules'][oldShiftId.weekId][oldShiftId.employeeId][oldShiftId.day];
-      const newShift = this.shift;
+        const oldShift = this.$store.getters['planner/schedules'][oldShiftId.weekId][oldShiftId.employeeId][oldShiftId.day];
+        const newShift = this.shift;
 
-      if (
-        oldShiftId.weekId !== newShift.date.weekId()
+        if (oldShiftId.weekId !== newShift.date.weekId()
       || oldShiftId.day !== newShift.date.isoWeekday() - 1
       || oldShiftId.employeeId !== newShift.employee.id
       || oldShift.start !== newShift.start.replace(':', '')
-      || oldShift.end !== newShift.end.replace(':', '')
-      ) {
-        if (!(await this.$refs.resendAcceptRequest.open())) {
-          return;
+      || oldShift.end !== newShift.end.replace(':', '')) {
+          if (!(await this.$refs.resendAcceptRequest.open())) {
+            return;
+          }
+          this.shift.accepted = false;
         }
-        this.shift.accepted = false;
       }
 
       // Save shift and exit modal
