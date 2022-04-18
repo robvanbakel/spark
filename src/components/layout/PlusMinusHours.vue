@@ -6,7 +6,7 @@
           class="entry"
           v-if="
             employee.role.toLowerCase() === role &&
-              calculatePlusMinusHours(employee.id) !== 0 &&
+              calculatePlusMinusHours(employee.id) &&
               computedShowAll(employee.id) &&
               employeeFullName(employee)
                 .toLowerCase()
@@ -14,9 +14,9 @@
           "
         >
           <div class="hours">
-            <span :class="calculatePlusMinusHours(employee.id) < 0 ? 'minus' : 'plus'">{{
-              calculatePlusMinusHours(employee.id)
-            }}</span>
+            <span :class="calculatePlusMinusHours(employee.id) < 0 ? 'minus' : 'plus'">
+             {{ ((calculatePlusMinusHours(employee.id) > 0) ? '+' : '') + calculatePlusMinusHours(employee.id).toFixed(2) }}
+            </span>
           </div>
           <div class="employee-info">
             <span class="name">{{ employee.firstName }} {{ employee.lastName }}</span>
@@ -57,11 +57,7 @@ export default {
       const contractHours = this.$store.getters['employees/employees'].find((employee) => employee.id === employeeId).contract;
       const calculatedHours = this.$store.getters['employees/totalHours'][employeeId];
 
-      let plusMinusHours = (calculatedHours - contractHours).toFixed(2);
-
-      if (plusMinusHours > 0) {
-        plusMinusHours = `+${plusMinusHours}`;
-      }
+      const plusMinusHours = calculatedHours - contractHours;
 
       return plusMinusHours;
     },
