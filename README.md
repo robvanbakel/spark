@@ -26,20 +26,21 @@ In order to login as an employee, use any of the demo employee email addresses a
 
 ## Feature Implementation Status
 
-| Feature                                       | View     | Status   |
-| --------------------------------------------- | -------- | -------- |
-| Login as employer                             | AUTH     | Done     |
-| Activate account as employee                  | AUTH     | Done     |
-| Login as employee                             | AUTH     | Done     |
-| Create, read, update and delete employees     | STAFF    | Done     |
-| Search and filter employees                   | STAFF    | Done     |
-| Create, read, update and delete shifts        | PLANNER  | Done     |
-| Search and filter shifts                      | PLANNER  | Done     |
-| Setting to share notes with employees         | SETTINGS | Done     |
-| View schedules in Employee login              | EMPLOYEE | Done     |
-| Serve calendar subscription for each employee | EMPLOYEE | Done     |
-| Create planning draft before publishing       | PLANNER  | Upcoming |
-| Provide availability to planner               | EMPLOYEE | Upcoming |
+| Feature                                       | View     | Status      |
+| --------------------------------------------- | -------- | ----------- |
+| Login as employer                             | AUTH     | Done        |
+| Activate account as employee                  | AUTH     | Done        |
+| Login as employee                             | AUTH     | Done        |
+| Create, read, update and delete employees     | STAFF    | Done        |
+| Search and filter employees                   | STAFF    | Done        |
+| Create, read, update and delete shifts        | PLANNER  | Done        |
+| Search and filter shifts                      | PLANNER  | Done        |
+| Setting to share notes with employees         | SETTINGS | Done        |
+| View schedules in Employee login              | EMPLOYEE | Done        |
+| Serve calendar subscription for each employee | EMPLOYEE | Done        |
+| Accept shifts as employee                     | PLANNER  | In progress |
+| Create planning draft before publishing       | PLANNER  | Upcoming    |
+| Provide availability to planner               | EMPLOYEE | Upcoming    |
 
 ## Screenshots
 
