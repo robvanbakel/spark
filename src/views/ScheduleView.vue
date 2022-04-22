@@ -23,9 +23,9 @@
       </div>
       <div class="calendar" v-if="schedule">
         <div class="colDays">
-          <div class="row" v-for="(day, index) in 7" :key="index">
-            <span class="dayName"> {{ $store.getters["date/dayNames"][index] }}</span>
-            <span class="date">{{ $store.getters["date/datesShort"][index] }}</span>
+          <div class="row" v-for="date in $store.getters['date/dates']" :key="date" :class="{ today: date.isSame($dayjs(), 'date') }">
+            <span class="dayName">{{ date.format('dddd') }}</span>
+            <span class="date">{{ date.format('LL') }}</span>
           </div>
         </div>
         <div class="colCalendar" ref="calendar">
