@@ -48,6 +48,7 @@
                 width: `${timeRangeToPercentage(day.start, day.end).percentage}%`,
                 left: `${timeRangeToPercentage(day.start, day.end).startPoint}%`,
               }"
+              :class="{proposed: day && !day.accepted}"
               @click="setActiveShift(day, index)"
             >
               <span class="place"> {{ day.place }}</span>
@@ -329,6 +330,7 @@ export default {
         end: shift.end,
         duration: calculateShiftDuration(shift),
         break: shift.break,
+        accepted: shift.accepted,
       };
 
       if (shift.notes) {
