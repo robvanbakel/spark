@@ -14,7 +14,10 @@
             Total: <span>{{ totalHours }} hours</span>
           </div>
         </div>
-        <div class="actions">
+        <div v-if="hasUnacceptedShifts" class="actions">
+          <base-button @click="acceptAllShifts" icon="check">Accept all shifts</base-button>
+        </div>
+        <div v-else class="actions">
           <base-button @click="openCalendar" icon="calendar_today">Add to Calendar</base-button>
           <base-button class="inverted icon-only" @click="generateQR">
             <span class="clear material-icons material-icons-round">qr_code_2</span>
@@ -96,7 +99,11 @@
           <span class="value">{{ activeShift.notes }}</span>
         </div>
       </template>
-      <template v-slot:actions>
+      <template v-if="!activeShift.accepted" v-slot:actions>
+        <base-button icon="close" inverted @click="reactToProposal(false)">Decline</base-button>
+        <base-button icon="check" @click="reactToProposal(true)">Accept</base-button>
+      </template>
+      <template v-else v-slot:actions>
         <base-button inverted @click="helpActiveShift">Help</base-button>
         <base-button @click="closeActiveShift">Close</base-button>
       </template>
@@ -151,6 +158,9 @@ export default {
       const scheduleArray = [...this.schedule];
 
       return scheduleArray.filter((day) => day).length;
+    },
+    hasUnacceptedShifts() {
+      return this.schedule.map((shift) => shift?.accepted).some((accepted) => accepted === false);
     },
     totalHours() {
       let total = 0;
@@ -336,6 +346,13 @@ export default {
       if (shift.notes) {
         this.activeShift.notes = shift.notes;
       }
+    },
+    acceptAllShifts() {
+      console.log('acceptAllShifts');
+    },
+    reactToProposal(accepted) {
+      console.log(accepted);
+      this.closeActiveShift();
     },
     closeActiveShift() {
       this.activeShift = null;

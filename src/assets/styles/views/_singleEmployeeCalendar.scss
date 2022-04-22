@@ -111,7 +111,7 @@ section#singleEmployeeCalendar {
             }
           }
           &.proposed {
-            background-color: color.adjust(colors.$blue-light, $alpha: -0.65);
+            background-color: lighten(colors.$blue-light, 6.5);
             border: 1px solid transparent;
             &:after {
               color: colors.$blue;
