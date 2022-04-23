@@ -6,7 +6,7 @@ export default {
     return state.dates;
   },
   weekNumber(state) {
-    return parseInt(state.weekId?.split('-')[1], 10);
+    return state.dates[0].format('W');
   },
   dayNamesShort(state, getters) {
     return getters.dates.map((date) => date.format('ddd'));
