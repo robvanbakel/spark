@@ -160,7 +160,7 @@ export default {
       return scheduleArray.filter((day) => day).length;
     },
     hasUnacceptedShifts() {
-      return this.schedule.map((shift) => shift?.accepted).some((accepted) => accepted === false);
+      return this.schedule?.map((shift) => shift?.accepted).some((accepted) => accepted === false);
     },
     totalHours() {
       let total = 0;
