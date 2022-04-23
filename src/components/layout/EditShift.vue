@@ -1,13 +1,13 @@
 <template>
   <base-modal class="edit-shift" :title="newShift ? 'New Shift' : 'Edit Shift'" globalClose @close="closeEditShift">
-    <template v-slot:header>
+    <template #header>
       <base-badge
         v-if="!newShift"
         :status="shift.accepted ? 'accepted' : 'not accepted yet'"
         class="active"
       ></base-badge>
     </template>
-    <template v-slot:main>
+    <template #main>
       <div>
         <div class="form-control">
           <label for="name">{{ $t('general.labels.name') }}</label>
@@ -101,7 +101,7 @@
         </div>
       </div>
     </template>
-    <template v-slot:actions>
+    <template #actions>
       <base-button
         v-if="!newShift"
         color="danger"

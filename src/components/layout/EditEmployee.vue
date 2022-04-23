@@ -1,6 +1,6 @@
 <template>
   <base-modal class="edit-employee" globalClose @close="closeEditEmployee">
-    <template v-slot:header>
+    <template #header>
       <h1 v-if="this.new">{{ $t('general.actions.add', { resource: 'Employee' }) }}</h1>
       <h1 v-else>{{ employee.firstName }} {{ employee.lastName }}</h1>
       <StatusPicker
@@ -9,7 +9,7 @@
         @setActiveStatus="setActiveStatus"
       />
     </template>
-    <template v-slot:main>
+    <template #main>
       <div v-if="this.new">
         <div class="form-control">
           <label for="firstName">{{ $t('general.labels.firstName') }}</label>
@@ -87,7 +87,7 @@
         <textarea id="notes" v-model="activeEmployee.notes"></textarea>
       </div>
     </template>
-    <template v-slot:actions>
+    <template #actions>
       <base-button
         v-if="!this.new"
         color="danger"

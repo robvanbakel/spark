@@ -77,7 +77,7 @@
       clickout
       @close="closeActiveShift"
     >
-      <template v-slot:main>
+      <template #main>
         <div class="shift-info-group">
           <span class="label">Date</span>
           <span class="value">{{ activeShift.date }}</span>
@@ -99,22 +99,22 @@
           <span class="value">{{ activeShift.notes }}</span>
         </div>
       </template>
-      <template v-if="!activeShift.accepted" v-slot:actions>
+      <template v-if="!activeShift.accepted" #actions>
         <base-button icon="close" inverted @click="reactToProposal(false)">Decline</base-button>
         <base-button icon="check" @click="reactToProposal(true)">Accept</base-button>
       </template>
-      <template v-else v-slot:actions>
+      <template v-else #actions>
         <base-button inverted @click="helpActiveShift">Help</base-button>
         <base-button @click="closeActiveShift">Close</base-button>
       </template>
     </base-modal>
 
     <base-modal v-if="showQR" noHeader class="schedule-qr" clickout @close="closeQR">
-      <template v-slot:main>
+      <template #main>
         <p>Scan with your phone to add your work schedule to your calendar.</p>
         <img :src="qrCodeImg" alt="Link to calendar subscription" />
       </template>
-      <template v-slot:actions>
+      <template #actions>
         <base-button @click="closeQR">Close</base-button>
       </template>
     </base-modal>
