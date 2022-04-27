@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import { db } from '@/firebase';
+import { db, auth } from '@/firebase';
 
 export default {
   async getSchedules(context) {
@@ -114,5 +114,25 @@ export default {
     db.collection('schedules')
       .doc(payload.to)
       .set(schedule);
+  },
+  async acceptShifts(context, shiftIds) {
+    const idToken = await auth.currentUser.getIdToken();
+    shiftIds.forEach((shiftId) => {
+      // Update locally
+      const weekId = context.rootGetters['date/weekId'];
+      const schedules = context.getters.schedules[weekId];
+      const selectedShift = schedules.find((shift) => shift?.shiftId === shiftId);
+
+      context.commit('acceptShiftLocally', {
+        weekId,
+        shiftId,
+        selectedShift,
+      });
+
+      // Update DB
+      fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/accept/${shiftId}`, {
+        headers: { authorization: idToken },
+      });
+    });
   },
 };

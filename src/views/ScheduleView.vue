@@ -341,6 +341,7 @@ export default {
         duration: calculateShiftDuration(shift),
         break: shift.break,
         accepted: shift.accepted,
+        shiftId: shift.shiftId,
       };
 
       if (shift.notes) {
@@ -348,10 +349,14 @@ export default {
       }
     },
     acceptAllShifts() {
-      console.log('acceptAllShifts');
+      const nonAcceptedShiftIds = this.schedule.map((shift) => shift && !shift.accepted && shift.shiftId).filter((v) => v);
+      this.$store.dispatch('planner/acceptShifts', nonAcceptedShiftIds);
     },
     reactToProposal(accepted) {
-      console.log(accepted);
+      if (accepted) {
+        this.$store.dispatch('planner/acceptShifts', [this.activeShift.shiftId]);
+      }
+
       this.closeActiveShift();
     },
     closeActiveShift() {

@@ -9,6 +9,13 @@ export default {
     const { weekId, day, employeeId } = payload.shiftId;
     state.schedules[weekId][employeeId][day] = payload.shiftInfo;
   },
+  acceptShiftLocally(state, { weekId, shiftId, selectedShift }) {
+    const index = state.schedules[weekId].findIndex((shift) => shift?.shiftId === shiftId);
+    state.schedules[weekId][index] = {
+      ...selectedShift,
+      accepted: true,
+    };
+  },
   setSchedule(state, { weekId, schedule }) {
     state.schedules[weekId] = JSON.parse(JSON.stringify(schedule));
   },
