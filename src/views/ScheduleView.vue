@@ -119,6 +119,13 @@
       </template>
     </base-modal>
 
+    <BaseConfirm
+      ref="confirmAcceptAllShifts"
+      title="Accept all shifts for this week"
+      message="Are you sure you want to accept all shifts for this week?"
+      choiceTrue="Accept shifts"
+    />
+
     <the-sidebar>
       <section><PlannerCalendar /></section>
       <section><EmployeeInfo /></section>
@@ -348,9 +355,11 @@ export default {
         this.activeShift.notes = shift.notes;
       }
     },
-    acceptAllShifts() {
-      const nonAcceptedShiftIds = this.schedule.map((shift) => shift && !shift.accepted && shift.shiftId).filter((v) => v);
-      this.$store.dispatch('planner/acceptShifts', nonAcceptedShiftIds);
+    async acceptAllShifts() {
+      if (await this.$refs.confirmAcceptAllShifts.open()) {
+        const nonAcceptedShiftIds = this.schedule.map((shift) => shift && !shift.accepted && shift.shiftId).filter((v) => v);
+        this.$store.dispatch('planner/acceptShifts', nonAcceptedShiftIds);
+      }
     },
     reactToProposal(accepted) {
       if (accepted) {
