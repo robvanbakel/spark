@@ -30,6 +30,7 @@ body {
   left: 0;
   opacity: 1;
   background-color: #fff;
+  z-index: 1;
   &.dark {
     background-color: #000;
   }
