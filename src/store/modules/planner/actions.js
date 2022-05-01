@@ -1,15 +1,34 @@
 import firebase from 'firebase/app';
 import { db, auth } from '@/firebase';
 
+import dayjs from '@/plugins/dayjs';
+
 export default {
   async getSchedules(context) {
     let schedules = {};
 
     if (context.rootGetters['auth/admin']) {
       // If user is admin, get all schedules from DB
-      const snapshot = await db.collection('schedules').get();
+      const snapshot = await db.collection('shifts').get();
+
       snapshot.forEach((doc) => {
-        schedules[doc.id] = doc.data();
+        const data = doc.data();
+
+        const weekId = dayjs(data.from).weekId();
+
+        schedules[weekId] = schedules[weekId] || {};
+
+        schedules[weekId][data.employeeId] = schedules[weekId][data.employeeId] || new Array(7).fill(null);
+
+        schedules[weekId][data.employeeId][dayjs(data.from).isoWeekday() - 1] = {
+          shiftId: doc.id,
+          start: dayjs(data.from).format('HHmm'),
+          break: data.break.toString(),
+          end: dayjs(data.to).format('HHmm'),
+          place: data.location,
+          accepted: data.status === 'ACCEPTED',
+          notes: data.notes,
+        };
       });
     } else {
       // If user is not admin, get schedules associated with current user
