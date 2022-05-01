@@ -510,7 +510,6 @@ section#planner {
       &.current-date {
         font-weight: 900;
         color: colors.$danger;
-        z-index: -1;
       }
       &.selected::before {
         content: '';
@@ -521,7 +520,7 @@ section#planner {
         height: 27px;
         left: 0;
         background-color: colors.$select;
-        z-index: -2;
+        z-index: -1;
       }
       &:not(.prev-month):not(.next-month):hover::after {
         content: '';
