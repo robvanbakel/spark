@@ -31,9 +31,7 @@
                 <span class="notes material-icons material-icons-round" v-if="shift.notes && shift.accepted">description</span>
               </div>
               <span class="time">
-                {{ shift.start.substring(0, 2) }}:{{ shift.start.substring(2, 4) }} - {{ shift.end.substring(0, 2) }}:{{
-                  shift.end.substring(2, 4)
-                }}
+                {{ $dayjs(shift.from).format('HH:mm') }} - {{ $dayjs(shift.to).format('HH:mm') }}
               </span>
             </div>
           </div>
@@ -87,25 +85,6 @@ export default {
           break;
         case 'status':
           output = employee.status;
-          break;
-        default:
-          break;
-      }
-
-      return output;
-    },
-    shiftInfo(payload, query) {
-      const shift = this.$store.getters['planner/currentWeekSchedule'][payload.employeeId][payload.day - 1];
-
-      const formatTime = (time) => `${time.substring(0, 2)}:${time.substring(2, 4)}`;
-
-      if (!shift) return null;
-
-      let output = shift[query] || shift;
-
-      switch (query) {
-        case 'time':
-          output = `${formatTime(shift.start)} - ${formatTime(shift.end)}`;
           break;
         default:
           break;
