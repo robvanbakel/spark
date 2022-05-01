@@ -386,6 +386,7 @@ export default {
           this.shift.notes = shift.notes;
           this.shift.break = shift.break;
           this.shift.accepted = shift.accepted;
+          this.shift.shiftId = shift.shiftId;
         }
       }
     }
