@@ -462,7 +462,6 @@ section#planner {
 
 // Planner Calendar
 .plannerCalendar {
-  width: 100%;
   & > div {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -496,6 +495,7 @@ section#planner {
 
   .dates {
     position: relative;
+    z-index: 0;
     p {
       cursor: pointer;
       font-size: 11px;
@@ -522,17 +522,16 @@ section#planner {
         background-color: colors.$select;
         z-index: -1;
       }
-      &:not(.prev-month):not(.next-month):hover::after {
+      &:not(.prev-month):not(.next-month):hover::before {
         content: '';
         display: block;
         border-radius: 6px;
         position: absolute;
         width: 100%;
         height: 27px;
-        transform: translateY(-27px);
         left: 0;
         background-color: colors.$select;
-        z-index: -2;
+        z-index: -1;
       }
     }
   }
