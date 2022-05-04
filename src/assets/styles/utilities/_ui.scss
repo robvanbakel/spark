@@ -107,7 +107,8 @@
   &:hover:not(:disabled) {
     background-color: darken(colors.$main, 5%);
   }
-  &:active:not(:disabled) {
+  &:active:not(:disabled),
+  &:focus:not(:disabled) {
     background-color: darken(colors.$main, 10%);
   }
   span {
@@ -118,11 +119,6 @@
     opacity: 0.5;
     cursor: default;
   }
-  &:focus {
-    background-color: colors.$select;
-    border-color: colors.$main;
-    color: colors.$main;
-  }
   &.secondary {
     background: none;
     border: none;
@@ -130,16 +126,16 @@
     font-size: 14px;
     color: colors.$text-500;
     font-weight: 500;
-    &:hover {
+    &:hover:not(:disabled) {
       background: inherit;
       color: darken(colors.$text-500, 12%);
     }
-    &:active {
+    &:focus:not(:disabled) {
+      background-color: colors.$select;
+    }
+    &:active:not(:disabled) {
       background: inherit;
       color: darken(colors.$text-500, 24%);
-    }
-    &:focus {
-      background-color: colors.$select;
     }
   }
   &.inverted {
@@ -166,8 +162,12 @@
     background-color: colors.$danger-light;
     color: colors.$danger;
     font-size: 18px;
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: darken(colors.$danger-light, 5%);
+    }
+    &:active:not(:disabled),
+    &:focus:not(:disabled) {
+      background-color: darken(colors.$danger-light, 10%);
     }
     span {
       font-size: 18px;
