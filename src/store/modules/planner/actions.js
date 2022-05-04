@@ -9,7 +9,15 @@ export default {
 
     if (context.rootGetters['auth/admin']) {
       // If user is admin, get all schedules from DB
-      const snapshot = await db.collection('shifts').get();
+      let snapshot;
+
+      if (process.env.NODE_ENV === 'development') {
+        const res = await fetch(`${process.env.VUE_APP_DATA}/shifts`);
+        const shifts = await res.json();
+        snapshot = shifts.map(({ id, data }) => ({ id, data: () => data }));
+      } else {
+        snapshot = await db.collection('shifts').get();
+      }
 
       snapshot.forEach((doc) => {
         const data = doc.data();
@@ -22,6 +30,8 @@ export default {
 
         schedules[weekId][data.employeeId][dayjs(data.from).isoWeekday() - 1] = {
           shiftId: doc.id,
+          from: data.from,
+          to: data.to,
           start: dayjs(data.from).format('HHmm'),
           break: data.break.toString(),
           end: dayjs(data.to).format('HHmm'),
