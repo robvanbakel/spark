@@ -12,7 +12,16 @@ export default {
       const users = [];
 
       // If user is admin, load all users from database
-      const snapshot = await db.collection('users').get();
+      let snapshot;
+
+      if (process.env.NODE_ENV === 'development') {
+        const res = await fetch(`${process.env.VUE_APP_DATA}/users`);
+        const shifts = await res.json();
+        snapshot = shifts.map(({ id, data }) => ({ id, data: () => data }));
+      } else {
+        snapshot = await db.collection('users').get();
+      }
+
       snapshot.forEach((doc) => {
         const user = {
           id: doc.id,
