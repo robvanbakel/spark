@@ -3,7 +3,16 @@ import { db } from '@/firebase';
 
 export default {
   async getSettings(context) {
-    const snapshot = await db.collection('settings').get();
+    let snapshot;
+
+    if (process.env.NODE_ENV === 'development') {
+      const res = await fetch(`${process.env.VUE_APP_DATA}/settings`);
+      const shifts = await res.json();
+      snapshot = shifts.map(({ id, data }) => ({ id, data: () => data }));
+    } else {
+      snapshot = await db.collection('settings').get();
+    }
+
     snapshot.forEach((doc) => {
       const data = doc.data();
 
