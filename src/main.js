@@ -35,7 +35,7 @@ auth.onAuthStateChanged(async (user) => {
   if (user) {
     await store.dispatch('settings/getSettings');
     await store.dispatch('employees/getUsers');
-    await store.dispatch('planner/getSchedules');
+    await store.dispatch('planner/getShifts');
     await store.dispatch('date/setDates');
 
     router.push({ name: 'EmployeeList' });

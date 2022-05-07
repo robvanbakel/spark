@@ -2,6 +2,9 @@ export default {
   schedules(state) {
     return state.schedules;
   },
+  shifts(state) {
+    return state.shifts;
+  },
   activeShiftId(state) {
     return state.activeShiftId;
   },

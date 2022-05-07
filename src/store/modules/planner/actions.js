@@ -1,10 +1,8 @@
 import firebase from 'firebase/app';
 import { db, auth } from '@/firebase';
 
-import dayjs from '@/plugins/dayjs';
-
 export default {
-  async getSchedules(context) {
+  async getShifts(context) {
     let schedules = {};
 
     if (context.rootGetters['auth/admin']) {
@@ -19,27 +17,34 @@ export default {
         snapshot = await db.collection('shifts').get();
       }
 
-      snapshot.forEach((doc) => {
-        const data = doc.data();
+      const shifts = snapshot.map((shift) => ({
+        ...shift.data(),
+        shiftId: shift.id,
+      }));
 
-        const weekId = dayjs(data.from).weekId();
+      context.commit('shifts', shifts);
 
-        schedules[weekId] = schedules[weekId] || {};
+      // snapshot.forEach((doc) => {
+      //   const data = doc.data();
 
-        schedules[weekId][data.employeeId] = schedules[weekId][data.employeeId] || new Array(7).fill(null);
+      //   const weekId = dayjs(data.from).weekId();
 
-        schedules[weekId][data.employeeId][dayjs(data.from).isoWeekday() - 1] = {
-          shiftId: doc.id,
-          from: data.from,
-          to: data.to,
-          start: dayjs(data.from).format('HHmm'),
-          break: data.break.toString(),
-          end: dayjs(data.to).format('HHmm'),
-          place: data.location,
-          accepted: data.status === 'ACCEPTED',
-          notes: data.notes,
-        };
-      });
+      //   schedules[weekId] = schedules[weekId] || {};
+
+      //   schedules[weekId][data.employeeId] = schedules[weekId][data.employeeId] || new Array(7).fill(null);
+
+      //   schedules[weekId][data.employeeId][dayjs(data.from).isoWeekday() - 1] = {
+      //     shiftId: doc.id,
+      //     from: data.from,
+      //     to: data.to,
+      //     start: dayjs(data.from).format('HHmm'),
+      //     break: data.break.toString(),
+      //     end: dayjs(data.to).format('HHmm'),
+      //     place: data.location,
+      //     accepted: data.status === 'ACCEPTED',
+      //     notes: data.notes,
+      //   };
+      // });
     } else {
       // If user is not admin, get schedules associated with current user
       const res = await fetch(
