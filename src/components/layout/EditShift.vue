@@ -3,7 +3,7 @@
     <template #header>
       <base-badge
         v-if="!newShift"
-        :status="shift.accepted ? 'accepted' : 'not accepted yet'"
+        :status="shift.status === 'ACCEPTED' ? 'accepted' : 'not accepted yet'"
         class="active"
       ></base-badge>
     </template>
@@ -12,26 +12,26 @@
         <div class="form-control">
           <label for="name">{{ $t('general.labels.name') }}</label>
           <base-dropdown
-            v-if="shift.employee.id || newShift"
+            v-if="shift.employeeId || newShift"
             id="name"
             :error="error.employee"
             :items="employees"
-            :active="shift.employee.id"
+            :active="shift.employeeId"
             @choice="dropdownHandler"
             enableSearch
             employeeStatus
           ></base-dropdown>
         </div>
         <div class="form-control">
-          <label for="place">{{ $t('general.labels.place') }}</label>
+          <label for="location">{{ $t('general.labels.location') }}</label>
           <div>
             <input
               autocomplete="off"
               type="text"
-              :class="{ error: error.place }"
-              id="place"
-              v-model.trim="shift.place"
-              @input="clearError('place')"
+              :class="{ error: error.location }"
+              id="location"
+              v-model.trim="shift.location"
+              @input="clearError('location')"
             />
             <div class="suggestions">
               <span
@@ -45,10 +45,10 @@
               <span
                 class="add"
                 v-if="showNewSuggestion"
-                @click="$store.dispatch('settings/addSuggestion', { suggestion: shift.place })"
+                @click="$store.dispatch('settings/addSuggestion', { suggestion: shift.location })"
               >
                 <span class="material-icons material-icons-round">add</span>
-                {{ shift.place }}</span
+                {{ shift.location }}</span
               >
             </div>
           </div>
@@ -57,28 +57,29 @@
           <label for="date">{{ $t('general.labels.date') }}</label>
           <div class="form-control-date">
             <BaseDatePicker
-              :active="this.$store.getters['date/dates'][this.$store.getters['planner/activeShiftId'].day]"
+              v-if="shift.from"
+              :active="$dayjs(shift.from)"
               :error="error.date"
-              @date="dateHandler"
+              @date="formatDateTime($event, 'date')"
             />
             <div class="form-control-time">
               <span class="input-label-main">{{ $t('general.labels.time') }}</span>
               <input
                 autocomplete="off"
                 type="text"
-                :class="['time', { error: error.start }]"
-                v-model.trim="shift.start"
-                @blur="formatTime(shift.start, 'start')"
-                @input="clearError('start')"
+                :class="['time', { error: error.from }]"
+                v-model.trim="inputFrom"
+                @change="formatDateTime(inputFrom, 'from', 'inputFrom')"
+                @input="clearError('from')"
               />
               <span class="input-label">-</span>
               <input
                 autocomplete="off"
                 type="text"
-                :class="['time', { error: error.end }]"
-                v-model.trim="shift.end"
-                @blur="formatTime(shift.end, 'end')"
-                @input="clearError('end')"
+                :class="['time', { error: error.to }]"
+                v-model.trim="inputTo"
+                @change="formatDateTime(inputTo, 'to', 'inputTo')"
+                @input="clearError('to')"
               />
             </div>
           </div>
@@ -89,7 +90,7 @@
             id="breaks"
             v-if="shift.break"
             :items="$store.getters['settings/breaks']"
-            :active="shift.break"
+            :active="shift.break.toString()"
             @activeItem="setBreak"
             :fixed="true"
             tabindex="0"
@@ -144,21 +145,23 @@ export default {
   data() {
     return {
       newShift: null,
+      inputFrom: '',
+      inputTo: '',
       shift: {
         employee: {},
-        place: '',
+        location: '',
         date: '',
-        start: '',
-        end: '',
+        from: '',
+        to: '',
         break: '',
         notes: '',
       },
       error: {
         employee: false,
-        place: false,
+        location: false,
         date: false,
-        start: false,
-        end: false,
+        from: false,
+        to: false,
       },
       selectedSuggestion: null,
       showConfirmDelete: false,
@@ -167,10 +170,10 @@ export default {
   computed: {
     showNewSuggestion() {
       if (
-        this.shift.place !== ''
+        this.shift.location !== ''
         && !this.$store.getters['settings/suggestions']
           .map((sug) => sug.toLowerCase())
-          .includes(this.shift.place.toLowerCase())
+          .includes(this.shift.location.toLowerCase())
       ) {
         return true;
       }
@@ -191,21 +194,32 @@ export default {
     clearError(field) {
       this.error[field] = false;
     },
-    formatTime(time, field) {
-      if (/^\d{1,2}$/.test(time) && time < 24) {
-        this.shift[field] = `${time.padStart(2, '0')}:00`;
-      }
-      if (/^\d{1,2}\D?[0-5][0-9]$/.test(time)) {
-        this.shift[field] = `${time.slice(0, 2)}:${time.slice(-2)}`;
+    formatDateTime(value, field, model) {
+      if (field === 'date') {
+        const year = value.year();
+        const month = value.month();
+        const date = value.date();
+
+        this.shift.from = this.$dayjs(this.shift.from).date(date).month(month).year(year);
+        this.shift.to = this.$dayjs(this.shift.to).date(date).month(month).year(year);
+      } else {
+        if (/^\d{1,2}$/.test(value) && value < 24) {
+          this.shift[field] = this.$dayjs(this.shift[field]).hour(value).minute(0);
+        } else if (/^\d{1,2}\D?[0-5][0-9]$/.test(value)) {
+          const [hour, minute] = value.split(/\D/);
+          this.shift[field] = this.$dayjs(this.shift[field]).hour(hour).minute(minute);
+        }
+        this[model] = this.$dayjs(this.shift[field]).format('HH:mm');
       }
     },
     dateHandler(date) {
       this.error.date = false;
-      this.shift.date = date;
+      this.shift.from = date;
+      this.shift.to = date;
     },
     selectSuggestion(suggestion) {
-      this.shift.place = suggestion;
-      this.error.place = false;
+      this.shift.location = suggestion;
+      this.error.location = false;
       this.selectedSuggestion = suggestion;
     },
     validate() {
@@ -216,11 +230,11 @@ export default {
         this.error.employee = true;
       }
 
-      // Validate field: place
-      if (this.shift.place) {
-        this.error.place = false;
+      // Validate field: location
+      if (this.shift.location) {
+        this.error.location = false;
       } else {
-        this.error.place = true;
+        this.error.location = true;
       }
 
       // Validate field: date
@@ -232,39 +246,39 @@ export default {
 
       const timeRegex = /^([0-1][0-9]|2[0-3]):([0-5][0-9])$/;
 
-      // Validate field: start
-      if (timeRegex.test(this.shift.start)) {
-        this.error.start = false;
+      // Validate field: from
+      if (timeRegex.test(this.shift.from)) {
+        this.error.from = false;
       } else {
-        this.error.start = true;
+        this.error.from = true;
       }
 
-      // Validate field: end
-      if (timeRegex.test(this.shift.end)) {
-        this.error.end = false;
+      // Validate field: to
+      if (timeRegex.test(this.shift.to)) {
+        this.error.to = false;
       } else {
-        this.error.end = true;
+        this.error.to = true;
       }
 
-      // Check if start is before end
-      if (!this.error.start && !this.error.start) {
-        const [startHour, startMin] = this.shift.start.split(':');
-        const [endHour, endMin] = this.shift.end.split(':');
+      // Check if from is before to
+      // if (!this.error.start && !this.error.start) {
+      //   const [startHour, startMin] = this.shift.start.split(':');
+      //   const [endHour, endMin] = this.shift.end.split(':');
 
-        const start = new Date();
-        start.setHours(startHour);
-        start.setMinutes(startMin);
+      //   const start = new Date();
+      //   start.setHours(startHour);
+      //   start.setMinutes(startMin);
 
-        const end = new Date();
-        end.setHours(endHour);
-        end.setMinutes(endMin);
+      //   const end = new Date();
+      //   end.setHours(endHour);
+      //   end.setMinutes(endMin);
 
-        if (end <= start && this.shift.end !== '00:00') {
-          this.error.end = true;
-        } else {
-          this.error.end = false;
-        }
-      }
+      //   if (end <= start && this.shift.end !== '00:00') {
+      //     this.error.end = true;
+      //   } else {
+      //     this.error.end = false;
+      //   }
+      // }
 
       if (!Object.values(this.error).includes(true)) {
         this.saveEditShift();
@@ -316,8 +330,8 @@ export default {
         if (oldShiftId.weekId !== newShift.date.weekId()
       || oldShiftId.day !== newShift.date.isoWeekday() - 1
       || oldShiftId.employeeId !== newShift.employee.id
-      || oldShift.start !== newShift.start.replace(':', '')
-      || oldShift.end !== newShift.end.replace(':', '')) {
+      || oldShift.from !== newShift.from.replace(':', '')
+      || oldShift.to !== newShift.to.replace(':', '')) {
           if (!(await this.$refs.resendAcceptRequest.open())) {
             return;
           }
@@ -329,9 +343,9 @@ export default {
       const stringifyTime = (time) => time.replace(':', '');
 
       const shiftInfo = {
-        place: this.shift.place,
-        start: stringifyTime(this.shift.start),
-        end: stringifyTime(this.shift.end),
+        location: this.shift.location,
+        from: stringifyTime(this.shift.from),
+        to: stringifyTime(this.shift.to),
         break: this.shift.break,
         notes: this.shift.notes || '',
         accepted: this.shift.accepted,
@@ -351,45 +365,45 @@ export default {
     },
   },
   async mounted() {
-    const activeShiftId = this.$store.getters['planner/activeShiftId'];
+    // this.newShift = true;
+    // this.shift.break = '0';
+    const shift = this.$store.getters['planner/shifts'].find((v) => v.shiftId === this.$store.getters['planner/activeShiftId']);
 
-    this.newShift = true;
-    this.shift.break = '0';
+    this.shift = shift;
+    this.inputFrom = this.$dayjs(shift.from).format('HH:mm');
+    this.inputTo = this.$dayjs(shift.to).format('HH:mm');
 
-    // Helper functions
-    const parseTime = (time) => `${time.substring(0, 2)}:${time.substring(2, 4)}`;
+    // if (activeShiftId !== 'new') {
+    //   if (!activeShiftId.employeeId) {
+    //     this.shift.date = this.$store.getters['date/dates'][activeShiftId.day];
+    //   } else {
+    //     // Get info for selected shift
+    //     const { weekId, day, employeeId } = activeShiftId;
 
-    if (activeShiftId !== 'new') {
-      if (!activeShiftId.employeeId) {
-        this.shift.date = this.$store.getters['date/dates'][activeShiftId.day];
-      } else {
-        // Get info for selected shift
-        const { weekId, day, employeeId } = activeShiftId;
+    //     const shift = this.$store.getters['planner/schedules'][weekId][employeeId][day];
+    //     const employee = this.$store.getters['employees/employees'].find((emp) => emp.id === employeeId);
 
-        const shift = this.$store.getters['planner/schedules'][weekId][employeeId][day];
-        const employee = this.$store.getters['employees/employees'].find((emp) => emp.id === employeeId);
+    //     // Set boilerplate shift info
+    //     this.shift.employee = {
+    //       fullName: `${employee.firstName} ${employee.lastName}`,
+    //       id: employeeId,
+    //     };
+    //     this.shift.date = this.$store.getters['date/dates'][day];
 
-        // Set boilerplate shift info
-        this.shift.employee = {
-          fullName: `${employee.firstName} ${employee.lastName}`,
-          id: employeeId,
-        };
-        this.shift.date = this.$store.getters['date/dates'][day];
+    //     // If active shift exists, set shift info
+    //     if (shift) {
+    //       this.newShift = false;
 
-        // If active shift exists, set shift info
-        if (shift) {
-          this.newShift = false;
-
-          this.shift.place = shift.place;
-          this.shift.start = parseTime(shift.start);
-          this.shift.end = parseTime(shift.end);
-          this.shift.notes = shift.notes;
-          this.shift.break = shift.break;
-          this.shift.accepted = shift.accepted;
-          this.shift.shiftId = shift.shiftId;
-        }
-      }
-    }
+    //       this.shift.place = shift.place;
+    //       this.shift.start = parseTime(shift.start);
+    //       this.shift.end = parseTime(shift.end);
+    //       this.shift.notes = shift.notes;
+    //       this.shift.break = shift.break;
+    //       this.shift.accepted = shift.accepted;
+    //       this.shift.shiftId = shift.shiftId;
+    //     }
+    //   }
+    // }
   },
 };
 </script>

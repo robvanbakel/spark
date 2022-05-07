@@ -56,7 +56,7 @@ section#employeelist {
         color: colors.$text-100;
         font-size: 14px;
         &[for='notes'],
-        &[for='place'] {
+        &[for='location'] {
           align-self: flex-start;
           margin-top: 12px;
         }

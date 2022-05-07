@@ -18,7 +18,7 @@
       "email": "Email",
       "phone": "Phone",
       "role": "Role",
-      "place": "Place",
+      "location": "Location",
       "date": "Date",
       "break": "Break",
       "time": "Time",

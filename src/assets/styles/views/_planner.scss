@@ -60,6 +60,111 @@ section#planner {
     @include mixins.plannerGrid;
     align-items: center;
     margin-bottom: 8px;
+    &.management {
+      .shift-block.active {
+        background-color: colors.$blue-light;
+        &:hover {
+          background-color: darken(colors.$blue-light, 5%);
+        }
+        &.proposed {
+          background-color: color.adjust(colors.$blue-light, $alpha: -0.65);
+          border: 1px solid transparent;
+          &:after {
+            color: colors.$blue;
+          }
+          &:hover {
+            border-color: colors.$blue-light;
+          }
+        }
+        span.notes {
+          color: colors.$blue;
+        }
+      }
+    }
+    &.leadership {
+      .shift-block.active {
+        background-color: colors.$green-light;
+        &:hover {
+          background-color: darken(colors.$green-light, 5%);
+        }
+        &.proposed {
+          background-color: color.adjust(colors.$green-light, $alpha: -0.65);
+          border: 1px solid transparent;
+          &:after {
+            color: colors.$green;
+          }
+          &:hover {
+            border-color: colors.$green-light;
+          }
+        }
+        span.notes {
+          color: colors.$green;
+        }
+      }
+    }
+    &.general {
+      .shift-block.active {
+        background-color: colors.$yellow-light;
+        &:hover {
+          background-color: darken(colors.$yellow-light, 5%);
+        }
+        &.proposed {
+          background-color: color.adjust(colors.$yellow-light, $alpha: -0.65);
+          border: 1px solid transparent;
+          &:after {
+            color: colors.$yellow;
+          }
+          &:hover {
+            border-color: colors.$yellow-light;
+          }
+        }
+        span.notes {
+          color: colors.$yellow;
+        }
+      }
+    }
+    &.restaurant {
+      .shift-block.active {
+        background-color: colors.$purple-light;
+        &:hover {
+          background-color: darken(colors.$purple-light, 5%);
+        }
+        &.proposed {
+          background-color: color.adjust(colors.$purple-light, $alpha: -0.65);
+          border: 1px solid transparent;
+          &:after {
+            color: colors.$purple;
+          }
+          &:hover {
+            border-color: colors.$purple-light;
+          }
+        }
+        span.notes {
+          color: colors.$purple;
+        }
+      }
+    }
+    &.cleaning {
+      .shift-block.active {
+        background-color: colors.$orange-light;
+        &:hover {
+          background-color: darken(colors.$orange-light, 5%);
+        }
+        &.proposed {
+          background-color: color.adjust(colors.$orange-light, $alpha: -0.65);
+          border: 1px solid transparent;
+          &:after {
+            color: colors.$orange;
+          }
+          &:hover {
+            border-color: colors.$orange-light;
+          }
+        }
+        span.notes {
+          color: colors.$orange;
+        }
+      }
+    }
     .employee {
       display: flex;
       flex-direction: column;
@@ -77,11 +182,15 @@ section#planner {
         }
       }
     }
-    .day {
+    .shift-block {
       height: 100%;
       border-radius: 3px;
       position: relative;
       padding: 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
       cursor: pointer;
       &.active {
         background-color: colors.$select;
@@ -94,101 +203,6 @@ section#planner {
             top: 0;
             right: 0;
             padding: 5px 7px;
-          }
-        }
-        &.management {
-          background-color: colors.$blue-light;
-          &:hover {
-            background-color: darken(colors.$blue-light, 5%);
-          }
-          &.proposed {
-            background-color: color.adjust(colors.$blue-light, $alpha: -0.65);
-            border: 1px solid transparent;
-            &:after {
-              color: colors.$blue;
-            }
-            &:hover {
-              border-color: colors.$blue-light;
-            }
-          }
-          span.notes {
-            color: colors.$blue;
-          }
-        }
-        &.leadership {
-          background-color: colors.$green-light;
-          &:hover {
-            background-color: darken(colors.$green-light, 5%);
-          }
-          &.proposed {
-            background-color: color.adjust(colors.$green-light, $alpha: -0.65);
-            border: 1px solid transparent;
-            &:after {
-              color: colors.$green;
-            }
-            &:hover {
-              border-color: colors.$green-light;
-            }
-          }
-          span.notes {
-            color: colors.$green;
-          }
-        }
-        &.general {
-          background-color: colors.$yellow-light;
-          &:hover {
-            background-color: darken(colors.$yellow-light, 5%);
-          }
-          &.proposed {
-            background-color: color.adjust(colors.$yellow-light, $alpha: -0.65);
-            border: 1px solid transparent;
-            &:after {
-              color: colors.$yellow;
-            }
-            &:hover {
-              border-color: colors.$yellow-light;
-            }
-          }
-          span.notes {
-            color: colors.$yellow;
-          }
-        }
-        &.restaurant {
-          background-color: colors.$purple-light;
-          &:hover {
-            background-color: darken(colors.$purple-light, 5%);
-          }
-          &.proposed {
-            background-color: color.adjust(colors.$purple-light, $alpha: -0.65);
-            border: 1px solid transparent;
-            &:after {
-              color: colors.$purple;
-            }
-            &:hover {
-              border-color: colors.$purple-light;
-            }
-          }
-          span.notes {
-            color: colors.$purple;
-          }
-        }
-        &.cleaning {
-          background-color: colors.$orange-light;
-          &:hover {
-            background-color: darken(colors.$orange-light, 5%);
-          }
-          &.proposed {
-            background-color: color.adjust(colors.$orange-light, $alpha: -0.65);
-            border: 1px solid transparent;
-            &:after {
-              color: colors.$orange;
-            }
-            &:hover {
-              border-color: colors.$orange-light;
-            }
-          }
-          span.notes {
-            color: colors.$orange;
           }
         }
       }
@@ -207,39 +221,32 @@ section#planner {
           font-size: 18px;
         }
       }
-      .shift-info {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 100%;
-        text-align: center;
-        .info-wrapper {
-          margin-bottom: 2px;
-          span {
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-          }
-          .shift-info-header {
-            span.place {
-              font-size: 12px;
-              font-weight: 700;
-              color: colors.$text-100;
-              letter-spacing: 0.02em;
-              position: relative;
-            }
-            span.notes {
-              position: absolute;
-              top: 8px;
-              right: 8px;
-              font-size: 12px;
-              opacity: 0.75;
-            }
-          }
-          span.time {
+      .info-wrapper {
+        margin-bottom: 2px;
+        span {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        .shift-info-header {
+          span.location {
             font-size: 12px;
-            color: colors.$main;
+            font-weight: 700;
+            color: colors.$text-100;
+            letter-spacing: 0.02em;
+            position: relative;
           }
+          span.notes {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 12px;
+            opacity: 0.75;
+          }
+        }
+        span.time {
+          font-size: 12px;
+          color: colors.$main;
         }
       }
     }
@@ -268,7 +275,7 @@ section#planner {
         color: colors.$text-100;
         font-size: 14px;
         &[for='notes'],
-        &[for='place'] {
+        &[for='location'] {
           align-self: flex-start;
           margin-top: 12px;
         }

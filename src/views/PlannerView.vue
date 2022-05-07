@@ -32,7 +32,7 @@
       ></base-button>
     </div>
   </div>
-  <main v-if="$store.getters['planner/schedules']">
+  <main>
     <section id="planner">
       <EmptyWeek v-if="emptyWeek && !hideEmptyWeek" @hide-empty-week="hideEmptyWeek = true" />
       <div v-else>
@@ -86,7 +86,7 @@ export default {
   data() {
     return {
       searchInput: '',
-      hideEmptyWeek: false,
+      hideEmptyWeek: true,
       filters: {},
     };
   },
