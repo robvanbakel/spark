@@ -12,7 +12,7 @@
         <div class="form-control">
           <label for="name">{{ $t('general.labels.name') }}</label>
           <base-dropdown
-            v-if="shift.employeeId || newShift"
+            v-if="shift.employeeId || (newShift && !$store.getters['planner/newShiftPrefillData']?.employeeId)"
             id="name"
             :error="error.employee"
             :items="employees"
@@ -57,8 +57,8 @@
           <label for="date">{{ $t('general.labels.date') }}</label>
           <div class="form-control-date">
             <BaseDatePicker
-              v-if="shift.from"
-              :active="$dayjs(shift.from)"
+              v-if="shift.from || (newShift && !$store.getters['planner/newShiftPrefillData']?.from)"
+              :active="shift.from ? $dayjs(shift.from) : null"
               :error="error.date"
               @date="formatDateTime($event, 'date')"
             />
@@ -144,11 +144,10 @@
 export default {
   data() {
     return {
-      newShift: null,
       inputFrom: '',
       inputTo: '',
       shift: {
-        employee: {},
+        employeeId: '',
         location: '',
         date: '',
         from: '',
@@ -182,11 +181,14 @@ export default {
     employees() {
       return this.$store.getters['employees/employees'].map((employee) => ({ id: employee.id, display: `${employee.firstName} ${employee.lastName}` }));
     },
+    newShift() {
+      return this.$store.getters['planner/activeShiftId'] === 'NEW';
+    },
   },
   methods: {
     dropdownHandler(selectedId) {
       this.error.employee = false;
-      this.shift.employee = this.employees.find((emp) => emp.id === selectedId);
+      this.shift.employeeId = selectedId;
     },
     setBreak(val) {
       this.shift.break = val;
@@ -196,18 +198,14 @@ export default {
     },
     formatDateTime(value, field, model) {
       if (field === 'date') {
-        const year = value.year();
-        const month = value.month();
-        const date = value.date();
-
-        this.shift.from = this.$dayjs(this.shift.from).date(date).month(month).year(year);
-        this.shift.to = this.$dayjs(this.shift.to).date(date).month(month).year(year);
+        this.shift.from = value.dateTime();
+        this.shift.to = value.dateTime();
       } else {
         if (/^\d{1,2}$/.test(value) && value < 24) {
-          this.shift[field] = this.$dayjs(this.shift[field]).hour(value).minute(0);
+          this.shift[field] = this.$dayjs(this.shift[field]).hour(value).minute(0).dateTime();
         } else if (/^\d{1,2}\D?[0-5][0-9]$/.test(value)) {
           const [hour, minute] = value.split(/\D/);
-          this.shift[field] = this.$dayjs(this.shift[field]).hour(hour).minute(minute);
+          this.shift[field] = this.$dayjs(this.shift[field]).hour(hour).minute(minute).dateTime();
         }
         this[model] = this.$dayjs(this.shift[field]).format('HH:mm');
       }
@@ -224,7 +222,7 @@ export default {
     },
     validate() {
       // Validate field: employee
-      if (this.shift.employee.id) {
+      if (this.shift.employeeId) {
         this.error.employee = false;
       } else {
         this.error.employee = true;
@@ -237,82 +235,43 @@ export default {
         this.error.location = true;
       }
 
-      // Validate field: date
-      if (this.shift.date) {
-        this.error.date = false;
-      } else {
-        this.error.date = true;
-      }
-
-      const timeRegex = /^([0-1][0-9]|2[0-3]):([0-5][0-9])$/;
-
       // Validate field: from
-      if (timeRegex.test(this.shift.from)) {
+      if (this.inputFrom) {
         this.error.from = false;
       } else {
         this.error.from = true;
       }
 
       // Validate field: to
-      if (timeRegex.test(this.shift.to)) {
+      if (this.inputTo) {
         this.error.to = false;
       } else {
         this.error.to = true;
       }
 
       // Check if from is before to
-      // if (!this.error.start && !this.error.start) {
-      //   const [startHour, startMin] = this.shift.start.split(':');
-      //   const [endHour, endMin] = this.shift.end.split(':');
-
-      //   const start = new Date();
-      //   start.setHours(startHour);
-      //   start.setMinutes(startMin);
-
-      //   const end = new Date();
-      //   end.setHours(endHour);
-      //   end.setMinutes(endMin);
-
-      //   if (end <= start && this.shift.end !== '00:00') {
-      //     this.error.end = true;
-      //   } else {
-      //     this.error.end = false;
-      //   }
-      // }
+      if (!this.error.from && !this.error.to) {
+        if (this.$dayjs(this.shift.to).isBefore(this.$dayjs(this.shift.from)) && this.inputTo !== '00:00') {
+          this.error.to = true;
+        } else {
+          this.error.to = false;
+        }
+      }
 
       if (!Object.values(this.error).includes(true)) {
         this.saveEditShift();
       }
     },
     async saveEditShift() {
-      const employeeId = this.shift.employee.id;
-      const weekId = this.$dayjs(this.shift.date).weekId();
-      const day = this.$dayjs(this.shift.date).isoWeekday() - 1;
+      if (this.newShift) {
+        this.shift.status = 'PROPOSED';
+        this.shift.shiftId = this.$store.getters['planner/randomShiftId'];
+      }
 
-      const shiftId = {
-        employeeId,
-        weekId,
-        day,
-      };
-
-      // Helper function to check if target shiftId is equal to active shiftId
-      const compareObjects = (obj1, obj2) => {
-        // eslint-disable-next-line no-restricted-syntax
-        for (const key in obj1) {
-          if (obj1[key] !== obj2[key]) {
-            return false;
-          }
-        }
-        return true;
-      };
+      const taken = this.$store.getters['planner/shifts'].find((shift) => (shift.employeeId === this.shift.employeeId) && (this.$dayjs(this.shift.from).isSame(this.$dayjs(shift.from), 'date')));
 
       // If target shiftId already exists and is not active shiftId, ask for confirmation
-      if (
-        !compareObjects(shiftId, this.$store.getters['planner/activeShiftId'])
-        && this.$store.getters['planner/schedules'][weekId]
-        && this.$store.getters['planner/schedules'][weekId][employeeId]
-        && this.$store.getters['planner/schedules'][weekId][employeeId][day]
-      ) {
+      if (taken && this.shift.shiftId !== taken.shiftId) {
         // If user doesn't confirm, don't save current shift
         if (!(await this.$refs.confirmReplaceShift.open())) {
           return;
@@ -322,36 +281,21 @@ export default {
       // If employee, date, start or end time changed, inform the employer
       // that a new acceptance notification will be sent
       if (!this.newShift) {
-        const oldShiftId = this.$store.getters['planner/activeShiftId'];
-
-        const oldShift = this.$store.getters['planner/schedules'][oldShiftId.weekId][oldShiftId.employeeId][oldShiftId.day];
+        const oldShift = this.$store.getters['planner/shifts'].find((v) => v.shiftId === this.$store.getters['planner/activeShiftId']);
         const newShift = this.shift;
 
-        if (oldShiftId.weekId !== newShift.date.weekId()
-      || oldShiftId.day !== newShift.date.isoWeekday() - 1
-      || oldShiftId.employeeId !== newShift.employee.id
-      || oldShift.from !== newShift.from.replace(':', '')
-      || oldShift.to !== newShift.to.replace(':', '')) {
+        if (oldShift.employeeId !== newShift.employeeId
+          || oldShift.from !== newShift.from
+          || oldShift.to !== newShift.to) {
           if (!(await this.$refs.resendAcceptRequest.open())) {
             return;
           }
-          this.shift.accepted = false;
+          this.shift.status = 'PROPOSED';
         }
       }
 
       // Save shift and exit modal
-      const stringifyTime = (time) => time.replace(':', '');
-
-      const shiftInfo = {
-        location: this.shift.location,
-        from: stringifyTime(this.shift.from),
-        to: stringifyTime(this.shift.to),
-        break: this.shift.break,
-        notes: this.shift.notes || '',
-        accepted: this.shift.accepted,
-      };
-
-      this.$store.dispatch('planner/saveEditShift', { shiftId, shiftInfo });
+      this.$store.dispatch('planner/saveEditShift', this.shift);
       this.closeEditShift();
     },
     closeEditShift() {
@@ -365,45 +309,20 @@ export default {
     },
   },
   async mounted() {
-    // this.newShift = true;
-    // this.shift.break = '0';
+    if (this.newShift) {
+      this.shift = {
+        ...this.shift,
+        ...this.$store.getters['planner/newShiftPrefillData'],
+        break: '0',
+      };
+      return;
+    }
+
     const shift = this.$store.getters['planner/shifts'].find((v) => v.shiftId === this.$store.getters['planner/activeShiftId']);
 
-    this.shift = shift;
+    this.shift = { ...shift };
     this.inputFrom = this.$dayjs(shift.from).format('HH:mm');
     this.inputTo = this.$dayjs(shift.to).format('HH:mm');
-
-    // if (activeShiftId !== 'new') {
-    //   if (!activeShiftId.employeeId) {
-    //     this.shift.date = this.$store.getters['date/dates'][activeShiftId.day];
-    //   } else {
-    //     // Get info for selected shift
-    //     const { weekId, day, employeeId } = activeShiftId;
-
-    //     const shift = this.$store.getters['planner/schedules'][weekId][employeeId][day];
-    //     const employee = this.$store.getters['employees/employees'].find((emp) => emp.id === employeeId);
-
-    //     // Set boilerplate shift info
-    //     this.shift.employee = {
-    //       fullName: `${employee.firstName} ${employee.lastName}`,
-    //       id: employeeId,
-    //     };
-    //     this.shift.date = this.$store.getters['date/dates'][day];
-
-    //     // If active shift exists, set shift info
-    //     if (shift) {
-    //       this.newShift = false;
-
-    //       this.shift.place = shift.place;
-    //       this.shift.start = parseTime(shift.start);
-    //       this.shift.end = parseTime(shift.end);
-    //       this.shift.notes = shift.notes;
-    //       this.shift.break = shift.break;
-    //       this.shift.accepted = shift.accepted;
-    //       this.shift.shiftId = shift.shiftId;
-    //     }
-    //   }
-    // }
   },
 };
 </script>

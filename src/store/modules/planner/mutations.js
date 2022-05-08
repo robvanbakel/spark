@@ -8,9 +8,12 @@ export default {
   activeShiftId(state, payload) {
     state.activeShiftId = payload;
   },
+  newShiftPrefillData(state, payload) {
+    state.newShiftPrefillData = payload;
+  },
   updateShiftLocally(state, payload) {
-    const { weekId, day, employeeId } = payload.shiftId;
-    state.schedules[weekId][employeeId][day] = payload.shiftInfo;
+    state.shifts = state.shifts.filter((shift) => shift.shiftId !== payload.shiftId);
+    state.shifts.push(payload);
   },
   acceptShiftLocally(state, { weekId, shiftId, selectedShift }) {
     const index = state.schedules[weekId].findIndex((shift) => shift?.shiftId === shiftId);

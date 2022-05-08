@@ -99,7 +99,7 @@ export default {
       this.$refs.searchInput.focus();
     },
     addNewShift() {
-      this.$store.dispatch('planner/setActiveShiftId', 'new');
+      this.$store.dispatch('planner/addNewShift');
     },
     setFilter(status) {
       this.filters[status] = !this.filters[status];
@@ -130,7 +130,7 @@ export default {
       if (to.name === 'Planner') {
         const { weekId } = this.$route.params;
         this.$store.dispatch('date/setDates', weekId);
-        this.hideEmptyWeek = false;
+        this.hideEmptyWeek = true;
         document.title = `Week ${parseInt(this.$route.params.weekId.split('-')[1], 10)} - Planner`;
       }
     },

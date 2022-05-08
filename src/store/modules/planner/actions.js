@@ -15,6 +15,7 @@ export default {
         snapshot = shifts.map(({ id, data }) => ({ id, data: () => data }));
       } else {
         snapshot = await db.collection('shifts').get();
+        snapshot = snapshot.docs;
       }
 
       const shifts = snapshot.map((shift) => ({
@@ -23,28 +24,6 @@ export default {
       }));
 
       context.commit('shifts', shifts);
-
-      // snapshot.forEach((doc) => {
-      //   const data = doc.data();
-
-      //   const weekId = dayjs(data.from).weekId();
-
-      //   schedules[weekId] = schedules[weekId] || {};
-
-      //   schedules[weekId][data.employeeId] = schedules[weekId][data.employeeId] || new Array(7).fill(null);
-
-      //   schedules[weekId][data.employeeId][dayjs(data.from).isoWeekday() - 1] = {
-      //     shiftId: doc.id,
-      //     from: data.from,
-      //     to: data.to,
-      //     start: dayjs(data.from).format('HHmm'),
-      //     break: data.break.toString(),
-      //     end: dayjs(data.to).format('HHmm'),
-      //     place: data.location,
-      //     accepted: data.status === 'ACCEPTED',
-      //     notes: data.notes,
-      //   };
-      // });
     } else {
       // If user is not admin, get schedules associated with current user
       const res = await fetch(
@@ -58,41 +37,42 @@ export default {
   setActiveShiftId(context, payload) {
     context.commit('activeShiftId', payload);
   },
+  addNewShift(context, payload) {
+    context.dispatch('setActiveShiftId', 'NEW');
+    context.commit('newShiftPrefillData', payload);
+  },
   async saveEditShift(context, payload) {
-    // Helper function to check if two ojbects have equal values
-    const shiftIdChanged = (obj1, obj2) => {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const key in obj1) {
-        if (obj1[key] !== obj2[key]) {
-          return true;
-        }
-      }
-      return false;
-    };
+    // // Helper function to check if two ojbects have equal values
+    // const shiftIdChanged = (obj1, obj2) => {
+    //   // eslint-disable-next-line no-restricted-syntax
+    //   for (const key in obj1) {
+    //     if (obj1[key] !== obj2[key]) {
+    //       return true;
+    //     }
+    //   }
+    //   return false;
+    // };
 
-    // If shiftId changed, remove shift with old shiftId
-    if (
-      context.getters.activeShiftId !== 'new'
-      && shiftIdChanged(context.getters.activeShiftId, payload.shiftId)
-    ) {
-      context.dispatch('deleteShift');
-    }
-
-    // If new shiftId not present, instantiate empty schedule
-    context.commit('createEmptySchedule', payload.shiftId);
+    // // If shiftId changed, remove shift with old shiftId
+    // if (
+    //   context.getters.activeShiftId !== 'new'
+    //   && shiftIdChanged(context.getters.activeShiftId, payload.shiftId)
+    // ) {
+    //   context.dispatch('deleteShift');
+    // }
 
     // Update locally
     context.commit('updateShiftLocally', payload);
 
     // Prepare object to update DB
-    const { weekId, employeeId, day } = payload.shiftId;
-    const schedule = context.getters.schedules[weekId][employeeId];
-    schedule[day] = payload.shiftInfo;
+    // const { weekId, employeeId, day } = payload.shiftId;
+    // const schedule = context.getters.schedules[weekId][employeeId];
+    // schedule[day] = payload.shiftInfo;
 
-    // Update DB
-    db.collection('schedules')
-      .doc(weekId)
-      .set({ [employeeId]: [...schedule] }, { merge: true });
+    // // Update DB
+    // db.collection('schedules')
+    //   .doc(weekId)
+    //   .set({ [employeeId]: [...schedule] }, { merge: true });
   },
   deleteShift(context) {
     // Update locally

@@ -9,6 +9,7 @@ export default {
       schedules: null,
       shifts: [],
       activeShiftId: null,
+      newShiftPrefillData: null,
     };
   },
   mutations,

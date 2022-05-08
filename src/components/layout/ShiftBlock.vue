@@ -1,5 +1,5 @@
 <template>
-  <div class="shift-block" :class="{ active: shift, proposed: shift && shift.status !== 'ACCEPTED' }" @click="this.$store.dispatch('planner/setActiveShiftId', shift?.shiftId)" >
+  <div class="shift-block" :class="{ active: shift, proposed: shift && shift.status !== 'ACCEPTED' }">
     <div class="info-wrapper" v-if="shift" >
       <div class="shift-info-header">
         <span class="location">{{ shift.location }}</span>
