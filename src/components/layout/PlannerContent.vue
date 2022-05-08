@@ -13,11 +13,11 @@ export default {
     employeeIds() {
       const output = [];
 
-      const employeeIdsInCurrentView = [...new Set(this.$store.getters['planner/shifts'].map((shift) => shift.employeeId))];
-
       this.roles.forEach((role) => {
         this.$store.getters['employees/users'].forEach((user) => {
-          if (role === user.role?.toLowerCase() && employeeIdsInCurrentView.includes(user.id)) {
+          if (role === user.role?.toLowerCase()
+          && this.$store.getters['planner/shifts'].map((shift) => shift.employeeId).includes(user.id)
+          && `${user.firstName} ${user.lastName}`.toLowerCase().includes(this.search.toLowerCase())) {
             output.push(user.id);
           }
         });
