@@ -11,7 +11,19 @@ export default {
   components: { PlannerRow },
   computed: {
     employeeIds() {
-      return [...new Set(this.$store.getters['planner/shifts'].map((shift) => shift.employeeId))];
+      const output = [];
+
+      const employeeIdsInCurrentView = [...new Set(this.$store.getters['planner/shifts'].map((shift) => shift.employeeId))];
+
+      this.roles.forEach((role) => {
+        this.$store.getters['employees/users'].forEach((user) => {
+          if (role === user.role?.toLowerCase() && employeeIdsInCurrentView.includes(user.id)) {
+            output.push(user.id);
+          }
+        });
+      });
+
+      return output;
     },
   },
 };
