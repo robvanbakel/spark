@@ -197,9 +197,25 @@ export default {
       this.error[field] = false;
     },
     formatDateTime(value, field, model) {
+      if (!this.shift.from) this.shift.from = this.$dayjs();
+      if (!this.shift.to) this.shift.to = this.$dayjs();
+
       if (field === 'date') {
-        this.shift.from = value.dateTime();
-        this.shift.to = value.dateTime();
+        const year = value.year();
+        const month = value.month();
+        const date = value.date();
+
+        this.shift.from = this.$dayjs(this.shift.from)
+          .year(year)
+          .month(month)
+          .date(date)
+          .dateTime();
+
+        this.shift.to = this.$dayjs(this.shift.to)
+          .year(year)
+          .month(month)
+          .date(date)
+          .dateTime();
       } else {
         if (/^\d{1,2}$/.test(value) && value < 24) {
           this.shift[field] = this.$dayjs(this.shift[field]).hour(value).minute(0).dateTime();
