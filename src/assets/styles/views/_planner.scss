@@ -194,7 +194,6 @@ section#planner {
       cursor: pointer;
       &.active {
         background-color: colors.$select;
-        transition: background-color 60ms ease-in-out;
         &.proposed {
           &::after {
             content: '?';
