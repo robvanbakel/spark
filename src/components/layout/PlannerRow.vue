@@ -31,7 +31,7 @@
 import ShiftBlock from '@/components/layout/ShiftBlock.vue';
 
 export default {
-  props: ['employeeId', 'search'],
+  props: ['employee', 'search'],
   components: { ShiftBlock },
   watch: {
     search(query) {
@@ -44,11 +44,8 @@ export default {
     };
   },
   computed: {
-    employee() {
-      return this.$store.getters['employees/users'].find((emp) => emp.id === this.employeeId);
-    },
     shiftsInView() {
-      return this.$store.getters['date/dates'].map((date) => this.$store.getters['planner/shifts'].find((shift) => shift.employeeId === this.employeeId && this.$dayjs(date).isSame(this.$dayjs(shift.from), 'date')));
+      return this.$store.getters['date/dates'].map((date) => this.$store.getters['planner/shifts'].find((shift) => shift.employeeId === this.employee.id && this.$dayjs(date).isSame(this.$dayjs(shift.from), 'date')));
     },
     totalHours() {
       const totalHours = this.shiftsInView.reduce((acc, shift) => {
@@ -71,7 +68,7 @@ export default {
         this.$store.dispatch('planner/setActiveShiftId', this.shiftsInView[index].shiftId);
       } else {
         this.$store.dispatch('planner/addNewShift', {
-          employeeId: this.employeeId,
+          employeeId: this.employee.id,
           from: this.$store.getters['date/dates'][index],
           to: this.$store.getters['date/dates'][index],
         });

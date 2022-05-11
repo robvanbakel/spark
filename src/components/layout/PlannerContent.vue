@@ -1,5 +1,5 @@
 <template>
-  <PlannerRow v-for="employeeId in employeeIds" :key="employeeId" :employeeId="employeeId" :search="search" />
+  <PlannerRow v-for="employee in employees" :key="employee" :employee="employee" :search="search" />
   <PlannerRow />
 </template>
 
@@ -10,7 +10,7 @@ export default {
   props: ['roles', 'search'],
   components: { PlannerRow },
   computed: {
-    employeeIds() {
+    employees() {
       const output = [];
 
       this.roles.forEach((role) => {
@@ -18,7 +18,7 @@ export default {
           if (role === user.role?.toLowerCase()
           && this.$store.getters['planner/shifts'].map((shift) => shift.employeeId).includes(user.id)
           && `${user.firstName} ${user.lastName}`.toLowerCase().includes(this.search.toLowerCase())) {
-            output.push(user.id);
+            output.push(user);
           }
         });
       });
