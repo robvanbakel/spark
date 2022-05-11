@@ -3,16 +3,17 @@
     <div class="row" :class="employee.role.toLowerCase()">
       <div class="employee">
         <span class="name">{{ employee.firstName }} {{ employee.lastName }}</span>
-        <span class="hours"
-          ><span class="calculated">{{ $store.getters['employees/totalHours'][employeeId] }}</span> /
-          {{ employeeInfo(employeeId, 'contract') }} hours</span
-        >
+        <span class="hours">
+          <span class="calculated">
+            {{ totalHours.toFixed(2) }}</span> /
+            {{ employee.contract }} hours
+          </span >
       </div>
       <ShiftBlock
-        v-for="date in $store.getters['date/dates']"
-        :key="date"
-        :shiftId="findShiftId(date)"
-        @click="handleClick(date)"
+        v-for="(shift, index) in shiftsInView"
+        :key="index"
+        :shift="shift"
+        @click="handleClick(index)"
       />
     </div>
   </div>
@@ -46,47 +47,36 @@ export default {
     employee() {
       return this.$store.getters['employees/users'].find((emp) => emp.id === this.employeeId);
     },
+    shiftsInView() {
+      return this.$store.getters['date/dates'].map((date) => this.$store.getters['planner/shifts'].find((shift) => shift.employeeId === this.employeeId && this.$dayjs(date).isSame(this.$dayjs(shift.from), 'date')));
+    },
+    totalHours() {
+      const totalHours = this.shiftsInView.reduce((acc, shift) => {
+        if (!shift) return acc;
+        const shiftDuration = this.$dayjs.duration(this.$dayjs(shift.to).diff(this.$dayjs(shift.from))).subtract(shift.break, 'minutes');
+        return acc + shiftDuration.asHours();
+      }, 0);
+
+      this.$store.dispatch('employees/totalHours', {
+        employeeId: this.employee.id,
+        total: totalHours,
+      });
+
+      return totalHours;
+    },
   },
   methods: {
-    findShiftId(date) {
-      return this.$store.getters['planner/shifts'].find((shift) => shift.employeeId === this.employeeId && this.$dayjs(date).isSame(this.$dayjs(shift.from), 'date'))?.shiftId;
-    },
-    employeeInfo(id, query) {
-      const employee = this.$store.getters['employees/users'].find((emp) => emp.id === id);
-
-      let output = employee[query] || employee;
-
-      switch (query) {
-        case 'fullName':
-          output = `${employee.firstName} ${employee.lastName}`;
-          break;
-        case 'role':
-          output = employee.role.toLowerCase();
-          break;
-        case 'status':
-          output = employee.status;
-          break;
-        default:
-          break;
-      }
-
-      return output;
-    },
-    handleClick(date) {
-      const shiftId = this.findShiftId(date);
-
-      if (shiftId) {
-        this.$store.dispatch('planner/setActiveShiftId', shiftId);
+    handleClick(index) {
+      if (this.shiftsInView[index]) {
+        this.$store.dispatch('planner/setActiveShiftId', this.shiftsInView[index].shiftId);
       } else {
         this.$store.dispatch('planner/addNewShift', {
           employeeId: this.employeeId,
-          from: date,
-          to: date,
+          from: this.$store.getters['date/dates'][index],
+          to: this.$store.getters['date/dates'][index],
         });
       }
     },
   },
 };
 </script>
-
-<style></style>

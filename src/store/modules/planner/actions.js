@@ -64,12 +64,7 @@ export default {
     // Update locally
     context.commit('updateShiftLocally', payload);
 
-    // Prepare object to update DB
-    // const { weekId, employeeId, day } = payload.shiftId;
-    // const schedule = context.getters.schedules[weekId][employeeId];
-    // schedule[day] = payload.shiftInfo;
-
-    // // Update DB
+    // Update DB
     // db.collection('schedules')
     //   .doc(weekId)
     //   .set({ [employeeId]: [...schedule] }, { merge: true });

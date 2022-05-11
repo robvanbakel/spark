@@ -92,4 +92,7 @@ export default {
       .doc(uid)
       .set(payload.employee);
   },
+  totalHours(context, payload) {
+    context.commit('totalHours', payload);
+  },
 };

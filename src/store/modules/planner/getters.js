@@ -19,12 +19,4 @@ export default {
   newShiftPrefillData(state) {
     return state.newShiftPrefillData;
   },
-  currentWeekSchedule(state, getters, rootState, rootGetters) {
-    const schedule = state.schedules[rootGetters['date/weekId']];
-
-    if (!schedule || !Object.keys(schedule).length) return null;
-
-    return schedule;
-  },
-
 };
