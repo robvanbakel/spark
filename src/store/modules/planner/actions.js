@@ -1,4 +1,3 @@
-import firebase from 'firebase/app';
 import { db, auth } from '@/firebase';
 
 export default {
@@ -69,45 +68,14 @@ export default {
     //   .doc(weekId)
     //   .set({ [employeeId]: [...schedule] }, { merge: true });
   },
-  deleteShift(context) {
+  deleteShift(context, shiftId = context.getters.activeShiftId) {
     // Update locally
-    context.commit('updateShiftLocally', {
-      shiftId: context.getters.activeShiftId,
-      shiftInfo: null,
-    });
+    context.commit('deleteShiftLocally', shiftId);
 
-    // Prepare object to update DB
-    const { weekId, employeeId, day } = context.getters.activeShiftId;
-    const schedule = context.getters.schedules[weekId][employeeId];
-    schedule[day] = null;
-
-    // Pass updated schdule to DB; delete schedule if schedule is empty
-
-    if (schedule.filter((v) => v !== null).length) {
-      // If schedule is not empty, update schedule
-      db.collection('schedules')
-        .doc(weekId)
-        .set({ [employeeId]: [...schedule] }, { merge: true });
-    } else {
-      // If schedule is empty, delete schedule locally
-      context.commit('deleteScheduleLocally', context.getters.activeShiftId);
-
-      // If week is empty, delete weekId
-      if (!Object.keys(context.getters.schedules[weekId]).length) {
-        // Delete weekId locally
-        context.commit('deleteWeekLocally', weekId);
-
-        // Delete weekId on DB
-        db.collection('schedules')
-          .doc(weekId)
-          .delete();
-      } else {
-        // Delete schedule on DB
-        db.collection('schedules')
-          .doc(weekId)
-          .update({ [employeeId]: firebase.firestore.FieldValue.delete() });
-      }
-    }
+    // Update DB
+    db.collection('shifts')
+      .doc(shiftId)
+      .delete();
   },
   async copyWeek(context, payload) {
     // Get schedule

@@ -36,8 +36,8 @@ export default {
       state.schedules[weekId][employeeId] = new Array(7).fill(null);
     }
   },
-  deleteScheduleLocally(state, { weekId, employeeId }) {
-    delete state.schedules[weekId][employeeId];
+  deleteShiftLocally(state, shiftId) {
+    state.shifts = state.shifts.filter((shift) => shift.shiftId !== shiftId);
   },
   deleteWeekLocally(state, weekId) {
     delete state.schedules[weekId];
