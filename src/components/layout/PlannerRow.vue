@@ -1,16 +1,16 @@
 <template>
   <div v-if="employee">
-    <div class="row" :class="employee.role.toLowerCase()">
+    <div class="row" :class="employee.role?.toLowerCase()">
       <div class="employee">
         <span class="name">{{ employee.firstName }} {{ employee.lastName }}</span>
         <span class="hours">
           <span class="calculated">
-            {{ totalHours.toFixed(2) }}</span> /
+            {{ $store.getters['employees/totalHours'][employee.id].toFixed(2) }}</span> /
             {{ employee.contract }} hours
           </span >
       </div>
       <ShiftBlock
-        v-for="(shift, index) in shiftsInView"
+        v-for="(shift, index) in schedule"
         :key="index"
         :shift="shift"
         @click="handleClick(index)"
@@ -31,7 +31,7 @@
 import ShiftBlock from '@/components/layout/ShiftBlock.vue';
 
 export default {
-  props: ['employee', 'search'],
+  props: ['employeeId', 'schedule', 'search'],
   components: { ShiftBlock },
   watch: {
     search(query) {
@@ -44,31 +44,17 @@ export default {
     };
   },
   computed: {
-    shiftsInView() {
-      return this.$store.getters['date/dates'].map((date) => this.$store.getters['planner/shifts'].find((shift) => shift.employeeId === this.employee.id && this.$dayjs(date).isSame(this.$dayjs(shift.from), 'date')));
-    },
-    totalHours() {
-      const totalHours = this.shiftsInView.reduce((acc, shift) => {
-        if (!shift) return acc;
-        const shiftDuration = this.$dayjs.duration(this.$dayjs(shift.to).diff(this.$dayjs(shift.from))).subtract(shift.break, 'minutes');
-        return acc + shiftDuration.asHours();
-      }, 0);
-
-      this.$store.dispatch('employees/totalHours', {
-        employeeId: this.employee.id,
-        total: totalHours,
-      });
-
-      return totalHours;
+    employee() {
+      return this.$store.getters['employees/users'].find((user) => user.id === this.employeeId);
     },
   },
   methods: {
     handleClick(index) {
-      if (this.shiftsInView[index]) {
-        this.$store.dispatch('planner/setActiveShiftId', this.shiftsInView[index].shiftId);
+      if (this.schedule[index]) {
+        this.$store.dispatch('planner/setActiveShiftId', this.schedule[index].shiftId);
       } else {
         this.$store.dispatch('planner/addNewShift', {
-          employeeId: this.employee.id,
+          employeeId: this.employeeId,
           from: this.$store.getters['date/dates'][index],
           to: this.$store.getters['date/dates'][index],
         });
