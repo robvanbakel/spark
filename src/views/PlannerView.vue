@@ -131,7 +131,7 @@ export default {
         const { weekId } = this.$route.params;
         this.$store.dispatch('date/setDates', weekId);
         this.hideEmptyWeek = true;
-        document.title = `Week ${parseInt(this.$route.params.weekId.split('-')[1], 10)} - Planner`;
+        document.title = `Week ${Number(this.$route.params.weekId.split('-')[1])} - Planner`;
       }
     },
   },

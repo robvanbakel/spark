@@ -246,7 +246,7 @@ export default {
       const startMin = showStart.substring(2, 4);
 
       // Calculate starting point
-      const startHourPercentage = parseInt(startHour, 10);
+      const startHourPercentage = Number(startHour);
       const startMinPercentage = startMin / 60;
       const startPoint = startHourPercentage + startMinPercentage;
 
