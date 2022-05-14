@@ -113,6 +113,11 @@ export default {
       this.$store.dispatch('settings/toggleSidebar');
       this.$store.dispatch('settings/sidebarAutoHidden', false);
     },
+    setWindowTitle() {
+      const { weekId } = this.$route.params;
+      this.$store.dispatch('date/setDates', weekId);
+      document.title = `Week ${this.$store.getters['date/weekNumber']} - Planner - Spark`;
+    },
   },
   computed: {
     displayRoles() {
@@ -128,14 +133,13 @@ export default {
   watch: {
     $route(to) {
       if (to.name === 'Planner') {
-        const { weekId } = this.$route.params;
-        this.$store.dispatch('date/setDates', weekId);
+        this.setWindowTitle();
         this.hideEmptyWeek = true;
-        document.title = `Week ${Number(this.$route.params.weekId.split('-')[1])} - Planner`;
       }
     },
   },
   mounted() {
+    this.setWindowTitle();
     this.filters = this.$store.getters['settings/roles'].reduce((acc, curr) => ({ ...acc, [curr.toLowerCase()]: false }), {});
   },
 };

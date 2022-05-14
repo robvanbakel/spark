@@ -11,13 +11,15 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  let title = 'Spark';
+  if (to.name !== 'Planner') {
+    let title = 'Spark';
 
-  if (to.meta.title) {
-    title = `${to.meta.title} - ${title}`;
+    if (to.meta.title) {
+      title = `${to.meta.title} - ${title}`;
+    }
+
+    document.title = title;
   }
-
-  document.title = title;
 
   if (!to.meta.noAuth && !auth.currentUser) {
     next({ name: 'Auth' });

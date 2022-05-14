@@ -40,8 +40,12 @@ export default [
     meta: {
       admin: true,
     },
-    async beforeEnter(to) {
-      store.dispatch('date/setDates', to.params.weekId || dayjs().weekId());
+    async beforeEnter(to, from, next) {
+      if (!to.params.weekId) {
+        next({ name: 'Planner', params: { weekId: dayjs().weekId() } });
+        return;
+      }
+      next();
     },
   },
   {
@@ -49,7 +53,7 @@ export default [
     component: ScheduleView,
     name: 'Schedule',
     async beforeEnter(to) {
-      store.dispatch('date/setDates', to.params.weekId || dayjs().weekId());
+      store.dispatch('date/setDates', to.params.weekId);
     },
   },
   {
