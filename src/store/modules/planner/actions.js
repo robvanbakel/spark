@@ -2,36 +2,14 @@ import { db, auth } from '@/firebase';
 
 export default {
   async getShifts(context) {
-    let schedules = {};
+    const idToken = await auth.currentUser.getIdToken();
 
-    if (context.rootGetters['auth/admin']) {
-      // If user is admin, get all schedules from DB
-      let snapshot;
+    const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/db/shifts`, {
+      headers: { authorization: idToken },
+    });
+    const shifts = await res.json();
 
-      if (process.env.NODE_ENV === 'development') {
-        const res = await fetch(`${process.env.VUE_APP_DATA}/shifts`);
-        const shifts = await res.json();
-        snapshot = shifts.map(({ id, data }) => ({ id, data: () => data }));
-      } else {
-        snapshot = await db.collection('shifts').get();
-        snapshot = snapshot.docs;
-      }
-
-      const shifts = snapshot.map((shift) => ({
-        ...shift.data(),
-        shiftId: shift.id,
-      }));
-
-      context.commit('shifts', shifts);
-    } else {
-      // If user is not admin, get schedules associated with current user
-      const res = await fetch(
-        `${process.env.VUE_APP_ADMIN_HOST || ''}/admin/getSchedules/${context.rootGetters['auth/user'].id}`,
-      );
-      schedules = await res.json();
-    }
-
-    context.commit('schedules', schedules);
+    context.commit('shifts', shifts);
   },
   setActiveShiftId(context, payload) {
     context.commit('activeShiftId', payload);
@@ -55,7 +33,7 @@ export default {
     // // If shiftId changed, remove shift with old shiftId
     // if (
     //   context.getters.activeShiftId !== 'new'
-    //   && shiftIdChanged(context.getters.activeShiftId, payload.shiftId)
+    //   && shiftIdChanged(context.getters.activeShiftId, payload.id)
     // ) {
     //   context.dispatch('deleteShift');
     // }
@@ -73,9 +51,9 @@ export default {
     context.commit('deleteShiftLocally', shiftId);
 
     // Update DB
-    db.collection('shifts')
-      .doc(shiftId)
-      .delete();
+    fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/db/shifts/${shiftId}`, {
+      method: 'DELETE',
+    });
   },
   async copyWeek(context, payload) {
     // Get schedule
@@ -98,7 +76,7 @@ export default {
       // Update locally
       const weekId = context.rootGetters['date/weekId'];
       const schedules = context.getters.schedules[weekId];
-      const selectedShift = schedules.find((shift) => shift?.shiftId === shiftId);
+      const selectedShift = schedules.find((shift) => shift?.id === shiftId);
 
       context.commit('acceptShiftLocally', {
         weekId,

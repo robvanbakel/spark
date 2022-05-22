@@ -51,7 +51,7 @@ export default {
   methods: {
     handleClick(index) {
       if (this.schedule[index]) {
-        this.$store.dispatch('planner/setActiveShiftId', this.schedule[index].shiftId);
+        this.$store.dispatch('planner/setActiveShiftId', this.schedule[index].id);
       } else {
         this.$store.dispatch('planner/addNewShift', {
           employeeId: this.employeeId,

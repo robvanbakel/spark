@@ -12,11 +12,11 @@ export default {
     state.newShiftPrefillData = payload;
   },
   updateShiftLocally(state, payload) {
-    state.shifts = state.shifts.filter((shift) => shift.shiftId !== payload.shiftId);
+    state.shifts = state.shifts.filter((shift) => shift.id !== payload.id);
     state.shifts.push(payload);
   },
   acceptShiftLocally(state, { weekId, shiftId, selectedShift }) {
-    const index = state.schedules[weekId].findIndex((shift) => shift?.shiftId === shiftId);
+    const index = state.schedules[weekId].findIndex((shift) => shift?.id === shiftId);
     state.schedules[weekId][index] = {
       ...selectedShift,
       accepted: true,
@@ -37,7 +37,7 @@ export default {
     }
   },
   deleteShiftLocally(state, shiftId) {
-    state.shifts = state.shifts.filter((shift) => shift.shiftId !== shiftId);
+    state.shifts = state.shifts.filter((shift) => shift.id !== shiftId);
   },
   deleteWeekLocally(state, weekId) {
     delete state.schedules[weekId];

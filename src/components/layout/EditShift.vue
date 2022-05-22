@@ -281,13 +281,13 @@ export default {
     async saveEditShift() {
       if (this.newShift) {
         this.shift.status = 'PROPOSED';
-        this.shift.shiftId = this.$store.getters['planner/randomShiftId'];
+        this.shift.id = this.$store.getters['planner/randomShiftId'];
       }
 
       const taken = this.$store.getters['planner/shifts'].find((shift) => (shift.employeeId === this.shift.employeeId) && (this.$dayjs(this.shift.from).isSame(this.$dayjs(shift.from), 'date')));
 
       // If target shiftId already exists and is not active shiftId, ask for confirmation
-      if (taken && this.shift.shiftId !== taken.shiftId) {
+      if (taken && this.shift.id !== taken.id) {
         // If user doesn't confirm, don't save current shift
         if (!(await this.$refs.confirmReplaceShift.open())) {
           return;
@@ -297,7 +297,7 @@ export default {
       // If employee, date, start or end time changed, inform the employer
       // that a new acceptance notification will be sent
       if (!this.newShift) {
-        const oldShift = this.$store.getters['planner/shifts'].find((v) => v.shiftId === this.$store.getters['planner/activeShiftId']);
+        const oldShift = this.$store.getters['planner/shifts'].find((v) => v.id === this.$store.getters['planner/activeShiftId']);
         const newShift = this.shift;
 
         if (oldShift.employeeId !== newShift.employeeId
@@ -334,7 +334,7 @@ export default {
       return;
     }
 
-    const shift = this.$store.getters['planner/shifts'].find((v) => v.shiftId === this.$store.getters['planner/activeShiftId']);
+    const shift = this.$store.getters['planner/shifts'].find((v) => v.id === this.$store.getters['planner/activeShiftId']);
 
     this.shift = { ...shift };
     this.inputFrom = this.$dayjs(shift.from).format('HH:mm');

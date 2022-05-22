@@ -1,9 +1,9 @@
 <template>
-  <main v-if="$store.getters['auth/user'] && $store.getters['planner/schedules']">
+  <main v-if="$store.getters['auth/user'] && $store.getters['planner/shifts']">
     <section id="singleEmployeeCalendar">
       <div class="header">
         <h1>Hi {{ $store.getters["auth/user"].firstName }}</h1>
-        <div class="week-info" v-if="schedule">
+        <div class="week-info" v-if="scheduleInView">
           <div>
             Week: <span>{{ $store.getters["date/weekNumber"] }}</span>
           </div>
@@ -24,7 +24,7 @@
           </base-button>
         </div>
       </div>
-      <div class="calendar" v-if="schedule">
+      <div class="calendar" v-if="scheduleInView">
         <div class="colDays">
           <div class="row" v-for="date in $store.getters['date/dates']" :key="date" :class="{ today: date.isSame($dayjs(), 'date') }">
             <span class="dayName">{{ date.format('dddd') }}</span>
@@ -43,19 +43,19 @@
               >{{ index.toString().padStart(2, "0") }}:00</span
             >
           </div>
-          <div class="row" v-for="(day, index) in schedule" :key="index">
+          <div class="row" v-for="(day, index) in scheduleInView" :key="index">
             <div
               class="shift"
               v-if="day"
               :style="{
-                width: `${timeRangeToPercentage(day.start, day.end).percentage}%`,
-                left: `${timeRangeToPercentage(day.start, day.end).startPoint}%`,
+                width: `${timeRangeToPercentage(day.from, day.to).percentage}%`,
+                left: `${timeRangeToPercentage(day.from, day.to).startPoint}%`,
               }"
-              :class="{proposed: day && !day.accepted}"
+              :class="{proposed: day && day.status !== 'ACCEPTED'}"
               @click="setActiveShift(day, index)"
             >
-              <span class="place"> {{ day.place }}</span>
-              <span class="time">{{ formatTime(day.start) }} - {{ formatTime(day.end) }}</span>
+              <span class="location"> {{ day.location }}</span>
+              <span class="time">{{ $dayjs(day.from).format('HH:mm') }} - {{ $dayjs(day.to).format('HH:mm') }}</span>
               <span class="notes material-icons material-icons-round" v-if="day.notes">description</span>
             </div>
           </div>
@@ -83,12 +83,12 @@
           <span class="value">{{ activeShift.date }}</span>
         </div>
         <div class="shift-info-group">
-          <span class="label">Place</span>
-          <span class="value">{{ activeShift.place }}</span>
+          <span class="label">Location</span>
+          <span class="value">{{ activeShift.location }}</span>
         </div>
         <div class="shift-info-group">
           <span class="label">Time</span>
-          <span class="value">{{ formatTime(activeShift.start) }} - {{ formatTime(activeShift.end) }}</span>
+          <span class="value">{{ this.$dayjs(activeShift.from).format('HH:mm') }} - {{ this.$dayjs(activeShift.to).format('HH:mm') }}</span>
         </div>
         <div class="shift-info-group">
           <span class="label">Duration</span>
@@ -99,7 +99,7 @@
           <span class="value">{{ activeShift.notes }}</span>
         </div>
       </template>
-      <template v-if="!activeShift.accepted" #actions>
+      <template v-if="activeShift.status !== 'ACCEPTED'" #actions>
         <base-button icon="close" inverted @click="reactToProposal(false)">Decline</base-button>
         <base-button icon="check" @click="reactToProposal(true)">Accept</base-button>
       </template>
@@ -155,67 +155,51 @@ export default {
     webcalLink() {
       return `webcal://app.sparkscheduler.com/feed/${this.$store.getters['auth/user'].id}`;
     },
-    schedule() {
-      const schedules = this.$store.getters['planner/schedules'];
-      const weekId = this.$store.getters['date/weekId'];
+    scheduleInView() {
+      const shiftsInView = this.$store.getters['date/dates']
+        .map((date) => this.$store.getters['planner/shifts']
+          .find((shift) => shift.employeeId === this.$store.getters['auth/user'].id && this.$dayjs(date).isSame(this.$dayjs(shift.from), 'date')));
 
-      return schedules[weekId];
+      if (shiftsInView.every((v) => !v)) return null;
+
+      return shiftsInView;
+    },
+    totalHours() {
+      return this.scheduleInView.reduce((acc, shift) => {
+        if (!shift) return acc;
+        const shiftDuration = this.$dayjs.duration(this.$dayjs(shift.to).diff(this.$dayjs(shift.from))).subtract(shift.break, 'minutes');
+        return acc + shiftDuration.asHours();
+      }, 0);
     },
     workingDays() {
-      const scheduleArray = [...this.schedule];
+      const scheduleArray = [...this.scheduleInView];
 
       return scheduleArray.filter((day) => day).length;
     },
     hasUnacceptedShifts() {
-      return this.schedule?.map((shift) => shift?.accepted).some((accepted) => accepted === false);
-    },
-    totalHours() {
-      let total = 0;
-
-      if (this.schedule) {
-        this.schedule?.forEach((shift) => {
-          if (shift) {
-            const [startHours, startMinutes] = shift.start.match(/\d{2}/g);
-            const [endHours, endMinutes] = shift.end.match(/\d{2}/g);
-
-            const start = new Date(0);
-            start.setHours(startHours);
-            start.setMinutes(startMinutes);
-            const end = new Date(0);
-
-            end.setHours(endHours);
-            end.setMinutes(endMinutes);
-
-            const totalHours = Math.abs(start - end);
-
-            total += totalHours / 1000 / 60 / 60;
-            total -= shift.break / 60;
-          }
-        });
-      }
-      return total.toFixed(2);
+      return this.scheduleInView?.map((shift) => shift && shift.status === 'ACCEPTED').some((accepted) => accepted === false);
     },
     showRange() {
-      const schedule = this.$store.getters['planner/schedules'][this.$store.getters['date/weekId']];
+      // const schedule = this.$store.getters['planner/schedules'][this.$store.getters['date/weekId']];
 
-      if (!schedule) {
-        return {
-          showStart: '0800',
-          showEnd: '1800',
-        };
-      }
+      // if (!schedule) {
+      return {
+        showStart: '0800',
+        showEnd: '1800',
+      };
+      // }
 
-      const startTimes = schedule.map((day) => day?.start).filter((item) => item);
-      const showStart = Math.min(...startTimes)
-        .toString()
-        .padStart(4, '0');
+      // const startTimes = schedule.map((day) => day?.start).filter((item) => item);
+      // const showStart = Math.min(...startTimes)
+      //   .toString()
+      //   .padStart(4, '0');
 
-      const endTmes = schedule.map((day) => day?.end).filter((item) => item);
-      const showEnd = Math.max(...endTmes)
-        .toString()
-        .padStart(4, '0');
+      // const endTmes = schedule.map((day) => day?.end).filter((item) => item);
+      // const showEnd = Math.max(...endTmes)
+      //   .toString()
+      //   .padStart(4, '0');
 
-      return { showStart, showEnd };
+      // return { showStart, showEnd };
     },
     dayWidth() {
       const { showStart, showEnd } = this.showRange;
@@ -282,19 +266,16 @@ export default {
     openCalendar() {
       window.location.replace(this.webcalLink);
     },
-    formatTime(time) {
-      return `${time.substring(0, 2)}:${time.substring(2, 4)}`;
-    },
     checkCalendarWidth() {
       this.calendarWidth = this.$refs.calendar?.clientWidth;
       this.calendarHeight = this.$refs.calendar?.clientHeight;
     },
-    timeRangeToPercentage(start, end) {
+    timeRangeToPercentage(from, to) {
       // Destructure input
-      const startHour = start.substring(0, 2);
-      const startMin = start.substring(2, 4);
-      const endHour = end.substring(0, 2);
-      const endMin = end.substring(2, 4);
+      const startHour = this.$dayjs(from).hour();
+      const startMin = this.$dayjs(from).minute();
+      const endHour = this.$dayjs(to).hour();
+      const endMin = this.$dayjs(to).minute();
 
       // Calculate amount of hours and minutes
       const hours = endHour - startHour;
@@ -319,8 +300,8 @@ export default {
       const calculateShiftDuration = (selectedShift) => {
         let total = 0;
 
-        const [startHours, startMinutes] = selectedShift.start.match(/\d{2}/g);
-        const [endHours, endMinutes] = selectedShift.end.match(/\d{2}/g);
+        const [startHours, startMinutes] = selectedShift.from.match(/\d{2}/g);
+        const [endHours, endMinutes] = selectedShift.to.match(/\d{2}/g);
 
         const start = new Date(0);
         start.setHours(startHours);
@@ -342,13 +323,13 @@ export default {
       this.activeShift = {
         date: this.$dayjs(this.$store.getters['date/dates'][index]).format('dddd LL'),
         dateShort: this.$dayjs(this.$store.getters['date/dates'][index]).format('L'),
-        place: shift.place,
-        start: shift.start,
-        end: shift.end,
+        location: shift.location,
+        from: shift.from,
+        to: shift.to,
         duration: calculateShiftDuration(shift),
         break: shift.break,
-        accepted: shift.accepted,
-        shiftId: shift.shiftId,
+        status: shift.status,
+        id: shift.id,
       };
 
       if (shift.notes) {
@@ -357,13 +338,13 @@ export default {
     },
     async acceptAllShifts() {
       if (await this.$refs.confirmAcceptAllShifts.open()) {
-        const nonAcceptedShiftIds = this.schedule.map((shift) => shift && !shift.accepted && shift.shiftId).filter((v) => v);
+        const nonAcceptedShiftIds = this.scheduleInView.map((shift) => shift && shift.status !== 'ACCEPTED' && shift.id).filter((v) => v);
         this.$store.dispatch('planner/acceptShifts', nonAcceptedShiftIds);
       }
     },
     reactToProposal(accepted) {
       if (accepted) {
-        this.$store.dispatch('planner/acceptShifts', [this.activeShift.shiftId]);
+        this.$store.dispatch('planner/acceptShifts', [this.activeShift.id]);
       }
 
       this.closeActiveShift();
@@ -373,7 +354,7 @@ export default {
     },
     helpActiveShift() {
       const to = 'planner@company.com';
-      const subject = `${this.activeShift.dateShort}: Question about my shift (${this.activeShift.place})`;
+      const subject = `${this.activeShift.dateShort}: Question about my shift (${this.activeShift.location})`;
 
       window.open(`mailto:${to}?subject=${subject}`);
     },
