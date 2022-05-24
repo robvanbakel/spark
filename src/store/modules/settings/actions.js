@@ -1,39 +1,37 @@
 import firebase from 'firebase/app';
-import { db } from '@/firebase';
+import { db, auth } from '@/firebase';
 
 export default {
   async getSettings(context) {
-    let snapshot;
+    const idToken = await auth.currentUser.getIdToken();
 
-    if (process.env.NODE_ENV === 'development') {
-      const res = await fetch(`${process.env.VUE_APP_DATA}/settings`);
-      const shifts = await res.json();
-      snapshot = shifts.map(({ id, data }) => ({ id, data: () => data }));
-    } else {
-      snapshot = await db.collection('settings').get();
-    }
+    const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/db/settings`, {
+      headers: { authorization: idToken },
+    });
 
-    snapshot.forEach((doc) => {
-      const data = doc.data();
+    const settings = await res.json();
 
+    if (!settings) return;
+
+    settings.forEach((doc) => {
       switch (doc.id) {
         case 'suggestions':
-          context.commit('suggestions', data.suggestions);
+          context.commit('suggestions', doc.suggestions);
           break;
         case 'admin':
-          context.commit('admin', data.admin);
+          context.commit('admin', doc.admin);
           break;
         case 'roles':
-          context.commit('roles', data.roles);
+          context.commit('roles', doc.roles);
           break;
         case 'shareWithEmployees':
-          context.commit('shareWithEmployees', data);
+          context.commit('shareWithEmployees', doc);
           break;
         case 'dateNotation':
-          context.commit('dateNotation', data.dateNotation);
+          context.commit('dateNotation', doc.dateNotation);
           break;
         case 'location':
-          context.commit('location', data);
+          context.commit('location', doc);
           break;
         default:
           break;
