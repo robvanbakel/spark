@@ -78,7 +78,7 @@ export default {
 
     shiftIds.forEach((shiftId) => {
       // Update locally
-      context.commit('acceptShiftLocally', shiftId);
+      context.commit('updateShiftLocally', { id: shiftId, status: 'ACCEPTED' });
 
       // Update DB
       fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/accept/${shiftId}`, {

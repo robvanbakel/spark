@@ -12,16 +12,9 @@ export default {
     state.newShiftPrefillData = payload;
   },
   updateShiftLocally(state, payload) {
-    state.shifts = state.shifts.filter((shift) => shift.id !== payload.id);
-    state.shifts.push(payload);
-  },
-  acceptShiftLocally(state, shiftId) {
     state.shifts = state.shifts.map((shift) => {
-      if (shift.id !== shiftId) return shift;
-      return {
-        ...shift,
-        status: 'ACCEPTED',
-      };
+      if (shift.id !== payload.id) return shift;
+      return { ...shift, ...payload };
     });
   },
   setSchedule(state, { weekId, schedule }) {
