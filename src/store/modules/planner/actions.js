@@ -46,13 +46,16 @@ export default {
     //   .doc(weekId)
     //   .set({ [employeeId]: [...schedule] }, { merge: true });
   },
-  deleteShift(context, shiftId = context.getters.activeShiftId) {
+  async deleteShift(context, shiftId = context.getters.activeShiftId) {
+    const idToken = await auth.currentUser.getIdToken();
+
     // Update locally
     context.commit('deleteShiftLocally', shiftId);
 
     // Update DB
     fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/db/shifts/${shiftId}`, {
       method: 'DELETE',
+      headers: { authorization: idToken },
     });
   },
   async copyWeek(context, payload) {
