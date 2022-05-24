@@ -72,17 +72,10 @@ export default {
   },
   async acceptShifts(context, shiftIds) {
     const idToken = await auth.currentUser.getIdToken();
+
     shiftIds.forEach((shiftId) => {
       // Update locally
-      const weekId = context.rootGetters['date/weekId'];
-      const schedules = context.getters.schedules[weekId];
-      const selectedShift = schedules.find((shift) => shift?.id === shiftId);
-
-      context.commit('acceptShiftLocally', {
-        weekId,
-        shiftId,
-        selectedShift,
-      });
+      context.commit('acceptShiftLocally', shiftId);
 
       // Update DB
       fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/accept/${shiftId}`, {

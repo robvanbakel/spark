@@ -15,12 +15,14 @@ export default {
     state.shifts = state.shifts.filter((shift) => shift.id !== payload.id);
     state.shifts.push(payload);
   },
-  acceptShiftLocally(state, { weekId, shiftId, selectedShift }) {
-    const index = state.schedules[weekId].findIndex((shift) => shift?.id === shiftId);
-    state.schedules[weekId][index] = {
-      ...selectedShift,
-      accepted: true,
-    };
+  acceptShiftLocally(state, shiftId) {
+    state.shifts = state.shifts.map((shift) => {
+      if (shift.id !== shiftId) return shift;
+      return {
+        ...shift,
+        status: 'ACCEPTED',
+      };
+    });
   },
   setSchedule(state, { weekId, schedule }) {
     state.schedules[weekId] = JSON.parse(JSON.stringify(schedule));
