@@ -1,3 +1,4 @@
+import dayjs from '@/plugins/dayjs';
 import { db, auth } from '@/firebase';
 
 export default {
@@ -7,9 +8,16 @@ export default {
     const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/db/shifts`, {
       headers: { authorization: idToken },
     });
+
     const shifts = await res.json();
 
-    context.commit('shifts', shifts);
+    const formattedShifts = shifts.map((shift) => ({
+      ...shift,
+      from: dayjs(shift.from),
+      to: dayjs(shift.to),
+    }));
+
+    context.commit('shifts', formattedShifts);
   },
   setActiveShiftId(context, payload) {
     context.commit('activeShiftId', payload);

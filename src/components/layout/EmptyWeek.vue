@@ -33,7 +33,7 @@ export default {
   computed: {
     dateRange() {
       const dates = this.$store.getters['date/dates'];
-      return `${this.$dayjs(dates[0]).format('LL')} – ${this.$dayjs(dates[dates.length - 1]).format('LL')}`;
+      return `${dates[0].format('LL')} – ${dates[dates.length - 1].format('LL')}`;
     },
   },
   watch: {

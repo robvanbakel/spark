@@ -55,7 +55,7 @@
               @click="setActiveShift(day, index)"
             >
               <span class="location"> {{ day.location }}</span>
-              <span class="time">{{ $dayjs(day.from).format('HH:mm') }} - {{ $dayjs(day.to).format('HH:mm') }}</span>
+              <span class="time">{{ day.from.format('HH:mm') }} - {{ day.to.format('HH:mm') }}</span>
               <span class="notes material-icons material-icons-round" v-if="day.notes">description</span>
             </div>
           </div>
@@ -88,7 +88,7 @@
         </div>
         <div class="shift-info-group">
           <span class="label">Time</span>
-          <span class="value">{{ this.$dayjs(activeShift.from).format('HH:mm') }} - {{ this.$dayjs(activeShift.to).format('HH:mm') }}</span>
+          <span class="value">{{ activeShift.from.format('HH:mm') }} - {{ activeShift.to.format('HH:mm') }}</span>
         </div>
         <div class="shift-info-group">
           <span class="label">Duration</span>
@@ -158,7 +158,7 @@ export default {
     scheduleInView() {
       const shiftsInView = this.$store.getters['date/dates']
         .map((date) => this.$store.getters['planner/shifts']
-          .find((shift) => shift.employeeId === this.$store.getters['auth/user'].id && this.$dayjs(date).isSame(this.$dayjs(shift.from), 'date')));
+          .find((shift) => shift.employeeId === this.$store.getters['auth/user'].id && date.isSame(shift.from, 'date')));
 
       if (shiftsInView.every((v) => !v)) return null;
 
@@ -167,7 +167,7 @@ export default {
     totalHours() {
       return this.scheduleInView.reduce((acc, shift) => {
         if (!shift) return acc;
-        const shiftDuration = this.$dayjs.duration(this.$dayjs(shift.to).diff(this.$dayjs(shift.from))).subtract(shift.break, 'minutes');
+        const shiftDuration = this.$dayjs.duration(shift.to.diff(shift.from)).subtract(shift.break, 'minutes');
         return acc + shiftDuration.asHours();
       }, 0);
     },
@@ -272,10 +272,10 @@ export default {
     },
     timeRangeToPercentage(from, to) {
       // Destructure input
-      const startHour = this.$dayjs(from).hour();
-      const startMin = this.$dayjs(from).minute();
-      const endHour = this.$dayjs(to).hour();
-      const endMin = this.$dayjs(to).minute();
+      const startHour = from.hour();
+      const startMin = from.minute();
+      const endHour = to.hour();
+      const endMin = to.minute();
 
       // Calculate amount of hours and minutes
       const hours = endHour - startHour;
@@ -321,8 +321,8 @@ export default {
 
       // Construct object
       this.activeShift = {
-        date: this.$dayjs(this.$store.getters['date/dates'][index]).format('dddd LL'),
-        dateShort: this.$dayjs(this.$store.getters['date/dates'][index]).format('L'),
+        date: this.$store.getters['date/dates'][index].format('dddd LL'),
+        dateShort: this.$store.getters['date/dates'][index].format('L'),
         location: shift.location,
         from: shift.from,
         to: shift.to,

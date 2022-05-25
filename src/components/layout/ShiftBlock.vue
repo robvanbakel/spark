@@ -6,7 +6,7 @@
         <span class="notes material-icons material-icons-round" v-if="this.shift.notes && this.shift.accepted">description</span>
       </div>
       <span class="time">
-        {{ $dayjs(this.shift.from).format('HH:mm') }} - {{ $dayjs(this.shift.to).format('HH:mm') }}
+        {{ this.shift.from.format('HH:mm') }} - {{ this.shift.to.format('HH:mm') }}
       </span>
     </div>
   </div>

@@ -95,9 +95,7 @@ export default {
   },
   computed: {
     header() {
-      const date = this.$dayjs()
-        .year(this.selectedYear)
-        .month(this.selectedMonth);
+      const date = this.$dayjs().year(this.selectedYear).month(this.selectedMonth);
 
       if (this.currentView === 'MonthPicker') {
         return date.format('YYYY');

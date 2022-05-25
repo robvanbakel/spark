@@ -58,7 +58,7 @@
           <div class="form-control-date">
             <BaseDatePicker
               v-if="shift.from || (newShift && !$store.getters['planner/newShiftPrefillData']?.from)"
-              :active="shift.from ? $dayjs(shift.from) : null"
+              :active="shift.from ? shift.from : null"
               :error="error.date"
               @date="formatDateTime($event, 'date')"
             />
@@ -205,17 +205,8 @@ export default {
         const month = value.month();
         const date = value.date();
 
-        this.shift.from = this.$dayjs(this.shift.from)
-          .year(year)
-          .month(month)
-          .date(date)
-          .dateTime();
-
-        this.shift.to = this.$dayjs(this.shift.to)
-          .year(year)
-          .month(month)
-          .date(date)
-          .dateTime();
+        this.shift.from = this.shift.from.year(year).month(month).date(date).dateTime();
+        this.shift.to = this.shift.to.year(year).month(month).date(date).dateTime();
       } else {
         if (/^\d{1,2}$/.test(value) && value < 24) {
           this.shift[field] = this.$dayjs(this.shift[field]).hour(value).minute(0).dateTime();
@@ -267,7 +258,7 @@ export default {
 
       // Check if from is before to
       if (!this.error.from && !this.error.to) {
-        if (this.$dayjs(this.shift.to).isBefore(this.$dayjs(this.shift.from)) && this.inputTo !== '00:00') {
+        if (this.shift.to.isBefore(this.shift.from) && this.inputTo !== '00:00') {
           this.error.to = true;
         } else {
           this.error.to = false;
@@ -284,7 +275,7 @@ export default {
         this.shift.id = this.$store.getters['planner/randomShiftId'];
       }
 
-      const taken = this.$store.getters['planner/shifts'].find((shift) => (shift.employeeId === this.shift.employeeId) && (this.$dayjs(this.shift.from).isSame(this.$dayjs(shift.from), 'date')));
+      const taken = this.$store.getters['planner/shifts'].find((shift) => (shift.employeeId === this.shift.employeeId) && (this.shift.from.isSame(shift.from, 'date')));
 
       // If target shiftId already exists and is not active shiftId, ask for confirmation
       if (taken && this.shift.id !== taken.id) {
@@ -337,8 +328,8 @@ export default {
     const shift = this.$store.getters['planner/shifts'].find((v) => v.id === this.$store.getters['planner/activeShiftId']);
 
     this.shift = { ...shift };
-    this.inputFrom = this.$dayjs(shift.from).format('HH:mm');
-    this.inputTo = this.$dayjs(shift.to).format('HH:mm');
+    this.inputFrom = shift.from.format('HH:mm');
+    this.inputTo = shift.to.format('HH:mm');
   },
 };
 </script>

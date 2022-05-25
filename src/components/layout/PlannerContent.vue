@@ -34,13 +34,13 @@ export default {
       this.employees.forEach((employee) => {
         const shiftsInView = this.$store.getters['date/dates']
           .map((date) => this.$store.getters['planner/shifts']
-            .find((shift) => shift.employeeId === employee.id && this.$dayjs(date).isSame(this.$dayjs(shift.from), 'date')));
+            .find((shift) => shift.employeeId === employee.id && date.isSame(shift.from, 'date')));
 
         if (shiftsInView.every((v) => !v)) return;
 
         const totalHours = shiftsInView.reduce((acc, shift) => {
           if (!shift) return acc;
-          const shiftDuration = this.$dayjs.duration(this.$dayjs(shift.to).diff(this.$dayjs(shift.from))).subtract(shift.break, 'minutes');
+          const shiftDuration = this.$dayjs.duration(shift.to.diff(shift.from)).subtract(shift.break, 'minutes');
           return acc + shiftDuration.asHours();
         }, 0);
 
