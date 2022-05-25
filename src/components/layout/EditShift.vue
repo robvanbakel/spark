@@ -205,14 +205,14 @@ export default {
         const month = value.month();
         const date = value.date();
 
-        this.shift.from = this.shift.from.year(year).month(month).date(date).dateTime();
-        this.shift.to = this.shift.to.year(year).month(month).date(date).dateTime();
+        this.shift.from = this.shift.from.year(year).month(month).date(date);
+        this.shift.to = this.shift.to.year(year).month(month).date(date);
       } else {
         if (/^\d{1,2}$/.test(value) && value < 24) {
-          this.shift[field] = this.$dayjs(this.shift[field]).hour(value).minute(0).dateTime();
+          this.shift[field] = this.$dayjs(this.shift[field]).hour(value).minute(0);
         } else if (/^\d{1,2}\D?[0-5][0-9]$/.test(value)) {
           const [hour, minute] = value.split(/\D/);
-          this.shift[field] = this.$dayjs(this.shift[field]).hour(hour).minute(minute).dateTime();
+          this.shift[field] = this.$dayjs(this.shift[field]).hour(hour).minute(minute);
         }
         this[model] = this.$dayjs(this.shift[field]).format('HH:mm');
       }
