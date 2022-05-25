@@ -298,25 +298,8 @@ export default {
       // Helper functions
 
       const calculateShiftDuration = (selectedShift) => {
-        let total = 0;
-
-        const [startHours, startMinutes] = selectedShift.from.match(/\d{2}/g);
-        const [endHours, endMinutes] = selectedShift.to.match(/\d{2}/g);
-
-        const start = new Date(0);
-        start.setHours(startHours);
-        start.setMinutes(startMinutes);
-
-        const end = new Date(0);
-        end.setHours(endHours);
-        end.setMinutes(endMinutes);
-
-        const totalHours = Math.abs(start - end);
-
-        total += totalHours / 1000 / 60 / 60;
-        total -= selectedShift.break / 60;
-
-        return total.toFixed(2);
+        const shiftDuration = this.$dayjs.duration(selectedShift.to.diff(selectedShift.from)).subtract(selectedShift.break, 'minutes');
+        return shiftDuration.asHours();
       };
 
       // Construct object
