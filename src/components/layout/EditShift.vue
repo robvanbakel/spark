@@ -275,28 +275,17 @@ export default {
         this.shift.id = this.$store.getters['planner/randomShiftId'];
       }
 
-      const taken = this.$store.getters['planner/shifts'].find((shift) => (shift.employeeId === this.shift.employeeId) && (this.shift.from.isSame(shift.from, 'date')));
-
-      // If target shiftId already exists and is not active shiftId, ask for confirmation
-      if (taken && this.shift.id !== taken.id) {
-        // If user doesn't confirm, don't save current shift
-        if (!(await this.$refs.confirmReplaceShift.open())) {
-          return;
-        }
+      // If employee already has a shift on that day, confirm that the shift should be replaced
+      if (this.$store.getters['planner/shifts'].find((shift) => shift.id !== this.shift.id && shift.employeeId === this.shift.employeeId && shift.from.isSame(this.shift.from, 'date'))) {
+        if (!(await this.$refs.confirmReplaceShift.open())) return;
       }
 
-      // If employee, date, start or end time changed, inform the employer
-      // that a new acceptance notification will be sent
+      // If employee, from or to changed, inform the employer that a new acceptance notification will be sent
       if (!this.newShift) {
         const oldShift = this.$store.getters['planner/shifts'].find((v) => v.id === this.$store.getters['planner/activeShiftId']);
-        const newShift = this.shift;
 
-        if (oldShift.employeeId !== newShift.employeeId
-          || oldShift.from !== newShift.from
-          || oldShift.to !== newShift.to) {
-          if (!(await this.$refs.resendAcceptRequest.open())) {
-            return;
-          }
+        if (oldShift.employeeId !== this.shift.employeeId || oldShift.from !== this.shift.from || oldShift.to !== this.shift.to) {
+          if (!(await this.$refs.resendAcceptRequest.open())) return;
           this.shift.status = 'PROPOSED';
         }
       }

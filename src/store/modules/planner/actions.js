@@ -49,30 +49,11 @@ export default {
       return JSON.stringify(requestObject);
     };
 
-    // // Helper function to check if two ojbects have equal values
-    // const shiftIdChanged = (obj1, obj2) => {
-    //   // eslint-disable-next-line no-restricted-syntax
-    //   for (const key in obj1) {
-    //     if (obj1[key] !== obj2[key]) {
-    //       return true;
-    //     }
-    //   }
-    //   return false;
-    // };
-
-    // // If shiftId changed, remove shift with old shiftId
-    // if (
-    //   context.getters.activeShiftId !== 'new'
-    //   && shiftIdChanged(context.getters.activeShiftId, payload.id)
-    // ) {
-    //   context.dispatch('deleteShift');
-    // }
-
     // Update locally
     context.commit('updateShiftLocally', payload);
 
     // Update DB
-    fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/db/shifts/${payload.id}`, {
+    await fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/db/shifts/${payload.id}`, {
       method: 'PATCH',
       headers: {
         authorization: idToken,
