@@ -271,7 +271,7 @@ export default {
     },
     async saveEditShift() {
       if (this.newShift) {
-        this.shift.status = 'PROPOSED';
+        this.shift.status = 'NEW';
         this.shift.id = this.$store.getters['planner/randomShiftId'];
       }
 

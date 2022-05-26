@@ -54,7 +54,7 @@ export default {
 
     // Update DB
     await fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/db/shifts/${payload.id}`, {
-      method: 'PATCH',
+      method: payload.status === 'NEW' ? 'POST' : 'PATCH',
       headers: {
         authorization: idToken,
         'Content-Type': 'application/json',

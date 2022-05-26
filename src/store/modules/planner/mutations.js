@@ -12,6 +12,15 @@ export default {
     state.newShiftPrefillData = payload;
   },
   updateShiftLocally(state, payload) {
+    if (payload.status === 'NEW') {
+      state.shifts.push({
+        ...payload,
+        status: 'PROPOSED',
+      });
+
+      return;
+    }
+
     state.shifts = state.shifts.map((shift) => {
       if (shift.id !== payload.id) return shift;
       return { ...shift, ...payload };
