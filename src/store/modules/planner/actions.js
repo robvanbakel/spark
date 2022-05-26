@@ -27,6 +27,28 @@ export default {
     context.commit('newShiftPrefillData', payload);
   },
   async saveEditShift(context, payload) {
+    const idToken = await auth.currentUser.getIdToken();
+
+    const formatData = (data) => {
+      const entries = Object.entries(data).map(([key, val]) => {
+        switch (key) {
+          case 'id':
+            return null;
+          case 'to':
+          case 'from':
+            return [key, val.dateTime()];
+          case 'break':
+            return [key, Number(val)];
+          default:
+            return [key, val];
+        }
+      }).filter((v) => v);
+
+      const requestObject = Object.fromEntries(entries);
+
+      return JSON.stringify(requestObject);
+    };
+
     // // Helper function to check if two ojbects have equal values
     // const shiftIdChanged = (obj1, obj2) => {
     //   // eslint-disable-next-line no-restricted-syntax
@@ -50,9 +72,14 @@ export default {
     context.commit('updateShiftLocally', payload);
 
     // Update DB
-    // db.collection('schedules')
-    //   .doc(weekId)
-    //   .set({ [employeeId]: [...schedule] }, { merge: true });
+    fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/db/shifts/${payload.id}`, {
+      method: 'PATCH',
+      headers: {
+        authorization: idToken,
+        'Content-Type': 'application/json',
+      },
+      body: formatData(payload),
+    });
   },
   async deleteShift(context, shiftId = context.getters.activeShiftId) {
     const idToken = await auth.currentUser.getIdToken();
