@@ -145,8 +145,9 @@
     &:hover {
       background-color: colors.$select;
     }
-    &:active {
-      background-color: darken(colors.$select, 5%);
+    &:active:not(:disabled),
+    &:focus:not(:disabled) {
+      background-color: darken(colors.$select, 3%);
     }
   }
   &.icon-only {
