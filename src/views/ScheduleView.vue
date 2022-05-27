@@ -153,7 +153,7 @@ export default {
   },
   computed: {
     webcalLink() {
-      return `webcal://app.sparkscheduler.com/feed/${this.$store.getters['auth/user'].id}`;
+      return `webcal://app.sparkscheduler.com/feed/${this.$store.getters['auth/user'].feedToken}`;
     },
     scheduleInView() {
       const shiftsInView = this.$store.getters['date/dates']
