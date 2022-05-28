@@ -301,6 +301,10 @@ export default {
   unmounted() {
     window.removeEventListener('resize', this.checkCalendarWidth);
   },
+  updated() {
+    if (this.calendarWidth && this.calendarWidth) return;
+    this.checkCalendarWidth();
+  },
 };
 </script>
 
