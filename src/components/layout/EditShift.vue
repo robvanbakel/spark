@@ -288,8 +288,10 @@ export default {
       }
 
       // If employee already has a shift on that day, confirm that the shift should be replaced
-      if (this.$store.getters['planner/shifts'].find((shift) => shift.id !== this.shift.id && shift.employeeId === this.shift.employeeId && shift.from.isSame(this.shift.from, 'date'))) {
+      const taken = this.$store.getters['planner/shifts'].find((shift) => shift.id !== this.shift.id && shift.employeeId === this.shift.employeeId && shift.from.isSame(this.shift.from, 'date'));
+      if (taken) {
         if (!(await this.$refs.confirmReplaceShift.open())) return;
+        this.$store.dispatch('planner/deleteShift', taken.id);
       }
 
       // If employee, from or to changed, inform the employer that a new acceptance notification will be sent
