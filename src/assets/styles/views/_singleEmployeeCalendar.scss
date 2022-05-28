@@ -94,6 +94,7 @@ section#singleEmployeeCalendar {
         font-size: 14px;
         position: relative;
         width: 100%;
+        overflow: hidden;
         .shift {
           position: absolute;
           background-color: colors.$blue-light;

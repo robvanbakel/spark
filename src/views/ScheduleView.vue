@@ -34,13 +34,13 @@
         <div class="colCalendar" ref="calendar">
           <div class="hours">
             <span
-              v-for="(hour, index) in 25"
+              v-for="(hour, index) in hoursVisible + 1"
               :key="index"
               :style="{
                 width: `${dayWidth}px`,
                 '--calendarHeight': `${calendarHeight + 12}px`,
               }"
-              >{{ index.toString().padStart(2, "0") }}:00</span
+              >{{ $dayjs().hour(index + visibleHoursStart).minute(0).format('HH:mm')}}</span
             >
           </div>
           <div class="row" v-for="(day, index) in scheduleInView" :key="index">
@@ -149,6 +149,8 @@ export default {
       rows: [],
       showQR: false,
       activeShift: null,
+      visibleHoursStart: 0,
+      visibleHoursEnd: 0,
     };
   },
   computed: {
@@ -172,69 +174,19 @@ export default {
       }, 0);
     },
     workingDays() {
-      const scheduleArray = [...this.scheduleInView];
-
-      return scheduleArray.filter((day) => day).length;
+      return this.scheduleInView.filter((v) => v).length;
     },
     hasUnacceptedShifts() {
       return this.scheduleInView?.map((shift) => shift && shift.status === 'ACCEPTED').some((accepted) => accepted === false);
     },
-    showRange() {
-      // const schedule = this.$store.getters['planner/schedules'][this.$store.getters['date/weekId']];
-
-      // if (!schedule) {
-      return {
-        showStart: '0800',
-        showEnd: '1800',
-      };
-      // }
-
-      // const startTimes = schedule.map((day) => day?.start).filter((item) => item);
-      // const showStart = Math.min(...startTimes)
-      //   .toString()
-      //   .padStart(4, '0');
-
-      // const endTmes = schedule.map((day) => day?.end).filter((item) => item);
-      // const showEnd = Math.max(...endTmes)
-      //   .toString()
-      //   .padStart(4, '0');
-
-      // return { showStart, showEnd };
+    hoursVisible() {
+      return (this.visibleHoursEnd || 24) - this.visibleHoursStart;
     },
     dayWidth() {
-      const { showStart, showEnd } = this.showRange;
-
-      // Destructure input
-      const startHour = showStart.substring(0, 2);
-      const startMin = showStart.substring(2, 4);
-      const endHour = showEnd.substring(0, 2);
-      const endMin = showEnd.substring(2, 4);
-
-      // Calculate amount of hours and minutes
-      const hours = endHour - startHour;
-      const mins = endMin - startMin;
-
-      const minFraction = mins / 60;
-
-      let range = hours + minFraction;
-
-      range = 24;
-
-      return this.calendarWidth / range;
+      return this.calendarWidth / this.hoursVisible;
     },
     startOffset() {
-      const { showStart } = this.showRange;
-
-      // Destructure input
-      const startHour = showStart.substring(0, 2);
-      const startMin = showStart.substring(2, 4);
-
-      // Calculate starting point
-      const startHourPercentage = Number(startHour);
-      const startMinPercentage = startMin / 60;
-      const startPoint = startHourPercentage + startMinPercentage;
-
-      return -startPoint * this.dayWidth;
+      return this.visibleHoursStart * this.dayWidth;
     },
     hideSidebar() {
       return this.$store.getters['settings/hideSidebar'];
@@ -252,7 +204,7 @@ export default {
     hideSidebar() {
       setTimeout(() => {
         this.checkCalendarWidth();
-      }, 260); // Wait for CSS animation to finish
+      }, 280); // Wait for CSS animation to finish
     },
   },
   methods: {
@@ -285,12 +237,12 @@ export default {
       const hoursPercentage = hours * 100;
       const minsPercentage = (mins / 60) * 100;
 
-      const percentage = (hoursPercentage + minsPercentage) / 24;
+      const percentage = (hoursPercentage + minsPercentage) / this.hoursVisible;
 
       // Calculate starting point
-      const startHourPercentage = startHour * 100;
+      const startHourPercentage = (startHour - this.visibleHoursStart) * 100;
       const startMinPercentage = (startMin / 60) * 100;
-      const startPoint = (startHourPercentage + startMinPercentage) / 24;
+      const startPoint = (startHourPercentage + startMinPercentage) / this.hoursVisible;
 
       return { startPoint, percentage };
     },
@@ -346,8 +298,8 @@ export default {
     this.checkCalendarWidth();
     window.addEventListener('resize', this.checkCalendarWidth);
   },
-  updated() {
-    this.checkCalendarWidth();
+  unmounted() {
+    window.removeEventListener('resize', this.checkCalendarWidth);
   },
 };
 </script>
