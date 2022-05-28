@@ -12,7 +12,7 @@
         <div class="form-control">
           <label for="name">{{ $t('general.labels.name') }}</label>
           <base-dropdown
-            v-if="shift.employeeId || (newShift && !$store.getters['planner/newShiftPrefillData']?.employeeId)"
+            v-if="shift.employeeId || (newShift && !initState?.employeeId)"
             id="name"
             :error="error.employee"
             :items="employees"
@@ -112,7 +112,8 @@
         tabindex="-1"
         @click="deleteShift"
       ></base-button>
-      <base-button secondary @click="closeEditShift">{{ $t('general.actions.cancel') }}</base-button>
+      <base-button v-if="newRequestNeeded && !newShift" secondary @click="resetForm">Reset</base-button>
+      <base-button v-else secondary @click="closeEditShift">{{ $t('general.actions.cancel') }}</base-button>
       <base-button @click="validate">{{ newRequestNeeded ? 'Send request' : $t('general.actions.save') }}</base-button>
     </template>
   </base-modal>
@@ -188,6 +189,20 @@ export default {
     },
     clearError(field) {
       this.error[field] = false;
+    },
+    async resetForm() {
+      this.shift = {};
+      this.changed = {};
+      await this.$nextTick();
+      this.setInitState();
+    },
+    setInitState() {
+      this.shift = { break: '0', ...this.initState };
+
+      if (this.newShift) return;
+
+      this.inputFrom = this.shift.from.format('HH:mm');
+      this.inputTo = this.shift.to.format('HH:mm');
     },
     formatDateTime(value, field, model) {
       if (!this.shift.from) this.shift.from = this.$dayjs();
@@ -296,13 +311,8 @@ export default {
       }
     },
   },
-  async mounted() {
-    this.shift = { break: '0', ...this.initState };
-
-    if (this.newShift) return;
-
-    this.inputFrom = this.shift.from.format('HH:mm');
-    this.inputTo = this.shift.to.format('HH:mm');
+  mounted() {
+    this.setInitState();
   },
 };
 </script>
