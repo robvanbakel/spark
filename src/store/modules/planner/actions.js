@@ -37,8 +37,6 @@ export default {
           case 'to':
           case 'from':
             return [key, val.dateTime()];
-          case 'break':
-            return [key, Number(val)];
           default:
             return [key, val];
         }

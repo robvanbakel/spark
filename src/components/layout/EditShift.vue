@@ -90,7 +90,7 @@
             id="breaks"
             v-if="shift.break"
             :items="$store.getters['settings/breaks']"
-            :active="shift.break.toString()"
+            :active="shift.break"
             @activeItem="setBreak"
             :fixed="true"
             tabindex="0"
@@ -146,15 +146,7 @@ export default {
     return {
       inputFrom: '',
       inputTo: '',
-      shift: {
-        employeeId: '',
-        location: '',
-        date: '',
-        from: '',
-        to: '',
-        break: '',
-        notes: '',
-      },
+      shift: {},
       error: {
         employee: false,
         location: false,
@@ -169,8 +161,7 @@ export default {
   computed: {
     showNewSuggestion() {
       if (
-        this.shift.location !== ''
-        && !this.$store.getters['settings/suggestions']
+        this.shift.location && !this.$store.getters['settings/suggestions']
           .map((sug) => sug.toLowerCase())
           .includes(this.shift.location.toLowerCase())
       ) {
@@ -183,6 +174,9 @@ export default {
     },
     newShift() {
       return this.$store.getters['planner/activeShiftId'] === 'NEW';
+    },
+    initState() {
+      return this.$store.getters['planner/shifts'].find((v) => v.id === this.$store.getters['planner/activeShiftId']) || this.$store.getters['planner/newShiftPrefillData'];
     },
   },
   methods: {
@@ -305,20 +299,12 @@ export default {
     },
   },
   async mounted() {
-    if (this.newShift) {
-      this.shift = {
-        ...this.shift,
-        ...this.$store.getters['planner/newShiftPrefillData'],
-        break: '0',
-      };
-      return;
-    }
+    this.shift = { break: '0', ...this.initState };
 
-    const shift = this.$store.getters['planner/shifts'].find((v) => v.id === this.$store.getters['planner/activeShiftId']);
+    if (this.newShift) return;
 
-    this.shift = { ...shift };
-    this.inputFrom = shift.from.format('HH:mm');
-    this.inputTo = shift.to.format('HH:mm');
+    this.inputFrom = this.shift.from.format('HH:mm');
+    this.inputTo = this.shift.to.format('HH:mm');
   },
 };
 </script>
