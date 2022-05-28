@@ -113,7 +113,7 @@
         @click="deleteShift"
       ></base-button>
       <base-button secondary @click="closeEditShift">{{ $t('general.actions.cancel') }}</base-button>
-      <base-button @click="validate">{{ $t('general.actions.save') }}</base-button>
+      <base-button @click="validate">{{ newRequestNeeded ? 'Send request' : $t('general.actions.save') }}</base-button>
     </template>
   </base-modal>
 
@@ -130,14 +130,6 @@
     message="Deleting this shift cannot be undone."
     :choiceTrue="$t('general.actions.delete', {resource: 'shift'})"
   />
-
-  <BaseConfirm
-    ref="resendAcceptRequest"
-    title="New acceptance needed"
-    message="A new request to accept this shift will be sent to the employee."
-    choiceFalse="Go back"
-    choiceTrue="Send request"
-  />
 </template>
 
 <script>
@@ -147,6 +139,7 @@ export default {
       inputFrom: '',
       inputTo: '',
       shift: {},
+      changed: {},
       error: {
         employee: false,
         location: false,
@@ -178,11 +171,17 @@ export default {
     initState() {
       return this.$store.getters['planner/shifts'].find((v) => v.id === this.$store.getters['planner/activeShiftId']) || this.$store.getters['planner/newShiftPrefillData'];
     },
+    newRequestNeeded() {
+      return this.newShift || this.changed.employee || this.changed.from || this.changed.to;
+    },
   },
   methods: {
     dropdownHandler(selectedId) {
       this.error.employee = false;
       this.shift.employeeId = selectedId;
+
+      if (this.newShift) return;
+      this.changed.employee = this.initState.employeeId !== selectedId;
     },
     setBreak(val) {
       this.shift.break = val;
@@ -210,6 +209,10 @@ export default {
         }
         this[model] = this.$dayjs(this.shift[field]).format('HH:mm');
       }
+
+      if (this.newShift) return;
+      this.changed.from = !this.initState.from.isSame(this.shift.from, 'minute');
+      this.changed.to = !this.initState.to.isSame(this.shift.to, 'minute');
     },
     dateHandler(date) {
       this.error.date = false;
@@ -275,13 +278,8 @@ export default {
       }
 
       // If employee, from or to changed, inform the employer that a new acceptance notification will be sent
-      if (!this.newShift) {
-        const oldShift = this.$store.getters['planner/shifts'].find((v) => v.id === this.$store.getters['planner/activeShiftId']);
-
-        if (oldShift.employeeId !== this.shift.employeeId || oldShift.from !== this.shift.from || oldShift.to !== this.shift.to) {
-          if (!(await this.$refs.resendAcceptRequest.open())) return;
-          this.shift.status = 'PROPOSED';
-        }
+      if (this.newRequestNeeded && !this.newShift) {
+        this.shift.status = 'PROPOSED';
       }
 
       // Save shift and exit modal
