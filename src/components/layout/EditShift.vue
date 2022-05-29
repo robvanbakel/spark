@@ -218,9 +218,16 @@ export default {
       } else {
         if (/^\d{1,2}$/.test(value) && value < 24) {
           this.shift[field] = this.$dayjs(this.shift[field]).hour(value).minute(0);
-        } else if (/^\d{1,2}\D?[0-5][0-9]$/.test(value)) {
-          const [hour, minute] = value.split(/\D/);
-          this.shift[field] = this.$dayjs(this.shift[field]).hour(hour).minute(minute);
+        } else {
+          try {
+            const [, hour, minute] = value.match(/^(\d{1,2}?)\D?(\d{1,2})?$/);
+            this.shift[field] = this.$dayjs(this.shift[field]).hour(hour < 24 ? hour : 0).minute(minute < 60 ? minute : 0);
+          } catch {
+            if (this.shift[model]) {
+              this.error[field] = true;
+            }
+            return;
+          }
         }
         this[model] = this.$dayjs(this.shift[field]).format('HH:mm');
       }
