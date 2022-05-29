@@ -54,7 +54,7 @@ export default {
         this.$store.dispatch('planner/setActiveShiftId', this.schedule[index].id);
       } else {
         this.$store.dispatch('planner/addNewShift', {
-          employeeId: this.employeeId,
+          employeeId: this.employee.id,
           from: this.$store.getters['date/dates'][index],
           to: this.$store.getters['date/dates'][index],
         });

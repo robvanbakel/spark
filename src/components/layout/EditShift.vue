@@ -60,7 +60,7 @@
               v-if="shift.from || (newShift && !$store.getters['planner/newShiftPrefillData']?.from)"
               :active="shift.from ? shift.from : null"
               :error="error.date"
-              @date="formatDateTime($event, 'date')"
+              @date="formatDateTime($event, 'date', 'inputDate')"
             />
             <div class="form-control-time">
               <span class="input-label-main">{{ $t('general.labels.time') }}</span>
@@ -137,6 +137,7 @@
 export default {
   data() {
     return {
+      inputDate: '',
       inputFrom: '',
       inputTo: '',
       shift: {},
@@ -188,12 +189,13 @@ export default {
     async resetForm() {
       this.shift = {};
       this.changed = {};
-      this.requiredFields.forEach((field) => { this.error[field] = false; });
+      this.requiredFields.forEach((field) => this.clearError(field));
       await this.$nextTick();
       this.setInitState();
     },
     setInitState() {
       this.shift = { break: '0', ...this.initState };
+      this.inputDate = this.shift.from;
 
       if (this.newShift) return;
 
@@ -209,6 +211,8 @@ export default {
         const month = value.month();
         const date = value.date();
 
+        this.error.date = false;
+        this.inputDate = value;
         this.shift.from = this.shift.from.year(year).month(month).date(date);
         this.shift.to = this.shift.to.year(year).month(month).date(date);
       } else {
@@ -232,57 +236,25 @@ export default {
       this.changed.from = !this.initState.from.isSame(this.shift.from, 'minute');
       this.changed.to = !this.initState.to.isSame(this.shift.to, 'minute');
     },
-    dateHandler(date) {
-      this.error.date = false;
-      this.shift.from = date;
-      this.shift.to = date;
-    },
     selectSuggestion(suggestion) {
       this.shift.location = suggestion;
       this.error.location = false;
       this.selectedSuggestion = suggestion;
     },
     validate() {
-      // Validate field: employee
-      if (this.shift.employeeId) {
-        this.error.employee = false;
-      } else {
-        this.error.employee = true;
-      }
+      this.error.employee = !this.shift.employeeId;
+      this.error.location = !this.shift.location;
+      this.error.date = !this.inputDate;
+      this.error.from = !this.inputFrom;
+      this.error.to = !this.inputTo;
 
-      // Validate field: location
-      if (this.shift.location) {
-        this.error.location = false;
-      } else {
-        this.error.location = true;
-      }
-
-      // Validate field: from
-      if (this.inputFrom) {
-        this.error.from = false;
-      } else {
-        this.error.from = true;
-      }
-
-      // Validate field: to
-      if (this.inputTo) {
-        this.error.to = false;
-      } else {
-        this.error.to = true;
-      }
-
-      // Check if from is before to
       if (!this.error.from && !this.error.to) {
-        if (this.shift.to.isBefore(this.shift.from) && this.inputTo !== '00:00') {
-          this.error.to = true;
-        } else {
-          this.error.to = false;
-        }
+        this.error.to = this.shift.to.isBefore(this.shift.from) && this.inputTo !== '00:00';
       }
 
-      if (!Object.values(this.error).includes(true)) {
-        this.saveEditShift();
-      }
+      if (Object.values(this.error).includes(true)) return;
+
+      this.saveEditShift();
     },
     async saveEditShift() {
       if (this.newShift) {
