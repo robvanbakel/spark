@@ -141,13 +141,8 @@ export default {
       inputTo: '',
       shift: {},
       changed: {},
-      error: {
-        employee: false,
-        location: false,
-        date: false,
-        from: false,
-        to: false,
-      },
+      error: {},
+      requiredFields: ['employee', 'location', 'date', 'from', 'to'],
       selectedSuggestion: null,
       showConfirmDelete: false,
     };
@@ -193,6 +188,7 @@ export default {
     async resetForm() {
       this.shift = {};
       this.changed = {};
+      this.requiredFields.forEach((field) => { this.error[field] = false; });
       await this.$nextTick();
       this.setInitState();
     },
@@ -321,7 +317,7 @@ export default {
     },
   },
   mounted() {
-    this.setInitState();
+    this.resetForm();
   },
 };
 </script>
