@@ -1,6 +1,6 @@
 <template>
   <div v-if="employee">
-    <div v-if="hasScheduleInView" class="row" :class="employee.role?.toLowerCase()">
+    <div v-if="hasschedulesInView" class="row" :class="employee.role?.toLowerCase()">
       <div class="employee">
         <span class="name">{{ employee.firstName }} {{ employee.lastName }}</span>
         <span class="hours">
@@ -44,7 +44,7 @@ export default {
     };
   },
   computed: {
-    hasScheduleInView() {
+    hasschedulesInView() {
       return this.schedule && !this.schedule?.every((v) => !v);
     },
   },

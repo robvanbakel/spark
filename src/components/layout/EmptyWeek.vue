@@ -12,7 +12,7 @@
         Create empty schedule
       </div>
       <CopyWeek v-if="showCopyWeek" />
-      <div class="action" @click="showCopyWeek = true" v-else>
+      <div class="action transparent" style="pointer-events: none;" v-else>
         <span class="material-icons material-icons-round">event_note</span> Copy an existing week
       </div>
     </div>

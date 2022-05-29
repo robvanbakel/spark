@@ -11,6 +11,9 @@ export default {
   newShiftPrefillData(state, payload) {
     state.newShiftPrefillData = payload;
   },
+  emptyWeek(state, payload) {
+    state.emptyWeek = payload;
+  },
   updateShiftLocally(state, payload) {
     if (payload.status === 'NEW') {
       state.shifts.push({

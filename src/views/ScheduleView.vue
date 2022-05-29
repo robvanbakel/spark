@@ -3,7 +3,7 @@
     <section id="singleEmployeeCalendar">
       <div class="header">
         <h1>Hi {{ $store.getters["auth/user"].firstName }}</h1>
-        <div class="week-info" v-if="scheduleInView">
+        <div class="week-info" v-if="schedulesInView">
           <div>
             Week: <span>{{ $store.getters["date/weekNumber"] }}</span>
           </div>
@@ -24,7 +24,7 @@
           </base-button>
         </div>
       </div>
-      <div class="calendar" v-if="scheduleInView">
+      <div class="calendar" v-if="schedulesInView">
         <div class="colDays">
           <div class="row" v-for="date in $store.getters['date/dates']" :key="date" :class="{ today: date.isSame($dayjs(), 'date') }">
             <span class="dayName">{{ date.format('dddd') }}</span>
@@ -43,7 +43,7 @@
               >{{ $dayjs().hour(index + visibleHoursStart).minute(0).format('HH:mm')}}</span
             >
           </div>
-          <div class="row" v-for="(day, index) in scheduleInView" :key="index">
+          <div class="row" v-for="(day, index) in schedulesInView" :key="index">
             <div
               class="shift"
               v-if="day"
@@ -157,7 +157,7 @@ export default {
     webcalLink() {
       return `webcal://app.sparkscheduler.com/feed/${this.$store.getters['auth/user'].feedToken}`;
     },
-    scheduleInView() {
+    schedulesInView() {
       const shiftsInView = this.$store.getters['date/dates']
         .map((date) => this.$store.getters['planner/shifts']
           .find((shift) => shift.employeeId === this.$store.getters['auth/user'].id && date.isSame(shift.from, 'date')));
@@ -167,17 +167,17 @@ export default {
       return shiftsInView;
     },
     totalHours() {
-      return this.scheduleInView.reduce((acc, shift) => {
+      return this.schedulesInView.reduce((acc, shift) => {
         if (!shift) return acc;
         const shiftDuration = this.$dayjs.duration(shift.to.diff(shift.from)).subtract(shift.break, 'minutes');
         return acc + shiftDuration.asHours();
       }, 0);
     },
     workingDays() {
-      return this.scheduleInView.filter((v) => v).length;
+      return this.schedulesInView.filter((v) => v).length;
     },
     hasUnacceptedShifts() {
-      return this.scheduleInView?.map((shift) => shift && shift.status === 'ACCEPTED').some((accepted) => accepted === false);
+      return this.schedulesInView?.map((shift) => shift && shift.status === 'ACCEPTED').some((accepted) => accepted === false);
     },
     hoursVisible() {
       return (this.visibleHoursEnd || 24) - this.visibleHoursStart;
@@ -273,7 +273,7 @@ export default {
     },
     async acceptAllShifts() {
       if (await this.$refs.confirmAcceptAllShifts.open()) {
-        const nonAcceptedShiftIds = this.scheduleInView.map((shift) => shift && shift.status !== 'ACCEPTED' && shift.id).filter((v) => v);
+        const nonAcceptedShiftIds = this.schedulesInView.map((shift) => shift && shift.status !== 'ACCEPTED' && shift.id).filter((v) => v);
         this.$store.dispatch('planner/acceptShifts', nonAcceptedShiftIds);
       }
     },

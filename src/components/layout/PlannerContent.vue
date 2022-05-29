@@ -3,7 +3,7 @@
     v-for="employee in employees"
     :key="employee.id"
     :employee="employee"
-    :schedule="scheduleInView[employee.id]"
+    :schedule="schedules[employee.id]"
     :search="search" />
   <PlannerRow />
 </template>
@@ -12,7 +12,7 @@
 import PlannerRow from '@/components/layout/PlannerRow.vue';
 
 export default {
-  props: ['roles', 'search'],
+  props: ['schedules', 'roles', 'search'],
   components: { PlannerRow },
   computed: {
     employees() {
@@ -27,9 +27,6 @@ export default {
       });
 
       return output;
-    },
-    scheduleInView() {
-      return this.$store.getters['planner/scheduleInView'];
     },
   },
 };

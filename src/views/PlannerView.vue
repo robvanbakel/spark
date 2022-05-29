@@ -51,7 +51,7 @@
             <span class="date">{{ date.format('LL') }}</span>
           </div>
         </div>
-        <PlannerContent :roles="displayRoles" :search="searchInput" />
+        <PlannerContent :schedules="schedulesInView" :roles="displayRoles" :search="searchInput" />
       </div>
     </section>
 
@@ -86,7 +86,7 @@ export default {
   data() {
     return {
       searchInput: '',
-      hideEmptyWeek: true,
+      hideEmptyWeek: false,
       filters: {},
     };
   },
@@ -127,14 +127,17 @@ export default {
       return Object.keys(this.filters);
     },
     emptyWeek() {
-      return !this.$store.getters['planner/currentWeekSchedule'];
+      return !Object.values(this.schedulesInView).flat().length;
+    },
+    schedulesInView() {
+      return this.$store.getters['planner/schedulesInView'];
     },
   },
   watch: {
     $route(to) {
       if (to.name === 'Planner') {
         this.setWindowTitle();
-        this.hideEmptyWeek = true;
+        this.hideEmptyWeek = false;
       }
     },
   },

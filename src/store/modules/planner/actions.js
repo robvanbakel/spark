@@ -22,6 +22,9 @@ export default {
   setActiveShiftId(context, payload) {
     context.commit('activeShiftId', payload);
   },
+  emptyWeek(context, payload) {
+    context.commit('emptyWeek', payload);
+  },
   addNewShift(context, payload) {
     context.dispatch('setActiveShiftId', 'NEW');
     context.commit('newShiftPrefillData', payload);

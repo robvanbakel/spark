@@ -10,6 +10,7 @@ export default {
       shifts: [],
       activeShiftId: null,
       newShiftPrefillData: null,
+      emptyWeek: true,
     };
   },
   mutations,

@@ -8,8 +8,8 @@ export default {
   shifts(state) {
     return state.shifts;
   },
-  scheduleInView(state, getters, rootState, rootGetters) {
-    const scheduleInView = getters.shifts.reduce((acc, shift) => {
+  schedulesInView(state, getters, rootState, rootGetters) {
+    const schedulesInView = getters.shifts.reduce((acc, shift) => {
       const index = rootGetters['date/dates'].findIndex((date) => date.isSame(shift.from, 'day'));
 
       if (!acc[shift.employeeId]) {
@@ -23,7 +23,7 @@ export default {
       return acc;
     }, {});
 
-    const totalHours = Object.entries(scheduleInView).reduce((acc, [employeeId, schedule]) => {
+    const totalHours = Object.entries(schedulesInView).reduce((acc, [employeeId, schedule]) => {
       acc[employeeId] = schedule.reduce((total, shift) => {
         if (!shift) return total;
         const shiftDuration = dayjs.duration(shift.to.diff(shift.from)).subtract(shift.break, 'minutes');
@@ -34,11 +34,15 @@ export default {
     }, {});
 
     store.dispatch('employees/totalHours', totalHours);
+    store.dispatch('planner/emptyWeek', !Object.values(schedulesInView).flat().length);
 
-    return scheduleInView;
+    return schedulesInView;
   },
   activeShiftId(state) {
     return state.activeShiftId;
+  },
+  emptyWeek(state) {
+    return state.emptyWeek;
   },
   randomShiftId() {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'.split('');
