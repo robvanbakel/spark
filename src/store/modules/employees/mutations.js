@@ -5,8 +5,8 @@ export default {
   addUser(state, { id, data }) {
     state.users.push({ id, ...data });
   },
-  totalHours(state, { employeeId, total }) {
-    state.totalHours[employeeId] = total;
+  totalHours(state, payload) {
+    state.totalHours = payload;
   },
   updateUser(state, payload) {
     const user = state.users.find((emp) => emp.id === payload.id);

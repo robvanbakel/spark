@@ -1,13 +1,13 @@
 <template>
   <div v-if="employee">
-    <div class="row" :class="employee.role?.toLowerCase()">
+    <div v-if="hasScheduleInView" class="row" :class="employee.role?.toLowerCase()">
       <div class="employee">
         <span class="name">{{ employee.firstName }} {{ employee.lastName }}</span>
         <span class="hours">
           <span class="calculated">
-            {{ $store.getters['employees/totalHours'][employee.id].toFixed(2) }}</span> /
+            {{ $store.getters['employees/totalHours'][employee.id]?.toFixed(2) }}</span> /
             {{ employee.contract }} hours
-          </span >
+          </span>
       </div>
       <ShiftBlock
         v-for="(shift, index) in schedule"
@@ -31,7 +31,7 @@
 import ShiftBlock from '@/components/layout/ShiftBlock.vue';
 
 export default {
-  props: ['employeeId', 'schedule', 'search'],
+  props: ['employee', 'schedule', 'search'],
   components: { ShiftBlock },
   watch: {
     search(query) {
@@ -44,8 +44,8 @@ export default {
     };
   },
   computed: {
-    employee() {
-      return this.$store.getters['employees/users'].find((user) => user.id === this.employeeId);
+    hasScheduleInView() {
+      return this.schedule && !this.schedule?.every((v) => !v);
     },
   },
   methods: {

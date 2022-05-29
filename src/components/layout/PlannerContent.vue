@@ -1,9 +1,9 @@
 <template>
   <PlannerRow
-    v-for="(schedule, employeeId) in schedulesInView"
-    :key="employeeId"
-    :employeeId="employeeId"
-    :schedule="schedule"
+    v-for="employee in employees"
+    :key="employee.id"
+    :employee="employee"
+    :schedule="scheduleInView[employee.id]"
     :search="search" />
   <PlannerRow />
 </template>
@@ -28,31 +28,8 @@ export default {
 
       return output;
     },
-    schedulesInView() {
-      const schedule = {};
-
-      this.employees.forEach((employee) => {
-        const shiftsInView = this.$store.getters['date/dates']
-          .map((date) => this.$store.getters['planner/shifts']
-            .find((shift) => shift.employeeId === employee.id && date.isSame(shift.from, 'date')));
-
-        if (shiftsInView.every((v) => !v)) return;
-
-        const totalHours = shiftsInView.reduce((acc, shift) => {
-          if (!shift) return acc;
-          const shiftDuration = this.$dayjs.duration(shift.to.diff(shift.from)).subtract(shift.break, 'minutes');
-          return acc + shiftDuration.asHours();
-        }, 0);
-
-        this.$store.dispatch('employees/totalHours', {
-          employeeId: employee.id,
-          total: totalHours,
-        });
-
-        schedule[employee.id] = shiftsInView;
-      });
-
-      return schedule;
+    scheduleInView() {
+      return this.$store.getters['planner/scheduleInView'];
     },
   },
 };
