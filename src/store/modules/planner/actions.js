@@ -27,7 +27,7 @@ export default {
   acceptShifts(context, shiftIds) {
     shiftIds.forEach((shiftId) => {
       context.commit('updateShiftLocally', { id: shiftId, status: 'ACCEPTED' });
-      api.get(`accept/${shiftId}`);
+      api.patch(`accept/${shiftId}`);
     });
   },
 };
