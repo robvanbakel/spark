@@ -134,6 +134,8 @@
 </template>
 
 <script>
+import util from '@/utils/util';
+
 export default {
   data() {
     return {
@@ -259,7 +261,7 @@ export default {
     async saveEditShift() {
       if (this.newShift) {
         this.shift.status = 'NEW';
-        this.shift.id = this.$store.getters['planner/randomShiftId'];
+        this.shift.id = util.randomId(20);
       }
 
       // If employee already has a shift on that day, confirm that the shift should be replaced
