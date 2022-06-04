@@ -15,7 +15,7 @@ export default {
       location: {},
       dateNotation: null,
       breaks: ['0', '15', '30', '45', '60'],
-      statuses: ['active', 'unavailable', 'sick', 'inactive', 'staged'],
+      statuses: ['ACTIVE', 'UNAVAILABLE', 'SICK', 'INACTIVE', 'STAGED'],
     };
   },
   mutations,

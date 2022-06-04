@@ -1,3 +1,6 @@
+import api from '@/utils/api';
+import format from '@/utils/format';
+
 import router from '@/router';
 import { auth, db } from '@/firebase';
 
@@ -71,5 +74,19 @@ export default {
   },
   totalHours(context, payload) {
     context.commit('totalHours', payload);
+  },
+  activeUserId(context, payload) {
+    context.commit('activeUserId', payload);
+  },
+  addNewUser(context) {
+    context.commit('activeUserId', 'NEW');
+  },
+  saveEditUser(context, payload) {
+    context.commit('updateUserLocally', payload);
+
+    api[payload.status === 'NEW' ? 'post' : 'patch'](`db/users/${payload.id}`, format.users.req({
+      ...payload,
+      status: payload.status === 'NEW' ? 'STAGED' : payload.status,
+    }));
   },
 };

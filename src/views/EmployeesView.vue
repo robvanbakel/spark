@@ -22,7 +22,7 @@
       >
     </div>
     <div class="actions">
-      <base-button @click="addNewEmployee" icon="add">{{ $t('general.actions.add', { resource: 'Employee' }) }}</base-button>
+      <base-button @click="$store.dispatch('employees/addNewUser')" icon="add">{{ $t('general.actions.add', { resource: 'Employee' }) }}</base-button>
     </div>
   </div>
   <main>
@@ -36,7 +36,7 @@
         <div>{{ $t('general.labels.notes') }}</div>
       </div>
 
-      <div class="row" v-for="employee in employees" :key="employee" @click="editEmployee(employee)">
+      <div class="row" v-for="employee in employees" :key="employee.id" @click="$store.dispatch('employees/activeUserId',employee.id)">
         <div>
           <base-badge :status="employee.status" :label="false"></base-badge>
         </div>
@@ -48,12 +48,9 @@
       </div>
     </section>
   </main>
-  <EditEmployee
-    v-if="activeEmployee"
-    :new="newEmployee"
-    :employee="activeEmployee"
-    @close-edit-employee="closeEditEmployee"
-  />
+
+  <EditEmployee v-if="$store.getters['employees/activeUserId']" />
+
 </template>
 
 <script>
@@ -93,9 +90,6 @@ export default {
     },
   },
   methods: {
-    editEmployee(employee) {
-      this.activeEmployee = employee;
-    },
     closeEditEmployee() {
       this.activeEmployee = null;
       this.newEmployee = false;
@@ -115,13 +109,9 @@ export default {
       this.searchInput = '';
       this.$refs.searchInput.focus();
     },
-    addNewEmployee() {
-      this.newEmployee = true;
-      this.activeEmployee = true;
-    },
   },
   mounted() {
-    this.filters = this.$store.getters['settings/statuses'].reduce((acc, curr) => ({ ...acc, [curr.toLowerCase()]: false }), {});
+    this.filters = this.$store.getters['settings/statuses'].reduce((acc, curr) => ({ ...acc, [curr]: false }), {});
   },
 };
 </script>

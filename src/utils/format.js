@@ -27,4 +27,21 @@ const shifts = {
   },
 };
 
-export default { shifts };
+const users = {
+  req(data) {
+    const entries = Object.entries(data).map(([key, val]) => {
+      switch (key) {
+        case 'id':
+          return null;
+        default:
+          return [key, val];
+      }
+    }).filter((v) => v);
+
+    const requestObject = Object.fromEntries(entries);
+
+    return JSON.stringify(requestObject);
+  },
+};
+
+export default { shifts, users };

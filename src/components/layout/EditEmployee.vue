@@ -1,16 +1,16 @@
 <template>
   <base-modal class="edit-employee" globalClose @close="closeEditEmployee">
     <template #header>
-      <h1 v-if="this.new">{{ $t('general.actions.add', { resource: 'Employee' }) }}</h1>
+      <h1 v-if="this.newUser">{{ $t('general.actions.add', { resource: 'Employee' }) }}</h1>
       <h1 v-else>{{ employee.firstName }} {{ employee.lastName }}</h1>
       <StatusPicker
-        v-if="!this.new && activeEmployee.status"
-        :activeStatus="activeEmployee.status"
+        v-if="!this.newUser && employee.status"
+        :activeStatus="employee.status"
         @setActiveStatus="setActiveStatus"
       />
     </template>
     <template #main>
-      <div v-if="this.new">
+      <div v-if="this.newUser">
         <div class="form-control">
           <label for="firstName">{{ $t('general.labels.firstName') }}</label>
           <input
@@ -19,7 +19,7 @@
             id="firstName"
             @input="clearError('firstName')"
             :class="{ error: error.firstName }"
-            v-model.trim="activeEmployee.firstName"
+            v-model.trim="employee.firstName"
           />
         </div>
         <div class="form-control">
@@ -30,17 +30,17 @@
             id="lastName"
             @input="clearError('lastName')"
             :class="{ error: error.lastName }"
-            v-model.trim="activeEmployee.lastName"
+            v-model.trim="employee.lastName"
           />
         </div>
       </div>
       <div class="form-control">
         <label for="role">{{ $t('general.labels.role') }}</label>
         <base-dropdown
-          v-if="activeEmployee.role || this.new"
+          v-if="employee.role || this.newUser"
           id="role"
           :items="roles"
-          :active="activeEmployee.role"
+          :active="employee.role"
           :error="error.role"
           @choice="setRole"
         ></base-dropdown>
@@ -55,7 +55,7 @@
               id="contract"
               @input="clearError('contract')"
               :class="{ error: error.contract }"
-              v-model.trim="activeEmployee.contract"
+              v-model.trim="employee.contract"
             />
             <span class="input-label">{{ $t('staff.hours') }}</span>
           </div>
@@ -75,21 +75,21 @@
           id="email"
           @input="clearError('email')"
           :class="{ error: error.email }"
-          v-model.trim="activeEmployee.email"
+          v-model.trim="employee.email"
         />
       </div>
       <div class="form-control">
         <label for="phone">{{ $t('general.labels.phone') }}</label>
-        <input autocomplete="off" type="text" id="phone" v-model.trim="activeEmployee.phone" />
+        <input autocomplete="off" type="text" id="phone" v-model.trim="employee.phone" />
       </div>
       <div class="form-control notes">
         <label for="notes">{{ $t('general.labels.notes') }}</label>
-        <textarea id="notes" v-model="activeEmployee.notes"></textarea>
+        <textarea id="notes" v-model="employee.notes"></textarea>
       </div>
     </template>
     <template #actions>
       <base-button
-        v-if="!this.new"
+        v-if="!this.newUser"
         color="danger"
         iconOnly
         icon="delete"
@@ -110,119 +110,75 @@
 </template>
 
 <script>
+import util from '@/utils/util';
 import StatusPicker from '@/components/ui/StatusPicker.vue';
 
 export default {
-  props: ['employee', 'new'],
-  emits: ['closeEditEmployee'],
   components: {
     StatusPicker,
   },
   data() {
     return {
-      activeEmployee: {},
+      employee: {},
+      changed: {},
+      error: {},
+      requiredFields: ['firstName', 'lastName', 'role', 'contract', 'email'],
       showConfirmDelete: false,
-      error: {
-        firstName: false,
-        lastName: false,
-        role: false,
-        contract: false,
-        email: false,
-      },
     };
   },
   methods: {
     setActiveStatus(status) {
-      this.activeEmployee.status = status;
+      this.employee.status = status;
     },
-    setCurrentEmployeeData() {
-      if (this.new) {
-        this.activeEmployee.status = 'staged';
-      } else {
-        this.activeEmployee.status = this.employee.status;
-      }
-      this.activeEmployee.email = this.employee.email || '';
-      this.activeEmployee.phone = this.employee.phone || '';
-      this.activeEmployee.role = this.employee.role || '';
-      this.activeEmployee.contract = this.employee.contract || '';
-      this.activeEmployee.contractType = this.employee.contractType || '';
-      this.activeEmployee.notes = this.employee.notes || '';
+    async resetForm() {
+      this.employee = {};
+      this.requiredFields.forEach((field) => this.clearError(field));
+      await this.$nextTick();
+      this.setInitState();
+    },
+    setInitState() {
+      this.employee = { ...this.initState };
     },
     setContractType(value) {
-      this.activeEmployee.contractType = value;
+      this.employee.contractType = value;
     },
     setRole(value) {
       this.clearError('role');
-      this.activeEmployee.role = value;
+      this.employee.role = value;
     },
     closeEditEmployee() {
-      this.$emit('closeEditEmployee');
+      this.$store.dispatch('employees/activeUserId', null);
     },
     async deleteEmployee() {
       if (await this.$refs.confirmDeleteEmployee.open()) {
-        this.activeEmployee.status = 'archived';
-        this.saveEditEmployee();
+        this.employee.status = 'ARCHIVED';
+        this.saveEditUser();
       }
     },
     validate() {
-      if (this.new) {
-        // Validate field: firstName
-        if (this.activeEmployee.firstName) {
-          this.error.firstName = false;
-        } else {
-          this.error.firstName = true;
-        }
-
-        // Validate field: lastName
-        if (this.activeEmployee.lastName) {
-          this.error.lastName = false;
-        } else {
-          this.error.lastName = true;
-        }
+      if (this.newUser) {
+        this.error.firstName = !this.employee.firstName;
+        this.error.lastName = !this.employee.lastName;
       }
 
-      // Validate field: role
-      if (this.activeEmployee.role) {
-        this.error.role = false;
-      } else {
-        this.error.role = true;
-      }
+      this.employee.contract = parseFloat(this.employee.contract.toString().replace(',', '.'));
 
-      // Validate field: contract
-      this.activeEmployee.contract = parseFloat(this.activeEmployee.contract.toString().replace(',', '.'));
+      this.error.role = !this.employee.role;
+      this.error.contract = !this.employee.contract;
 
-      if (this.activeEmployee.contract) {
-        this.error.contract = false;
-      } else {
-        this.activeEmployee.contract = '';
-        this.error.contract = true;
-      }
+      this.error.email = !/^.+@\w+\.\w+$/i.test(this.employee.email);
 
-      const emailRegex = /^.+@\w+\.\w+$/i;
+      if (Object.values(this.error).includes(true)) return;
 
-      // Validate field: email
-      if (emailRegex.test(this.activeEmployee.email)) {
-        this.error.email = false;
-      } else {
-        this.error.email = true;
-      }
-
-      if (!Object.values(this.error).includes(true)) {
-        this.saveEditEmployee();
-      }
+      this.saveEditUser();
     },
-    async saveEditEmployee() {
-      if (this.new) {
-        this.$store.dispatch('employees/createNewUser', {
-          employee: this.activeEmployee,
-        });
-      } else {
-        this.$store.dispatch('employees/updateUser', {
-          id: this.employee.id,
-          data: this.activeEmployee,
-        });
+    async saveEditUser() {
+      if (this.newUser) {
+        this.employee.status = 'NEW';
+        this.employee.id = util.randomId(28);
       }
 
+      this.$store.dispatch('employees/saveEditUser', this.employee);
       this.closeEditEmployee();
     },
     clearError(field) {
@@ -233,9 +189,15 @@ export default {
     roles() {
       return this.$store.getters['settings/roles'].map((role) => ({ id: role, display: role }));
     },
+    newUser() {
+      return this.$store.getters['employees/activeUserId'] === 'NEW';
+    },
+    initState() {
+      return this.$store.getters['employees/users'].find((v) => v.id === this.$store.getters['employees/activeUserId']);
+    },
   },
   mounted() {
-    this.setCurrentEmployeeData();
+    this.resetForm();
   },
 };
 </script>

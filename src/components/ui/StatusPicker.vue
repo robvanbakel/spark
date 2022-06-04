@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     statuses() {
-      return this.$store.getters['settings/statuses'].filter((status) => status !== 'staged');
+      return this.$store.getters['settings/statuses'].filter((status) => status !== 'STAGED');
     },
   },
 };

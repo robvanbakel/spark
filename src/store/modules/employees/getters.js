@@ -4,10 +4,13 @@ export default {
   },
   employees(state) {
     return state.users
-      .filter((emp) => emp.status !== 'archived' && emp.status !== 'admin')
+      .filter((emp) => emp.status !== 'ARCHIVED' && emp.status !== 'ADMIN')
       .sort((a, b) => b.createdAt - a.createdAt);
   },
   totalHours(state) {
     return state.totalHours;
+  },
+  activeUserId(state) {
+    return state.activeUserId;
   },
 };

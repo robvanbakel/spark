@@ -51,7 +51,7 @@ export default {
       return this.$store.getters['auth/admin'];
     },
     employee() {
-      return this.$store.getters['auth/user'].status !== 'admin';
+      return this.$store.getters['auth/user'].status !== 'ADMIN';
     },
   },
   methods: {

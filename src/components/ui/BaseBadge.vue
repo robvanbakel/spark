@@ -28,17 +28,17 @@ export default {
     getBadgeColor() {
       switch (this.status) {
         // Employee Status
-        case 'staged':
+        case 'STAGED':
           return 'blue';
-        case 'active':
+        case 'ACTIVE':
           return 'green';
-        case 'unavailable':
+        case 'UNAVAILABLE':
           return 'yellow';
-        case 'sick':
+        case 'SICK':
           return 'purple';
-        case 'inactive':
+        case 'INACTIVE':
           return 'orange';
-        case 'archived':
+        case 'ARCHIVED':
           return 'red';
 
         // Employee Role
