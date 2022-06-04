@@ -19,6 +19,7 @@ export default {
       state.shifts.push({
         ...payload,
         status: 'PROPOSED',
+        statusUpdated: new Date().toISOString(),
       });
 
       return;

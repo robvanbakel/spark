@@ -262,6 +262,7 @@ export default {
       if (this.newShift) {
         this.shift.status = 'NEW';
         this.shift.id = util.randomId(20);
+        this.shift.statusUpdated = new Date().toISOString();
       }
 
       // If employee already has a shift on that day, confirm that the shift should be replaced
@@ -274,6 +275,7 @@ export default {
       // If employee, from or to changed, inform the employer that a new acceptance notification will be sent
       if (this.newRequestNeeded && !this.newShift) {
         this.shift.status = 'PROPOSED';
+        this.shift.statusUpdated = new Date().toISOString();
       }
 
       // Save shift and exit modal
