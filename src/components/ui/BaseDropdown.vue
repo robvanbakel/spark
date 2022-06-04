@@ -151,9 +151,9 @@ export default {
       const { status } = this.$store.getters['employees/employees'].find((emp) => emp.id === id);
 
       if (opt.capitalize) {
-        return status.charAt(0).toUpperCase() + status.slice(1);
+        return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
       }
-      return status;
+      return status.toLowerCase();
     },
   },
 };
