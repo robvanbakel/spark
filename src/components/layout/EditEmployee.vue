@@ -107,6 +107,23 @@
     message="Deleting an employee cannot be undone."
     :choiceTrue="$t('general.actions.delete', {resource: 'employee'})"
   />
+
+  <BaseConfirm
+    ref="emailAlreadyExists"
+    title="Email already in use"
+    message="This email address is already associated with an employee."
+    choiceTrue="Go back"
+    no-false
+  />
+
+  <BaseConfirm
+    ref="somethingWentWrong"
+    title="Something went wrong"
+    message="Something went wrong trying to create this employee."
+    choiceTrue="Try again"
+    no-false
+  />
+
 </template>
 
 <script>
@@ -178,8 +195,18 @@ export default {
         this.employee.id = util.randomId(28);
       }
 
-      this.$store.dispatch('employees/saveEditUser', this.employee);
-      this.closeEditEmployee();
+      try {
+        await this.$store.dispatch('employees/saveEditUser', this.employee);
+        this.closeEditEmployee();
+      } catch (err) {
+        if (err.code === 'auth/email-already-exists') {
+          this.error.email = true;
+          this.$refs.emailAlreadyExists.open();
+          return;
+        }
+
+        this.$refs.somethingWentWrong.open();
+      }
     },
     clearError(field) {
       this.error[field] = false;
