@@ -272,12 +272,6 @@ export default {
         this.$store.dispatch('planner/deleteShift', taken.id);
       }
 
-      // If employee, from or to changed, inform the employer that a new acceptance notification will be sent
-      if (this.newRequestNeeded && !this.newShift) {
-        this.shift.status = 'PROPOSED';
-        this.shift.statusUpdated = new Date().toISOString();
-      }
-
       // Save shift and exit modal
       this.$store.dispatch('planner/saveEditShift', this.shift);
       this.closeEditShift();
