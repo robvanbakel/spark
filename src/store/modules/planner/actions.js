@@ -18,7 +18,6 @@ export default {
   },
   saveEditShift(context, payload) {
     context.commit('updateShiftLocally', payload);
-
     api[payload.status === 'NEW' ? 'post' : 'patch'](`db/shifts/${payload.id}`, format.shifts.req(payload));
   },
   deleteShiftLocally(context, shiftId = context.getters.activeShiftId) {

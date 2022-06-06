@@ -28,12 +28,9 @@ export default {
     state.shifts = state.shifts.map((shift) => {
       if (shift.id !== payload.id) return shift;
 
-      const newRequestNeeded = shift.employeeId !== payload.employeeId || !shift.from.isSame(payload.from, 'minute') || !shift.to.isSame(payload.to, 'minute');
-
       return {
         ...shift,
         ...payload,
-        status: newRequestNeeded ? 'PROPOSED' : payload.status,
       };
     });
   },

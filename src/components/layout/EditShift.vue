@@ -112,9 +112,9 @@
         tabindex="-1"
         @click="deleteShift"
       ></base-button>
-      <base-button v-if="newRequestNeeded && !newShift" secondary @click="resetForm">Reset</base-button>
+      <base-button v-if="newShift || newRequestNeeded && !newShift" secondary @click="resetForm">Reset</base-button>
       <base-button v-else secondary @click="closeEditShift">{{ $t('general.actions.cancel') }}</base-button>
-      <base-button @click="validate">{{ newRequestNeeded ? 'Send request' : $t('general.actions.save') }}</base-button>
+      <base-button @click="validate">{{ newShift || newRequestNeeded ? 'Send request' : $t('general.actions.save') }}</base-button>
     </template>
   </base-modal>
 
@@ -171,7 +171,7 @@ export default {
       return this.$store.getters['planner/shifts'].find((v) => v.id === this.$store.getters['planner/activeShiftId']) || this.$store.getters['planner/newShiftPrefillData'];
     },
     newRequestNeeded() {
-      return this.newShift || this.changed.employee || this.changed.from || this.changed.to;
+      return this.changed.employee || this.changed.from || this.changed.to;
     },
   },
   methods: {
@@ -273,7 +273,10 @@ export default {
       }
 
       // Save shift and exit modal
-      this.$store.dispatch('planner/saveEditShift', this.shift);
+      this.$store.dispatch('planner/saveEditShift', {
+        ...this.shift,
+        status: this.newRequestNeeded ? 'PROPOSED' : this.shift.status,
+      });
       this.closeEditShift();
     },
     closeEditShift() {
