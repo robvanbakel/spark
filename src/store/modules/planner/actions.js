@@ -21,6 +21,9 @@ export default {
 
     api[payload.status === 'NEW' ? 'post' : 'patch'](`db/shifts/${payload.id}`, format.shifts.req(payload));
   },
+  deleteShiftLocally(context, shiftId = context.getters.activeShiftId) {
+    context.commit('deleteShiftLocally', shiftId);
+  },
   deleteShift(context, shiftId = context.getters.activeShiftId) {
     context.commit('deleteShiftLocally', shiftId);
     api.destroy(`db/shifts/${shiftId}`);

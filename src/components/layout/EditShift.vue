@@ -267,7 +267,10 @@ export default {
 
       // If employee already has a shift on that day, confirm that the shift should be replaced
       const collision = this.$store.getters['planner/shifts'].find((shift) => shift.id !== this.shift.id && shift.employeeId === this.shift.employeeId && shift.from.isSame(this.shift.from, 'date'));
-      if (collision && !await this.$refs.confirmReplaceShift.open()) return;
+      if (collision) {
+        if (!(await this.$refs.confirmReplaceShift.open())) return;
+        this.$store.dispatch('planner/deleteShiftLocally', collision.id);
+      }
 
       // Save shift and exit modal
       this.$store.dispatch('planner/saveEditShift', this.shift);
