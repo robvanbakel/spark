@@ -112,7 +112,7 @@
         tabindex="-1"
         @click="deleteShift"
       ></base-button>
-      <base-button v-if="newShift || newRequestNeeded && !newShift" secondary @click="resetForm">Reset</base-button>
+      <base-button v-if="newRequestNeeded && !newShift" secondary @click="resetForm">Reset</base-button>
       <base-button v-else secondary @click="closeEditShift">{{ $t('general.actions.cancel') }}</base-button>
       <base-button @click="validate">{{ newShift || newRequestNeeded ? 'Send request' : $t('general.actions.save') }}</base-button>
     </template>
