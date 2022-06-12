@@ -21,7 +21,8 @@
     <div>
       <div class="row">
         <div class="employee"></div>
-        <ShiftBlock v-for="date in $store.getters['date/dates']" :key="date" />
+        <ShiftBlock v-for="(date, index) in $store.getters['date/dates']" :key="date"
+        @click="handleClick(index)" />
       </div>
     </div>
   </div>
@@ -50,11 +51,11 @@ export default {
   },
   methods: {
     handleClick(index) {
-      if (this.schedule[index]) {
+      if (this.schedule && this.schedule[index]) {
         this.$store.dispatch('planner/setActiveShiftId', this.schedule[index].id);
       } else {
         this.$store.dispatch('planner/addNewShift', {
-          employeeId: this.employee.id,
+          employeeId: this.employee?.id,
           from: this.$store.getters['date/dates'][index],
           to: this.$store.getters['date/dates'][index],
         });
