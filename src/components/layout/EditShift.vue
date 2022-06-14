@@ -68,7 +68,7 @@
                 autocomplete="off"
                 type="text"
                 :class="['time', { error: error.from }]"
-                v-model.trim="inputFrom"
+                v-model.lazy.trim="inputFrom"
                 @change="formatDateTime(inputFrom, 'from', 'inputFrom')"
                 @input="clearError('from')"
               />
@@ -77,7 +77,7 @@
                 autocomplete="off"
                 type="text"
                 :class="['time', { error: error.to }]"
-                v-model.trim="inputTo"
+                v-model.lazy.trim="inputTo"
                 @change="formatDateTime(inputTo, 'to', 'inputTo')"
                 @input="clearError('to')"
               />
@@ -173,6 +173,10 @@ export default {
     newRequestNeeded() {
       return this.changed.employee || this.changed.from || this.changed.to;
     },
+    shiftDuration() {
+      if (!this.shift.from || !this.inputFrom || !this.shift.to || !this.inputTo) return null;
+      return this.$dayjs.duration(this.shift.to.diff(this.shift.from)).subtract(this.shift.break, 'minute');
+    },
   },
   methods: {
     dropdownHandler(selectedId) {
@@ -234,6 +238,14 @@ export default {
         this[model] = this.$dayjs(this.shift[field]).format('HH:mm');
       }
 
+      if (this.shift.to.isBefore(this.shift.from) || this.inputTo === '00:00') {
+        this.shift.to = this.shift.to.add(1, 'day');
+      }
+
+      if (this.shift.to.diff(this.shift.from, 'hour') >= 24) {
+        this.shift.to = this.shift.to.subtract(1, 'day');
+      }
+
       if (this.newShift) return;
       this.changed.from = !this.initState.from.isSame(this.shift.from, 'minute');
       this.changed.to = !this.initState.to.isSame(this.shift.to, 'minute');
@@ -248,11 +260,7 @@ export default {
       this.error.location = !this.shift.location;
       this.error.date = !this.inputDate;
       this.error.from = !this.inputFrom;
-      this.error.to = !this.inputTo;
-
-      if (!this.error.from && !this.error.to) {
-        this.error.to = this.shift.to.isBefore(this.shift.from) && this.inputTo !== '00:00';
-      }
+      this.error.to = !this.inputTo || this.shift.from.isSame(this.shift.to);
 
       if (Object.values(this.error).includes(true)) return;
 
