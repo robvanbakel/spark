@@ -229,9 +229,7 @@ export default {
             const [, hour, minute] = value.match(/^(\d{1,2}?)\D?(\d{1,2})?$/);
             this.shift[field] = this.$dayjs(this.shift[field]).hour(hour < 24 ? hour : 0).minute(minute < 60 ? minute : 0);
           } catch {
-            if (this.shift[model]) {
-              this.error[field] = true;
-            }
+            this.error[field] = this[model];
             return;
           }
         }
