@@ -1,5 +1,5 @@
 <template>
-  <div class="shift-block" :class="{ active: this.shift, proposed: this.shift && this.shift.status !== 'ACCEPTED' }">
+  <div class="shift-block" :class="[{ active: this.shift }, this.shift?.status.toLowerCase()]">
     <div class="info-wrapper" v-if="this.shift">
       <div class="icons">
         <span v-for="icon in icons" :key="icon" class="material-symbols-outlined">{{icon}}</span>
@@ -24,6 +24,7 @@ export default {
       const icons = {
         description: this.shift?.notes,
         question_mark: this.shift?.status === 'PROPOSED',
+        edit: this.shift?.status === 'DRAFT',
       };
 
       return Object.keys(icons).filter((icon) => icons[icon]);
