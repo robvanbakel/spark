@@ -4,9 +4,7 @@
       <div class="icons">
         <span v-for="icon in icons" :key="icon" class="material-symbols-outlined">{{icon}}</span>
       </div>
-      <div class="shift-info-header">
-        <span class="location">{{ this.shift.location }}</span>
-      </div>
+      <span class="location">{{ this.shift.location }}</span>
       <span class="time">
         {{ this.shift.from.format('HH:mm') }} - {{ this.shift.to.format('HH:mm') }}
       </span>

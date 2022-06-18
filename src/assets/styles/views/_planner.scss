@@ -194,16 +194,6 @@ section#planner {
       cursor: pointer;
       &.active {
         background-color: colors.$select;
-        // &.proposed {
-        //   &::after {
-        //     content: '?';
-        //     font-size: 11px;
-        //     position: absolute;
-        //     top: 0;
-        //     right: 0;
-        //     padding: 5px 7px;
-        //   }
-        // }
       }
       &:hover:not(.active) {
         opacity: 0.65;
@@ -221,7 +211,8 @@ section#planner {
         }
       }
       .info-wrapper {
-        margin-bottom: 2px;
+        display: flex;
+        flex-direction: column;
         .icons {
           position: absolute;
           top: 0;
@@ -235,19 +226,17 @@ section#planner {
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
-        }
-        .shift-info-header {
-          span.location {
+          &.location {
             font-size: 12px;
             font-weight: 700;
             color: colors.$text-100;
             letter-spacing: 0.02em;
-            position: relative;
+            margin-bottom: 5px;
           }
-        }
-        span.time {
-          font-size: 12px;
-          color: colors.$main;
+          &.time {
+            font-size: 12px;
+            color: colors.$main;
+          }
         }
       }
     }
