@@ -32,7 +32,20 @@
 import ShiftBlock from '@/components/layout/ShiftBlock.vue';
 
 export default {
-  props: ['employee', 'schedule', 'search'],
+  props: {
+    employee: {
+      type: [Object, null],
+      default: null,
+    },
+    schedule: {
+      type: [Array, null],
+      default: null,
+    },
+    search: {
+      type: String,
+      default: '',
+    },
+  },
   components: { ShiftBlock },
   watch: {
     search(query) {

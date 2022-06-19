@@ -40,7 +40,16 @@
 
 <script>
 export default {
-  props: ['roles', 'search'],
+  props: {
+    roles: {
+      type: Array,
+      required: true,
+    },
+    search: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
       showAll: true,

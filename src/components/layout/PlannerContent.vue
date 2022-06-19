@@ -12,7 +12,20 @@
 import PlannerRow from '@/components/layout/PlannerRow.vue';
 
 export default {
-  props: ['schedules', 'roles', 'search'],
+  props: {
+    schedules: {
+      type: Object,
+      required: true,
+    },
+    roles: {
+      type: Array,
+      required: true,
+    },
+    search: {
+      type: String,
+      default: '',
+    },
+  },
   components: { PlannerRow },
   computed: {
     employees() {

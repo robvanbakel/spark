@@ -17,7 +17,20 @@
 
 <script>
 export default {
-  props: ['selectedMonth', 'selectedYear', 'active'],
+  props: {
+    selectedMonth: {
+      type: Number,
+      required: true,
+    },
+    selectedYear: {
+      type: Number,
+      required: true,
+    },
+    active: {
+      type: [Object, null],
+      default: null,
+    },
+  },
   emits: ['choice', 'prev', 'next'],
   methods: {
     daysInMonth() {

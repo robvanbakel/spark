@@ -19,7 +19,12 @@
 
 <script>
 export default {
-  props: ['activeStatus'],
+  props: {
+    activeStatus: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       showDropdown: false,
