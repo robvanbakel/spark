@@ -7,19 +7,36 @@ module.exports = {
     'plugin:vue/vue3-essential',
     '@vue/airbnb',
   ],
-  parserOptions: {
-    parser: '@babel/eslint-parser',
-  },
   rules: {
-    'no-console': 1,
-    'no-debugger': 1,
-    'vuejs-accessibility/mouse-events-have-key-events': 0,
-    'vuejs-accessibility/click-events-have-key-events': 0,
-    'vuejs-accessibility/form-control-has-label': 0,
-    'vuejs-accessibility/label-has-for': 0,
-    'vuejs-accessibility/no-autofocus': 0,
-    'import/no-cycle': 0,
-    'max-len': 0,
-    'func-names': 0,
   },
+  ignorePatterns: ['dist'],
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [
+          ['@', './src'],
+        ],
+      },
+    },
+  },
+  overrides: [
+    {
+      files: ['./vite.config.js'],
+      rules: {
+        'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+      },
+    },
+    {
+      files: ['./src/plugins/dayjs.js'],
+      rules: {
+        'func-names': 0,
+      },
+    },
+    {
+      files: ['./src/router/**/*.js', './src/store/**/*.js'],
+      rules: {
+        'import/no-cycle': 0,
+      },
+    },
+  ],
 };

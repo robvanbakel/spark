@@ -5,7 +5,7 @@ export default {
   async getSettings(context) {
     const idToken = await auth.currentUser.getIdToken();
 
-    const res = await fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/db/settings`, {
+    const res = await fetch(`${import.meta.env.VITE_ADMIN_HOST || ''}/admin/db/settings`, {
       headers: { authorization: idToken },
     });
 
@@ -86,7 +86,7 @@ export default {
       .update({ dateNotation: payload });
 
     // Send call to server to update stored settings
-    fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/updateSettings`);
+    fetch(`${import.meta.env.VITE_ADMIN_HOST || ''}/admin/updateSettings`);
   },
   async location(context, payload) {
     // Update locally
@@ -99,7 +99,7 @@ export default {
       .update(payload);
 
     // Send call to server to update stored settings
-    fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/updateSettings`);
+    fetch(`${import.meta.env.VITE_ADMIN_HOST || ''}/admin/updateSettings`);
   },
   async setShareWithEmployees(context, payload) {
     // Update locally
@@ -112,6 +112,6 @@ export default {
       .update(payload);
 
     // Send call to server to update stored settings
-    fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/updateSettings`);
+    fetch(`${import.meta.env.VITE_ADMIN_HOST || ''}/admin/updateSettings`);
   },
 };

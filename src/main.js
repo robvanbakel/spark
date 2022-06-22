@@ -8,7 +8,6 @@ import '@/assets/styles/main.scss';
 
 import dayjs from '@/plugins/dayjs';
 import i18n from '@/plugins/i18n';
-
 import BaseBadge from '@/components/ui/BaseBadge.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
 import BaseSwitch from '@/components/ui/BaseSwitch.vue';
@@ -50,16 +49,16 @@ auth.onAuthStateChanged(async (user) => {
 
     app.config.globalProperties.$dayjs = dayjs;
 
-    app.component('base-button', BaseButton);
-    app.component('base-badge', BaseBadge);
-    app.component('base-switch', BaseSwitch);
-    app.component('base-overlay', BaseOverlay);
-    app.component('base-modal', BaseModal);
-    app.component('base-dropdown', BaseDropdown);
+    app.component('BaseButton', BaseButton);
+    app.component('BaseBadge', BaseBadge);
+    app.component('BaseSwitch', BaseSwitch);
+    app.component('BaseOverlay', BaseOverlay);
+    app.component('BaseModal', BaseModal);
+    app.component('BaseDropdown', BaseDropdown);
     app.component('BaseConfirm', BaseConfirm);
     app.component('BaseDatePicker', BaseDatePicker);
     app.component('WeekSwitch', WeekSwitch);
-    app.component('the-sidebar', TheSidebar);
+    app.component('TheSidebar', TheSidebar);
 
     app.mount('#app');
   }

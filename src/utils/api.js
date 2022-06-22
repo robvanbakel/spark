@@ -3,7 +3,7 @@ import { auth } from '@/firebase';
 const request = async (method, path, body) => {
   const idToken = await auth.currentUser.getIdToken();
 
-  return fetch(`${process.env.VUE_APP_ADMIN_HOST || ''}/admin/${path}`, {
+  return fetch(`${import.meta.env.VITE_ADMIN_HOST || ''}/admin/${path}`, {
     method,
     headers: {
       authorization: idToken,
