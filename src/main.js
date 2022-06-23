@@ -32,8 +32,12 @@ let app = null;
 
 auth.onAuthStateChanged(async (user) => {
   if (user) {
-    await store.dispatch('settings/getSettings');
     await store.dispatch('employees/getUsers');
+
+    if (store.getters['auth/admin']) {
+      await store.dispatch('settings/getSettings');
+    }
+
     await store.dispatch('planner/getShifts');
     await store.dispatch('date/setDates');
 
