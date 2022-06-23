@@ -1,15 +1,11 @@
+import api from '@/utils/api';
+
 import firebase from 'firebase/app';
-import { db, auth } from '@/firebase';
+import { db } from '@/firebase';
 
 export default {
   async getSettings(context) {
-    const idToken = await auth.currentUser.getIdToken();
-
-    const res = await fetch(`${import.meta.env.VITE_ADMIN_HOST || ''}/admin/db/settings`, {
-      headers: { authorization: idToken },
-    });
-
-    const settings = await res.json();
+    const settings = await api.get('db/settings');
 
     if (!settings) return;
 
