@@ -1,7 +1,7 @@
+import firebase from 'firebase/app';
 import api from '@/utils/api';
 import format from '@/utils/format';
 
-import firebase from 'firebase/app';
 import { db } from '@/firebase';
 
 export default {

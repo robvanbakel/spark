@@ -1,9 +1,15 @@
 <template>
-  <div v-if="!breakpoints.sm.active" class="container">
+  <div
+    v-if="!breakpoints.sm.active"
+    class="container"
+  >
     <TheHeader v-if="$store.getters['auth/user']" />
-    <router-view></router-view>
+    <router-view />
   </div>
-  <div v-else style="text-align: center; padding: 3em 1em;">
+  <div
+    v-else
+    style="text-align: center; padding: 3em 1em;"
+  >
     {{ $t('general.smallScreenWarning') }}
   </div>
 </template>
@@ -13,6 +19,9 @@ import TheHeader from '@/components/layout/TheHeader.vue';
 
 export default {
   name: 'App',
+  components: {
+    TheHeader,
+  },
   data() {
     return {
       breakpoints: {
@@ -27,8 +36,9 @@ export default {
       },
     };
   },
-  components: {
-    TheHeader,
+  mounted() {
+    this.checkScreenSize();
+    window.addEventListener('resize', this.checkScreenSize);
   },
   methods: {
     checkScreenSize() {
@@ -56,10 +66,6 @@ export default {
         this.breakpoints[selected].active = true;
       }
     },
-  },
-  mounted() {
-    this.checkScreenSize();
-    window.addEventListener('resize', this.checkScreenSize);
   },
 };
 </script>

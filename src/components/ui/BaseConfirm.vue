@@ -1,11 +1,24 @@
 <template>
-  <base-modal v-if="showConfirm" tight centered :title="title">
+  <base-modal
+    v-if="showConfirm"
+    tight
+    centered
+    :title="title"
+  >
     <template #main>
       {{ message }}
     </template>
     <template #actions>
-      <base-button v-if="!noFalse" secondary @click="confirm(false)">{{ choiceFalse }}</base-button>
-      <base-button @click="confirm(true)">{{ choiceTrue }}</base-button>
+      <base-button
+        v-if="!noFalse"
+        secondary
+        @click="confirm(false)"
+      >
+        {{ choiceFalse }}
+      </base-button>
+      <base-button @click="confirm(true)">
+        {{ choiceTrue }}
+      </base-button>
     </template>
   </base-modal>
 </template>

@@ -1,11 +1,16 @@
 <template>
-  <base-modal class="edit-shift" :title="newShift ? 'New Shift' : 'Edit Shift'" globalClose @close="closeEditShift">
+  <base-modal
+    class="edit-shift"
+    :title="newShift ? 'New Shift' : 'Edit Shift'"
+    global-close
+    @close="closeEditShift"
+  >
     <template #header>
       <base-badge
         v-if="!newShift"
         :status="shift.status === 'ACCEPTED' ? 'accepted' : 'not accepted yet'"
         class="active"
-      ></base-badge>
+      />
     </template>
     <template #main>
       <div>
@@ -17,39 +22,37 @@
             :error="error.employee"
             :items="employees"
             :active="shift.employeeId"
+            enable-search
+            employee-status
             @choice="dropdownHandler"
-            enableSearch
-            employeeStatus
-          ></base-dropdown>
+          />
         </div>
         <div class="form-control">
           <label for="location">{{ $t('general.labels.location') }}</label>
           <div>
             <input
+              id="location"
+              v-model.trim="shift.location"
               autocomplete="off"
               type="text"
               :class="{ error: error.location }"
-              id="location"
-              v-model.trim="shift.location"
               @input="clearError('location')"
-            />
+            >
             <div class="suggestions">
               <span
                 v-for="suggestion in $store.getters['settings/settings'].suggestions"
                 :key="suggestion"
-                :class="{ selected: this.selectedSuggestion === suggestion }"
+                :class="{ selected: selectedSuggestion === suggestion }"
                 @click="selectSuggestion(suggestion)"
                 @click.right="$store.dispatch('settings/deleteSuggestion', { event: $event, suggestion })"
-                >{{ suggestion }}</span
-              >
+              >{{ suggestion }}</span>
               <span
-                class="add"
                 v-if="showNewSuggestion"
+                class="add"
                 @click="$store.dispatch('settings/addSuggestion', { suggestion: shift.location })"
               >
                 <span class="material-icons material-icons-round">add</span>
-                {{ shift.location }}</span
-              >
+                {{ shift.location }}</span>
             </div>
           </div>
         </div>
@@ -65,40 +68,43 @@
             <div class="form-control-time">
               <span class="input-label-main">{{ $t('general.labels.time') }}</span>
               <input
+                v-model.lazy.trim="inputFrom"
                 autocomplete="off"
                 type="text"
                 :class="['time', { error: error.from }]"
-                v-model.lazy.trim="inputFrom"
                 @change="formatDateTime(inputFrom, 'from', 'inputFrom')"
                 @input="clearError('from')"
-              />
+              >
               <span class="input-label">-</span>
               <input
+                v-model.lazy.trim="inputTo"
                 autocomplete="off"
                 type="text"
                 :class="['time', { error: error.to }]"
-                v-model.lazy.trim="inputTo"
                 @change="formatDateTime(inputTo, 'to', 'inputTo')"
                 @input="clearError('to')"
-              />
+              >
             </div>
           </div>
         </div>
         <div class="form-control">
           <label>{{ $t('general.labels.break') }}</label>
           <base-switch
-            id="breaks"
             v-if="shift.break"
+            id="breaks"
             :items="$store.getters['settings/breaks']"
             :active="shift.break"
-            @activeItem="setBreak"
             :fixed="true"
             tabindex="0"
-          ></base-switch>
+            @active-item="setBreak"
+          />
         </div>
         <div class="form-control notes">
           <label for="notes">{{ $t('general.labels.notes') }}</label>
-          <textarea id="notes" v-model="shift.notes"></textarea>
+          <textarea
+            id="notes"
+            v-model="shift.notes"
+          />
         </div>
       </div>
     </template>
@@ -106,15 +112,29 @@
       <base-button
         v-if="!newShift"
         color="danger"
-        iconOnly
+        icon-only
         class="left"
         icon="delete"
         tabindex="-1"
         @click="deleteShift"
-      ></base-button>
-      <base-button v-if="newRequestNeeded && !newShift" secondary @click="resetForm">Reset</base-button>
-      <base-button v-else secondary @click="closeEditShift">{{ $t('general.actions.cancel') }}</base-button>
-      <base-button @click="validate">{{ newShift || newRequestNeeded ? 'Send request' : $t('general.actions.save') }}</base-button>
+      />
+      <base-button
+        v-if="newRequestNeeded && !newShift"
+        secondary
+        @click="resetForm"
+      >
+        Reset
+      </base-button>
+      <base-button
+        v-else
+        secondary
+        @click="closeEditShift"
+      >
+        {{ $t('general.actions.cancel') }}
+      </base-button>
+      <base-button @click="validate">
+        {{ newShift || newRequestNeeded ? 'Send request' : $t('general.actions.save') }}
+      </base-button>
     </template>
   </base-modal>
 
@@ -122,14 +142,14 @@
     ref="confirmReplaceShift"
     title="Shift already exists"
     message="This employee already has a shift on that day. Do you want to replace it?"
-    choiceFalse="Go back"
-    :choiceTrue="$t('general.actions.replace', {resource: 'shift'})"
+    choice-false="Go back"
+    :choice-true="$t('general.actions.replace', {resource: 'shift'})"
   />
 
   <BaseConfirm
     ref="confirmDeleteShift"
     message="Deleting this shift cannot be undone."
-    :choiceTrue="$t('general.actions.delete', {resource: 'shift'})"
+    :choice-true="$t('general.actions.delete', {resource: 'shift'})"
   />
 </template>
 
@@ -177,6 +197,9 @@ export default {
       if (!this.shift.from || !this.inputFrom || !this.shift.to || !this.inputTo) return null;
       return this.$dayjs.duration(this.shift.to.diff(this.shift.from)).subtract(this.shift.break, 'minute');
     },
+  },
+  mounted() {
+    this.resetForm();
   },
   methods: {
     dropdownHandler(selectedId) {
@@ -294,9 +317,6 @@ export default {
         this.closeEditShift();
       }
     },
-  },
-  mounted() {
-    this.resetForm();
   },
 };
 </script>

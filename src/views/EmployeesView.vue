@@ -1,34 +1,51 @@
 <template>
   <div class="actionbar">
     <div class="search">
-      <input autocomplete="off" type="text" v-model.trim="searchInput" placeholder="Search Staff" ref="searchInput" />
-      <span v-if="!searchInput" class="material-icons material-icons-round">search</span>
-      <span v-else class="clear material-icons material-icons-round" @click="clearSearchInput">clear</span>
+      <input
+        ref="searchInput"
+        v-model.trim="searchInput"
+        autocomplete="off"
+        type="text"
+        placeholder="Search Staff"
+      >
+      <span
+        v-if="!searchInput"
+        class="material-icons material-icons-round"
+      >search</span>
+      <span
+        v-else
+        class="clear material-icons material-icons-round"
+        @click="clearSearchInput"
+      >clear</span>
     </div>
     <div class="filter">
       {{ $t('general.actions.filter') }}:
       <base-badge
-        @click="setFilter(status)"
         v-for="status in Object.keys(filters)"
         :key="status"
         :status="status"
         :class="{ inactive: !filters[status] }"
-      ></base-badge>
+        @click="setFilter(status)"
+      />
       <span
         v-if="Object.values(filters).includes(true)"
         class="clear material-icons material-icons-round"
         @click="clearFilters"
-        >clear</span
-      >
+      >clear</span>
     </div>
     <div class="actions">
-      <base-button @click="$store.dispatch('employees/addNewUser')" icon="add">{{ $t('general.actions.add', { resource: 'Employee' }) }}</base-button>
+      <base-button
+        icon="add"
+        @click="$store.dispatch('employees/addNewUser')"
+      >
+        {{ $t('general.actions.add', { resource: 'Employee' }) }}
+      </base-button>
     </div>
   </div>
   <main>
     <section id="employeelist">
       <div class="header">
-        <div></div>
+        <div />
         <div>{{ $t('general.labels.name') }}</div>
         <div>{{ $t('general.labels.email') }}</div>
         <div>{{ $t('general.labels.phone') }}</div>
@@ -36,21 +53,32 @@
         <div>{{ $t('general.labels.notes') }}</div>
       </div>
 
-      <div class="row" v-for="employee in employees" :key="employee.id" @click="$store.dispatch('employees/activeUserId',employee.id)">
+      <div
+        v-for="employee in employees"
+        :key="employee.id"
+        class="row"
+        @click="$store.dispatch('employees/activeUserId',employee.id)"
+      >
         <div>
-          <base-badge :status="employee.status" :label="false"></base-badge>
+          <base-badge
+            :status="employee.status"
+            :label="false"
+          />
         </div>
-        <div class="name">{{ getFullName(employee) }}</div>
+        <div class="name">
+          {{ getFullName(employee) }}
+        </div>
         <div>{{ employee.email }}</div>
         <div>{{ employee.phone }}</div>
         <div>{{ employee.role }}</div>
-        <div class="notes">{{ employee.notes }}</div>
+        <div class="notes">
+          {{ employee.notes }}
+        </div>
       </div>
     </section>
   </main>
 
   <EditEmployee v-if="$store.getters['employees/activeUserId']" />
-
 </template>
 
 <script>
@@ -89,6 +117,9 @@ export default {
       });
     },
   },
+  mounted() {
+    this.filters = this.$store.getters['settings/statuses'].reduce((acc, curr) => ({ ...acc, [curr]: false }), {});
+  },
   methods: {
     closeEditEmployee() {
       this.activeEmployee = null;
@@ -109,9 +140,6 @@ export default {
       this.searchInput = '';
       this.$refs.searchInput.focus();
     },
-  },
-  mounted() {
-    this.filters = this.$store.getters['settings/statuses'].reduce((acc, curr) => ({ ...acc, [curr]: false }), {});
   },
 };
 </script>

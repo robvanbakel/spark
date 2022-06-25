@@ -1,118 +1,141 @@
 <template>
-  <base-modal class="edit-employee" globalClose @close="closeEditEmployee">
+  <base-modal
+    class="edit-employee"
+    global-close
+    @close="closeEditEmployee"
+  >
     <template #header>
-      <h1 v-if="this.newUser">{{ $t('general.actions.add', { resource: 'Employee' }) }}</h1>
-      <h1 v-else>{{ employee.firstName }} {{ employee.lastName }}</h1>
+      <h1 v-if="newUser">
+        {{ $t('general.actions.add', { resource: 'Employee' }) }}
+      </h1>
+      <h1 v-else>
+        {{ employee.firstName }} {{ employee.lastName }}
+      </h1>
       <StatusPicker
-        v-if="!this.newUser && employee.status"
-        :activeStatus="employee.status"
-        @setActiveStatus="setActiveStatus"
+        v-if="!newUser && employee.status"
+        :active-status="employee.status"
+        @set-active-status="setActiveStatus"
       />
     </template>
     <template #main>
-      <div v-if="this.newUser">
+      <div v-if="newUser">
         <div class="form-control">
           <label for="firstName">{{ $t('general.labels.firstName') }}</label>
           <input
+            id="firstName"
+            v-model.trim="employee.firstName"
             autocomplete="off"
             type="text"
-            id="firstName"
-            @input="clearError('firstName')"
             :class="{ error: error.firstName }"
-            v-model.trim="employee.firstName"
-          />
+            @input="clearError('firstName')"
+          >
         </div>
         <div class="form-control">
           <label for="lastName">{{ $t('general.labels.lastName') }}</label>
           <input
+            id="lastName"
+            v-model.trim="employee.lastName"
             autocomplete="off"
             type="text"
-            id="lastName"
-            @input="clearError('lastName')"
             :class="{ error: error.lastName }"
-            v-model.trim="employee.lastName"
-          />
+            @input="clearError('lastName')"
+          >
         </div>
       </div>
       <div class="form-control">
         <label for="role">{{ $t('general.labels.role') }}</label>
         <base-dropdown
-          v-if="employee.role || this.newUser"
+          v-if="employee.role || newUser"
           id="role"
           :items="roles"
           :active="employee.role"
           :error="error.role"
           @choice="setRole"
-        ></base-dropdown>
+        />
       </div>
       <div class="form-control">
         <label for="contract">{{ $t('general.labels.contract') }}</label>
         <div class="form-control-contract">
           <div>
             <input
+              id="contract"
+              v-model.trim="employee.contract"
               autocomplete="off"
               type="text"
-              id="contract"
-              @input="clearError('contract')"
               :class="{ error: error.contract }"
-              v-model.trim="employee.contract"
-            />
+              @input="clearError('contract')"
+            >
             <span class="input-label">{{ $t('staff.hours') }}</span>
           </div>
           <base-switch
-            :items="['fulltime', 'parttime']"
             id="contractType"
+            :items="['fulltime', 'parttime']"
             :active="employee.contractType"
             @active-item="setContractType"
-          ></base-switch>
+          />
         </div>
       </div>
       <div class="form-control">
         <label for="email">{{ $t('general.labels.email') }}</label>
         <input
+          id="email"
+          v-model.trim="employee.email"
           autocomplete="off"
           type="text"
-          id="email"
-          @input="clearError('email')"
           :class="{ error: error.email }"
-          v-model.trim="employee.email"
-        />
+          @input="clearError('email')"
+        >
       </div>
       <div class="form-control">
         <label for="phone">{{ $t('general.labels.phone') }}</label>
-        <input autocomplete="off" type="text" id="phone" v-model.trim="employee.phone" />
+        <input
+          id="phone"
+          v-model.trim="employee.phone"
+          autocomplete="off"
+          type="text"
+        >
       </div>
       <div class="form-control notes">
         <label for="notes">{{ $t('general.labels.notes') }}</label>
-        <textarea id="notes" v-model="employee.notes"></textarea>
+        <textarea
+          id="notes"
+          v-model="employee.notes"
+        />
       </div>
     </template>
     <template #actions>
       <base-button
-        v-if="!this.newUser"
+        v-if="!newUser"
         color="danger"
-        iconOnly
+        icon-only
         icon="delete"
         class="left"
-        @click="deleteEmployee"
         tabindex="-1"
-      ></base-button>
-      <base-button secondary @click="closeEditEmployee">{{ $t('general.actions.cancel') }}</base-button>
-      <base-button @click="validate">{{ $t('general.actions.save') }}</base-button>
+        @click="deleteEmployee"
+      />
+      <base-button
+        secondary
+        @click="closeEditEmployee"
+      >
+        {{ $t('general.actions.cancel') }}
+      </base-button>
+      <base-button @click="validate">
+        {{ $t('general.actions.save') }}
+      </base-button>
     </template>
   </base-modal>
 
   <BaseConfirm
     ref="confirmDeleteEmployee"
     message="Deleting an employee cannot be undone."
-    :choiceTrue="$t('general.actions.delete', {resource: 'employee'})"
+    :choice-true="$t('general.actions.delete', {resource: 'employee'})"
   />
 
   <BaseConfirm
     ref="emailAlreadyExists"
     title="Email already in use"
     message="This email address is already associated with an employee."
-    choiceTrue="Go back"
+    choice-true="Go back"
     no-false
   />
 
@@ -120,10 +143,9 @@
     ref="somethingWentWrong"
     title="Something went wrong"
     message="Something went wrong trying to create this employee."
-    choiceTrue="Try again"
+    choice-true="Try again"
     no-false
   />
-
 </template>
 
 <script>
@@ -142,6 +164,20 @@ export default {
       requiredFields: ['firstName', 'lastName', 'role', 'contract', 'email'],
       showConfirmDelete: false,
     };
+  },
+  computed: {
+    roles() {
+      return this.$store.getters['settings/roles'].map((role) => ({ id: role, display: role }));
+    },
+    newUser() {
+      return this.$store.getters['employees/activeUserId'] === 'NEW';
+    },
+    initState() {
+      return this.$store.getters['employees/users'].find((v) => v.id === this.$store.getters['employees/activeUserId']);
+    },
+  },
+  mounted() {
+    this.resetForm();
   },
   methods: {
     setActiveStatus(status) {
@@ -211,20 +247,6 @@ export default {
     clearError(field) {
       this.error[field] = false;
     },
-  },
-  computed: {
-    roles() {
-      return this.$store.getters['settings/roles'].map((role) => ({ id: role, display: role }));
-    },
-    newUser() {
-      return this.$store.getters['employees/activeUserId'] === 'NEW';
-    },
-    initState() {
-      return this.$store.getters['employees/users'].find((v) => v.id === this.$store.getters['employees/activeUserId']);
-    },
-  },
-  mounted() {
-    this.resetForm();
   },
 };
 </script>

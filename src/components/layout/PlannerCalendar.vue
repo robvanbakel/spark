@@ -1,15 +1,31 @@
 <template>
   <div class="plannerCalendar">
     <div id="header">
-      <span class="material-icons material-icons-round" @click="prev">chevron_left</span>
-      <h2 @click="today">{{ calendarHeader }}</h2>
-      <span class="material-icons material-icons-round" @click="next">chevron_right</span>
+      <span
+        class="material-icons material-icons-round"
+        @click="prev"
+      >chevron_left</span>
+      <h2 @click="today">
+        {{ calendarHeader }}
+      </h2>
+      <span
+        class="material-icons material-icons-round"
+        @click="next"
+      >chevron_right</span>
     </div>
     <div id="days">
-      <span v-for="day in this.$store.getters['date/dayNamesShort']" :key="day">{{ day }}</span>
+      <span
+        v-for="day in $store.getters['date/dayNamesShort']"
+        :key="day"
+      >{{ day }}</span>
     </div>
     <div class="dates">
-      <p v-for="num in visibleInPrevMonth()" :key="num" class="prev-month" @click="prev()">
+      <p
+        v-for="num in visibleInPrevMonth()"
+        :key="num"
+        class="prev-month"
+        @click="prev()"
+      >
         {{ num }}
       </p>
       <p
@@ -20,7 +36,12 @@
       >
         {{ num }}
       </p>
-      <p v-for="num in visibleInNextMonth()" :key="num" class="next-month" @click="next()">
+      <p
+        v-for="num in visibleInNextMonth()"
+        :key="num"
+        class="next-month"
+        @click="next()"
+      >
         {{ num }}
       </p>
     </div>
@@ -34,6 +55,30 @@ export default {
       selectedMonth: new Date().getMonth(),
       selectedYear: new Date().getFullYear(),
     };
+  },
+  computed: {
+    calendarHeader() {
+      return this.$dayjs()
+        .year(this.selectedYear)
+        .month(this.selectedMonth)
+        .format('MMMM YYYY');
+    },
+    calendarPoint() {
+      return this.$store.getters['date/dates'][3];
+    },
+  },
+  watch: {
+    async calendarPoint() {
+      const currentWeekId = this.$dayjs().weekId();
+
+      if (this.$store.getters['date/weekId'] === currentWeekId) {
+        this.selectedMonth = new Date().getMonth();
+        this.selectedYear = new Date().getFullYear();
+      } else {
+        this.selectedMonth = this.$store.getters['date/dates'][3].toDate().getMonth();
+        this.selectedYear = this.$store.getters['date/dates'][3].toDate().getFullYear();
+      }
+    },
   },
   methods: {
     daysInMonth() {
@@ -100,30 +145,6 @@ export default {
       const date = new Date(this.selectedYear, this.selectedMonth, selectedDay);
       const selectedWeekId = this.$dayjs(date).weekId();
       this.$router.push({ params: { weekId: selectedWeekId } });
-    },
-  },
-  computed: {
-    calendarHeader() {
-      return this.$dayjs()
-        .year(this.selectedYear)
-        .month(this.selectedMonth)
-        .format('MMMM YYYY');
-    },
-    calendarPoint() {
-      return this.$store.getters['date/dates'][3];
-    },
-  },
-  watch: {
-    async calendarPoint() {
-      const currentWeekId = this.$dayjs().weekId();
-
-      if (this.$store.getters['date/weekId'] === currentWeekId) {
-        this.selectedMonth = new Date().getMonth();
-        this.selectedYear = new Date().getFullYear();
-      } else {
-        this.selectedMonth = this.$store.getters['date/dates'][3].toDate().getMonth();
-        this.selectedYear = this.$store.getters['date/dates'][3].toDate().getFullYear();
-      }
     },
   },
 };

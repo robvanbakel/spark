@@ -1,16 +1,27 @@
 <template>
   <div class="base-date-picker">
     <input
-      @click="showCalendar"
       readonly
       :class="{ focus: calendarVisible, error }"
-      :value="activeDate?.format(this.$store.getters['settings/settings'].dateNotation)"
+      :value="activeDate?.format($store.getters['settings/settings'].dateNotation)"
+      @click="showCalendar"
       @focus="showCalendar"
       @keydown.tab="hideCalendar"
+    >
+    <base-overlay
+      v-if="calendarVisible"
+      invisible
+      @clickout="hideCalendar"
     />
-    <base-overlay v-if="calendarVisible" @clickout="hideCalendar" invisible></base-overlay>
-    <div class="calendar" v-if="calendarVisible">
-      <BaseCalendar mode="picker" :active="activeDate" @choice="setDate" />
+    <div
+      v-if="calendarVisible"
+      class="calendar"
+    >
+      <BaseCalendar
+        mode="picker"
+        :active="activeDate"
+        @choice="setDate"
+      />
     </div>
   </div>
 </template>
@@ -20,7 +31,6 @@ import BaseCalendar from '@/components/ui/BaseCalendar/BaseCalendar.vue';
 
 export default {
   components: { BaseCalendar },
-  emits: ['date'],
   props: {
     active: {
       type: Object,
@@ -31,6 +41,7 @@ export default {
       require: false,
     },
   },
+  emits: ['date'],
   data() {
     return {
       calendarVisible: false,

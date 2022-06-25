@@ -1,7 +1,10 @@
 <template>
   <div class="auth">
     <div class="logo">
-      <img src="@/assets/logo.svg" alt="Spark" />
+      <img
+        src="@/assets/logo.svg"
+        alt="Spark"
+      >
     </div>
     <div v-if="$route.query.activationToken">
       <ActivateAccount />

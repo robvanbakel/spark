@@ -1,13 +1,17 @@
 <template>
   <div v-if="employee">
-    <div v-if="hasschedulesInView" class="row" :class="employee.role?.toLowerCase()">
+    <div
+      v-if="hasschedulesInView"
+      class="row"
+      :class="employee.role?.toLowerCase()"
+    >
       <div class="employee">
         <span class="name">{{ employee.firstName }} {{ employee.lastName }}</span>
         <span class="hours">
           <span class="calculated">
             {{ $store.getters['employees/totalHours'][employee.id]?.toFixed(2) }}</span> /
-            {{ employee.contract }} hours
-          </span>
+          {{ employee.contract }} hours
+        </span>
       </div>
       <ShiftBlock
         v-for="(shift, index) in schedule"
@@ -20,9 +24,12 @@
   <div v-else>
     <div>
       <div class="row">
-        <div class="employee"></div>
-        <ShiftBlock v-for="(date, index) in $store.getters['date/dates']" :key="date"
-        @click="handleClick(index)" />
+        <div class="employee" />
+        <ShiftBlock
+          v-for="(date, index) in $store.getters['date/dates']"
+          :key="date"
+          @click="handleClick(index)"
+        />
       </div>
     </div>
   </div>
@@ -32,6 +39,7 @@
 import ShiftBlock from '@/components/layout/ShiftBlock.vue';
 
 export default {
+  components: { ShiftBlock },
   props: {
     employee: {
       type: [Object, null],
@@ -46,12 +54,6 @@ export default {
       default: '',
     },
   },
-  components: { ShiftBlock },
-  watch: {
-    search(query) {
-      this.searchInput = query;
-    },
-  },
   data() {
     return {
       searchInput: '',
@@ -60,6 +62,11 @@ export default {
   computed: {
     hasschedulesInView() {
       return this.schedule && !this.schedule?.every((v) => !v);
+    },
+  },
+  watch: {
+    search(query) {
+      this.searchInput = query;
     },
   },
   methods: {

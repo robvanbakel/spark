@@ -1,23 +1,19 @@
 module.exports = {
-  root: true,
   env: {
     node: true,
   },
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
   extends: [
-    'plugin:vue/vue3-essential',
-    '@vue/airbnb',
+    'eslint:recommended',
+    'plugin:vue/vue3-recommended',
+    'airbnb-base',
   ],
   rules: {
-  },
-  ignorePatterns: ['dist'],
-  settings: {
-    'import/resolver': {
-      alias: {
-        map: [
-          ['@', './src'],
-        ],
-      },
-    },
+    'max-len': 0,
+    'vue/require-default-prop': 0,
   },
   overrides: [
     {
@@ -38,5 +34,20 @@ module.exports = {
         'import/no-cycle': 0,
       },
     },
+    {
+      files: ['./src/store/**/*.js'],
+      rules: {
+        'no-param-reassign': 0,
+      },
+    },
   ],
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [
+          ['@', './src'],
+        ],
+      },
+    },
+  },
 };

@@ -1,18 +1,29 @@
 <template>
   <div class="status-picker-wrapper">
     <div class="current-status">
-      <base-badge :status="activeStatus" :label="true" @click="toggleDropdown"></base-badge>
+      <base-badge
+        :status="activeStatus"
+        :label="true"
+        @click="toggleDropdown"
+      />
     </div>
-    <base-overlay v-if="showDropdown" invisible @clickout="showDropdown = false"></base-overlay>
-    <div class="status-picker-dropdown" v-if="showDropdown">
+    <base-overlay
+      v-if="showDropdown"
+      invisible
+      @clickout="showDropdown = false"
+    />
+    <div
+      v-if="showDropdown"
+      class="status-picker-dropdown"
+    >
       <base-badge
         v-for="status in statuses"
         :key="status"
         :status="status"
         :label="true"
-        :class="{ active: status === this.activeStatus }"
+        :class="{ active: status === activeStatus }"
         @click="setStatus(status)"
-      ></base-badge>
+      />
     </div>
   </div>
 </template>
@@ -25,10 +36,16 @@ export default {
       required: true,
     },
   },
+  emits: ['setActiveStatus'],
   data() {
     return {
       showDropdown: false,
     };
+  },
+  computed: {
+    statuses() {
+      return this.$store.getters['settings/statuses'].filter((status) => status !== 'STAGED');
+    },
   },
   methods: {
     toggleDropdown() {
@@ -39,11 +56,6 @@ export default {
         this.$emit('setActiveStatus', status);
         this.showDropdown = false;
       }
-    },
-  },
-  computed: {
-    statuses() {
-      return this.$store.getters['settings/statuses'].filter((status) => status !== 'STAGED');
     },
   },
 };

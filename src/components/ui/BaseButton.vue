@@ -1,7 +1,10 @@
 <template>
-  <button :class="['base-button', { inverted, secondary, 'icon-only': iconOnly }, this.color]">
-    <span v-if="icon" :class="['material-icons material-icons-round', { flipped }]">{{ icon }}</span>
-    <slot></slot>
+  <button :class="['base-button', { inverted, secondary, 'icon-only': iconOnly }, color]">
+    <span
+      v-if="icon"
+      :class="['material-icons material-icons-round', { flipped }]"
+    >{{ icon }}</span>
+    <slot />
   </button>
 </template>
 

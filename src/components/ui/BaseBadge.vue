@@ -1,7 +1,10 @@
 <template>
-  <div class="badge" :class="[getBadgeColor(), { large: label }]">
+  <div
+    class="badge"
+    :class="[getBadgeColor(), { large: label }]"
+  >
     <div class="outer">
-      <div class="inner"></div>
+      <div class="inner" />
       <span v-if="label">{{ formatContent }}</span>
     </div>
   </div>

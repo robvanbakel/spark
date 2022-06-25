@@ -1,12 +1,22 @@
 <template>
-  <div class="shift-block" :class="[{ active: this.shift }, this.shift?.status.toLowerCase()]">
-    <div class="info-wrapper" v-if="this.shift">
+  <div
+    class="shift-block"
+    :class="[{ active: shift }, shift?.status.toLowerCase()]"
+  >
+    <div
+      v-if="shift"
+      class="info-wrapper"
+    >
       <div class="icons">
-        <span v-for="icon in icons" :key="icon" class="material-symbols-outlined">{{icon}}</span>
+        <span
+          v-for="icon in icons"
+          :key="icon"
+          class="material-symbols-outlined"
+        >{{ icon }}</span>
       </div>
-      <span class="location">{{ this.shift.location }}</span>
+      <span class="location">{{ shift.location }}</span>
       <span class="time">
-        {{ this.shift.from.format('HH:mm') }} - {{ this.shift.to.format('HH:mm') }}
+        {{ shift.from.format('HH:mm') }} - {{ shift.to.format('HH:mm') }}
       </span>
     </div>
   </div>
@@ -16,7 +26,8 @@
 export default {
   props: {
     shift: {
-      type: Object,
+      type: [Object, null],
+      default: null,
     },
   },
   computed: {

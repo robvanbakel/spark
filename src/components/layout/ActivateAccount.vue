@@ -1,33 +1,94 @@
 <template>
   <div v-if="!success">
-    <div class="auth-modal" v-if="!emailConfirmed">
+    <div
+      v-if="!emailConfirmed"
+      class="auth-modal"
+    >
       <h1>Welcome</h1>
       <p>Please enter your email address and click continue to choose a password.</p>
-      <p class="error" v-if="errorMessage">{{ errorMessage }}</p>
+      <p
+        v-if="errorMessage"
+        class="error"
+      >
+        {{ errorMessage }}
+      </p>
       <form @submit.prevent="confirmEmail">
-        <input type="email" placeholder="Email" required v-model.trim="email" ref="email" autofocus />
-        <base-button v-if="!loading" type="submit">Continue</base-button>
-        <base-button v-else disabled>Loading…</base-button>
+        <input
+          ref="email"
+          v-model.trim="email"
+          type="email"
+          placeholder="Email"
+          required
+          autofocus
+        >
+        <base-button
+          v-if="!loading"
+          type="submit"
+        >
+          Continue
+        </base-button>
+        <base-button
+          v-else
+          disabled
+        >
+          Loading…
+        </base-button>
       </form>
     </div>
 
-    <div class="auth-modal" v-else>
+    <div
+      v-else
+      class="auth-modal"
+    >
       <h1>Hi {{ firstName }}</h1>
       <p>Choose a strong password and submit in order to activate your account and login to see your schedule.</p>
-      <p class="error" v-if="errorMessage">{{ errorMessage }}</p>
+      <p
+        v-if="errorMessage"
+        class="error"
+      >
+        {{ errorMessage }}
+      </p>
       <form @submit.prevent="setPassword">
-        <input type="password" placeholder="Password" v-model="password" ref="password" />
-        <input type="password" placeholder="Repeat password" v-model="repeatPassword" ref="repeatPassword" />
-        <base-button v-if="!loading" type="submit">Activate Account</base-button>
-        <base-button v-else disabled>Loading…</base-button>
+        <input
+          ref="password"
+          v-model="password"
+          type="password"
+          placeholder="Password"
+        >
+        <input
+          ref="repeatPassword"
+          v-model="repeatPassword"
+          type="password"
+          placeholder="Repeat password"
+        >
+        <base-button
+          v-if="!loading"
+          type="submit"
+        >
+          Activate Account
+        </base-button>
+        <base-button
+          v-else
+          disabled
+        >
+          Loading…
+        </base-button>
       </form>
     </div>
   </div>
 
-  <div class="auth-modal success" v-else>
+  <div
+    v-else
+    class="auth-modal success"
+  >
     <h1>Success!</h1>
     <p>Your account has been successfully activated! You can now log in to Spark to see your schedule.</p>
-    <base-button icon="login" @click="toLogin">Login page</base-button>
+    <base-button
+      icon="login"
+      @click="toLogin"
+    >
+      Login page
+    </base-button>
   </div>
 </template>
 
@@ -44,6 +105,15 @@ export default {
       password: '',
       repeatPassword: '',
     };
+  },
+  watch: {
+    emailConfirmed(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.$refs.password.focus();
+        });
+      }
+    },
   },
   methods: {
     async confirmEmail() {
@@ -135,15 +205,6 @@ export default {
     },
     toLogin() {
       this.$router.push({ name: 'Auth' });
-    },
-  },
-  watch: {
-    emailConfirmed(val) {
-      if (val) {
-        this.$nextTick(() => {
-          this.$refs.password.focus();
-        });
-      }
     },
   },
 };

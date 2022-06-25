@@ -3,7 +3,13 @@
     <div class="header">
       <h1>{{ $t('settings.title') }}</h1>
       <div class="actions">
-        <base-button @click="saveSettings" :disabled="!unsavedChanges" icon="save">{{ $t('general.actions.save') }}</base-button>
+        <base-button
+          :disabled="!unsavedChanges"
+          icon="save"
+          @click="saveSettings"
+        >
+          {{ $t('general.actions.save') }}
+        </base-button>
       </div>
     </div>
 
@@ -15,20 +21,20 @@
       <div class="setting toggle">
         <span class="label">{{ $t('settings.shareNotes.employeeNotes') }}</span>
         <base-switch
-          toggle
           id="employeeNotes"
+          toggle
           :active="settings.shareWithEmployees.employeeNotes.toString()"
-          @activeItem="setShareWithEmployees($event, 'employeeNotes')"
-        ></base-switch>
+          @active-item="setShareWithEmployees($event, 'employeeNotes')"
+        />
       </div>
       <div class="setting toggle">
         <span class="label">{{ $t('settings.shareNotes.shiftNotes') }}</span>
         <base-switch
-          toggle
           id="shiftNotes"
+          toggle
           :active="settings.shareWithEmployees.shiftNotes.toString()"
-          @activeItem="setShareWithEmployees($event, 'shiftNotes')"
-        ></base-switch>
+          @active-item="setShareWithEmployees($event, 'shiftNotes')"
+        />
       </div>
     </div>
 
@@ -40,7 +46,7 @@
           :items="dateNotations"
           :active="settings.dateNotation"
           @choice="setDateNotation"
-        ></base-dropdown>
+        />
       </div>
     </div>
 
@@ -55,27 +61,27 @@
           <div class="input-row">
             <input
               id="street"
+              v-model="settings.address.street"
               type="text"
               placeholder="street"
-              v-model="settings.address.street"
-              @input="this.unsavedChanges = true"
-            />
+              @input="unsavedChanges = true"
+            >
           </div>
           <div class="input-row">
             <input
               id="postalCode"
+              v-model="settings.address.postalCode"
               type="text"
               placeholder="ZIP Code"
-              v-model="settings.address.postalCode"
-              @input="this.unsavedChanges = true"
-            />
+              @input="unsavedChanges = true"
+            >
             <input
               id="city"
+              v-model="settings.address.city"
               type="text"
               placeholder="City"
-              v-model="settings.address.city"
-              @input="this.unsavedChanges = true"
-            />
+              @input="unsavedChanges = true"
+            >
           </div>
         </div>
       </div>
@@ -86,43 +92,36 @@
     ref="confirmUnsavedChanges"
     title="Unsaved Changes"
     message="Do you want to save your unsaved changes?"
-    :choiceTrue="$t('general.actions.save', {resource: 'changes'})"
-    :choiceFalse="$t('general.actions.discard')"
+    :choice-true="$t('general.actions.save', {resource: 'changes'})"
+    :choice-false="$t('general.actions.discard')"
   />
 
   <BaseConfirm
     ref="settingsSaved"
     title="Success!"
     message="Your settings have been saved."
-    choiceTrue="Ok"
-    noFalse
+    choice-true="Ok"
+    no-false
   />
 </template>
 
 <script>
 export default {
+  async beforeRouteLeave(to, from, next) {
+    if (!this.unsavedChanges) {
+      next();
+    } else {
+      if (await this.$refs.confirmUnsavedChanges.open()) {
+        this.saveSettings();
+      }
+      next();
+    }
+  },
   data() {
     return {
       unsavedChanges: null,
       settings: this.$store.getters['settings/settings'],
     };
-  },
-  methods: {
-    setShareWithEmployees(value, id) {
-      this.unsavedChanges = true;
-      this.settings.shareWithEmployees[id] = value;
-    },
-    setDateNotation(locale) {
-      this.unsavedChanges = true;
-      this.settings.dateNotation = locale;
-    },
-    async saveSettings() {
-      this.$store.dispatch('settings/saveSettings', this.settings);
-
-      if (await this.$refs.settingsSaved.open()) {
-        this.unsavedChanges = false;
-      }
-    },
   },
   computed: {
     dateNotations() {
@@ -145,15 +144,22 @@ export default {
   mounted() {
     this.unsavedChanges = false;
   },
-  async beforeRouteLeave(to, from, next) {
-    if (!this.unsavedChanges) {
-      next();
-    } else {
-      if (await this.$refs.confirmUnsavedChanges.open()) {
-        this.saveSettings();
+  methods: {
+    setShareWithEmployees(value, id) {
+      this.unsavedChanges = true;
+      this.settings.shareWithEmployees[id] = value;
+    },
+    setDateNotation(locale) {
+      this.unsavedChanges = true;
+      this.settings.dateNotation = locale;
+    },
+    async saveSettings() {
+      this.$store.dispatch('settings/saveSettings', this.settings);
+
+      if (await this.$refs.settingsSaved.open()) {
+        this.unsavedChanges = false;
       }
-      next();
-    }
+    },
   },
 };
 </script>

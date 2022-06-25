@@ -1,9 +1,15 @@
 <template>
   <div class="plus-minus-hours-wrapper">
-    <div class="plus-minus-hours-role-wrapper" v-for="role in roles" :key="role">
-      <div v-for="employee in $store.getters['employees/employees']" :key="employee.id">
+    <div
+      v-for="role in roles"
+      :key="role"
+      class="plus-minus-hours-role-wrapper"
+    >
+      <div
+        v-for="employee in $store.getters['employees/employees']"
+        :key="employee.id"
+      >
         <div
-          class="entry"
           v-if="
             employee.role.toLowerCase() === role &&
               calculatePlusMinusHours(employee.id) &&
@@ -12,10 +18,11 @@
                 .toLowerCase()
                 .includes(searchInput.toLowerCase())
           "
+          class="entry"
         >
           <div class="hours">
             <span :class="calculatePlusMinusHours(employee.id) < 0 ? 'minus' : 'plus'">
-             {{ ((calculatePlusMinusHours(employee.id) > 0) ? '+' : '') + calculatePlusMinusHours(employee.id).toFixed(2) }}
+              {{ ((calculatePlusMinusHours(employee.id) > 0) ? '+' : '') + calculatePlusMinusHours(employee.id).toFixed(2) }}
             </span>
           </div>
           <div class="employee-info">
@@ -25,7 +32,10 @@
         </div>
       </div>
     </div>
-    <div class="show-all" @click="toggleShowAll">
+    <div
+      class="show-all"
+      @click="toggleShowAll"
+    >
       <div v-if="showAll">
         Show scheduled employees
         <span class="material-icons material-icons-round">expand_less</span>

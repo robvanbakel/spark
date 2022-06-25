@@ -1,40 +1,60 @@
 <template>
   <div class="actionbar">
     <div class="search">
-      <input autocomplete="off" type="text" v-model.trim="searchInput" placeholder="Search Planner" ref="searchInput" />
-      <span v-if="!searchInput" class="material-icons material-icons-round">search</span>
-      <span v-else class="clear material-icons material-icons-round" @click="clearSearchInput">clear</span>
+      <input
+        ref="searchInput"
+        v-model.trim="searchInput"
+        autocomplete="off"
+        type="text"
+        placeholder="Search Planner"
+      >
+      <span
+        v-if="!searchInput"
+        class="material-icons material-icons-round"
+      >search</span>
+      <span
+        v-else
+        class="clear material-icons material-icons-round"
+        @click="clearSearchInput"
+      >clear</span>
     </div>
     <div class="filter">
       {{ $t('general.actions.filter') }}:
       <base-badge
-        @click="setFilter(status)"
         v-for="status in Object.keys(filters)"
         :key="status"
         :status="status"
         :class="{ inactive: !filters[status] }"
-      ></base-badge>
+        @click="setFilter(status)"
+      />
       <span
         v-if="Object.values(filters).includes(true)"
         class="clear material-icons material-icons-round"
         @click="clearFilters"
-        >clear</span
-      >
+      >clear</span>
     </div>
     <div class="actions">
-      <base-button icon="add" @click="addNewShift">{{ $t('general.actions.add', { resource: 'Shift' }) }}</base-button>
+      <base-button
+        icon="add"
+        @click="addNewShift"
+      >
+        {{ $t('general.actions.add', { resource: 'Shift' }) }}
+      </base-button>
       <base-button
         inverted
-        iconOnly
+        icon-only
         :flipped="!$store.getters['settings/hideSidebar']"
         icon="menu_open"
         @click="toggleSidebar"
-      ></base-button>
+      />
     </div>
   </div>
   <main>
     <section id="planner">
-      <EmptyWeek v-if="emptyWeek && !hideEmptyWeek" @hide-empty-week="hideEmptyWeek = true" />
+      <EmptyWeek
+        v-if="emptyWeek && !hideEmptyWeek"
+        @hide-empty-week="hideEmptyWeek = true"
+      />
       <div v-else>
         <div class="header">
           <div>
@@ -51,7 +71,11 @@
             <span class="date">{{ date.format('LL') }}</span>
           </div>
         </div>
-        <PlannerContent :schedules="schedulesInView" :roles="displayRoles" :search="searchInput" />
+        <PlannerContent
+          :schedules="schedulesInView"
+          :roles="displayRoles"
+          :search="searchInput"
+        />
       </div>
     </section>
 
@@ -61,8 +85,14 @@
       <section>
         <PlannerCalendar />
       </section>
-      <section class="plus-minus-hours" v-if="!emptyWeek || hideEmptyWeek">
-        <PlusMinusHours :roles="displayRoles" :search="searchInput" />
+      <section
+        v-if="!emptyWeek || hideEmptyWeek"
+        class="plus-minus-hours"
+      >
+        <PlusMinusHours
+          :roles="displayRoles"
+          :search="searchInput"
+        />
       </section>
     </the-sidebar>
   </main>
@@ -89,6 +119,32 @@ export default {
       hideEmptyWeek: false,
       filters: {},
     };
+  },
+  computed: {
+    displayRoles() {
+      if (Object.values(this.filters).includes(true)) {
+        return Object.keys(this.filters).filter((role) => this.filters[role] === true);
+      }
+      return Object.keys(this.filters);
+    },
+    emptyWeek() {
+      return !Object.values(this.schedulesInView).flat().length;
+    },
+    schedulesInView() {
+      return this.$store.getters['planner/schedulesInView'];
+    },
+  },
+  watch: {
+    $route(to) {
+      if (to.name === 'Planner') {
+        this.setWindowTitle();
+        this.hideEmptyWeek = false;
+      }
+    },
+  },
+  mounted() {
+    this.setWindowTitle();
+    this.filters = this.$store.getters['settings/settings'].roles.reduce((acc, curr) => ({ ...acc, [curr.toLowerCase()]: false }), {});
   },
   methods: {
     closeEditShift() {
@@ -118,32 +174,6 @@ export default {
       this.$store.dispatch('date/setDates', weekId);
       document.title = `Week ${this.$store.getters['date/weekNumber']} - Planner - Spark`;
     },
-  },
-  computed: {
-    displayRoles() {
-      if (Object.values(this.filters).includes(true)) {
-        return Object.keys(this.filters).filter((role) => this.filters[role] === true);
-      }
-      return Object.keys(this.filters);
-    },
-    emptyWeek() {
-      return !Object.values(this.schedulesInView).flat().length;
-    },
-    schedulesInView() {
-      return this.$store.getters['planner/schedulesInView'];
-    },
-  },
-  watch: {
-    $route(to) {
-      if (to.name === 'Planner') {
-        this.setWindowTitle();
-        this.hideEmptyWeek = false;
-      }
-    },
-  },
-  mounted() {
-    this.setWindowTitle();
-    this.filters = this.$store.getters['settings/settings'].roles.reduce((acc, curr) => ({ ...acc, [curr.toLowerCase()]: false }), {});
   },
 };
 </script>

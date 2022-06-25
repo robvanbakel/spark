@@ -1,15 +1,33 @@
 <template>
   <div id="days">
-    <span v-for="day in $store.getters['date/dayNamesShort']" :key="day">{{ day }}</span>
+    <span
+      v-for="day in $store.getters['date/dayNamesShort']"
+      :key="day"
+    >{{ day }}</span>
   </div>
   <div class="dates">
-    <p v-for="num in visibleInPrevMonth()" :key="num" class="prev-month" @click="$emit('prev')">
+    <p
+      v-for="num in visibleInPrevMonth()"
+      :key="num"
+      class="prev-month"
+      @click="$emit('prev')"
+    >
       {{ num }}
     </p>
-    <p v-for="num in daysInMonth()" :key="num" :class="dateClasses(num)" @click="pickDate(num)">
+    <p
+      v-for="num in daysInMonth()"
+      :key="num"
+      :class="dateClasses(num)"
+      @click="pickDate(num)"
+    >
       {{ num }}
     </p>
-    <p v-for="num in visibleInNextMonth()" :key="num" class="next-month" @click="$emit('next')">
+    <p
+      v-for="num in visibleInNextMonth()"
+      :key="num"
+      class="next-month"
+      @click="$emit('next')"
+    >
       {{ num }}
     </p>
   </div>

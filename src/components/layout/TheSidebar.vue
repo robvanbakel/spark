@@ -1,6 +1,6 @@
 <template>
   <aside :class="{ hidden: $store.getters['settings/hideSidebar'] }">
-    <slot></slot>
+    <slot />
   </aside>
 </template>
 

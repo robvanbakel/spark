@@ -1,46 +1,67 @@
 <template>
   <div class="base-dropdown">
-    <div class="input-wrapper" :class="{ focus: dropdownVisible, enableSearch }" @click="showDropdown">
+    <div
+      class="input-wrapper"
+      :class="{ focus: dropdownVisible, enableSearch }"
+      @click="showDropdown"
+    >
       <input
-        autocomplete="off"
         :id="id"
-        type="text"
-        :class="['input', { error }]"
-        @click="showDropdown"
-        :readonly="!enableSearch"
         ref="input"
         v-model="input"
+        autocomplete="off"
+        type="text"
+        :class="['input', { error }]"
+        :readonly="!enableSearch"
+        @click="showDropdown"
         @focus="showDropdown"
         @keydown.tab="hideDropdown"
-      />
+      >
     </div>
-    <base-overlay v-if="dropdownVisible" @clickout="hideDropdown" invisible></base-overlay>
-    <div class="dropdown" v-if="dropdownVisible">
-      <div class="dropdown-inner" :style="{ top: dropdownScrollOffset + 'px' }" v-if="this.filteredItems.length">
+    <base-overlay
+      v-if="dropdownVisible"
+      invisible
+      @clickout="hideDropdown"
+    />
+    <div
+      v-if="dropdownVisible"
+      class="dropdown"
+    >
+      <div
+        v-if="filteredItems.length"
+        class="dropdown-inner"
+        :style="{ top: dropdownScrollOffset + 'px' }"
+      >
         <div
           v-for="(item, index) in filteredItems"
           :key="item.id"
           :class="[
             'item',
-            { active: item.id === this.selected && this.hoveredIndex === null },
-            { active: index === this.hoveredIndex },
+            { active: item.id === selected && hoveredIndex === null },
+            { active: index === hoveredIndex },
           ]"
           @click="selectItem(item.id)"
         >
           <span>{{ item.display }}</span>
-          <span v-if="employeeStatus" :class="['status', getStatus(item.id)]">{{
+          <span
+            v-if="employeeStatus"
+            :class="['status', getStatus(item.id)]"
+          >{{
             getStatus(item.id, { capitalize: true })
           }}</span>
         </div>
       </div>
-      <span class="item no-match" v-else @click="showDropdown">No matches</span>
+      <span
+        v-else
+        class="item no-match"
+        @click="showDropdown"
+      >No matches</span>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  emits: ['choice'],
   props: {
     id: {
       type: String,
@@ -67,6 +88,7 @@ export default {
       require: false,
     },
   },
+  emits: ['choice'],
   data() {
     return {
       dropdownVisible: false,

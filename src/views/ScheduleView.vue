@@ -3,7 +3,10 @@
     <section id="singleEmployeeCalendar">
       <div class="header">
         <h1>Hi {{ $store.getters["auth/user"].firstName }}</h1>
-        <div class="week-info" v-if="schedulesInView">
+        <div
+          v-if="schedulesInView"
+          class="week-info"
+        >
           <div>
             Week: <span>{{ $store.getters["date/weekNumber"] }}</span>
           </div>
@@ -14,24 +17,54 @@
             Total: <span>{{ totalHours }} hours</span>
           </div>
         </div>
-        <div v-if="hasUnacceptedShifts" class="actions">
-          <base-button @click="acceptAllShifts" icon="check">Accept all shifts</base-button>
+        <div
+          v-if="hasUnacceptedShifts"
+          class="actions"
+        >
+          <base-button
+            icon="check"
+            @click="acceptAllShifts"
+          >
+            Accept all shifts
+          </base-button>
         </div>
-        <div v-else class="actions">
-          <base-button @click="openCalendar" icon="calendar_today">Add to Calendar</base-button>
-          <base-button class="inverted icon-only" @click="generateQR">
+        <div
+          v-else
+          class="actions"
+        >
+          <base-button
+            icon="calendar_today"
+            @click="openCalendar"
+          >
+            Add to Calendar
+          </base-button>
+          <base-button
+            class="inverted icon-only"
+            @click="generateQR"
+          >
             <span class="clear material-icons material-icons-round">qr_code_2</span>
           </base-button>
         </div>
       </div>
-      <div class="calendar" v-if="schedulesInView">
+      <div
+        v-if="schedulesInView"
+        class="calendar"
+      >
         <div class="colDays">
-          <div class="row" v-for="date in $store.getters['date/dates']" :key="date" :class="{ today: date.isSame($dayjs(), 'date') }">
+          <div
+            v-for="date in $store.getters['date/dates']"
+            :key="date"
+            class="row"
+            :class="{ today: date.isSame($dayjs(), 'date') }"
+          >
             <span class="dayName">{{ date.format('dddd') }}</span>
             <span class="date">{{ date.format('LL') }}</span>
           </div>
         </div>
-        <div class="colCalendar" ref="calendar">
+        <div
+          ref="calendar"
+          class="colCalendar"
+        >
           <div class="hours">
             <span
               v-for="(hour, index) in hoursVisible + 1"
@@ -40,13 +73,16 @@
                 width: `${dayWidth}px`,
                 '--calendarHeight': `${calendarHeight + 12}px`,
               }"
-              >{{ $dayjs().hour(index + visibleHoursStart).minute(0).format('HH:mm')}}</span
-            >
+            >{{ $dayjs().hour(index + visibleHoursStart).minute(0).format('HH:mm') }}</span>
           </div>
-          <div class="row" v-for="(day, index) in schedulesInView" :key="index">
+          <div
+            v-for="(day, index) in schedulesInView"
+            :key="index"
+            class="row"
+          >
             <div
-              class="shift"
               v-if="day"
+              class="shift"
               :style="{
                 width: `${timeRangeToPercentage(day.from, day.to).percentage}%`,
                 left: `${timeRangeToPercentage(day.from, day.to).startPoint}%`,
@@ -56,12 +92,18 @@
             >
               <span class="location"> {{ day.location }}</span>
               <span class="time">{{ day.from.format('HH:mm') }} - {{ day.to.format('HH:mm') }}</span>
-              <span class="notes material-icons material-icons-round" v-if="day.notes">description</span>
+              <span
+                v-if="day.notes"
+                class="notes material-icons material-icons-round"
+              >description</span>
             </div>
           </div>
         </div>
       </div>
-      <div class="empty-schedule" v-else>
+      <div
+        v-else
+        class="empty-schedule"
+      >
         <p>
           No schedule available for week
           {{ $store.getters["date/weekNumber"] }}.
@@ -70,10 +112,10 @@
     </section>
 
     <base-modal
-      class="schedule-shift-info"
       v-if="activeShift"
+      class="schedule-shift-info"
       title="Shift info"
-      globalClose
+      global-close
       clickout
       @close="closeActiveShift"
     >
@@ -94,28 +136,66 @@
           <span class="label">Duration</span>
           <span class="value">{{ activeShift.duration }} hours ({{ activeShift.break }} minutes break)</span>
         </div>
-        <div class="shift-info-group" v-if="activeShift.notes">
+        <div
+          v-if="activeShift.notes"
+          class="shift-info-group"
+        >
           <span class="label">Notes</span>
           <span class="value">{{ activeShift.notes }}</span>
         </div>
       </template>
-      <template v-if="activeShift.status !== 'ACCEPTED'" #actions>
-        <base-button icon="close" inverted @click="reactToProposal(false)">Decline</base-button>
-        <base-button icon="check" @click="reactToProposal(true)">Accept</base-button>
+      <template
+        v-if="activeShift.status !== 'ACCEPTED'"
+        #actions
+      >
+        <base-button
+          icon="close"
+          inverted
+          @click="reactToProposal(false)"
+        >
+          Decline
+        </base-button>
+        <base-button
+          icon="check"
+          @click="reactToProposal(true)"
+        >
+          Accept
+        </base-button>
       </template>
-      <template v-else #actions>
-        <base-button inverted @click="helpActiveShift">Help</base-button>
-        <base-button @click="closeActiveShift">Close</base-button>
+      <template
+        v-else
+        #actions
+      >
+        <base-button
+          inverted
+          @click="helpActiveShift"
+        >
+          Help
+        </base-button>
+        <base-button @click="closeActiveShift">
+          Close
+        </base-button>
       </template>
     </base-modal>
 
-    <base-modal v-if="showQR" noHeader class="schedule-qr" clickout @close="closeQR">
+    <base-modal
+      v-if="showQR"
+      no-header
+      class="schedule-qr"
+      clickout
+      @close="closeQR"
+    >
       <template #main>
         <p>Scan with your phone to add your work schedule to your calendar.</p>
-        <img :src="qrCodeImg" alt="Link to calendar subscription" />
+        <img
+          :src="qrCodeImg"
+          alt="Link to calendar subscription"
+        >
       </template>
       <template #actions>
-        <base-button @click="closeQR">Close</base-button>
+        <base-button @click="closeQR">
+          Close
+        </base-button>
       </template>
     </base-modal>
 
@@ -123,7 +203,7 @@
       ref="confirmAcceptAllShifts"
       title="Accept all shifts for this week"
       message="Are you sure you want to accept all shifts for this week?"
-      choiceTrue="Accept shifts"
+      choice-true="Accept shifts"
     />
 
     <the-sidebar>
@@ -206,6 +286,17 @@ export default {
         this.checkCalendarWidth();
       }, 280); // Wait for CSS animation to finish
     },
+  },
+  mounted() {
+    this.checkCalendarWidth();
+    window.addEventListener('resize', this.checkCalendarWidth);
+  },
+  unmounted() {
+    window.removeEventListener('resize', this.checkCalendarWidth);
+  },
+  updated() {
+    if (this.calendarWidth && this.calendarWidth) return;
+    this.checkCalendarWidth();
   },
   methods: {
     async generateQR() {
@@ -293,17 +384,6 @@ export default {
 
       window.open(`mailto:${to}?subject=${subject}`);
     },
-  },
-  mounted() {
-    this.checkCalendarWidth();
-    window.addEventListener('resize', this.checkCalendarWidth);
-  },
-  unmounted() {
-    window.removeEventListener('resize', this.checkCalendarWidth);
-  },
-  updated() {
-    if (this.calendarWidth && this.calendarWidth) return;
-    this.checkCalendarWidth();
   },
 };
 </script>

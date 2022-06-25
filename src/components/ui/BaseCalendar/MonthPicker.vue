@@ -1,6 +1,11 @@
 <template>
   <div id="months">
-    <span v-for="(month, index) in 12" :key="month" @click="pickMonth(index)" :class="monthClasses(index)">{{
+    <span
+      v-for="(month, index) in 12"
+      :key="month"
+      :class="monthClasses(index)"
+      @click="pickMonth(index)"
+    >{{
       $dayjs().month(index).format('MMM')
     }}</span>
   </div>

@@ -1,19 +1,32 @@
 <template>
-  <div class="switch-wrapper" ref="wrapper" @keydown="keydownHandler">
-    <div class="indicator" ref="indicator"></div>
+  <div
+    ref="wrapper"
+    class="switch-wrapper"
+    @keydown="keydownHandler"
+  >
+    <div
+      ref="indicator"
+      class="indicator"
+    />
 
     <div v-if="toggle">
       <div
         v-for="item in [true, false]"
-        :data-value="item"
         :id="id"
-        class="switch-control toggle fixed"
         :key="item"
-        @click="setActive($event, item)"
         ref="item"
+        :data-value="item"
+        class="switch-control toggle fixed"
+        @click="setActive($event, item)"
       >
-        <span v-if="item" class="material-icons material-icons-round">check</span>
-        <span v-else class="material-icons material-icons-round">close</span>
+        <span
+          v-if="item"
+          class="material-icons material-icons-round"
+        >check</span>
+        <span
+          v-else
+          class="material-icons material-icons-round"
+        >close</span>
       </div>
     </div>
 
@@ -21,10 +34,10 @@
       <div
         v-for="item in items"
         :id="id"
-        :class="['switch-control', { fixed: this.fixed }]"
         :key="item"
-        @click="setActive($event, item)"
         ref="item"
+        :class="['switch-control', { fixed: fixed }]"
+        @click="setActive($event, item)"
       >
         {{ item }}
       </div>
@@ -52,6 +65,13 @@ export default {
     },
   },
   emits: ['activeItem'],
+  mounted() {
+    this.findAndSetActive();
+
+    setTimeout(() => {
+      this.$refs.indicator.style.transition = 'all 120ms ease-in-out';
+    }, 120);
+  },
   methods: {
     setActive(e, item) {
       const activeLeft = `${e.target.getBoundingClientRect().left - this.$refs.wrapper.getBoundingClientRect().left}px`;
@@ -92,13 +112,6 @@ export default {
         });
       }
     },
-  },
-  mounted() {
-    this.findAndSetActive();
-
-    setTimeout(() => {
-      this.$refs.indicator.style.transition = 'all 120ms ease-in-out';
-    }, 120);
   },
 };
 </script>

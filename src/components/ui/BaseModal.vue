@@ -1,16 +1,30 @@
 <template>
-  <base-overlay dark transparent @click="close(this.clickout)"></base-overlay>
+  <base-overlay
+    dark
+    transparent
+    @click="close(clickout)"
+  />
   <div :class="['base-modal', { tight, centered }, this.class]">
-    <div v-if="!noHeader" class="header">
-      <h1>{{ this.title }}</h1>
-      <slot name="header"></slot>
-      <span v-if="globalClose" class="material-icons material-icons-round" @click="close">clear</span>
+    <div
+      v-if="!noHeader"
+      class="header"
+    >
+      <h1>{{ title }}</h1>
+      <slot name="header" />
+      <span
+        v-if="globalClose"
+        class="material-icons material-icons-round"
+        @click="close"
+      >clear</span>
     </div>
     <div class="main">
-      <slot name="main"></slot>
+      <slot name="main" />
     </div>
-    <div v-if="!noActions" class="actions">
-      <slot name="actions"></slot>
+    <div
+      v-if="!noActions"
+      class="actions"
+    >
+      <slot name="actions" />
     </div>
   </div>
 </template>

@@ -4,7 +4,8 @@
     :key="employee.id"
     :employee="employee"
     :schedule="schedules[employee.id]"
-    :search="search" />
+    :search="search"
+  />
   <PlannerRow />
 </template>
 
@@ -12,6 +13,7 @@
 import PlannerRow from '@/components/layout/PlannerRow.vue';
 
 export default {
+  components: { PlannerRow },
   props: {
     schedules: {
       type: Object,
@@ -26,7 +28,6 @@ export default {
       default: '',
     },
   },
-  components: { PlannerRow },
   computed: {
     employees() {
       const output = [];

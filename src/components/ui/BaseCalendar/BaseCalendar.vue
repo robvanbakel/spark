@@ -1,14 +1,22 @@
 <template>
   <div :class="['base-calendar', mode]">
     <div id="header">
-      <span class="material-icons material-icons-round" @click="prev">chevron_left</span>
-      <h2 @click="changeView">{{ header }}</h2>
-      <span class="material-icons material-icons-round" @click="next">chevron_right</span>
+      <span
+        class="material-icons material-icons-round"
+        @click="prev"
+      >chevron_left</span>
+      <h2 @click="changeView">
+        {{ header }}
+      </h2>
+      <span
+        class="material-icons material-icons-round"
+        @click="next"
+      >chevron_right</span>
     </div>
     <DayPicker
       v-if="currentView === 'DayPicker'"
-      :selectedMonth="selectedMonth"
-      :selectedYear="selectedYear"
+      :selected-month="selectedMonth"
+      :selected-year="selectedYear"
       :active="active"
       @prev="prev"
       @next="next"
@@ -16,8 +24,8 @@
     />
     <MonthPicker
       v-if="currentView === 'MonthPicker'"
-      :selectedMonth="selectedMonth"
-      :selectedYear="selectedYear"
+      :selected-month="selectedMonth"
+      :selected-year="selectedYear"
       :active="active"
       @prev="prev"
       @next="next"
@@ -31,6 +39,10 @@ import DayPicker from '@/components/ui/BaseCalendar/DayPicker.vue';
 import MonthPicker from '@/components/ui/BaseCalendar/MonthPicker.vue';
 
 export default {
+  components: {
+    DayPicker,
+    MonthPicker,
+  },
   props: {
     active: {
       type: Object,
@@ -42,16 +54,23 @@ export default {
     },
   },
   emits: ['choice'],
-  components: {
-    DayPicker,
-    MonthPicker,
-  },
   data() {
     return {
       selectedMonth: this.active?.month() || this.$dayjs().month(),
       selectedYear: this.active?.year() || this.$dayjs().year(),
       currentView: 'DayPicker',
     };
+  },
+  computed: {
+    header() {
+      const date = this.$dayjs().year(this.selectedYear).month(this.selectedMonth);
+
+      if (this.currentView === 'MonthPicker') {
+        return date.format('YYYY');
+      }
+
+      return date.format('MMMM YYYY');
+    },
   },
   methods: {
     choice(date) {
@@ -91,17 +110,6 @@ export default {
     today() {
       this.selectedMonth = new Date().getMonth();
       this.selectedYear = new Date().getFullYear();
-    },
-  },
-  computed: {
-    header() {
-      const date = this.$dayjs().year(this.selectedYear).month(this.selectedMonth);
-
-      if (this.currentView === 'MonthPicker') {
-        return date.format('YYYY');
-      }
-
-      return date.format('MMMM YYYY');
     },
   },
 };

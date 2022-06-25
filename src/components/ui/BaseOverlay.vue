@@ -1,15 +1,18 @@
 <template>
-  <div :class="['overlay', { dark, transparent, invisible }]" @click="this.$emit('clickout')"></div>
+  <div
+    :class="['overlay', { dark, transparent, invisible }]"
+    @click="$emit('clickout')"
+  />
 </template>
 
 <script>
 export default {
-  emits: ['clickout'],
   props: {
     dark: Boolean,
     transparent: Boolean,
     invisible: Boolean,
   },
+  emits: ['clickout'],
   mounted() {
     document.body.classList.add('noscroll');
   },
