@@ -17,7 +17,7 @@
         <base-switch
           toggle
           id="employeeNotes"
-          :active="$store.getters['settings/shareWithEmployees'].employeeNotes.toString()"
+          :active="settings.shareWithEmployees.employeeNotes.toString()"
           @activeItem="setShareWithEmployees($event, 'employeeNotes')"
         ></base-switch>
       </div>
@@ -26,7 +26,7 @@
         <base-switch
           toggle
           id="shiftNotes"
-          :active="$store.getters['settings/shareWithEmployees'].shiftNotes.toString()"
+          :active="settings.shareWithEmployees.shiftNotes.toString()"
           @activeItem="setShareWithEmployees($event, 'shiftNotes')"
         ></base-switch>
       </div>
@@ -38,7 +38,7 @@
         <span class="label">{{ $t('settings.dateNotation.dateNotation') }}</span>
         <base-dropdown
           :items="dateNotations"
-          :active="$store.getters['settings/dateNotation']"
+          :active="settings.dateNotation"
           @choice="setDateNotation"
         ></base-dropdown>
       </div>
@@ -54,10 +54,10 @@
         <div class="input-wrapper">
           <div class="input-row">
             <input
-              id="address"
+              id="street"
               type="text"
-              placeholder="Address"
-              v-model="location.address"
+              placeholder="street"
+              v-model="settings.address.street"
               @input="this.unsavedChanges = true"
             />
           </div>
@@ -66,14 +66,14 @@
               id="postalCode"
               type="text"
               placeholder="ZIP Code"
-              v-model="location.postalCode"
+              v-model="settings.address.postalCode"
               @input="this.unsavedChanges = true"
             />
             <input
               id="city"
               type="text"
               placeholder="City"
-              v-model="location.city"
+              v-model="settings.address.city"
               @input="this.unsavedChanges = true"
             />
           </div>
@@ -104,27 +104,20 @@ export default {
   data() {
     return {
       unsavedChanges: null,
-      shareWithEmployees: {
-        employeeNotes: null,
-        shiftNotes: null,
-      },
-      location: this.$store.getters['settings/location'],
-      dateNotation: this.$store.getters['settings/dateNotation'],
+      settings: this.$store.getters['settings/settings'],
     };
   },
   methods: {
     setShareWithEmployees(value, id) {
       this.unsavedChanges = true;
-      this.shareWithEmployees[id] = value;
+      this.settings.shareWithEmployees[id] = value;
     },
     setDateNotation(locale) {
       this.unsavedChanges = true;
-      this.dateNotation = locale;
+      this.settings.dateNotation = locale;
     },
     async saveSettings() {
-      this.$store.dispatch('settings/setShareWithEmployees', this.shareWithEmployees);
-      this.$store.dispatch('settings/dateNotation', this.dateNotation);
-      this.$store.dispatch('settings/location', this.location);
+      this.$store.dispatch('settings/saveSettings', this.settings);
 
       if (await this.$refs.settingsSaved.open()) {
         this.unsavedChanges = false;

@@ -35,7 +35,7 @@
             />
             <div class="suggestions">
               <span
-                v-for="suggestion in $store.getters['settings/suggestions']"
+                v-for="suggestion in $store.getters['settings/settings'].suggestions"
                 :key="suggestion"
                 :class="{ selected: this.selectedSuggestion === suggestion }"
                 @click="selectSuggestion(suggestion)"
@@ -153,7 +153,7 @@ export default {
   computed: {
     showNewSuggestion() {
       if (
-        this.shift.location && !this.$store.getters['settings/suggestions']
+        this.shift.location && !this.$store.getters['settings/settings'].suggestions
           .map((sug) => sug.toLowerCase())
           .includes(this.shift.location.toLowerCase())
       ) {

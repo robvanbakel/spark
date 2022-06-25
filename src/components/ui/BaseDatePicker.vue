@@ -4,7 +4,7 @@
       @click="showCalendar"
       readonly
       :class="{ focus: calendarVisible, error }"
-      :value="activeDate?.format(this.$store.getters['settings/dateNotation'])"
+      :value="activeDate?.format(this.$store.getters['settings/settings'].dateNotation)"
       @focus="showCalendar"
       @keydown.tab="hideCalendar"
     />

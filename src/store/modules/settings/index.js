@@ -6,14 +6,10 @@ export default {
   namespaced: true,
   state() {
     return {
-      suggestions: null,
       admin: null,
-      roles: null,
-      shareWithEmployees: {},
       hideSidebar: false,
       sidebarAutoHidden: false,
-      location: {},
-      dateNotation: null,
+      settings: null,
       breaks: ['0', '15', '30', '45', '60'],
       statuses: ['ACTIVE', 'UNAVAILABLE', 'SICK', 'INACTIVE', 'STAGED'],
     };

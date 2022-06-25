@@ -1,4 +1,5 @@
 import api from '@/utils/api';
+import format from '@/utils/format';
 
 import firebase from 'firebase/app';
 import { db } from '@/firebase';
@@ -6,33 +7,11 @@ import { db } from '@/firebase';
 export default {
   async getSettings(context) {
     const settings = await api.get('db/settings');
-
-    if (!settings) return;
-
-    settings.forEach((doc) => {
-      switch (doc.id) {
-        case 'suggestions':
-          context.commit('suggestions', doc.suggestions);
-          break;
-        case 'admin':
-          context.commit('admin', doc.admin);
-          break;
-        case 'roles':
-          context.commit('roles', doc.roles);
-          break;
-        case 'shareWithEmployees':
-          context.commit('shareWithEmployees', doc);
-          break;
-        case 'dateNotation':
-          context.commit('dateNotation', doc.dateNotation);
-          break;
-        case 'location':
-          context.commit('location', doc);
-          break;
-        default:
-          break;
-      }
-    });
+    context.commit('settings', settings);
+  },
+  saveSettings(context, payload) {
+    api.patch(`db/admin/${payload.id}`, format.settings.req(payload));
+    context.commit('settings', payload);
   },
   addSuggestion(context, payload) {
     // Update DB
@@ -70,44 +49,5 @@ export default {
   },
   sidebarAutoHidden(context, payload) {
     context.commit('sidebarAutoHidden', payload);
-  },
-  async dateNotation(context, payload) {
-    // Update locally
-    context.commit('dateNotation', payload);
-
-    // Update DB
-    await db
-      .collection('settings')
-      .doc('dateNotation')
-      .update({ dateNotation: payload });
-
-    // Send call to server to update stored settings
-    fetch(`${import.meta.env.VITE_ADMIN_HOST || ''}/admin/updateSettings`);
-  },
-  async location(context, payload) {
-    // Update locally
-    context.commit('location', payload);
-
-    // Update DB
-    await db
-      .collection('settings')
-      .doc('location')
-      .update(payload);
-
-    // Send call to server to update stored settings
-    fetch(`${import.meta.env.VITE_ADMIN_HOST || ''}/admin/updateSettings`);
-  },
-  async setShareWithEmployees(context, payload) {
-    // Update locally
-    context.commit('shareWithEmployees', payload);
-
-    // Update DB
-    await db
-      .collection('settings')
-      .doc('shareWithEmployees')
-      .update(payload);
-
-    // Send call to server to update stored settings
-    fetch(`${import.meta.env.VITE_ADMIN_HOST || ''}/admin/updateSettings`);
   },
 };

@@ -143,7 +143,7 @@ export default {
   },
   mounted() {
     this.setWindowTitle();
-    this.filters = this.$store.getters['settings/roles'].reduce((acc, curr) => ({ ...acc, [curr.toLowerCase()]: false }), {});
+    this.filters = this.$store.getters['settings/settings'].roles.reduce((acc, curr) => ({ ...acc, [curr.toLowerCase()]: false }), {});
   },
 };
 </script>
