@@ -167,7 +167,7 @@ export default {
   },
   computed: {
     roles() {
-      return this.$store.getters['settings/roles'].map((role) => ({ id: role, display: role }));
+      return this.$store.getters['settings/settings'].roles.map((role) => ({ id: role, display: role }));
     },
     newUser() {
       return this.$store.getters['employees/activeUserId'] === 'NEW';
