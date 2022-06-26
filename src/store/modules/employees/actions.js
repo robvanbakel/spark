@@ -2,7 +2,7 @@ import api from '@/utils/api';
 import format from '@/utils/format';
 
 import router from '@/router';
-import { auth } from '@/firebase';
+import auth from '@/firebase';
 
 export default {
   async getUsers(context) {

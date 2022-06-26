@@ -20,7 +20,7 @@ import WeekSwitch from '@/components/ui/WeekSwitch.vue';
 import RightClickMenu from '@/components/ui/RightClickMenu.vue';
 import TheSidebar from '@/components/layout/TheSidebar.vue';
 
-import { auth } from '@/firebase';
+import auth from '@/firebase';
 
 // Sign user out before demo environment is reloaded
 if (store.getters['settings/mode'] === 'demo') {

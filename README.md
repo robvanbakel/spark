@@ -76,7 +76,6 @@ In order to login as an employee, use any of the demo employee email addresses a
   - [Vuex](https://next.vuex.vuejs.org)
 - Firebase
   - [Firebase Auth](https://firebase.google.com/docs/auth)
-  - [Cloud Firestore](https://firebase.google.com/docs/firestore)
 
 ## Other repositories
 

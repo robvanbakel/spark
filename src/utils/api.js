@@ -1,4 +1,4 @@
-import { auth } from '@/firebase';
+import auth from '@/firebase';
 
 const request = async (method, path, body) => {
   const idToken = await auth.currentUser.getIdToken();
