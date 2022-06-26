@@ -285,7 +285,6 @@ export default {
     selectSuggestion(suggestion) {
       this.shift.location = suggestion;
       this.error.location = false;
-      this.selectedSuggestion = suggestion;
     },
     deleteSuggestion(suggestion) {
       this.$store.dispatch('settings/deleteSuggestion', suggestion);
