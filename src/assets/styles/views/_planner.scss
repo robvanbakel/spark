@@ -1,7 +1,7 @@
-@use 'sass:color';
+@use "sass:color";
 
-@use '../utilities/colors';
-@use '../utilities/mixins';
+@use "../utilities/colors";
+@use "../utilities/mixins";
 
 section#planner {
   padding-bottom: 8px;
@@ -240,8 +240,8 @@ section#planner {
         background-color: lighten(colors.$border, 11%);
         border: 1px solid colors.$border;
         &::after {
-          font-family: 'Material Icons';
-          content: 'add';
+          font-family: "Material Icons";
+          content: "add";
           position: absolute;
           left: 50%;
           top: 50%;
@@ -304,8 +304,8 @@ section#planner {
         font-weight: 500;
         color: colors.$text-100;
         font-size: 14px;
-        &[for='notes'],
-        &[for='location'] {
+        &[for="notes"],
+        &[for="location"] {
           align-self: flex-start;
           margin-top: 12px;
         }
@@ -365,9 +365,12 @@ section#planner {
       display: flex;
       justify-content: space-between;
       .base-date-picker {
-        width: 103px;
+        flex-grow: 1;
+        margin-right: 24px;
       }
       .form-control-time {
+        display: flex;
+        align-items: center;
         span.input-label-main {
           font-weight: 500;
           color: colors.$text-100;
@@ -549,7 +552,7 @@ section#planner {
         color: colors.$danger;
       }
       &.selected::before {
-        content: '';
+        content: "";
         display: block;
         border-radius: 6px;
         position: absolute;
@@ -560,7 +563,7 @@ section#planner {
         z-index: -1;
       }
       &:not(.prev-month):not(.next-month):hover::before {
-        content: '';
+        content: "";
         display: block;
         border-radius: 6px;
         position: absolute;
