@@ -44,12 +44,12 @@
                 :key="suggestion"
                 :class="{ selected: selectedSuggestion === suggestion }"
                 @click="selectSuggestion(suggestion)"
-                @click.right="$store.dispatch('settings/deleteSuggestion', { event: $event, suggestion })"
+                @click.right.prevent="$store.dispatch('settings/deleteSuggestion', suggestion)"
               >{{ suggestion }}</span>
               <span
                 v-if="showNewSuggestion"
                 class="add"
-                @click="$store.dispatch('settings/addSuggestion', { suggestion: shift.location })"
+                @click="$store.dispatch('settings/addSuggestion', shift.location)"
               >
                 <span class="material-icons material-icons-round">add</span>
                 {{ shift.location }}</span>

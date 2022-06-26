@@ -1,8 +1,5 @@
-import firebase from 'firebase/app';
 import api from '@/utils/api';
 import format from '@/utils/format';
-
-import { db } from '@/firebase';
 
 export default {
   async getSettings(context) {
@@ -13,33 +10,20 @@ export default {
     api.patch(`db/admin/${payload.id}`, format.settings.req(payload));
     context.commit('settings', payload);
   },
-  addSuggestion(context, payload) {
-    // Update DB
-    db.collection('settings')
-      .doc('suggestions')
-      .update({
-        suggestions: firebase.firestore.FieldValue.arrayUnion(payload.suggestion),
-      });
-
-    // Update locally
-    const { suggestions } = context.getters;
-    suggestions.push(payload.suggestion);
-    context.commit('suggestions', suggestions);
+  addSuggestion(context, suggestion) {
+    context.dispatch('saveSettings', {
+      ...context.getters.settings,
+      suggestions: [
+        ...context.getters.settings.suggestions,
+        suggestion,
+      ],
+    });
   },
-  deleteSuggestion(context, payload) {
-    payload.event.preventDefault();
-
-    // UpdateDB
-    db.collection('settings')
-      .doc('suggestions')
-      .update({
-        suggestions: firebase.firestore.FieldValue.arrayRemove(payload.suggestion),
-      });
-
-    // Update locally
-    let { suggestions } = context.getters;
-    suggestions = suggestions.filter((suggestion) => suggestion !== payload.suggestion);
-    context.commit('suggestions', suggestions);
+  deleteSuggestion(context, suggestion) {
+    context.dispatch('saveSettings', {
+      ...context.getters.settings,
+      suggestions: context.getters.settings.suggestions.filter((v) => v !== suggestion),
+    });
   },
   toggleSidebar(context) {
     context.commit('toggleSidebar');
