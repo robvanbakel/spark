@@ -48,8 +48,8 @@ export default {
   },
   methods: {
     open(event, target) {
-      this.top = `${event.y}px`;
-      this.left = `${event.x}px`;
+      this.top = `${event.pageY}px`;
+      this.left = `${event.pageX}px`;
       this.target = target;
       this.showMenu = true;
       return new Promise((resolve) => {
