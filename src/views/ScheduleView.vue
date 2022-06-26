@@ -89,7 +89,7 @@
               }"
               :class="{proposed: day && day.status !== 'ACCEPTED'}"
               @click="setActiveShift(day, index)"
-              @click.right.prevent="day.status === 'PROPOSED' && proposalRightClickHandler($event, day.id)"
+              @click.right="day.status === 'PROPOSED' && proposalRightClickHandler($event, day.id)"
             >
               <span class="location"> {{ day.location }}</span>
               <span class="time">{{ day.from.format('HH:mm') }} - {{ day.to.format('HH:mm') }}</span>
@@ -393,6 +393,9 @@ export default {
       this.closeActiveShift();
     },
     async proposalRightClickHandler(event, id) {
+      if (!id) return;
+
+      event.preventDefault();
       await this.$refs.acceptRightClickMenu.open(event, id);
     },
     closeActiveShift() {
