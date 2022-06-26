@@ -142,6 +142,7 @@
     ref="suggestionRightClickMenu"
     :items="[
       {
+        icon: 'delete',
         label: 'Delete',
         action: deleteSuggestion,
       },

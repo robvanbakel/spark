@@ -17,6 +17,10 @@
           class="item"
           @click="clickHandler(item)"
         >
+          <span
+            v-if="item.icon"
+            class="material-icons material-icons-round"
+          >{{ item.icon }}</span>
           {{ item.label }}
         </div>
       </div>

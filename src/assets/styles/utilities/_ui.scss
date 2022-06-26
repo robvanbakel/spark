@@ -608,9 +608,13 @@
       height: 32px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
       padding: 0 16px;
       user-select: none;
+      span.material-icons {
+        color: colors.$text-300;
+        font-size: 15px;
+        margin: -1px 8px 0 -4px;
+      }
       &.active,
       &:not(.no-match):hover {
         cursor: pointer;
