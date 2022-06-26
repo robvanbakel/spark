@@ -89,6 +89,7 @@
               }"
               :class="{proposed: day && day.status !== 'ACCEPTED'}"
               @click="setActiveShift(day, index)"
+              @click.right.prevent="day.status === 'PROPOSED' && proposalRightClickHandler($event, day.id)"
             >
               <span class="location"> {{ day.location }}</span>
               <span class="time">{{ day.from.format('HH:mm') }} - {{ day.to.format('HH:mm') }}</span>
@@ -151,13 +152,13 @@
         <base-button
           icon="close"
           inverted
-          @click="reactToProposal(false)"
+          @click="declineProposal()"
         >
           Decline
         </base-button>
         <base-button
           icon="check"
-          @click="reactToProposal(true)"
+          @click="acceptProposal()"
         >
           Accept
         </base-button>
@@ -177,6 +178,22 @@
         </base-button>
       </template>
     </base-modal>
+
+    <RightClickMenu
+      ref="acceptRightClickMenu"
+      :items="[
+        {
+          icon: 'check',
+          label: 'Accept',
+          action: acceptProposal,
+        },
+        {
+          icon: 'close',
+          label: 'Decline',
+          action: declineProposal,
+        },
+      ]"
+    />
 
     <base-modal
       v-if="showQR"
@@ -368,12 +385,15 @@ export default {
         this.$store.dispatch('planner/acceptShifts', nonAcceptedShiftIds);
       }
     },
-    reactToProposal(accepted) {
-      if (accepted) {
-        this.$store.dispatch('planner/acceptShifts', [this.activeShift.id]);
-      }
-
+    acceptProposal(shiftId) {
+      this.$store.dispatch('planner/acceptShifts', [shiftId || this.activeShift.id]);
       this.closeActiveShift();
+    },
+    declineProposal() {
+      this.closeActiveShift();
+    },
+    async proposalRightClickHandler(event, id) {
+      await this.$refs.acceptRightClickMenu.open(event, id);
     },
     closeActiveShift() {
       this.activeShift = null;
