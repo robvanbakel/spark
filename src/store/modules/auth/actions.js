@@ -1,16 +1,17 @@
 import auth from '@/firebase';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 export default {
   async login(context, payload) {
     try {
-      const res = await auth.signInWithEmailAndPassword(payload.email, payload.password);
+      const res = await signInWithEmailAndPassword(auth, payload.email, payload.password);
       return res;
     } catch (err) {
       return err;
     }
   },
   logout() {
-    auth.signOut();
+    signOut(auth);
     window.location.reload();
   },
 };

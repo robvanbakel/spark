@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 
+import auth from '@/firebase';
 import router from '@/router';
 import store from '@/store';
 import App from '@/App.vue';
@@ -20,18 +21,18 @@ import WeekSwitch from '@/components/ui/WeekSwitch.vue';
 import RightClickMenu from '@/components/ui/RightClickMenu.vue';
 import TheSidebar from '@/components/layout/TheSidebar.vue';
 
-import auth from '@/firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 // Sign user out before demo environment is reloaded
 if (store.getters['settings/mode'] === 'demo') {
-  auth.signOut();
+  signOut(auth);
 }
 
 // Get Firebase Auth status before app instantiation
 
 let app = null;
 
-auth.onAuthStateChanged(async (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (user) {
     await store.dispatch('employees/getUsers');
 
