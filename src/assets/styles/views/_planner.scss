@@ -326,6 +326,7 @@ section#planner {
           max-width: 100%;
           user-select: none;
           cursor: pointer;
+          &.selected,
           &:hover {
             background-color: darken(colors.$main-light, 7%);
           }

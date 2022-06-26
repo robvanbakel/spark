@@ -44,7 +44,7 @@
                 :key="suggestion"
                 :class="{ selected: selectedSuggestion === suggestion }"
                 @click="selectSuggestion(suggestion)"
-                @click.right.prevent="$store.dispatch('settings/deleteSuggestion', suggestion)"
+                @click.right.prevent="suggestionRightClickHandler($event, suggestion)"
               >{{ suggestion }}</span>
               <span
                 v-if="showNewSuggestion"
@@ -137,6 +137,16 @@
       </base-button>
     </template>
   </base-modal>
+
+  <RightClickMenu
+    ref="suggestionRightClickMenu"
+    :items="[
+      {
+        label: 'Delete',
+        action: deleteSuggestion,
+      },
+    ]"
+  />
 
   <BaseConfirm
     ref="confirmReplaceShift"
@@ -275,6 +285,14 @@ export default {
       this.shift.location = suggestion;
       this.error.location = false;
       this.selectedSuggestion = suggestion;
+    },
+    deleteSuggestion(suggestion) {
+      this.$store.dispatch('settings/deleteSuggestion', suggestion);
+    },
+    async suggestionRightClickHandler(event, suggestion) {
+      this.selectedSuggestion = suggestion;
+      await this.$refs.suggestionRightClickMenu.open(event, suggestion);
+      this.selectedSuggestion = null;
     },
     validate() {
       this.error.employee = !this.shift.employeeId;
