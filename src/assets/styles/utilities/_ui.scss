@@ -1,5 +1,5 @@
-@use 'colors';
-@use 'mixins';
+@use "colors";
+@use "mixins";
 
 // UI
 .badge.red {
@@ -266,8 +266,8 @@
       }
     }
     &::after {
-      font-family: 'Material Icons';
-      content: 'expand_more';
+      font-family: "Material Icons";
+      content: "expand_more";
       position: absolute;
       height: 100%;
       display: flex;
@@ -283,7 +283,7 @@
     }
     &.enableSearch {
       &:after {
-        content: 'search';
+        content: "search";
       }
     }
   }
@@ -482,7 +482,7 @@
       &:hover,
       &.active {
         &::after {
-          content: '';
+          content: "";
           display: block;
           position: absolute;
           height: 24px;
@@ -586,5 +586,36 @@
     border-radius: 6px;
     height: 100%;
     left: 0%;
+  }
+}
+
+.right-click-menu {
+  background: #fff;
+  border: 1px solid colors.$border;
+  overflow-y: scroll;
+  max-height: 223px;
+  position: absolute;
+  z-index: 99;
+  border-radius: 6px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+  color: colors.$text-300;
+  border: 1px solid colors.$border;
+  font-size: 14px;
+  margin-left: 2px;
+  .right-click-menu-inner {
+    position: relative;
+    .item {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      user-select: none;
+      &.active,
+      &:not(.no-match):hover {
+        cursor: pointer;
+        background-color: colors.$select;
+      }
+    }
   }
 }
