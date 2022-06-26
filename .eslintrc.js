@@ -6,6 +6,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
+  ignorePatterns: ['dist'],
   extends: [
     'eslint:recommended',
     'plugin:vue/vue3-recommended',
