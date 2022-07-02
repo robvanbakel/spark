@@ -1,3 +1,189 @@
+<script setup>
+import {
+  ref, onMounted, onUnmounted, onUpdated, computed, watch,
+} from 'vue';
+
+import QRCode from 'qrcode';
+import dayjs from '@/plugins/dayjs';
+
+import PlannerCalendar from '@/components/layout/PlannerCalendar.vue';
+import EmployeeInfo from '@/components/layout/EmployeeInfo.vue';
+
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+
+const store = useStore();
+const route = useRoute();
+
+const qrCodeImg = ref(null);
+const calendarWidth = ref(null);
+const calendarHeight = ref(null);
+const calendar = ref();
+const confirmAcceptAllShifts = ref();
+const acceptRightClickMenu = ref();
+const showQR = ref(false);
+const activeShift = ref(null);
+const visibleHoursStart = ref(0);
+const visibleHoursEnd = ref(0);
+
+const webcalLink = computed(() => `webcal://app.sparkscheduler.com/feed/${store.getters['auth/user'].feedToken}`);
+
+const schedulesInView = computed(() => {
+  const shiftsInView = store.getters['date/dates']
+    .map((date) => store.getters['planner/shifts']
+      .find((shift) => shift.employeeId === store.getters['auth/user'].id && date.isSame(shift.from, 'date')));
+
+  if (shiftsInView.every((v) => !v)) return null;
+
+  return shiftsInView;
+});
+
+const totalHours = computed(() => schedulesInView.value.reduce((acc, shift) => {
+  if (!shift) return acc;
+  const shiftDuration = dayjs.duration(shift.to.diff(shift.from)).subtract(shift.break, 'minutes');
+  return acc + shiftDuration.asHours();
+}, 0));
+
+const workingDays = computed(() => schedulesInView.value.filter((v) => v).length);
+
+const hasUnacceptedShifts = computed(() => schedulesInView.value?.map((shift) => shift && shift.status === 'ACCEPTED').some((accepted) => accepted === false));
+
+const hoursVisible = computed(() => (visibleHoursEnd.value || 24) - visibleHoursStart.value);
+
+const dayWidth = computed(() => calendarWidth.value / hoursVisible.value);
+
+const hideSidebar = computed(() => store.getters['settings/hideSidebar']);
+
+watch(route, (to) => {
+  if (to.name === 'Schedule') {
+    const { weekId } = route.params;
+    store.dispatch('date/setDates', weekId);
+    document.title = `Week ${store.getters['date/weekNumber']} - Planner`;
+  }
+});
+
+const checkCalendarWidth = () => {
+  calendarWidth.value = calendar.value?.clientWidth;
+  calendarHeight.value = calendar.value?.clientHeight;
+};
+
+watch(hideSidebar, () => {
+  setTimeout(() => {
+    checkCalendarWidth();
+  }, 280); // Wait for CSS animation to finish
+});
+
+onMounted(() => {
+  checkCalendarWidth();
+  window.addEventListener('resize', checkCalendarWidth);
+});
+
+onUnmounted(() => window.removeEventListener('resize', checkCalendarWidth));
+
+onUpdated(() => {
+  if (calendarWidth.value && calendarWidth.value) return;
+  checkCalendarWidth();
+});
+
+const generateQR = async () => {
+  qrCodeImg.value = await QRCode.toDataURL(webcalLink.value);
+  showQR.value = true;
+};
+
+const closeQR = () => {
+  showQR.value = false;
+};
+
+const openCalendar = () => {
+  window.location.replace(webcalLink.value);
+};
+
+const timeRangeToPercentage = (from, to) => {
+  // Destructure input
+  const startHour = from.hour();
+  const startMin = from.minute();
+  const endHour = to.hour();
+  const endMin = to.minute();
+
+  // Calculate amount of hours and minutes
+  const hours = endHour - startHour;
+  const mins = endMin - startMin;
+
+  // Calculate percentages
+  const hoursPercentage = hours * 100;
+  const minsPercentage = (mins / 60) * 100;
+
+  const percentage = (hoursPercentage + minsPercentage) / hoursVisible.value;
+
+  // Calculate starting point
+  const startHourPercentage = (startHour - visibleHoursStart.value) * 100;
+  const startMinPercentage = (startMin / 60) * 100;
+  const startPoint = (startHourPercentage + startMinPercentage) / hoursVisible.value;
+
+  return { startPoint, percentage };
+};
+
+const setActiveShift = (shift, index) => {
+  // Helper functions
+
+  const calculateShiftDuration = (selectedShift) => {
+    const shiftDuration = dayjs.duration(selectedShift.to.diff(selectedShift.from)).subtract(selectedShift.break, 'minutes');
+    return shiftDuration.asHours();
+  };
+
+  // Construct object
+  activeShift.value = {
+    date: store.getters['date/dates'][index].format('dddd LL'),
+    dateShort: store.getters['date/dates'][index].format('L'),
+    location: shift.location,
+    from: shift.from,
+    to: shift.to,
+    duration: calculateShiftDuration(shift),
+    break: shift.break,
+    status: shift.status,
+    id: shift.id,
+  };
+
+  if (shift.notes) {
+    activeShift.value.notes = shift.notes;
+  }
+};
+
+const acceptAllShifts = async () => {
+  if (await confirmAcceptAllShifts.value.open()) {
+    const nonAcceptedShiftIds = schedulesInView.value.map((shift) => shift && shift.status !== 'ACCEPTED' && shift.id).filter((v) => v);
+    store.dispatch('planner/acceptShifts', nonAcceptedShiftIds);
+  }
+};
+
+const closeActiveShift = () => {
+  activeShift.value = null;
+};
+
+const acceptProposal = (shiftId) => {
+  store.dispatch('planner/acceptShifts', [shiftId || this.activeShift.id]);
+  closeActiveShift();
+};
+
+const declineProposal = () => {
+  closeActiveShift();
+};
+
+const proposalRightClickHandler = async (event, id) => {
+  if (!id) return;
+
+  event.preventDefault();
+  await acceptRightClickMenu.value.open(event, id);
+};
+
+const helpActiveShift = () => {
+  const to = 'planner@company.com';
+  const subject = `${activeShift.value.dateShort}: Question about my shift (${activeShift.value.location})`;
+
+  window.open(`mailto:${to}?subject=${subject}`);
+};
+</script>
+
 <template>
   <main v-if="$store.getters['auth/user'] && $store.getters['planner/shifts']">
     <section id="singleEmployeeCalendar">
@@ -229,187 +415,6 @@
     </the-sidebar>
   </main>
 </template>
-
-<script>
-import QRCode from 'qrcode';
-
-import PlannerCalendar from '@/components/layout/PlannerCalendar.vue';
-import EmployeeInfo from '@/components/layout/EmployeeInfo.vue';
-
-export default {
-  components: { PlannerCalendar, EmployeeInfo },
-  data() {
-    return {
-      qrCodeImg: null,
-      calendarWidth: null,
-      calendarHeight: null,
-      rows: [],
-      showQR: false,
-      activeShift: null,
-      visibleHoursStart: 0,
-      visibleHoursEnd: 0,
-    };
-  },
-  computed: {
-    webcalLink() {
-      return `webcal://app.sparkscheduler.com/feed/${this.$store.getters['auth/user'].feedToken}`;
-    },
-    schedulesInView() {
-      const shiftsInView = this.$store.getters['date/dates']
-        .map((date) => this.$store.getters['planner/shifts']
-          .find((shift) => shift.employeeId === this.$store.getters['auth/user'].id && date.isSame(shift.from, 'date')));
-
-      if (shiftsInView.every((v) => !v)) return null;
-
-      return shiftsInView;
-    },
-    totalHours() {
-      return this.schedulesInView.reduce((acc, shift) => {
-        if (!shift) return acc;
-        const shiftDuration = this.$dayjs.duration(shift.to.diff(shift.from)).subtract(shift.break, 'minutes');
-        return acc + shiftDuration.asHours();
-      }, 0);
-    },
-    workingDays() {
-      return this.schedulesInView.filter((v) => v).length;
-    },
-    hasUnacceptedShifts() {
-      return this.schedulesInView?.map((shift) => shift && shift.status === 'ACCEPTED').some((accepted) => accepted === false);
-    },
-    hoursVisible() {
-      return (this.visibleHoursEnd || 24) - this.visibleHoursStart;
-    },
-    dayWidth() {
-      return this.calendarWidth / this.hoursVisible;
-    },
-    startOffset() {
-      return this.visibleHoursStart * this.dayWidth;
-    },
-    hideSidebar() {
-      return this.$store.getters['settings/hideSidebar'];
-    },
-  },
-  watch: {
-    $route(to) {
-      if (to.name === 'Schedule') {
-        const { weekId } = this.$route.params;
-        this.$store.dispatch('date/setDates', weekId);
-        this.hideEmptyWeek = false;
-        document.title = `Week ${this.$store.getters['date/weekNumber']} - Planner`;
-      }
-    },
-    hideSidebar() {
-      setTimeout(() => {
-        this.checkCalendarWidth();
-      }, 280); // Wait for CSS animation to finish
-    },
-  },
-  mounted() {
-    this.checkCalendarWidth();
-    window.addEventListener('resize', this.checkCalendarWidth);
-  },
-  unmounted() {
-    window.removeEventListener('resize', this.checkCalendarWidth);
-  },
-  updated() {
-    if (this.calendarWidth && this.calendarWidth) return;
-    this.checkCalendarWidth();
-  },
-  methods: {
-    async generateQR() {
-      this.qrCodeImg = await QRCode.toDataURL(this.webcalLink);
-      this.showQR = true;
-    },
-    closeQR() {
-      this.showQR = false;
-    },
-    openCalendar() {
-      window.location.replace(this.webcalLink);
-    },
-    checkCalendarWidth() {
-      this.calendarWidth = this.$refs.calendar?.clientWidth;
-      this.calendarHeight = this.$refs.calendar?.clientHeight;
-    },
-    timeRangeToPercentage(from, to) {
-      // Destructure input
-      const startHour = from.hour();
-      const startMin = from.minute();
-      const endHour = to.hour();
-      const endMin = to.minute();
-
-      // Calculate amount of hours and minutes
-      const hours = endHour - startHour;
-      const mins = endMin - startMin;
-
-      // Calculate percentages
-      const hoursPercentage = hours * 100;
-      const minsPercentage = (mins / 60) * 100;
-
-      const percentage = (hoursPercentage + minsPercentage) / this.hoursVisible;
-
-      // Calculate starting point
-      const startHourPercentage = (startHour - this.visibleHoursStart) * 100;
-      const startMinPercentage = (startMin / 60) * 100;
-      const startPoint = (startHourPercentage + startMinPercentage) / this.hoursVisible;
-
-      return { startPoint, percentage };
-    },
-    setActiveShift(shift, index) {
-      // Helper functions
-
-      const calculateShiftDuration = (selectedShift) => {
-        const shiftDuration = this.$dayjs.duration(selectedShift.to.diff(selectedShift.from)).subtract(selectedShift.break, 'minutes');
-        return shiftDuration.asHours();
-      };
-
-      // Construct object
-      this.activeShift = {
-        date: this.$store.getters['date/dates'][index].format('dddd LL'),
-        dateShort: this.$store.getters['date/dates'][index].format('L'),
-        location: shift.location,
-        from: shift.from,
-        to: shift.to,
-        duration: calculateShiftDuration(shift),
-        break: shift.break,
-        status: shift.status,
-        id: shift.id,
-      };
-
-      if (shift.notes) {
-        this.activeShift.notes = shift.notes;
-      }
-    },
-    async acceptAllShifts() {
-      if (await this.$refs.confirmAcceptAllShifts.open()) {
-        const nonAcceptedShiftIds = this.schedulesInView.map((shift) => shift && shift.status !== 'ACCEPTED' && shift.id).filter((v) => v);
-        this.$store.dispatch('planner/acceptShifts', nonAcceptedShiftIds);
-      }
-    },
-    acceptProposal(shiftId) {
-      this.$store.dispatch('planner/acceptShifts', [shiftId || this.activeShift.id]);
-      this.closeActiveShift();
-    },
-    declineProposal() {
-      this.closeActiveShift();
-    },
-    async proposalRightClickHandler(event, id) {
-      if (!id) return;
-
-      event.preventDefault();
-      await this.$refs.acceptRightClickMenu.open(event, id);
-    },
-    closeActiveShift() {
-      this.activeShift = null;
-    },
-    helpActiveShift() {
-      const to = 'planner@company.com';
-      const subject = `${this.activeShift.dateShort}: Question about my shift (${this.activeShift.location})`;
-
-      window.open(`mailto:${to}?subject=${subject}`);
-    },
-  },
-};
-</script>
 
 <style scoped>
 .hours span::after {
