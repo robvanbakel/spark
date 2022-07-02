@@ -1,8 +1,64 @@
+<script setup>
+import { ref, onMounted, computed } from 'vue';
+
+import EditEmployee from '@/components/layout/EditEmployee.vue';
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const searchInputField = ref();
+const searchInput = ref('');
+const filters = ref({});
+
+const getFullName = (employee) => `${employee.firstName} ${employee.lastName}`;
+
+const employees = computed(() => {
+  // Get all non-archived employees
+  const allEmployees = store.getters['employees/employees'];
+
+  // Apply filter & search
+  return allEmployees.filter((emp) => {
+    if (Object.values(filters.value).includes(true)) {
+      return (
+        filters.value[emp.status] === true
+            && getFullName(emp)
+              .toLowerCase()
+              .includes(searchInput.value.toLowerCase())
+      );
+    }
+    return getFullName(emp)
+      .toLowerCase()
+      .includes(searchInput.value.toLowerCase());
+  });
+});
+
+const setFilter = (status) => {
+  filters.value[status] = !filters.value[status];
+};
+
+const clearFilters = () => {
+  Object.keys(filters.value).forEach((key) => {
+    filters.value[key] = false;
+  });
+};
+
+const clearSearchInput = () => {
+  searchInput.value = '';
+  searchInputField.value.focus();
+};
+
+onMounted(() => {
+  filters.value = store.getters['settings/statuses'].reduce((acc, i) => ({ ...acc, [i]: false }), {});
+});
+
+</script>
+
 <template>
   <div class="actionbar">
     <div class="search">
       <input
-        ref="searchInput"
+        ref="searchInputField"
         v-model.trim="searchInput"
         autocomplete="off"
         type="text"
@@ -80,66 +136,3 @@
 
   <EditEmployee v-if="$store.getters['employees/activeUserId']" />
 </template>
-
-<script>
-import EditEmployee from '@/components/layout/EditEmployee.vue';
-
-export default {
-  components: {
-    EditEmployee,
-  },
-  data() {
-    return {
-      newEmployee: false,
-      activeEmployee: null,
-      searchInput: '',
-      filters: {},
-    };
-  },
-  computed: {
-    employees() {
-      // Get all non-archived employees
-      const employees = this.$store.getters['employees/employees'];
-
-      // Apply filter & search
-      return employees.filter((emp) => {
-        if (Object.values(this.filters).includes(true)) {
-          return (
-            this.filters[emp.status] === true
-            && this.getFullName(emp)
-              .toLowerCase()
-              .includes(this.searchInput.toLowerCase())
-          );
-        }
-        return this.getFullName(emp)
-          .toLowerCase()
-          .includes(this.searchInput.toLowerCase());
-      });
-    },
-  },
-  mounted() {
-    this.filters = this.$store.getters['settings/statuses'].reduce((acc, curr) => ({ ...acc, [curr]: false }), {});
-  },
-  methods: {
-    closeEditEmployee() {
-      this.activeEmployee = null;
-      this.newEmployee = false;
-    },
-    getFullName(employee) {
-      return `${employee.firstName} ${employee.lastName}`;
-    },
-    setFilter(status) {
-      this.filters[status] = !this.filters[status];
-    },
-    clearFilters() {
-      Object.keys(this.filters).forEach((key) => {
-        this.filters[key] = false;
-      });
-    },
-    clearSearchInput() {
-      this.searchInput = '';
-      this.$refs.searchInput.focus();
-    },
-  },
-};
-</script>
