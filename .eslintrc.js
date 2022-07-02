@@ -15,6 +15,7 @@ module.exports = {
   rules: {
     'max-len': 0,
     'vue/require-default-prop': 0,
+    'no-use-before-define': 0,
   },
   overrides: [
     {
