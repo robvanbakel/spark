@@ -1,3 +1,8 @@
+<script setup>
+import ActivateAccount from '@/components/layout/ActivateAccount.vue';
+import SignIn from '@/components/layout/SignIn.vue';
+</script>
+
 <template>
   <div class="auth">
     <div class="logo">
@@ -14,20 +19,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import ActivateAccount from '@/components/layout/ActivateAccount.vue';
-import SignIn from '@/components/layout/SignIn.vue';
-
-export default {
-  components: {
-    ActivateAccount,
-    SignIn,
-  },
-  data() {
-    return {
-      userStatus: null,
-    };
-  },
-};
-</script>
