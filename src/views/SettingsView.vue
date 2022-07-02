@@ -1,3 +1,67 @@
+<script setup>
+import { ref, onMounted, computed } from 'vue';
+
+import { useStore } from 'vuex';
+import { onBeforeRouteLeave } from 'vue-router';
+
+const store = useStore();
+
+const settingsSaved = ref();
+const confirmUnsavedChanges = ref();
+const unsavedChanges = ref(null);
+const settings = ref(store.getters['settings/settings']);
+
+const dateNotations = computed(() => [
+  {
+    id: 'MM/DD/YYYY',
+    display: 'MM/DD/YYYY',
+  },
+  {
+    id: 'DD/MM/YYYY',
+    display: 'DD/MM/YYYY',
+  },
+  {
+    id: 'DD-MM-YYYY',
+    display: 'DD-MM-YYYY',
+  },
+]);
+
+const setShareWithEmployees = (value, id) => {
+  unsavedChanges.value = true;
+  settings.value.shareWithEmployees[id] = value;
+};
+
+const setDateNotation = (locale) => {
+  unsavedChanges.value = true;
+  settings.value.dateNotation = locale;
+};
+
+const saveSettings = async () => {
+  store.dispatch('settings/saveSettings', settings.value);
+
+  if (await settingsSaved.value.open()) {
+    unsavedChanges.value = false;
+  }
+};
+
+onMounted(() => {
+  unsavedChanges.value = false;
+});
+
+onBeforeRouteLeave(async (to, from, next) => {
+  if (!unsavedChanges.value) {
+    next();
+    return;
+  }
+
+  if (await confirmUnsavedChanges.value.open()) {
+    saveSettings();
+  }
+
+  next();
+});
+</script>
+
 <template>
   <section id="settings">
     <div class="header">
@@ -104,62 +168,3 @@
     no-false
   />
 </template>
-
-<script>
-export default {
-  async beforeRouteLeave(to, from, next) {
-    if (!this.unsavedChanges) {
-      next();
-    } else {
-      if (await this.$refs.confirmUnsavedChanges.open()) {
-        this.saveSettings();
-      }
-      next();
-    }
-  },
-  data() {
-    return {
-      unsavedChanges: null,
-      settings: this.$store.getters['settings/settings'],
-    };
-  },
-  computed: {
-    dateNotations() {
-      return [
-        {
-          id: 'MM/DD/YYYY',
-          display: 'MM/DD/YYYY',
-        },
-        {
-          id: 'DD/MM/YYYY',
-          display: 'DD/MM/YYYY',
-        },
-        {
-          id: 'DD-MM-YYYY',
-          display: 'DD-MM-YYYY',
-        },
-      ];
-    },
-  },
-  mounted() {
-    this.unsavedChanges = false;
-  },
-  methods: {
-    setShareWithEmployees(value, id) {
-      this.unsavedChanges = true;
-      this.settings.shareWithEmployees[id] = value;
-    },
-    setDateNotation(locale) {
-      this.unsavedChanges = true;
-      this.settings.dateNotation = locale;
-    },
-    async saveSettings() {
-      this.$store.dispatch('settings/saveSettings', this.settings);
-
-      if (await this.$refs.settingsSaved.open()) {
-        this.unsavedChanges = false;
-      }
-    },
-  },
-};
-</script>
