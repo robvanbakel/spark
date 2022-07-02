@@ -1,8 +1,83 @@
+<script setup>
+import {
+  ref, onMounted, computed, watch,
+} from 'vue';
+
+import PlannerContent from '@/components/layout/PlannerContent.vue';
+import EditShift from '@/components/layout/EditShift.vue';
+import PlannerCalendar from '@/components/layout/PlannerCalendar.vue';
+import PlusMinusHours from '@/components/layout/PlusMinusHours.vue';
+import EmptyWeek from '@/components/layout/EmptyWeek.vue';
+
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+
+const store = useStore();
+const route = useRoute();
+
+const searchInputField = ref();
+const searchInput = ref('');
+const hideEmptyWeek = ref(false);
+const filters = ref({});
+
+const displayRoles = computed(() => {
+  if (Object.values(filters.value).includes(true)) {
+    return Object.keys(filters.value).filter((role) => filters.value[role] === true);
+  }
+  return Object.keys(filters.value);
+});
+
+const schedulesInView = computed(() => store.getters['planner/schedulesInView']);
+
+const emptyWeek = computed(() => !Object.values(schedulesInView).flat().length);
+
+const setWindowTitle = () => {
+  const { weekId } = route.params;
+  store.dispatch('date/setDates', weekId);
+  document.title = `Week ${store.getters['date/weekNumber']} - Planner - Spark`;
+};
+
+watch(route, (to) => {
+  if (to.name === 'Planner') {
+    setWindowTitle();
+    hideEmptyWeek.value = false;
+  }
+});
+
+onMounted(() => {
+  setWindowTitle();
+  filters.value = store.getters['settings/settings'].roles.reduce((acc, i) => ({ ...acc, [i.toLowerCase()]: false }), {});
+});
+
+const clearSearchInput = () => {
+  searchInput.value = '';
+  searchInputField.value.focus();
+};
+
+const addNewShift = () => store.dispatch('planner/addNewShift');
+
+const setFilter = (status) => {
+  filters.value[status] = !filters.value[status];
+};
+
+const clearFilters = () => {
+  Object.keys(filters.value).forEach((key) => {
+    filters.value[key] = false;
+  });
+};
+
+const toggleSidebar = () => {
+  store.dispatch('settings/toggleSidebar');
+  store.dispatch('settings/sidebarAutoHidden', false);
+};
+
+</script>
+
 <template>
   <div class="actionbar">
     <div class="search">
       <input
-        ref="searchInput"
+        ref="searchInputField"
         v-model.trim="searchInput"
         autocomplete="off"
         type="text"
@@ -97,86 +172,6 @@
     </the-sidebar>
   </main>
 </template>
-
-<script>
-import PlannerContent from '@/components/layout/PlannerContent.vue';
-import EditShift from '@/components/layout/EditShift.vue';
-import PlannerCalendar from '@/components/layout/PlannerCalendar.vue';
-import PlusMinusHours from '@/components/layout/PlusMinusHours.vue';
-import EmptyWeek from '@/components/layout/EmptyWeek.vue';
-
-export default {
-  components: {
-    PlannerContent,
-    EditShift,
-    PlannerCalendar,
-    PlusMinusHours,
-    EmptyWeek,
-  },
-  data() {
-    return {
-      searchInput: '',
-      hideEmptyWeek: false,
-      filters: {},
-    };
-  },
-  computed: {
-    displayRoles() {
-      if (Object.values(this.filters).includes(true)) {
-        return Object.keys(this.filters).filter((role) => this.filters[role] === true);
-      }
-      return Object.keys(this.filters);
-    },
-    emptyWeek() {
-      return !Object.values(this.schedulesInView).flat().length;
-    },
-    schedulesInView() {
-      return this.$store.getters['planner/schedulesInView'];
-    },
-  },
-  watch: {
-    $route(to) {
-      if (to.name === 'Planner') {
-        this.setWindowTitle();
-        this.hideEmptyWeek = false;
-      }
-    },
-  },
-  mounted() {
-    this.setWindowTitle();
-    this.filters = this.$store.getters['settings/settings'].roles.reduce((acc, curr) => ({ ...acc, [curr.toLowerCase()]: false }), {});
-  },
-  methods: {
-    closeEditShift() {
-      this.activeShiftId = null;
-    },
-    clearSearchInput() {
-      this.searchInput = '';
-      this.$refs.searchInput.focus();
-    },
-    addNewShift() {
-      this.$store.dispatch('planner/addNewShift');
-    },
-    setFilter(status) {
-      this.filters[status] = !this.filters[status];
-    },
-    clearFilters() {
-      Object.keys(this.filters).forEach((key) => {
-        this.filters[key] = false;
-      });
-    },
-    toggleSidebar() {
-      this.$store.dispatch('settings/toggleSidebar');
-      this.$store.dispatch('settings/sidebarAutoHidden', false);
-    },
-    setWindowTitle() {
-      const { weekId } = this.$route.params;
-      this.$store.dispatch('date/setDates', weekId);
-      document.title = `Week ${this.$store.getters['date/weekNumber']} - Planner - Spark`;
-    },
-  },
-};
-</script>
 
 <style scoped>
 .weekSwitch-enter-from,
