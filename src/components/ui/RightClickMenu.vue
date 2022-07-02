@@ -1,3 +1,44 @@
+<script setup>
+import { ref } from 'vue';
+
+const props = defineProps({
+  items: {
+    type: Array,
+    required: true,
+  },
+});
+
+const showMenu = ref(false);
+const top = ref(0);
+const left = ref(0);
+const target = ref(null);
+const click = ref(null);
+
+const open = (event, targetEl) => {
+  top.value = `${event.pageY}px`;
+  left.value = `${event.pageX}px`;
+  target.value = targetEl;
+  showMenu.value = true;
+  return new Promise((resolve) => {
+    click.value = resolve;
+  });
+};
+
+const close = () => {
+  click.value(showMenu.value = false);
+};
+
+const clickHandler = (item) => {
+  item.action(target.value);
+  close();
+};
+
+defineExpose({
+  open,
+});
+
+</script>
+
 <template>
   <div v-if="showMenu">
     <base-overlay
@@ -9,7 +50,7 @@
       :style="{top, left}"
     >
       <div
-        v-for="item in items"
+        v-for="item in props.items"
         :key="item"
         class="right-click-menu-inner"
       >
@@ -27,42 +68,3 @@
     </div>
   </div>
 </template>
-
-<script>
-
-export default {
-  props: {
-    items: {
-      type: Array,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      showMenu: false,
-      top: 0,
-      left: 0,
-      target: null,
-      click: null,
-    };
-  },
-  methods: {
-    open(event, target) {
-      this.top = `${event.pageY}px`;
-      this.left = `${event.pageX}px`;
-      this.target = target;
-      this.showMenu = true;
-      return new Promise((resolve) => {
-        this.click = resolve;
-      });
-    },
-    clickHandler(item) {
-      item.action(this.target);
-      this.close();
-    },
-    close() {
-      this.click(this.showMenu = false);
-    },
-  },
-};
-</script>

@@ -1,3 +1,18 @@
+<script setup>
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+const store = useStore();
+const router = useRouter();
+
+const shiftWeek = (amount) => {
+  const midpoint = store.getters['date/dates'][3];
+  const newWeekId = midpoint.add(amount, 'week').weekId();
+
+  router.push({ name: 'Planner', params: { weekId: newWeekId } });
+};
+</script>
+
 <template>
   <div class="week-switch">
     <span
@@ -11,16 +26,3 @@
     >chevron_right</span>
   </div>
 </template>
-
-<script>
-export default {
-  methods: {
-    async shiftWeek(amount) {
-      const midpoint = this.$store.getters['date/dates'][3];
-      const newWeekId = midpoint.add(amount, 'week').weekId();
-
-      this.$router.push({ name: 'Planner', params: { weekId: newWeekId } });
-    },
-  },
-};
-</script>

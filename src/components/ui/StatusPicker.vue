@@ -1,3 +1,35 @@
+<script setup>
+import { ref, computed } from 'vue';
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const props = defineProps({
+  activeStatus: {
+    type: String,
+    required: true,
+  },
+});
+
+const emit = defineEmits(['setActiveStatus']);
+
+const showDropdown = ref(false);
+
+const statuses = computed(() => store.getters['settings/statuses'].filter((status) => status !== 'STAGED'));
+
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value;
+};
+
+const setStatus = (status) => {
+  if (status !== props.activeStatus) {
+    emit('setActiveStatus', status);
+    showDropdown.value = false;
+  }
+};
+</script>
+
 <template>
   <div class="status-picker-wrapper">
     <div class="current-status">
@@ -27,36 +59,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    activeStatus: {
-      type: String,
-      required: true,
-    },
-  },
-  emits: ['setActiveStatus'],
-  data() {
-    return {
-      showDropdown: false,
-    };
-  },
-  computed: {
-    statuses() {
-      return this.$store.getters['settings/statuses'].filter((status) => status !== 'STAGED');
-    },
-  },
-  methods: {
-    toggleDropdown() {
-      this.showDropdown = !this.showDropdown;
-    },
-    setStatus(status) {
-      if (status !== this.activeStatus) {
-        this.$emit('setActiveStatus', status);
-        this.showDropdown = false;
-      }
-    },
-  },
-};
-</script>
