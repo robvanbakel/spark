@@ -1,3 +1,57 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+
+import TheHeader from '@/components/layout/TheHeader.vue';
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const breakpoints = ref({
+  sm: {
+    width: 960,
+    active: false,
+  },
+  md: {
+    width: 1260,
+    active: false,
+  },
+});
+
+const setActiveBreakpoint = (selected) => {
+  Object.keys(breakpoints.value).forEach((breakpoint) => {
+    breakpoints.value[breakpoint].active = false;
+  });
+  if (selected) {
+    breakpoints.value[selected].active = true;
+  }
+};
+
+const checkScreenSize = () => {
+  if (window.innerWidth < breakpoints.value.sm.width) {
+    setActiveBreakpoint('sm');
+  } else if (window.innerWidth < breakpoints.value.md.width) {
+    setActiveBreakpoint('md');
+
+    if (!store.getters['settings/hideSidebar']) {
+      store.dispatch('settings/hideSidebar', true);
+      store.dispatch('settings/sidebarAutoHidden', true);
+    }
+  } else {
+    setActiveBreakpoint(null);
+    if (store.getters['settings/sidebarAutoHidden']) {
+      store.dispatch('settings/hideSidebar', false);
+    }
+  }
+};
+
+onMounted(() => {
+  checkScreenSize();
+  window.addEventListener('resize', checkScreenSize);
+});
+
+</script>
+
 <template>
   <div
     v-if="!breakpoints.sm.active"
@@ -13,59 +67,3 @@
     {{ $t('general.smallScreenWarning') }}
   </div>
 </template>
-
-<script>
-import TheHeader from '@/components/layout/TheHeader.vue';
-
-export default {
-  name: 'App',
-  components: {
-    TheHeader,
-  },
-  data() {
-    return {
-      breakpoints: {
-        sm: {
-          width: 960,
-          active: false,
-        },
-        md: {
-          width: 1260,
-          active: false,
-        },
-      },
-    };
-  },
-  mounted() {
-    this.checkScreenSize();
-    window.addEventListener('resize', this.checkScreenSize);
-  },
-  methods: {
-    checkScreenSize() {
-      if (window.innerWidth < this.breakpoints.sm.width) {
-        this.setActiveBreakpoint('sm');
-      } else if (window.innerWidth < this.breakpoints.md.width) {
-        this.setActiveBreakpoint('md');
-
-        if (!this.$store.getters['settings/hideSidebar']) {
-          this.$store.dispatch('settings/hideSidebar', true);
-          this.$store.dispatch('settings/sidebarAutoHidden', true);
-        }
-      } else {
-        this.setActiveBreakpoint(null);
-        if (this.$store.getters['settings/sidebarAutoHidden']) {
-          this.$store.dispatch('settings/hideSidebar', false);
-        }
-      }
-    },
-    setActiveBreakpoint(selected) {
-      Object.keys(this.breakpoints).forEach((breakpoint) => {
-        this.breakpoints[breakpoint].active = false;
-      });
-      if (selected) {
-        this.breakpoints[selected].active = true;
-      }
-    },
-  },
-};
-</script>
