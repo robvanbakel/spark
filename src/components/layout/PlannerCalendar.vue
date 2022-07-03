@@ -1,3 +1,109 @@
+<script setup>
+import { ref, computed, watch } from 'vue';
+
+import dayjs from '@/plugins/dayjs';
+
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+const store = useStore();
+const router = useRouter();
+
+const selectedMonth = ref(new Date().getMonth());
+const selectedYear = ref(new Date().getFullYear());
+
+const calendarHeader = computed(() => dayjs()
+  .year(selectedYear.value)
+  .month(selectedMonth.value)
+  .format('MMMM YYYY'));
+
+const calendarPoint = computed(() => store.getters['date/dates'][3]);
+
+watch(calendarPoint, () => {
+  const currentWeekId = dayjs().weekId();
+
+  if (store.getters['date/weekId'] === currentWeekId) {
+    selectedMonth.value = new Date().getMonth();
+    selectedYear.value = new Date().getFullYear();
+  } else {
+    selectedMonth.value = store.getters['date/dates'][3].toDate().getMonth();
+    selectedYear.value = store.getters['date/dates'][3].toDate().getFullYear();
+  }
+});
+
+const daysInMonth = () => new Date(selectedYear.value, selectedMonth.value + 1, 0).getDate();
+
+const visibleInPrevMonth = () => {
+  const amount = new Date(selectedYear.value, selectedMonth.value, 0).getDay();
+
+  const dates = [];
+
+  for (let i = 0; i < amount; i += 1) {
+    dates.unshift(new Date(selectedYear.value, selectedMonth.value, -i).getDate());
+  }
+
+  return dates;
+};
+
+const visibleInNextMonth = () => {
+  const lastDayInMonth = new Date(selectedYear.value, selectedMonth.value + 1, 0).getDay();
+
+  if (lastDayInMonth === 0) return null;
+
+  return 7 - lastDayInMonth;
+};
+
+const next = () => {
+  if (selectedMonth.value === 11) {
+    selectedMonth.value = 0;
+    selectedYear.value += 1;
+  } else {
+    selectedMonth.value += 1;
+  }
+};
+
+const prev = () => {
+  if (selectedMonth.value === 0) {
+    selectedMonth.value = 11;
+    selectedYear.value -= 1;
+  } else {
+    selectedMonth.value -= 1;
+  }
+};
+
+const calendarPointClass = (num) => {
+  const calendarFullDate = new Date(selectedYear.value, selectedMonth.value, num).toDateString();
+
+  let dateClass = '';
+
+  store.getters['date/dates'].forEach((date) => {
+    if (calendarFullDate === date.toDate().toDateString()) {
+      dateClass = 'selected';
+    }
+  });
+
+  return dateClass;
+};
+
+const currentDateClass = (num) => {
+  const calendarFullDate = new Date(selectedYear.value, selectedMonth.value, num).toDateString();
+  const currentFullDate = new Date().toDateString();
+
+  return calendarFullDate === currentFullDate ? 'current-date' : '';
+};
+
+const today = () => {
+  selectedMonth.value = new Date().getMonth();
+  selectedYear.value = new Date().getFullYear();
+};
+
+const setWeek = async (selectedDay) => {
+  const date = new Date(selectedYear.value, selectedMonth.value, selectedDay);
+  const selectedWeekId = dayjs(date).weekId();
+  router.push({ params: { weekId: selectedWeekId } });
+};
+</script>
+
 <template>
   <div class="plannerCalendar">
     <div id="header">
@@ -47,105 +153,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      selectedMonth: new Date().getMonth(),
-      selectedYear: new Date().getFullYear(),
-    };
-  },
-  computed: {
-    calendarHeader() {
-      return this.$dayjs()
-        .year(this.selectedYear)
-        .month(this.selectedMonth)
-        .format('MMMM YYYY');
-    },
-    calendarPoint() {
-      return this.$store.getters['date/dates'][3];
-    },
-  },
-  watch: {
-    async calendarPoint() {
-      const currentWeekId = this.$dayjs().weekId();
-
-      if (this.$store.getters['date/weekId'] === currentWeekId) {
-        this.selectedMonth = new Date().getMonth();
-        this.selectedYear = new Date().getFullYear();
-      } else {
-        this.selectedMonth = this.$store.getters['date/dates'][3].toDate().getMonth();
-        this.selectedYear = this.$store.getters['date/dates'][3].toDate().getFullYear();
-      }
-    },
-  },
-  methods: {
-    daysInMonth() {
-      return new Date(this.selectedYear, this.selectedMonth + 1, 0).getDate();
-    },
-    visibleInPrevMonth() {
-      const amount = new Date(this.selectedYear, this.selectedMonth, 0).getDay();
-
-      const dates = [];
-
-      for (let i = 0; i < amount; i += 1) {
-        dates.unshift(new Date(this.selectedYear, this.selectedMonth, -i).getDate());
-      }
-
-      return dates;
-    },
-    visibleInNextMonth() {
-      const lastDayInMonth = new Date(this.selectedYear, this.selectedMonth + 1, 0).getDay();
-
-      if (lastDayInMonth === 0) return null;
-
-      return 7 - lastDayInMonth;
-    },
-    next() {
-      if (this.selectedMonth === 11) {
-        this.selectedMonth = 0;
-        this.selectedYear += 1;
-      } else {
-        this.selectedMonth += 1;
-      }
-    },
-    prev() {
-      if (this.selectedMonth === 0) {
-        this.selectedMonth = 11;
-        this.selectedYear -= 1;
-      } else {
-        this.selectedMonth -= 1;
-      }
-    },
-    calendarPointClass(num) {
-      const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString();
-
-      let dateClass = '';
-
-      this.$store.getters['date/dates'].forEach((date) => {
-        if (calendarFullDate === date.toDate().toDateString()) {
-          dateClass = 'selected';
-        }
-      });
-
-      return dateClass;
-    },
-    currentDateClass(num) {
-      const calendarFullDate = new Date(this.selectedYear, this.selectedMonth, num).toDateString();
-      const currentFullDate = new Date().toDateString();
-
-      return calendarFullDate === currentFullDate ? 'current-date' : '';
-    },
-    today() {
-      this.selectedMonth = new Date().getMonth();
-      this.selectedYear = new Date().getFullYear();
-    },
-    async setWeek(selectedDay) {
-      const date = new Date(this.selectedYear, this.selectedMonth, selectedDay);
-      const selectedWeekId = this.$dayjs(date).weekId();
-      this.$router.push({ params: { weekId: selectedWeekId } });
-    },
-  },
-};
-</script>

@@ -1,3 +1,126 @@
+<script setup>
+import { ref, watch, nextTick } from 'vue';
+
+import { useRouter, useRoute } from 'vue-router';
+
+const router = useRouter();
+const route = useRoute();
+
+const passwordField = ref();
+const repeatPasswordField = ref();
+const errorMessage = ref(null);
+const emailConfirmed = ref(false);
+const loading = ref(false);
+const firstName = ref(null);
+const success = ref(false);
+const email = ref('');
+const password = ref('');
+const repeatPassword = ref('');
+
+watch(emailConfirmed, (val) => {
+  if (val) {
+    nextTick(() => {
+      passwordField.value.focus();
+    });
+  }
+});
+
+const confirmEmail = async () => {
+  loading.value = true;
+
+  const baseUrl = `${import.meta.env.VITE_ADMIN_HOST || ''}/admin/activateAccount`;
+
+  const { activationToken } = route.query;
+  const encodedEmail = encodeURIComponent(email.value);
+
+  try {
+    const res = await fetch(`${baseUrl}?activationToken=${activationToken}&email=${encodedEmail}`);
+
+    if (res.ok) {
+      const data = await res.json();
+      emailConfirmed.value = true;
+
+      firstName.value = data.firstName;
+      errorMessage.value = null;
+    } else {
+      const { error } = await res.json();
+      errorMessage.value = error;
+    }
+  } catch {
+    errorMessage.value = 'Something went wrong';
+  }
+
+  loading.value = false;
+};
+
+const resetPasswordFields = () => {
+  password.value = '';
+  repeatPassword.value = '';
+  passwordField.value.focus();
+};
+
+const setPassword = async () => {
+  // Validate if password field is empty
+  if (!password.value) {
+    errorMessage.value = 'Please choose a password';
+    resetPasswordFields();
+    return;
+  }
+
+  // Validate if passwords is long enough
+  if (password.value.length < 6) {
+    errorMessage.value = 'Please choose a longer password';
+    resetPasswordFields();
+    return;
+  }
+
+  // Validate repeatPassword field is empty
+  if (password.value && !repeatPassword.value) {
+    errorMessage.value = 'Please repeat your password';
+    repeatPasswordField.value.focus();
+    return;
+  }
+
+  // Check if passwords match
+  if (password.value !== repeatPassword.value) {
+    errorMessage.value = 'Passwords do not match';
+    resetPasswordFields();
+    return;
+  }
+
+  loading.value = true;
+  errorMessage.value = null;
+
+  try {
+    const res = await fetch(`${import.meta.env.VITE_ADMIN_HOST || ''}/admin/activateAccount`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        activationToken: route.query.activationToken,
+        email: email.value,
+        password: password.value,
+      }),
+    });
+
+    if (res.ok) {
+      success.value = true;
+    } else {
+      const { error } = await res.json();
+      errorMessage.value = error;
+    }
+  } catch {
+    errorMessage.value = 'Something went wrong';
+  }
+
+  loading.value = false;
+};
+
+const toLogin = () => {
+  router.push({ name: 'Auth' });
+};
+
+</script>
+
 <template>
   <div v-if="!success">
     <div
@@ -14,7 +137,7 @@
       </p>
       <form @submit.prevent="confirmEmail">
         <input
-          ref="email"
+          ref="emailField"
           v-model.trim="email"
           type="email"
           placeholder="Email"
@@ -50,13 +173,13 @@
       </p>
       <form @submit.prevent="setPassword">
         <input
-          ref="password"
+          ref="passwordField"
           v-model="password"
           type="password"
           placeholder="Password"
         >
         <input
-          ref="repeatPassword"
+          ref="repeatPasswordField"
           v-model="repeatPassword"
           type="password"
           placeholder="Repeat password"
@@ -91,121 +214,3 @@
     </base-button>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      errorMessage: null,
-      emailConfirmed: false,
-      loading: false,
-      firstName: null,
-      success: false,
-      email: '',
-      password: '',
-      repeatPassword: '',
-    };
-  },
-  watch: {
-    emailConfirmed(val) {
-      if (val) {
-        this.$nextTick(() => {
-          this.$refs.password.focus();
-        });
-      }
-    },
-  },
-  methods: {
-    async confirmEmail() {
-      this.loading = true;
-
-      const baseUrl = `${import.meta.env.VITE_ADMIN_HOST || ''}/admin/activateAccount`;
-
-      const { activationToken } = this.$route.query;
-      const email = encodeURIComponent(this.email);
-
-      try {
-        const res = await fetch(`${baseUrl}?activationToken=${activationToken}&email=${email}`);
-
-        if (res.ok) {
-          const { firstName } = await res.json();
-          this.emailConfirmed = true;
-
-          this.firstName = firstName;
-          this.errorMessage = null;
-        } else {
-          const { error } = await res.json();
-          this.errorMessage = error;
-        }
-      } catch {
-        this.errorMessage = 'Something went wrong';
-      }
-
-      this.loading = false;
-    },
-    resetPasswordFields() {
-      this.password = '';
-      this.repeatPassword = '';
-      this.$refs.password.focus();
-    },
-    async setPassword() {
-      // Validate if password field is empty
-      if (!this.password) {
-        this.errorMessage = 'Please choose a password';
-        this.resetPasswordFields();
-        return;
-      }
-
-      // Validate if passwords is long enough
-      if (this.password.length < 6) {
-        this.errorMessage = 'Please choose a longer password';
-        this.resetPasswordFields();
-        return;
-      }
-
-      // Validate repeatPassword field is empty
-      if (this.password && !this.repeatPassword) {
-        this.errorMessage = 'Please repeat your password';
-        this.$refs.repeatPassword.focus();
-        return;
-      }
-
-      // Check if passwords match
-      if (this.password !== this.repeatPassword) {
-        this.errorMessage = 'Passwords do not match';
-        this.resetPasswordFields();
-        return;
-      }
-
-      this.loading = true;
-      this.errorMessage = null;
-
-      try {
-        const res = await fetch(`${import.meta.env.VITE_ADMIN_HOST || ''}/admin/activateAccount`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            activationToken: this.$route.query.activationToken,
-            email: this.email,
-            password: this.password,
-          }),
-        });
-
-        if (res.ok) {
-          this.success = true;
-        } else {
-          const { error } = await res.json();
-          this.errorMessage = error;
-        }
-      } catch {
-        this.errorMessage = 'Something went wrong';
-      }
-
-      this.loading = false;
-    },
-    toLogin() {
-      this.$router.push({ name: 'Auth' });
-    },
-  },
-};
-</script>

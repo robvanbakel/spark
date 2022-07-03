@@ -1,3 +1,13 @@
+<script setup>
+import { computed } from 'vue';
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const user = computed(() => store.getters['auth/user']);
+</script>
+
 <template>
   <div class="employee-info-wrapper">
     <h3>{{ $t('schedule.profile') }}</h3>
@@ -17,13 +27,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  computed: {
-    user() {
-      return this.$store.getters['auth/user'];
-    },
-  },
-};
-</script>

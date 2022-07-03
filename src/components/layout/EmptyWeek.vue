@@ -1,3 +1,30 @@
+<script setup>
+import { ref, computed, watch } from 'vue';
+
+import CopyWeek from '@/components/ui/CopyWeek.vue';
+
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+
+const store = useStore();
+const route = useRoute();
+
+const emit = defineEmits(['hideEmptyWeek']);
+
+const showCopyWeek = ref(false);
+
+const dateRange = computed(() => {
+  const dates = store.getters['date/dates'];
+  return `${dates[0].format('LL')} – ${dates[dates.length - 1].format('LL')}`;
+});
+
+watch(route, (to) => {
+  if (to.name === 'Planner') {
+    showCopyWeek.value = false;
+  }
+});
+</script>
+
 <template>
   <div class="empty-week">
     <WeekSwitch />
@@ -9,7 +36,7 @@
     <div class="action-wrapper">
       <div
         :class="['action', { transparent: showCopyWeek }]"
-        @click="$emit('hideEmptyWeek')"
+        @click="emit('hideEmptyWeek')"
       >
         <span class="material-icons material-icons-round">calendar_today</span>
         Create empty schedule
@@ -25,30 +52,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import CopyWeek from '@/components/ui/CopyWeek.vue';
-
-export default {
-  components: { CopyWeek },
-  emits: ['hideEmptyWeek'],
-  data() {
-    return {
-      showCopyWeek: false,
-    };
-  },
-  computed: {
-    dateRange() {
-      const dates = this.$store.getters['date/dates'];
-      return `${dates[0].format('LL')} – ${dates[dates.length - 1].format('LL')}`;
-    },
-  },
-  watch: {
-    $route(to) {
-      if (to.name === 'Planner') {
-        this.showCopyWeek = false;
-      }
-    },
-  },
-};
-</script>

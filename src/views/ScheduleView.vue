@@ -161,7 +161,7 @@ const closeActiveShift = () => {
 };
 
 const acceptProposal = (shiftId) => {
-  store.dispatch('planner/acceptShifts', [shiftId || this.activeShift.id]);
+  store.dispatch('planner/acceptShifts', [shiftId || activeShift.value.id]);
   closeActiveShift();
 };
 

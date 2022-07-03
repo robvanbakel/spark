@@ -1,3 +1,42 @@
+<script setup>
+import { computed } from 'vue';
+
+import PlannerRow from '@/components/layout/PlannerRow.vue';
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const props = defineProps({
+  schedules: {
+    type: Object,
+    required: true,
+  },
+  roles: {
+    type: Array,
+    required: true,
+  },
+  search: {
+    type: String,
+    default: '',
+  },
+});
+
+const employees = computed(() => {
+  const output = [];
+
+  props.roles.forEach((role) => {
+    store.getters['employees/users'].forEach((user) => {
+      if (role === user.role?.toLowerCase() && `${user.firstName} ${user.lastName}`.toLowerCase().includes(props.search.toLowerCase())) {
+        output.push(user);
+      }
+    });
+  });
+
+  return output;
+});
+</script>
+
 <template>
   <PlannerRow
     v-for="employee in employees"
@@ -8,40 +47,3 @@
   />
   <PlannerRow />
 </template>
-
-<script>
-import PlannerRow from '@/components/layout/PlannerRow.vue';
-
-export default {
-  components: { PlannerRow },
-  props: {
-    schedules: {
-      type: Object,
-      required: true,
-    },
-    roles: {
-      type: Array,
-      required: true,
-    },
-    search: {
-      type: String,
-      default: '',
-    },
-  },
-  computed: {
-    employees() {
-      const output = [];
-
-      this.roles.forEach((role) => {
-        this.$store.getters['employees/users'].forEach((user) => {
-          if (role === user.role?.toLowerCase() && `${user.firstName} ${user.lastName}`.toLowerCase().includes(this.search.toLowerCase())) {
-            output.push(user);
-          }
-        });
-      });
-
-      return output;
-    },
-  },
-};
-</script>

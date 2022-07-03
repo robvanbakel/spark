@@ -1,3 +1,198 @@
+<script setup>
+import {
+  ref, onMounted, computed, nextTick,
+} from 'vue';
+
+import util from '@/utils/util';
+import dayjs from '@/plugins/dayjs';
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const confirmDeleteShift = ref();
+const confirmReplaceShift = ref();
+const suggestionRightClickMenu = ref();
+const inputDate = ref('');
+const inputFrom = ref('');
+const inputTo = ref('');
+const shift = ref({});
+const changed = ref({});
+const error = ref({});
+const requiredFields = ref(['employee', 'location', 'date', 'from', 'to']);
+const selectedSuggestion = ref(null);
+
+const showNewSuggestion = computed(() => {
+  if (
+    shift.value.location && !store.getters['settings/settings'].suggestions
+      .map((sug) => sug.toLowerCase())
+      .includes(shift.value.location.toLowerCase())
+  ) {
+    return true;
+  }
+  return false;
+});
+
+const employees = computed(() => store.getters['employees/employees'].map((employee) => ({ id: employee.id, display: `${employee.firstName} ${employee.lastName}` })));
+
+const newShift = computed(() => store.getters['planner/activeShiftId'] === 'NEW');
+
+const initState = computed(() => store.getters['planner/shifts'].find((v) => v.id === store.getters['planner/activeShiftId']) || store.getters['planner/newShiftPrefillData']);
+
+const newRequestNeeded = computed(() => changed.value.employee || changed.value.from || changed.value.to);
+
+onMounted(() => {
+  resetForm();
+});
+
+const dropdownHandler = (selectedId) => {
+  error.value.employee = false;
+  shift.value.employeeId = selectedId;
+
+  if (newShift.value) return;
+  changed.value.employee = initState.value.employeeId !== selectedId;
+};
+
+const setBreak = (val) => {
+  shift.value.break = val;
+};
+
+const clearError = (field) => {
+  error.value[field] = false;
+};
+
+const resetForm = async () => {
+  shift.value = {};
+  changed.value = {};
+  requiredFields.value.forEach((field) => clearError(field));
+  await nextTick();
+  setInitState();
+};
+
+const setInitState = () => {
+  shift.value = { break: '0', ...initState.value };
+  inputDate.value = shift.value.from;
+
+  if (newShift.value) return;
+
+  inputFrom.value = shift.value.from.format('HH:mm');
+  inputTo.value = shift.value.to.format('HH:mm');
+};
+
+const formatDateTime = (value, field, model) => {
+  if (!shift.value.from) shift.value.from = dayjs();
+  if (!shift.value.to) shift.value.to = dayjs();
+
+  if (field === 'date') {
+    const year = value.year();
+    const month = value.month();
+    const date = value.date();
+
+    error.value.date = false;
+    inputDate.value = value;
+    shift.value.from = shift.value.from.year(year).month(month).date(date);
+    shift.value.to = shift.value.to.year(year).month(month).date(date);
+  } else {
+    if (/^\d{1,2}$/.test(value) && value < 24) {
+      shift.value[field] = dayjs(shift.value[field]).hour(value).minute(0);
+    } else {
+      try {
+        const [, hour, minute] = value.match(/^(\d{1,2}?)\D?(\d{1,2})?$/);
+        shift.value[field] = dayjs(shift.value[field]).hour(hour < 24 ? hour : 0).minute(minute < 60 ? minute : 0);
+      } catch {
+        error.value[field] = model;
+        return;
+      }
+    }
+
+    const formattedTime = dayjs(shift.value[field]).format('HH:mm');
+
+    switch (model) {
+      case 'inputFrom':
+        inputFrom.value = formattedTime;
+        break;
+      case 'inputTo':
+        inputTo.value = formattedTime;
+        break;
+      default:
+        break;
+    }
+  }
+
+  if (shift.value.to.isBefore(shift.value.from) || inputTo.value === '00:00') {
+    shift.value.to = shift.value.to.add(1, 'day');
+  }
+
+  if (shift.value.to.diff(shift.value.from, 'hour') >= 24) {
+    shift.value.to = shift.value.to.subtract(1, 'day');
+  }
+
+  if (newShift.value) return;
+  changed.value.from = !initState.value.from.isSame(shift.value.from, 'minute');
+  changed.value.to = !initState.value.to.isSame(shift.value.to, 'minute');
+};
+
+const selectSuggestion = (suggestion) => {
+  shift.value.location = suggestion;
+  error.value.location = false;
+};
+
+const deleteSuggestion = (suggestion) => {
+  store.dispatch('settings/deleteSuggestion', suggestion);
+};
+
+const suggestionRightClickHandler = async (event, suggestion) => {
+  selectedSuggestion.value = suggestion;
+  await suggestionRightClickMenu.value.open(event, suggestion);
+  selectedSuggestion.value = null;
+};
+
+const validate = () => {
+  error.value.employee = !shift.value.employeeId;
+  error.value.location = !shift.value.location;
+  error.value.date = !inputDate.value;
+  error.value.from = !inputFrom.value;
+  error.value.to = !inputTo.value || shift.value.from.isSame(shift.value.to);
+
+  if (Object.values(error.value).includes(true)) return;
+
+  saveEditShift();
+};
+
+const saveEditShift = async () => {
+  if (newShift.value) {
+    shift.value.status = 'NEW';
+    shift.value.id = util.randomId(20);
+    shift.value.statusUpdated = new Date().toISOString();
+  }
+
+  // If employee already has a shift on that day, confirm that the shift should be replaced
+  const collision = store.getters['planner/shifts'].find((v) => v.id !== shift.value.id && v.employeeId === shift.value.employeeId && v.from.isSame(shift.value.from, 'date'));
+  if (collision) {
+    if (!(await confirmReplaceShift.value.open())) return;
+    store.dispatch('planner/deleteShiftLocally', collision.id);
+  }
+
+  // Save shift and exit modal
+  store.dispatch('planner/saveEditShift', {
+    ...shift.value,
+    status: newRequestNeeded.value ? 'PROPOSED' : shift.value.status,
+  });
+  closeEditShift();
+};
+
+const closeEditShift = () => {
+  store.dispatch('planner/setActiveShiftId', null);
+};
+
+const deleteShift = async () => {
+  if (await confirmDeleteShift.value.open()) {
+    store.dispatch('planner/deleteShift');
+    closeEditShift();
+  }
+};
+</script>
+
 <template>
   <base-modal
     class="edit-shift"
@@ -163,178 +358,3 @@
     :choice-true="$t('general.actions.delete', {resource: 'shift'})"
   />
 </template>
-
-<script>
-import util from '@/utils/util';
-
-export default {
-  data() {
-    return {
-      inputDate: '',
-      inputFrom: '',
-      inputTo: '',
-      shift: {},
-      changed: {},
-      error: {},
-      requiredFields: ['employee', 'location', 'date', 'from', 'to'],
-      selectedSuggestion: null,
-      showConfirmDelete: false,
-    };
-  },
-  computed: {
-    showNewSuggestion() {
-      if (
-        this.shift.location && !this.$store.getters['settings/settings'].suggestions
-          .map((sug) => sug.toLowerCase())
-          .includes(this.shift.location.toLowerCase())
-      ) {
-        return true;
-      }
-      return false;
-    },
-    employees() {
-      return this.$store.getters['employees/employees'].map((employee) => ({ id: employee.id, display: `${employee.firstName} ${employee.lastName}` }));
-    },
-    newShift() {
-      return this.$store.getters['planner/activeShiftId'] === 'NEW';
-    },
-    initState() {
-      return this.$store.getters['planner/shifts'].find((v) => v.id === this.$store.getters['planner/activeShiftId']) || this.$store.getters['planner/newShiftPrefillData'];
-    },
-    newRequestNeeded() {
-      return this.changed.employee || this.changed.from || this.changed.to;
-    },
-    shiftDuration() {
-      if (!this.shift.from || !this.inputFrom || !this.shift.to || !this.inputTo) return null;
-      return this.$dayjs.duration(this.shift.to.diff(this.shift.from)).subtract(this.shift.break, 'minute');
-    },
-  },
-  mounted() {
-    this.resetForm();
-  },
-  methods: {
-    dropdownHandler(selectedId) {
-      this.error.employee = false;
-      this.shift.employeeId = selectedId;
-
-      if (this.newShift) return;
-      this.changed.employee = this.initState.employeeId !== selectedId;
-    },
-    setBreak(val) {
-      this.shift.break = val;
-    },
-    clearError(field) {
-      this.error[field] = false;
-    },
-    async resetForm() {
-      this.shift = {};
-      this.changed = {};
-      this.requiredFields.forEach((field) => this.clearError(field));
-      await this.$nextTick();
-      this.setInitState();
-    },
-    setInitState() {
-      this.shift = { break: '0', ...this.initState };
-      this.inputDate = this.shift.from;
-
-      if (this.newShift) return;
-
-      this.inputFrom = this.shift.from.format('HH:mm');
-      this.inputTo = this.shift.to.format('HH:mm');
-    },
-    formatDateTime(value, field, model) {
-      if (!this.shift.from) this.shift.from = this.$dayjs();
-      if (!this.shift.to) this.shift.to = this.$dayjs();
-
-      if (field === 'date') {
-        const year = value.year();
-        const month = value.month();
-        const date = value.date();
-
-        this.error.date = false;
-        this.inputDate = value;
-        this.shift.from = this.shift.from.year(year).month(month).date(date);
-        this.shift.to = this.shift.to.year(year).month(month).date(date);
-      } else {
-        if (/^\d{1,2}$/.test(value) && value < 24) {
-          this.shift[field] = this.$dayjs(this.shift[field]).hour(value).minute(0);
-        } else {
-          try {
-            const [, hour, minute] = value.match(/^(\d{1,2}?)\D?(\d{1,2})?$/);
-            this.shift[field] = this.$dayjs(this.shift[field]).hour(hour < 24 ? hour : 0).minute(minute < 60 ? minute : 0);
-          } catch {
-            this.error[field] = this[model];
-            return;
-          }
-        }
-        this[model] = this.$dayjs(this.shift[field]).format('HH:mm');
-      }
-
-      if (this.shift.to.isBefore(this.shift.from) || this.inputTo === '00:00') {
-        this.shift.to = this.shift.to.add(1, 'day');
-      }
-
-      if (this.shift.to.diff(this.shift.from, 'hour') >= 24) {
-        this.shift.to = this.shift.to.subtract(1, 'day');
-      }
-
-      if (this.newShift) return;
-      this.changed.from = !this.initState.from.isSame(this.shift.from, 'minute');
-      this.changed.to = !this.initState.to.isSame(this.shift.to, 'minute');
-    },
-    selectSuggestion(suggestion) {
-      this.shift.location = suggestion;
-      this.error.location = false;
-    },
-    deleteSuggestion(suggestion) {
-      this.$store.dispatch('settings/deleteSuggestion', suggestion);
-    },
-    async suggestionRightClickHandler(event, suggestion) {
-      this.selectedSuggestion = suggestion;
-      await this.$refs.suggestionRightClickMenu.open(event, suggestion);
-      this.selectedSuggestion = null;
-    },
-    validate() {
-      this.error.employee = !this.shift.employeeId;
-      this.error.location = !this.shift.location;
-      this.error.date = !this.inputDate;
-      this.error.from = !this.inputFrom;
-      this.error.to = !this.inputTo || this.shift.from.isSame(this.shift.to);
-
-      if (Object.values(this.error).includes(true)) return;
-
-      this.saveEditShift();
-    },
-    async saveEditShift() {
-      if (this.newShift) {
-        this.shift.status = 'NEW';
-        this.shift.id = util.randomId(20);
-        this.shift.statusUpdated = new Date().toISOString();
-      }
-
-      // If employee already has a shift on that day, confirm that the shift should be replaced
-      const collision = this.$store.getters['planner/shifts'].find((shift) => shift.id !== this.shift.id && shift.employeeId === this.shift.employeeId && shift.from.isSame(this.shift.from, 'date'));
-      if (collision) {
-        if (!(await this.$refs.confirmReplaceShift.open())) return;
-        this.$store.dispatch('planner/deleteShiftLocally', collision.id);
-      }
-
-      // Save shift and exit modal
-      this.$store.dispatch('planner/saveEditShift', {
-        ...this.shift,
-        status: this.newRequestNeeded ? 'PROPOSED' : this.shift.status,
-      });
-      this.closeEditShift();
-    },
-    closeEditShift() {
-      this.$store.dispatch('planner/setActiveShiftId', null);
-    },
-    async deleteShift() {
-      if (await this.$refs.confirmDeleteShift.open()) {
-        this.$store.dispatch('planner/deleteShift');
-        this.closeEditShift();
-      }
-    },
-  },
-};
-</script>

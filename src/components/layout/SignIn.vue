@@ -1,3 +1,58 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const errorMessage = ref(null);
+const email = ref('');
+const password = ref('');
+const isLoading = ref(false);
+const showDemo = ref(false);
+const demoLoading = ref(false);
+
+const enterDemo = async () => {
+  demoLoading.value = true;
+
+  await store.dispatch('auth/login', {
+    email: 'demo@company.com',
+    password: 'demo@company.com',
+  });
+};
+
+const handleSubmit = async () => {
+  isLoading.value = true;
+
+  const res = await store.dispatch('auth/login', {
+    email: email.value,
+    password: password.value,
+  });
+
+  if (!res.user) {
+    isLoading.value = false;
+
+    switch (res.code) {
+      case 'auth/user-not-found':
+        errorMessage.value = 'User not found';
+        break;
+      case 'auth/wrong-password':
+        errorMessage.value = 'Password incorrect';
+        break;
+      default:
+        errorMessage.value = 'Login failed';
+    }
+  }
+};
+
+onMounted(() => {
+  setTimeout(() => {
+    showDemo.value = true;
+  }, 650);
+});
+
+</script>
+
 <template>
   <div class="auth-modal">
     <h1>Log In</h1>
@@ -9,14 +64,12 @@
     </p>
     <form @submit.prevent="handleSubmit">
       <input
-        ref="email"
         v-model.trim="email"
         type="email"
         placeholder="Email"
         required
       >
       <input
-        ref="password"
         v-model="password"
         type="password"
         placeholder="Password"
@@ -34,7 +87,7 @@
     </form>
   </div>
 
-  <div v-if="$store.getters['settings/mode'] === 'demo'">
+  <div v-if="$store.getters['settings/mode'] === 'demo' || $store.getters['settings/mode'] === 'localhost'">
     <transition name="demo">
       <div
         v-if="showDemo"
@@ -63,59 +116,6 @@
     </transition>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      errorMessage: null,
-      email: '',
-      password: '',
-      isLoading: false,
-      showDemo: false,
-      demoLoading: false,
-    };
-  },
-  mounted() {
-    setTimeout(() => {
-      this.showDemo = true;
-    }, 650);
-  },
-  methods: {
-    async enterDemo() {
-      this.demoLoading = true;
-
-      await this.$store.dispatch('auth/login', {
-        email: 'demo@company.com',
-        password: 'demo@company.com',
-      });
-    },
-    async handleSubmit() {
-      this.isLoading = true;
-
-      const res = await this.$store.dispatch('auth/login', {
-        email: this.email,
-        password: this.password,
-      });
-
-      if (!res.user) {
-        this.isLoading = false;
-
-        switch (res.code) {
-          case 'auth/user-not-found':
-            this.errorMessage = 'User not found';
-            break;
-          case 'auth/wrong-password':
-            this.errorMessage = 'Password incorrect';
-            break;
-          default:
-            this.errorMessage = 'Login failed';
-        }
-      }
-    },
-  },
-};
-</script>
 
 <style>
 .demo-enter-from {

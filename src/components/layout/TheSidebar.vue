@@ -1,9 +1,15 @@
+<script setup>
+import { computed } from 'vue';
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const hidden = computed(() => store.getters['settings/hideSidebar']);
+</script>
+
 <template>
-  <aside :class="{ hidden: $store.getters['settings/hideSidebar'] }">
+  <aside :class="{ hidden }">
     <slot />
   </aside>
 </template>
-
-<script>
-export default {};
-</script>

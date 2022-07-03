@@ -1,3 +1,110 @@
+<script setup>
+import {
+  ref, computed, onMounted, nextTick,
+} from 'vue';
+
+import util from '@/utils/util';
+import StatusPicker from '@/components/ui/StatusPicker.vue';
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const emailAlreadyExists = ref();
+const somethingWentWrong = ref();
+const confirmDeleteEmployee = ref();
+const employee = ref({});
+const error = ref({});
+const requiredFields = ref(['firstName', 'lastName', 'role', 'contract', 'email']);
+
+const roles = computed(() => store.getters['settings/settings'].roles.map((role) => ({ id: role, display: role })));
+
+const newUser = computed(() => store.getters['employees/activeUserId'] === 'NEW');
+
+const initState = computed(() => store.getters['employees/users'].find((v) => v.id === store.getters['employees/activeUserId']));
+
+onMounted(() => {
+  resetForm();
+});
+
+const setActiveStatus = (status) => {
+  employee.value.status = status;
+};
+
+const resetForm = async () => {
+  employee.value = {};
+  requiredFields.value.forEach((field) => clearError(field));
+  await nextTick();
+  setInitState();
+};
+
+const setInitState = () => {
+  employee.value = { ...initState.value };
+};
+
+const setRole = (value) => {
+  clearError('role');
+  employee.value.role = value;
+};
+
+const closeEditEmployee = () => {
+  store.dispatch('employees/activeUserId', null);
+};
+
+const setContractType = (value) => {
+  employee.value.contractType = value;
+};
+
+const deleteEmployee = async () => {
+  if (await confirmDeleteEmployee.value.open()) {
+    employee.value.status = 'ARCHIVED';
+    saveEditUser();
+  }
+};
+
+const validate = () => {
+  if (newUser.value) {
+    error.value.firstName = !employee.value.firstName;
+    error.value.lastName = !employee.value.lastName;
+  }
+
+  employee.value.contract = parseFloat(employee.value.contract.toString().replace(',', '.'));
+
+  error.value.role = !employee.value.role;
+  error.value.contract = !employee.value.contract;
+
+  error.value.email = !/^.+@\w+\.\w+$/i.test(employee.value.email);
+
+  if (Object.values(error.value).includes(true)) return;
+
+  saveEditUser();
+};
+
+const saveEditUser = async () => {
+  if (newUser.value) {
+    employee.value.status = 'NEW';
+    employee.value.id = util.randomId(28);
+  }
+
+  try {
+    await store.dispatch('employees/saveEditUser', employee.value);
+    closeEditEmployee();
+  } catch (err) {
+    if (err.code === 'auth/email-already-exists') {
+      error.value.email = true;
+      emailAlreadyExists.value.open();
+      return;
+    }
+
+    somethingWentWrong.value.open();
+  }
+};
+
+const clearError = (field) => {
+  error.value[field] = false;
+};
+</script>
+
 <template>
   <base-modal
     class="edit-employee"
@@ -147,106 +254,3 @@
     no-false
   />
 </template>
-
-<script>
-import util from '@/utils/util';
-import StatusPicker from '@/components/ui/StatusPicker.vue';
-
-export default {
-  components: {
-    StatusPicker,
-  },
-  data() {
-    return {
-      employee: {},
-      changed: {},
-      error: {},
-      requiredFields: ['firstName', 'lastName', 'role', 'contract', 'email'],
-      showConfirmDelete: false,
-    };
-  },
-  computed: {
-    roles() {
-      return this.$store.getters['settings/settings'].roles.map((role) => ({ id: role, display: role }));
-    },
-    newUser() {
-      return this.$store.getters['employees/activeUserId'] === 'NEW';
-    },
-    initState() {
-      return this.$store.getters['employees/users'].find((v) => v.id === this.$store.getters['employees/activeUserId']);
-    },
-  },
-  mounted() {
-    this.resetForm();
-  },
-  methods: {
-    setActiveStatus(status) {
-      this.employee.status = status;
-    },
-    async resetForm() {
-      this.employee = {};
-      this.requiredFields.forEach((field) => this.clearError(field));
-      await this.$nextTick();
-      this.setInitState();
-    },
-    setInitState() {
-      this.employee = { ...this.initState };
-    },
-    setContractType(value) {
-      this.employee.contractType = value;
-    },
-    setRole(value) {
-      this.clearError('role');
-      this.employee.role = value;
-    },
-    closeEditEmployee() {
-      this.$store.dispatch('employees/activeUserId', null);
-    },
-    async deleteEmployee() {
-      if (await this.$refs.confirmDeleteEmployee.open()) {
-        this.employee.status = 'ARCHIVED';
-        this.saveEditUser();
-      }
-    },
-    validate() {
-      if (this.newUser) {
-        this.error.firstName = !this.employee.firstName;
-        this.error.lastName = !this.employee.lastName;
-      }
-
-      this.employee.contract = parseFloat(this.employee.contract.toString().replace(',', '.'));
-
-      this.error.role = !this.employee.role;
-      this.error.contract = !this.employee.contract;
-
-      this.error.email = !/^.+@\w+\.\w+$/i.test(this.employee.email);
-
-      if (Object.values(this.error).includes(true)) return;
-
-      this.saveEditUser();
-    },
-    async saveEditUser() {
-      if (this.newUser) {
-        this.employee.status = 'NEW';
-        this.employee.id = util.randomId(28);
-      }
-
-      try {
-        await this.$store.dispatch('employees/saveEditUser', this.employee);
-        this.closeEditEmployee();
-      } catch (err) {
-        if (err.code === 'auth/email-already-exists') {
-          this.error.email = true;
-          this.$refs.emailAlreadyExists.open();
-          return;
-        }
-
-        this.$refs.somethingWentWrong.open();
-      }
-    },
-    clearError(field) {
-      this.error[field] = false;
-    },
-  },
-};
-</script>

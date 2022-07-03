@@ -1,3 +1,24 @@
+<script setup>
+import { computed } from 'vue';
+
+const props = defineProps({
+  shift: {
+    type: [Object, null],
+    default: null,
+  },
+});
+
+const statusIcons = computed(() => {
+  const icons = {
+    description: props.shift?.notes,
+    question_mark: props.shift?.status === 'PROPOSED',
+    edit: props.shift?.status === 'DRAFT',
+  };
+
+  return Object.keys(icons).filter((icon) => icons[icon]);
+});
+</script>
+
 <template>
   <div
     class="shift-block"
@@ -9,7 +30,7 @@
     >
       <div class="icons">
         <span
-          v-for="icon in icons"
+          v-for="icon in statusIcons"
           :key="icon"
           class="material-symbols-outlined"
         >{{ icon }}</span>
@@ -21,25 +42,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    shift: {
-      type: [Object, null],
-      default: null,
-    },
-  },
-  computed: {
-    icons() {
-      const icons = {
-        description: this.shift?.notes,
-        question_mark: this.shift?.status === 'PROPOSED',
-        edit: this.shift?.status === 'DRAFT',
-      };
-
-      return Object.keys(icons).filter((icon) => icons[icon]);
-    },
-  },
-};
-</script>

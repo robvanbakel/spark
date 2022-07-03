@@ -29,7 +29,7 @@ const displayRoles = computed(() => {
 
 const schedulesInView = computed(() => store.getters['planner/schedulesInView']);
 
-const emptyWeek = computed(() => !Object.values(schedulesInView).flat().length);
+const emptyWeek = computed(() => !Object.values(schedulesInView.value).flat().length);
 
 const setWindowTitle = () => {
   const { weekId } = route.params;

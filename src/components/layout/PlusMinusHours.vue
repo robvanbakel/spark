@@ -1,3 +1,46 @@
+<script setup>
+import { ref } from 'vue';
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+defineProps({
+  roles: {
+    type: Array,
+    required: true,
+  },
+  search: {
+    type: String,
+    default: '',
+  },
+});
+
+const showAll = ref(true);
+
+const calculatePlusMinusHours = (employeeId) => {
+  const contractHours = store.getters['employees/employees'].find((employee) => employee.id === employeeId).contract;
+  const calculatedHours = store.getters['employees/totalHours'][employeeId];
+
+  const plusMinusHours = calculatedHours - contractHours;
+
+  return plusMinusHours;
+};
+
+const employeeFullName = (employee) => `${employee.firstName} ${employee.lastName}`;
+
+const toggleShowAll = () => {
+  showAll.value = !showAll.value;
+};
+
+const computedShowAll = (employeeId) => {
+  if (showAll.value || store.getters['employees/totalHours'][employeeId] > 0) {
+    return true;
+  }
+  return false;
+};
+</script>
+
 <template>
   <div class="plus-minus-hours-wrapper">
     <div
@@ -16,7 +59,7 @@
               computedShowAll(employee.id) &&
               employeeFullName(employee)
                 .toLowerCase()
-                .includes(searchInput.toLowerCase())
+                .includes(search.toLowerCase())
           "
           class="entry"
         >
@@ -47,51 +90,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    roles: {
-      type: Array,
-      required: true,
-    },
-    search: {
-      type: String,
-      default: '',
-    },
-  },
-  data() {
-    return {
-      showAll: true,
-      searchInput: '',
-    };
-  },
-  watch: {
-    search(query) {
-      this.searchInput = query;
-    },
-  },
-  methods: {
-    calculatePlusMinusHours(employeeId) {
-      const contractHours = this.$store.getters['employees/employees'].find((employee) => employee.id === employeeId).contract;
-      const calculatedHours = this.$store.getters['employees/totalHours'][employeeId];
-
-      const plusMinusHours = calculatedHours - contractHours;
-
-      return plusMinusHours;
-    },
-    employeeFullName(employee) {
-      return `${employee.firstName} ${employee.lastName}`;
-    },
-    toggleShowAll() {
-      this.showAll = !this.showAll;
-    },
-    computedShowAll(employeeId) {
-      if (this.showAll || this.$store.getters['employees/totalHours'][employeeId] > 0) {
-        return true;
-      }
-      return false;
-    },
-  },
-};
-</script>

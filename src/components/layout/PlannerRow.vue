@@ -1,7 +1,42 @@
+<script setup>
+import { computed } from 'vue';
+
+import ShiftBlock from '@/components/layout/ShiftBlock.vue';
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const props = defineProps({
+  employee: {
+    type: [Object, null],
+    default: null,
+  },
+  schedule: {
+    type: [Array, null],
+    default: null,
+  },
+});
+
+const hasSchedulesInView = computed(() => props.schedule && !props.schedule?.every((v) => !v));
+
+const handleClick = (index) => {
+  if (props.schedule && props.schedule[index]) {
+    store.dispatch('planner/setActiveShiftId', props.schedule[index].id);
+  } else {
+    store.dispatch('planner/addNewShift', {
+      employeeId: props.employee?.id,
+      from: store.getters['date/dates'][index],
+      to: store.getters['date/dates'][index],
+    });
+  }
+};
+</script>
+
 <template>
   <div v-if="employee">
     <div
-      v-if="hasschedulesInView"
+      v-if="hasSchedulesInView"
       class="row"
       :class="employee.role?.toLowerCase()"
     >
@@ -34,53 +69,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import ShiftBlock from '@/components/layout/ShiftBlock.vue';
-
-export default {
-  components: { ShiftBlock },
-  props: {
-    employee: {
-      type: [Object, null],
-      default: null,
-    },
-    schedule: {
-      type: [Array, null],
-      default: null,
-    },
-    search: {
-      type: String,
-      default: '',
-    },
-  },
-  data() {
-    return {
-      searchInput: '',
-    };
-  },
-  computed: {
-    hasschedulesInView() {
-      return this.schedule && !this.schedule?.every((v) => !v);
-    },
-  },
-  watch: {
-    search(query) {
-      this.searchInput = query;
-    },
-  },
-  methods: {
-    handleClick(index) {
-      if (this.schedule && this.schedule[index]) {
-        this.$store.dispatch('planner/setActiveShiftId', this.schedule[index].id);
-      } else {
-        this.$store.dispatch('planner/addNewShift', {
-          employeeId: this.employee?.id,
-          from: this.$store.getters['date/dates'][index],
-          to: this.$store.getters['date/dates'][index],
-        });
-      }
-    },
-  },
-};
-</script>

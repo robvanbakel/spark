@@ -1,3 +1,24 @@
+<script setup>
+import { ref, computed } from 'vue';
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const icon = ref('person');
+
+const user = computed(() => store.getters['auth/user']);
+
+const admin = computed(() => store.getters['auth/admin']);
+
+const employee = computed(() => store.getters['auth/user'].status !== 'ADMIN');
+
+const logout = () => {
+  store.dispatch('auth/logout');
+};
+
+</script>
+
 <template>
   <header>
     <div id="logo">
@@ -57,29 +78,3 @@
     </div>
   </header>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      icon: 'person',
-    };
-  },
-  computed: {
-    user() {
-      return this.$store.getters['auth/user'];
-    },
-    admin() {
-      return this.$store.getters['auth/admin'];
-    },
-    employee() {
-      return this.$store.getters['auth/user'].status !== 'ADMIN';
-    },
-  },
-  methods: {
-    logout() {
-      this.$store.dispatch('auth/logout');
-    },
-  },
-};
-</script>
