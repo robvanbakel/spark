@@ -1,6 +1,9 @@
+import store from '@/store';
 import auth from '@/firebase';
 
 const request = async (method, path, body) => {
+  if (method !== 'GET' && store.getters['auth/user'].demo) return null;
+
   const idToken = await auth.currentUser.getIdToken();
 
   return fetch(`${import.meta.env.VITE_ADMIN_HOST || ''}/admin/${path}`, {
