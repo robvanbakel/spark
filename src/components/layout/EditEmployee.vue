@@ -51,10 +51,6 @@ const closeEditEmployee = () => {
   store.dispatch('employees/activeUserId', null);
 };
 
-const setContractType = (value) => {
-  employee.value.contractType = value;
-};
-
 const deleteEmployee = async () => {
   if (await confirmDeleteEmployee.value.open()) {
     employee.value.status = 'ARCHIVED';
@@ -174,11 +170,9 @@ const clearError = (field) => {
             >
             <span class="input-label">{{ $t('staff.hours') }}</span>
           </div>
-          <base-switch
-            id="contractType"
+          <BaseSwitch
+            v-model="employee.contractType"
             :items="['fulltime', 'parttime']"
-            :active="employee.contractType"
-            @active-item="setContractType"
           />
         </div>
       </div>

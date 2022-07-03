@@ -1,5 +1,7 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import {
+  ref, onMounted, computed, watch,
+} from 'vue';
 
 import { useStore } from 'vuex';
 import { onBeforeRouteLeave } from 'vue-router';
@@ -26,13 +28,7 @@ const dateNotations = computed(() => [
   },
 ]);
 
-const setShareWithEmployees = (value, id) => {
-  unsavedChanges.value = true;
-  settings.value.shareWithEmployees[id] = value;
-};
-
 const setDateNotation = (locale) => {
-  unsavedChanges.value = true;
   settings.value.dateNotation = locale;
 };
 
@@ -43,6 +39,10 @@ const saveSettings = async () => {
     unsavedChanges.value = false;
   }
 };
+
+watch(settings.value, () => {
+  unsavedChanges.value = true;
+});
 
 onMounted(() => {
   unsavedChanges.value = false;
@@ -84,20 +84,16 @@ onBeforeRouteLeave(async (to, from, next) => {
       </p>
       <div class="setting toggle">
         <span class="label">{{ $t('settings.shareNotes.employeeNotes') }}</span>
-        <base-switch
-          id="employeeNotes"
+        <BaseSwitch
+          v-model="settings.shareWithEmployees.employeeNotes"
           toggle
-          :active="settings.shareWithEmployees.employeeNotes.toString()"
-          @active-item="setShareWithEmployees($event, 'employeeNotes')"
         />
       </div>
       <div class="setting toggle">
         <span class="label">{{ $t('settings.shareNotes.shiftNotes') }}</span>
-        <base-switch
-          id="shiftNotes"
+        <BaseSwitch
+          v-model="settings.shareWithEmployees.shiftNotes"
           toggle
-          :active="settings.shareWithEmployees.shiftNotes.toString()"
-          @active-item="setShareWithEmployees($event, 'shiftNotes')"
         />
       </div>
     </div>
@@ -128,7 +124,6 @@ onBeforeRouteLeave(async (to, from, next) => {
               v-model="settings.address.street"
               type="text"
               placeholder="street"
-              @input="unsavedChanges = true"
             >
           </div>
           <div class="input-row">
@@ -137,14 +132,12 @@ onBeforeRouteLeave(async (to, from, next) => {
               v-model="settings.address.postalCode"
               type="text"
               placeholder="ZIP Code"
-              @input="unsavedChanges = true"
             >
             <input
               id="city"
               v-model="settings.address.city"
               type="text"
               placeholder="City"
-              @input="unsavedChanges = true"
             >
           </div>
         </div>

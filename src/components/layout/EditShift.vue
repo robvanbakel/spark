@@ -284,14 +284,12 @@ const deleteShift = async () => {
         </div>
         <div class="form-control">
           <label>{{ $t('general.labels.break') }}</label>
-          <base-switch
+          <BaseSwitch
             v-if="shift.break"
-            id="breaks"
+            v-model="shift.break"
             :items="$store.getters['settings/breaks']"
-            :active="shift.break"
-            :fixed="true"
+            fixed
             tabindex="0"
-            @active-item="setBreak"
           />
         </div>
         <div class="form-control notes">
