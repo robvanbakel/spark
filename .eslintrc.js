@@ -16,6 +16,7 @@ module.exports = {
     'max-len': 0,
     'vue/require-default-prop': 0,
     'no-use-before-define': 0,
+    'import/no-cycle': 0,
   },
   overrides: [
     {
@@ -28,12 +29,6 @@ module.exports = {
       files: ['./src/plugins/dayjs.js'],
       rules: {
         'func-names': 0,
-      },
-    },
-    {
-      files: ['./src/router/**/*.js', './src/store/**/*.js'],
-      rules: {
-        'import/no-cycle': 0,
       },
     },
     {
