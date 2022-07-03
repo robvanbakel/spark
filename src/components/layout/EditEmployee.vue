@@ -1,7 +1,5 @@
 <script setup>
-import {
-  ref, computed, onMounted, nextTick,
-} from 'vue';
+import { ref, computed, onBeforeMount } from 'vue';
 
 import util from '@/utils/util';
 import StatusPicker from '@/components/ui/StatusPicker.vue';
@@ -15,7 +13,6 @@ const somethingWentWrong = ref();
 const confirmDeleteEmployee = ref();
 const employee = ref({});
 const error = ref({});
-const requiredFields = ref(['firstName', 'lastName', 'role', 'contract', 'email']);
 
 const roles = computed(() => store.getters['settings/settings'].roles.map((role) => ({ id: role, display: role })));
 
@@ -23,19 +20,12 @@ const newUser = computed(() => store.getters['employees/activeUserId'] === 'NEW'
 
 const initState = computed(() => store.getters['employees/users'].find((v) => v.id === store.getters['employees/activeUserId']));
 
-onMounted(() => {
-  resetForm();
+onBeforeMount(() => {
+  setInitState();
 });
 
 const setActiveStatus = (status) => {
   employee.value.status = status;
-};
-
-const resetForm = async () => {
-  employee.value = {};
-  requiredFields.value.forEach((field) => clearError(field));
-  await nextTick();
-  setInitState();
 };
 
 const setInitState = () => {
