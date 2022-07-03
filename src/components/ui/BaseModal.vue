@@ -1,10 +1,55 @@
+<script setup>
+const props = defineProps({
+  class: {
+    type: String,
+    require: false,
+  },
+  title: {
+    type: String,
+    require: false,
+  },
+  noHeader: {
+    type: Boolean,
+    require: false,
+  },
+  noActions: {
+    type: Boolean,
+    require: false,
+  },
+  tight: {
+    type: Boolean,
+    require: false,
+  },
+  centered: {
+    type: Boolean,
+    require: false,
+  },
+  globalClose: {
+    type: Boolean,
+    require: false,
+  },
+  clickout: {
+    type: Boolean,
+    require: false,
+  },
+});
+
+const emit = defineEmits(['close']);
+
+const close = (bool) => {
+  if (bool) {
+    emit('close');
+  }
+};
+</script>
+
 <template>
   <base-overlay
     dark
     transparent
     @click="close(clickout)"
   />
-  <div :class="['base-modal', { tight, centered }, this.class]">
+  <div :class="['base-modal', { tight, centered }, props.class]">
     <div
       v-if="!noHeader"
       class="header"
@@ -28,50 +73,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    class: {
-      type: String,
-      require: false,
-    },
-    title: {
-      type: String,
-      require: false,
-    },
-    noHeader: {
-      type: Boolean,
-      require: false,
-    },
-    noActions: {
-      type: Boolean,
-      require: false,
-    },
-    tight: {
-      type: Boolean,
-      require: false,
-    },
-    centered: {
-      type: Boolean,
-      require: false,
-    },
-    globalClose: {
-      type: Boolean,
-      require: false,
-    },
-    clickout: {
-      type: Boolean,
-      require: false,
-    },
-  },
-  emits: ['close'],
-  methods: {
-    close(bool) {
-      if (bool) {
-        this.$emit('close');
-      }
-    },
-  },
-};
-</script>

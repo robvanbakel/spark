@@ -1,3 +1,126 @@
+<script setup>
+import { ref, computed } from 'vue';
+
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const props = defineProps({
+  id: {
+    type: String,
+  },
+  items: {
+    type: Array,
+    require: true,
+  },
+  active: {
+    type: String,
+    require: false,
+  },
+  enableSearch: {
+    type: Boolean,
+    require: false,
+    default: false,
+  },
+  error: {
+    type: Boolean,
+    require: false,
+  },
+  employeeStatus: {
+    type: Boolean,
+    require: false,
+  },
+});
+
+const emit = defineEmits(['choice']);
+
+const dropdownVisible = ref(false);
+const selected = ref(props.active);
+const hoveredIndex = ref(null);
+const input = ref(props.items.find((item) => item.id === props.active)?.display || '');
+const inputField = ref();
+
+const selectedDisplay = computed(() => props.items.find((item) => item.id === selected.value)?.display || '');
+
+const filteredItems = computed(() => {
+  if (props.enableSearch) {
+    return props.items.filter((item) => item.display.toLowerCase().includes(input.value.toLowerCase()));
+  }
+  return props.items;
+});
+
+const dropdownScrollOffset = computed(() => {
+  if (hoveredIndex.value > 4) {
+    return 4 * 40 - hoveredIndex.value * 40;
+  }
+  return 0;
+});
+
+const hideDropdown = () => {
+  input.value = selectedDisplay.value;
+  dropdownVisible.value = false;
+  inputField.value.blur();
+  hoveredIndex.value = null;
+  window.removeEventListener('keydown', keyDownHandler);
+};
+
+const selectItem = (choice) => {
+  selected.value = choice;
+  hideDropdown();
+  emit('choice', choice);
+};
+
+const keyDownHandler = (e) => {
+  switch (e.key) {
+    case 'Escape':
+      hideDropdown();
+      break;
+    case 'Enter':
+      selectItem(filteredItems.value[hoveredIndex.value].id);
+      break;
+    case 'ArrowUp':
+      if (hoveredIndex.value === null) {
+        hoveredIndex.value = filteredItems.value.length - 1;
+      } else if (hoveredIndex.value === 0) {
+        break;
+      } else {
+        hoveredIndex.value -= 1;
+      }
+
+      break;
+    case 'ArrowDown':
+      if (hoveredIndex.value === null) {
+        hoveredIndex.value = 0;
+      } else if (hoveredIndex.value === filteredItems.value.length - 1) {
+        break;
+      } else {
+        hoveredIndex.value += 1;
+      }
+      break;
+    default:
+      break;
+  }
+};
+
+const showDropdown = () => {
+  if (props.enableSearch) {
+    input.value = '';
+  }
+  dropdownVisible.value = true;
+  inputField.value.focus();
+  window.addEventListener('keydown', keyDownHandler);
+};
+
+const getStatus = (id, opt = {}) => {
+  const { status } = store.getters['employees/employees'].find((emp) => emp.id === id);
+
+  if (opt.capitalize) {
+    return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+  }
+  return status.toLowerCase();
+};
+</script>
+
 <template>
   <div class="base-dropdown">
     <div
@@ -7,7 +130,7 @@
     >
       <input
         :id="id"
-        ref="input"
+        ref="inputField"
         v-model="input"
         autocomplete="off"
         type="text"
@@ -59,124 +182,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    id: {
-      type: String,
-    },
-    items: {
-      type: Array,
-      require: true,
-    },
-    active: {
-      type: String,
-      require: false,
-    },
-    enableSearch: {
-      type: Boolean,
-      require: false,
-      default: false,
-    },
-    error: {
-      type: Boolean,
-      require: false,
-    },
-    employeeStatus: {
-      type: Boolean,
-      require: false,
-    },
-  },
-  emits: ['choice'],
-  data() {
-    return {
-      dropdownVisible: false,
-      selected: this.active,
-      hoveredIndex: null,
-      input: this.items.find((item) => item.id === this.active)?.display || '',
-    };
-  },
-  computed: {
-    selectedDisplay() {
-      return this.items.find((item) => item.id === this.selected)?.display || '';
-    },
-    filteredItems() {
-      if (this.enableSearch) {
-        return this.items.filter((item) => item.display.toLowerCase().includes(this.input.toLowerCase()));
-      }
-      return this.items;
-    },
-    dropdownScrollOffset() {
-      if (this.hoveredIndex > 4) {
-        return 4 * 40 - this.hoveredIndex * 40;
-      }
-      return 0;
-    },
-  },
-  methods: {
-    showDropdown() {
-      if (this.enableSearch) {
-        this.input = '';
-      }
-      this.dropdownVisible = true;
-      this.$refs.input.focus();
-      window.addEventListener('keydown', this.keyDownHandler);
-    },
-    keyDownHandler(e) {
-      switch (e.key) {
-        case 'Escape':
-          this.hideDropdown();
-          break;
-        case 'Enter':
-          this.selectItem(this.filteredItems[this.hoveredIndex].id);
-          break;
-        case 'ArrowUp':
-          if (this.hoveredIndex === null) {
-            this.hoveredIndex = this.filteredItems.length - 1;
-          } else if (this.hoveredIndex === 0) {
-            break;
-          } else {
-            this.hoveredIndex -= 1;
-          }
-
-          break;
-        case 'ArrowDown':
-          if (this.hoveredIndex === null) {
-            this.hoveredIndex = 0;
-          } else if (this.hoveredIndex === this.filteredItems.length - 1) {
-            break;
-          } else {
-            this.hoveredIndex += 1;
-          }
-          break;
-        default:
-          break;
-      }
-    },
-    hideDropdown() {
-      this.input = this.selectedDisplay;
-      this.dropdownVisible = false;
-      this.$refs.input.blur();
-      this.hoveredIndex = null;
-      window.removeEventListener('keydown', this.keyDownHandler);
-    },
-    selectItem(choice) {
-      this.selected = choice;
-      this.hideDropdown();
-      this.$emit('choice', choice);
-    },
-    hoverItem(choice) {
-      this.hovered = choice;
-    },
-    getStatus(id, opt = {}) {
-      const { status } = this.$store.getters['employees/employees'].find((emp) => emp.id === id);
-
-      if (opt.capitalize) {
-        return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
-      }
-      return status.toLowerCase();
-    },
-  },
-};
-</script>

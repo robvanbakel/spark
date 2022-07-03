@@ -1,3 +1,50 @@
+<script setup>
+import { ref } from 'vue';
+import BaseCalendar from '@/components/ui/BaseCalendar/BaseCalendar.vue';
+
+const props = defineProps({
+  active: {
+    type: Object,
+    require: false,
+  },
+  error: {
+    type: Boolean,
+    require: false,
+  },
+});
+
+const emit = defineEmits(['date']);
+
+const calendarVisible = ref(false);
+const activeDate = ref(props.active || null);
+
+const showCalendar = () => {
+  calendarVisible.value = true;
+  window.addEventListener('keydown', keyDownHandler);
+};
+
+const hideCalendar = () => {
+  calendarVisible.value = false;
+  window.removeEventListener('keydown', keyDownHandler);
+};
+
+const keyDownHandler = (e) => {
+  switch (e.key) {
+    case 'Escape':
+      hideCalendar();
+      break;
+    default:
+      break;
+  }
+};
+
+const setDate = (date) => {
+  activeDate.value = date;
+  hideCalendar();
+  emit('date', date);
+};
+</script>
+
 <template>
   <div class="base-date-picker">
     <input
@@ -25,52 +72,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import BaseCalendar from '@/components/ui/BaseCalendar/BaseCalendar.vue';
-
-export default {
-  components: { BaseCalendar },
-  props: {
-    active: {
-      type: Object,
-      require: false,
-    },
-    error: {
-      type: Boolean,
-      require: false,
-    },
-  },
-  emits: ['date'],
-  data() {
-    return {
-      calendarVisible: false,
-      activeDate: this.active || null,
-    };
-  },
-  methods: {
-    showCalendar() {
-      this.calendarVisible = true;
-      window.addEventListener('keydown', this.keyDownHandler);
-    },
-    hideCalendar() {
-      this.calendarVisible = false;
-      window.removeEventListener('keydown', this.keyDownHandler);
-    },
-    keyDownHandler(e) {
-      switch (e.key) {
-        case 'Escape':
-          this.hideCalendar();
-          break;
-        default:
-          break;
-      }
-    },
-    setDate(date) {
-      this.activeDate = date;
-      this.hideCalendar();
-      this.$emit('date', date);
-    },
-  },
-};
-</script>

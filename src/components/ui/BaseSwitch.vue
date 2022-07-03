@@ -1,3 +1,81 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const props = defineProps({
+  toggle: {
+    type: Boolean,
+  },
+  items: {
+    type: Array,
+  },
+  active: {
+    type: String,
+  },
+  fixed: {
+    type: Boolean,
+  },
+  id: {
+    type: String,
+  },
+});
+
+const emit = defineEmits(['activeItem']);
+
+const indicator = ref();
+const wrapper = ref();
+
+const findAndSetActive = (activeItem = props.active) => {
+  const switchItems = document.querySelectorAll(`#${props.id}.switch-control`);
+
+  if (props.toggle) {
+    switchItems.forEach((item) => {
+      if (item.attributes['data-value'].value === activeItem) {
+        item.click();
+      }
+    });
+  } else {
+    switchItems.forEach((item) => {
+      if (item.innerText === activeItem) {
+        item.click();
+      }
+    });
+  }
+};
+
+onMounted(() => {
+  findAndSetActive();
+
+  setTimeout(() => {
+    indicator.value.style.transition = 'all 120ms ease-in-out';
+  }, 120);
+});
+
+const setActive = (e, item) => {
+  const activeLeft = `${e.target.getBoundingClientRect().left - wrapper.value.getBoundingClientRect().left}px`;
+  const activeWidth = `${e.target.getBoundingClientRect().width}px`;
+
+  indicator.value.style.left = activeLeft;
+  indicator.value.style.width = activeWidth;
+
+  emit('activeItem', item);
+};
+
+const keydownHandler = (e) => {
+  const activeIndex = props.items.indexOf(props.active);
+  switch (e.code) {
+    case 'ArrowLeft':
+      findAndSetActive(props.items[activeIndex - 1]);
+      break;
+    case 'ArrowRight':
+      findAndSetActive(props.items[activeIndex + 1]);
+      break;
+    default:
+      break;
+  }
+};
+
+</script>
+
 <template>
   <div
     ref="wrapper"
@@ -44,74 +122,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    toggle: {
-      type: Boolean,
-    },
-    items: {
-      type: Array,
-    },
-    active: {
-      type: String,
-    },
-    fixed: {
-      type: Boolean,
-    },
-    id: {
-      type: String,
-    },
-  },
-  emits: ['activeItem'],
-  mounted() {
-    this.findAndSetActive();
-
-    setTimeout(() => {
-      this.$refs.indicator.style.transition = 'all 120ms ease-in-out';
-    }, 120);
-  },
-  methods: {
-    setActive(e, item) {
-      const activeLeft = `${e.target.getBoundingClientRect().left - this.$refs.wrapper.getBoundingClientRect().left}px`;
-      const activeWidth = `${e.target.getBoundingClientRect().width}px`;
-
-      this.$refs.indicator.style.left = activeLeft;
-      this.$refs.indicator.style.width = activeWidth;
-
-      this.$emit('activeItem', item);
-    },
-    keydownHandler(e) {
-      const activeIndex = this.items.indexOf(this.active);
-      switch (e.code) {
-        case 'ArrowLeft':
-          this.findAndSetActive(this.items[activeIndex - 1]);
-          break;
-        case 'ArrowRight':
-          this.findAndSetActive(this.items[activeIndex + 1]);
-          break;
-        default:
-          break;
-      }
-    },
-    findAndSetActive(activeItem = this.active) {
-      const switchItems = document.querySelectorAll(`#${this.id}.switch-control`);
-
-      if (this.toggle) {
-        switchItems.forEach((item) => {
-          if (item.attributes['data-value'].value === activeItem) {
-            item.click();
-          }
-        });
-      } else {
-        switchItems.forEach((item) => {
-          if (item.innerText === activeItem) {
-            item.click();
-          }
-        });
-      }
-    },
-  },
-};
-</script>

@@ -1,3 +1,78 @@
+<script setup>
+import { ref, computed } from 'vue';
+
+import dayjs from '@/plugins/dayjs';
+
+import DayPicker from '@/components/ui/BaseCalendar/DayPicker.vue';
+import MonthPicker from '@/components/ui/BaseCalendar/MonthPicker.vue';
+
+const props = defineProps({
+  active: {
+    type: Object,
+    require: false,
+  },
+  mode: {
+    type: String,
+    require: true,
+  },
+});
+
+const emit = defineEmits(['choice']);
+
+const selectedMonth = ref(props.active?.month() || dayjs().month());
+const selectedYear = ref(props.active?.year() || dayjs().year());
+const currentView = ref('DayPicker');
+
+const header = computed(() => {
+  const date = dayjs().year(selectedYear.value).month(selectedMonth.value);
+
+  if (currentView.value === 'MonthPicker') {
+    return date.format('YYYY');
+  }
+
+  return date.format('MMMM YYYY');
+});
+
+const choice = (date) => {
+  emit('choice', date);
+};
+
+const pickMonth = (month) => {
+  selectedMonth.value = month;
+  currentView.value = 'DayPicker';
+};
+
+const next = () => {
+  if (currentView.value === 'DayPicker') {
+    selectedMonth.value = (selectedMonth.value + 1) % 12;
+    if (selectedMonth.value % 12 === 0) {
+      selectedYear.value += 1;
+    }
+  } else {
+    selectedYear.value += 1;
+  }
+};
+
+const prev = () => {
+  if (currentView.value === 'DayPicker') {
+    selectedMonth.value = (selectedMonth.value + 11) % 12;
+    if (selectedMonth.value % 12 === 11) {
+      selectedYear.value -= 1;
+    }
+  } else {
+    selectedYear.value -= 1;
+  }
+};
+
+const changeView = () => {
+  if (currentView.value === 'DayPicker') {
+    currentView.value = 'MonthPicker';
+  } else {
+    currentView.value = 'DayPicker';
+  }
+};
+</script>
+
 <template>
   <div :class="['base-calendar', mode]">
     <div id="header">
@@ -33,84 +108,3 @@
     />
   </div>
 </template>
-
-<script>
-import DayPicker from '@/components/ui/BaseCalendar/DayPicker.vue';
-import MonthPicker from '@/components/ui/BaseCalendar/MonthPicker.vue';
-
-export default {
-  components: {
-    DayPicker,
-    MonthPicker,
-  },
-  props: {
-    active: {
-      type: Object,
-      require: false,
-    },
-    mode: {
-      type: String,
-      require: true,
-    },
-  },
-  emits: ['choice'],
-  data() {
-    return {
-      selectedMonth: this.active?.month() || this.$dayjs().month(),
-      selectedYear: this.active?.year() || this.$dayjs().year(),
-      currentView: 'DayPicker',
-    };
-  },
-  computed: {
-    header() {
-      const date = this.$dayjs().year(this.selectedYear).month(this.selectedMonth);
-
-      if (this.currentView === 'MonthPicker') {
-        return date.format('YYYY');
-      }
-
-      return date.format('MMMM YYYY');
-    },
-  },
-  methods: {
-    choice(date) {
-      this.$emit('choice', date);
-    },
-    pickMonth(month) {
-      this.selectedMonth = month;
-      this.currentView = 'DayPicker';
-    },
-    next() {
-      if (this.currentView === 'DayPicker') {
-        this.selectedMonth = (this.selectedMonth + 1) % 12;
-        if (this.selectedMonth % 12 === 0) {
-          this.selectedYear += 1;
-        }
-      } else {
-        this.selectedYear += 1;
-      }
-    },
-    prev() {
-      if (this.currentView === 'DayPicker') {
-        this.selectedMonth = (this.selectedMonth + 11) % 12;
-        if (this.selectedMonth % 12 === 11) {
-          this.selectedYear -= 1;
-        }
-      } else {
-        this.selectedYear -= 1;
-      }
-    },
-    changeView() {
-      if (this.currentView === 'DayPicker') {
-        this.currentView = 'MonthPicker';
-      } else {
-        this.currentView = 'DayPicker';
-      }
-    },
-    today() {
-      this.selectedMonth = new Date().getMonth();
-      this.selectedYear = new Date().getFullYear();
-    },
-  },
-};
-</script>

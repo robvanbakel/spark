@@ -1,3 +1,44 @@
+<script setup>
+import dayjs from '@/plugins/dayjs';
+
+const props = defineProps({
+  selectedMonth: {
+    type: Number,
+    required: true,
+  },
+  selectedYear: {
+    type: Number,
+    required: true,
+  },
+  active: {
+    type: [Object, null],
+    default: null,
+  },
+});
+
+const emit = defineEmits(['choice']);
+
+const pickMonth = (selectedMonth) => {
+  emit('choice', selectedMonth);
+};
+
+const monthClasses = (num) => {
+  const calendarFullDate = dayjs(new Date(props.selectedYear, num)).format('YYYYMM');
+  const classes = [];
+
+  if (calendarFullDate === dayjs().format('YYYYMM')) {
+    classes.push('current');
+  }
+
+  if (calendarFullDate === dayjs(props.active).format('YYYYMM')) {
+    classes.push('active');
+  }
+
+  return classes;
+};
+
+</script>
+
 <template>
   <div id="months">
     <span
@@ -10,44 +51,3 @@
     }}</span>
   </div>
 </template>
-
-<script>
-import dayjs from 'dayjs';
-
-export default {
-  props: {
-    selectedMonth: {
-      type: Number,
-      required: true,
-    },
-    selectedYear: {
-      type: Number,
-      required: true,
-    },
-    active: {
-      type: [Object, null],
-      default: null,
-    },
-  },
-  emits: ['choice'],
-  methods: {
-    pickMonth(selectedMonth) {
-      this.$emit('choice', selectedMonth);
-    },
-    monthClasses(num) {
-      const calendarFullDate = dayjs(new Date(this.selectedYear, num)).format('YYYYMM');
-      const classes = [];
-
-      if (calendarFullDate === dayjs().format('YYYYMM')) {
-        classes.push('current');
-      }
-
-      if (calendarFullDate === dayjs(this.active).format('YYYYMM')) {
-        classes.push('active');
-      }
-
-      return classes;
-    },
-  },
-};
-</script>

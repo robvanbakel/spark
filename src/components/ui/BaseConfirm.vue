@@ -1,3 +1,50 @@
+<script setup>
+import { ref } from 'vue';
+
+defineProps({
+  title: {
+    type: String,
+    default: 'Are you sure?',
+  },
+  message: {
+    type: String,
+    default: 'This action cannot be undone.',
+  },
+  choiceFalse: {
+    type: String,
+    default: 'Cancel',
+  },
+  choiceTrue: {
+    type: String,
+    default: "I'm sure",
+  },
+  noFalse: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const showConfirm = ref(false);
+const choice = ref(null);
+
+const open = () => {
+  showConfirm.value = true;
+  return new Promise((resolve) => {
+    choice.value = resolve;
+  });
+};
+
+const confirm = (bool) => {
+  showConfirm.value = false;
+  choice.value(bool);
+};
+
+defineExpose({
+  open,
+});
+
+</script>
+
 <template>
   <base-modal
     v-if="showConfirm"
@@ -22,48 +69,3 @@
     </template>
   </base-modal>
 </template>
-
-<script>
-export default {
-  props: {
-    title: {
-      type: String,
-      default: 'Are you sure?',
-    },
-    message: {
-      type: String,
-      default: 'This action cannot be undone.',
-    },
-    choiceFalse: {
-      type: String,
-      default: 'Cancel',
-    },
-    choiceTrue: {
-      type: String,
-      default: "I'm sure",
-    },
-    noFalse: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  data() {
-    return {
-      showConfirm: false,
-      choice: null,
-    };
-  },
-  methods: {
-    open() {
-      this.showConfirm = true;
-      return new Promise((resolve) => {
-        this.choice = resolve;
-      });
-    },
-    confirm(choice) {
-      this.showConfirm = false;
-      this.choice(choice);
-    },
-  },
-};
-</script>
