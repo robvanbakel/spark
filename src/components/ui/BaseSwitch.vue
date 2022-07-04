@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 
 const props = defineProps({
   toggle: {
@@ -25,6 +25,10 @@ const emit = defineEmits(['update:modelValue']);
 const indicator = ref();
 const wrapper = ref();
 const item = ref();
+
+watch(() => props.modelValue, (val) => {
+  setIndicator(val);
+});
 
 onMounted(() => {
   setIndicator(props.modelValue);

@@ -285,7 +285,6 @@ const deleteShift = async () => {
         <div class="form-control">
           <label>{{ $t('general.labels.break') }}</label>
           <BaseSwitch
-            v-if="shift.break"
             v-model="shift.break"
             :items="$store.getters['settings/breaks']"
             fixed
