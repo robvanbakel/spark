@@ -13,7 +13,6 @@ const store = useStore();
 const confirmDeleteShift = ref();
 const confirmReplaceShift = ref();
 const suggestionRightClickMenu = ref();
-const inputDate = ref('');
 const inputFrom = ref('');
 const inputTo = ref('');
 const shift = ref({});
@@ -53,10 +52,6 @@ const dropdownHandler = (selectedId) => {
   changed.value.employee = initState.value.employeeId !== selectedId;
 };
 
-const setBreak = (val) => {
-  shift.value.break = val;
-};
-
 const clearError = (field) => {
   error.value[field] = false;
 };
@@ -71,7 +66,6 @@ const resetForm = async () => {
 
 const setInitState = () => {
   shift.value = { break: '0', ...initState.value };
-  inputDate.value = shift.value.from;
 
   if (newShift.value) return;
 
@@ -80,56 +74,49 @@ const setInitState = () => {
 };
 
 const formatDateTime = (value, field, model) => {
-  if (!shift.value.from) shift.value.from = dayjs();
-  if (!shift.value.to) shift.value.to = dayjs();
-
-  if (field === 'date') {
-    const year = value.year();
-    const month = value.month();
-    const date = value.date();
-
-    error.value.date = false;
-    inputDate.value = value;
-    shift.value.from = shift.value.from.year(year).month(month).date(date);
-    shift.value.to = shift.value.to.year(year).month(month).date(date);
+  if (/^\d{1,2}$/.test(value) && value < 24) {
+    shift.value[field] = dayjs(shift.value[field]).hour(value).minute(0);
   } else {
-    if (/^\d{1,2}$/.test(value) && value < 24) {
-      shift.value[field] = dayjs(shift.value[field]).hour(value).minute(0);
-    } else {
-      try {
-        const [, hour, minute] = value.match(/^(\d{1,2}?)\D?(\d{1,2})?$/);
-        shift.value[field] = dayjs(shift.value[field]).hour(hour < 24 ? hour : 0).minute(minute < 60 ? minute : 0);
-      } catch {
-        error.value[field] = model;
-        return;
-      }
-    }
-
-    const formattedTime = dayjs(shift.value[field]).format('HH:mm');
-
-    switch (model) {
-      case 'inputFrom':
-        inputFrom.value = formattedTime;
-        break;
-      case 'inputTo':
-        inputTo.value = formattedTime;
-        break;
-      default:
-        break;
+    try {
+      const [, hour, minute] = value.match(/^(\d{1,2}?)\D?(\d{1,2})?$/);
+      shift.value[field] = dayjs(shift.value[field]).hour(hour < 24 ? hour : 0).minute(minute < 60 ? minute : 0);
+    } catch {
+      error.value[field] = model;
+      return;
     }
   }
+
+  const formattedTime = dayjs(shift.value[field]).format('HH:mm');
+
+  switch (model) {
+    case 'inputFrom':
+      inputFrom.value = formattedTime;
+      break;
+    case 'inputTo':
+      inputTo.value = formattedTime;
+      break;
+    default:
+      break;
+  }
+
+  shiftToTime();
+
+  if (newShift.value) return;
+
+  changed.value.from = !initState.value.from.isSame(shift.value.from, 'minute');
+  changed.value.to = !initState.value.to.isSame(shift.value.to, 'minute');
+};
+
+const shiftToTime = () => {
+  if (!shift.value.from || !shift.value.to) return;
+
+  shift.value.to = shift.value.from
+    .hour(shift.value.to.hour())
+    .minute(shift.value.to.minute());
 
   if (shift.value.to.isBefore(shift.value.from) || inputTo.value === '00:00') {
     shift.value.to = shift.value.to.add(1, 'day');
   }
-
-  if (shift.value.to.diff(shift.value.from, 'hour') >= 24) {
-    shift.value.to = shift.value.to.subtract(1, 'day');
-  }
-
-  if (newShift.value) return;
-  changed.value.from = !initState.value.from.isSame(shift.value.from, 'minute');
-  changed.value.to = !initState.value.to.isSame(shift.value.to, 'minute');
 };
 
 const selectSuggestion = (suggestion) => {
@@ -150,7 +137,6 @@ const suggestionRightClickHandler = async (event, suggestion) => {
 const validate = () => {
   error.value.employee = !shift.value.employeeId;
   error.value.location = !shift.value.location;
-  error.value.date = !inputDate.value;
   error.value.from = !inputFrom.value;
   error.value.to = !inputTo.value || shift.value.from.isSame(shift.value.to);
 
@@ -255,10 +241,9 @@ const deleteShift = async () => {
           <label for="date">{{ $t('general.labels.date') }}</label>
           <div class="form-control-date">
             <BaseDatePicker
-              v-if="shift.from || (newShift && !$store.getters['planner/newShiftPrefillData']?.from)"
-              :active="shift.from ? shift.from : null"
+              v-model="shift.from"
               :error="error.date"
-              @date="formatDateTime($event, 'date', 'inputDate')"
+              @update:model-value="shiftToTime"
             />
             <div class="form-control-time">
               <span class="input-label-main">{{ $t('general.labels.time') }}</span>

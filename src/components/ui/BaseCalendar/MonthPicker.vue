@@ -2,35 +2,36 @@
 import dayjs from '@/plugins/dayjs';
 
 const props = defineProps({
-  selectedMonth: {
-    type: Number,
-    required: true,
-  },
-  selectedYear: {
-    type: Number,
-    required: true,
-  },
-  active: {
+  date: {
     type: [Object, null],
-    default: null,
+    require: null,
+  },
+  currentView: {
+    type: Object,
+    require: true,
   },
 });
 
-const emit = defineEmits(['choice']);
+const emit = defineEmits(['update:currentView', 'switchMode']);
 
-const pickMonth = (selectedMonth) => {
-  emit('choice', selectedMonth);
+const shiftYear = (val) => {
+  emit('update:currentView', props.currentView.add(val, 'year'));
 };
 
-const monthClasses = (num) => {
-  const calendarFullDate = dayjs(new Date(props.selectedYear, num)).format('YYYYMM');
+const pickMonth = (selectedMonth) => {
+  emit('update:currentView', props.currentView.month(selectedMonth));
+  emit('switchMode', 'DAY');
+};
+
+const monthClasses = (month) => {
+  const calendarMonth = props.currentView.month(month);
   const classes = [];
 
-  if (calendarFullDate === dayjs().format('YYYYMM')) {
+  if (dayjs().isSame(calendarMonth, 'month')) {
     classes.push('current');
   }
 
-  if (calendarFullDate === dayjs(props.active).format('YYYYMM')) {
+  if (props.date?.isSame(calendarMonth, 'month')) {
     classes.push('active');
   }
 
@@ -40,6 +41,19 @@ const monthClasses = (num) => {
 </script>
 
 <template>
+  <div id="header">
+    <span
+      class="material-icons material-icons-round"
+      @click="shiftYear(-1)"
+    >chevron_left</span>
+    <h2 @click="emit('switchMode', 'DAY')">
+      {{ currentView.format('YYYY') }}
+    </h2>
+    <span
+      class="material-icons material-icons-round"
+      @click="shiftYear(1)"
+    >chevron_right</span>
+  </div>
   <div id="months">
     <span
       v-for="(month, index) in 12"
@@ -47,7 +61,7 @@ const monthClasses = (num) => {
       :class="monthClasses(index)"
       @click="pickMonth(index)"
     >{{
-      $dayjs().month(index).format('MMM')
+      dayjs.monthsShort()[index]
     }}</span>
   </div>
 </template>

@@ -434,8 +434,7 @@
       color: colors.$main;
       line-height: 2.5;
       position: relative;
-      &.prev-month,
-      &.next-month {
+      &.out-of-view {
         color: colors.$main;
         opacity: 0.15;
         cursor: default;
@@ -476,9 +475,9 @@
 
 // Styles for picker mode
 
-.base-calendar.picker {
+.base-calendar {
   .dates {
-    & p:not(.prev-month):not(.next-month) {
+    & p:not(.out-of-view) {
       &:hover,
       &.active {
         &::after {

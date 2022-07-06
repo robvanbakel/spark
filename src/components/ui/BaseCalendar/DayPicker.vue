@@ -2,99 +2,96 @@
 import dayjs from '@/plugins/dayjs';
 
 const props = defineProps({
-  selectedMonth: {
-    type: Number,
-    required: true,
+  currentView: {
+    type: Object,
+    require: true,
   },
-  selectedYear: {
-    type: Number,
-    required: true,
-  },
-  active: {
-    type: [Object, null],
-    default: null,
+  modelValue: {
+    type: Object,
+    default: () => ({}),
   },
 });
 
-const emit = defineEmits(['choice', 'prev', 'next']);
+const emit = defineEmits(['update:modelValue', 'update:currentView', 'switchMode']);
 
-const daysInMonth = () => dayjs()
-  .year(props.selectedYear)
-  .month(props.selectedMonth)
-  .endOf('month')
-  .date();
+const shiftMonth = (val) => {
+  emit('update:currentView', props.currentView.add(val, 'month'));
+};
 
 const visibleInPrevMonth = () => {
-  const amount = dayjs()
-    .year(props.selectedYear)
-    .month(props.selectedMonth)
+  const amount = props.currentView
     .subtract(1, 'month')
     .endOf('month')
     .isoWeekday();
 
+  if (amount === 7) return [];
+
   const dates = [];
 
-  for (let i = 1; i < amount + 1; i += 1) {
-    dates.unshift(dayjs()
-      .year(props.selectedYear)
-      .month(props.selectedMonth)
-      .startOf('month')
-      .subtract(i, 'day')
+  for (let i = 0; i < amount; i += 1) {
+    dates.unshift(props.currentView
+      .subtract(i + 1, 'day')
       .date());
   }
 
   return dates;
 };
 
-const visibleInNextMonth = () => {
-  const lastDayInMonth = dayjs()
-    .year(props.selectedYear)
-    .month(props.selectedMonth)
-    .endOf('month')
-    .isoWeekday();
-
-  return 7 - lastDayInMonth;
-};
+const visibleInNextMonth = () => 7 - props.currentView.endOf('month').isoWeekday();
 
 const dateClasses = (selectedDate) => {
-  const calendarFullDate = dayjs().year(props.selectedYear).month(props.selectedMonth).date(selectedDate);
+  const calendarFullDate = props.currentView.date(selectedDate);
   const classes = [];
 
   if (calendarFullDate.isSame(dayjs(), 'date')) {
     classes.push('current-date');
   }
 
-  if (calendarFullDate.isSame(props.active, 'date')) {
+  if (calendarFullDate.isSame(props.modelValue, 'date')) {
     classes.push('active');
   }
 
   return classes;
 };
 
-const pickDate = (selectedDate) => {
-  const date = dayjs().year(props.selectedYear).month(props.selectedMonth).date(selectedDate);
-  emit('choice', date);
+const pickDate = (date) => {
+  emit('update:modelValue', props.currentView.date(date)
+    .hour(props.modelValue?.hour() || 0)
+    .minute(props.modelValue?.minute() || 0));
 };
 </script>
 
 <template>
+  <div id="header">
+    <span
+      class="material-icons material-icons-round"
+      @click="shiftMonth(-1)"
+    >chevron_left</span>
+    <h2 @click="emit('switchMode', 'MONTH')">
+      {{ currentView.format('MMMM YYYY') }}
+    </h2>
+    <span
+      class="material-icons material-icons-round"
+      @click="shiftMonth(1)"
+    >chevron_right</span>
+  </div>
   <div id="days">
     <span
-      v-for="day in $store.getters['date/dayNamesShort']"
+      v-for="day in 7"
       :key="day"
-    >{{ day }}</span>
+    >{{ dayjs.weekdaysShort()[day % 7 ] }}</span>
   </div>
   <div class="dates">
     <p
       v-for="num in visibleInPrevMonth()"
       :key="num"
-      class="prev-month"
-      @click="$emit('prev')"
+      class="out-of-view"
+      @click="shiftMonth(-1)"
     >
       {{ num }}
     </p>
     <p
-      v-for="num in daysInMonth()"
+      v-for="num in currentView.daysInMonth()"
       :key="num"
       :class="dateClasses(num)"
       @click="pickDate(num)"
@@ -104,8 +101,8 @@ const pickDate = (selectedDate) => {
     <p
       v-for="num in visibleInNextMonth()"
       :key="num"
-      class="next-month"
-      @click="$emit('next')"
+      class="out-of-view"
+      @click="shiftMonth(1)"
     >
       {{ num }}
     </p>
