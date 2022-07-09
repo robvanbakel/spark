@@ -241,7 +241,7 @@ const helpActiveShift = () => {
             v-for="date in store.getters['date/dates']"
             :key="date"
             class="row"
-            :class="{ today: date.isSame($dayjs(), 'date') }"
+            :class="{ today: date.isSame(dayjs(), 'date') }"
           >
             <span class="dayName">{{ date.format('dddd') }}</span>
             <span class="date">{{ date.format('LL') }}</span>
@@ -259,7 +259,7 @@ const helpActiveShift = () => {
                 width: `${dayWidth}px`,
                 '--calendarHeight': `${calendarHeight + 12}px`,
               }"
-            >{{ $dayjs().hour(index + visibleHoursStart).minute(0).format('HH:mm') }}</span>
+            >{{ dayjs().hour(index + visibleHoursStart).minute(0).format('HH:mm') }}</span>
           </div>
           <div
             v-for="(day, index) in schedulesInView"

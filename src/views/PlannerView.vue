@@ -141,7 +141,7 @@ const toggleSidebar = () => {
           <div
             v-for="date in store.getters['date/dates']"
             :key="date"
-            :class="['dayWrapper', { today: date.isSame($dayjs(), 'date') }]"
+            :class="['dayWrapper', { today: date.isSame(dayjs(), 'date') }]"
           >
             <span class="dayName">{{ date.format('dddd') }}</span>
             <span class="date">{{ date.format('LL') }}</span>

@@ -7,7 +7,6 @@ import App from '@/App.vue';
 
 import '@/assets/styles/main.scss';
 
-import dayjs from '@/plugins/dayjs';
 import i18n from '@/plugins/i18n';
 import BaseBadge from '@/components/ui/BaseBadge.vue';
 import BaseButton from '@/components/ui/BaseButton.vue';
@@ -52,8 +51,6 @@ onAuthStateChanged(auth, async (user) => {
     app.use(router);
     app.use(store);
     app.use(i18n);
-
-    app.config.globalProperties.$dayjs = dayjs;
 
     app.component('BaseButton', BaseButton);
     app.component('BaseBadge', BaseBadge);
