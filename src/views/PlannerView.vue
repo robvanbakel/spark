@@ -119,7 +119,7 @@ const toggleSidebar = () => {
       <base-button
         inverted
         icon-only
-        :flipped="!$store.getters['settings/hideSidebar']"
+        :flipped="!store.getters['settings/hideSidebar']"
         icon="menu_open"
         @click="toggleSidebar"
       />
@@ -135,11 +135,11 @@ const toggleSidebar = () => {
         <div class="header">
           <div>
             <transition name="weekSwitch">
-              <WeekSwitch v-if="$store.getters['settings/hideSidebar']" />
+              <WeekSwitch v-if="store.getters['settings/hideSidebar']" />
             </transition>
           </div>
           <div
-            v-for="date in $store.getters['date/dates']"
+            v-for="date in store.getters['date/dates']"
             :key="date"
             :class="['dayWrapper', { today: date.isSame($dayjs(), 'date') }]"
           >
@@ -155,7 +155,7 @@ const toggleSidebar = () => {
       </div>
     </section>
 
-    <EditShift v-if="$store.getters['planner/activeShiftId']" />
+    <EditShift v-if="store.getters['planner/activeShiftId']" />
 
     <the-sidebar>
       <section>

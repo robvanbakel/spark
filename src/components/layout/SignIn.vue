@@ -87,7 +87,7 @@ onMounted(() => {
     </form>
   </div>
 
-  <div v-if="$store.getters['settings/mode'] === 'demo' || $store.getters['settings/mode'] === 'localhost'">
+  <div v-if="store.getters['settings/mode'] === 'demo' || store.getters['settings/mode'] === 'localhost'">
     <transition name="demo">
       <div
         v-if="showDemo"

@@ -92,7 +92,7 @@ onMounted(() => {
     <div class="actions">
       <base-button
         icon="add"
-        @click="$store.dispatch('employees/addNewUser')"
+        @click="store.dispatch('employees/addNewUser')"
       >
         {{ $t('general.actions.add', { resource: 'Employee' }) }}
       </base-button>
@@ -113,7 +113,7 @@ onMounted(() => {
         v-for="employee in employees"
         :key="employee.id"
         class="row"
-        @click="$store.dispatch('employees/activeUserId',employee.id)"
+        @click="store.dispatch('employees/activeUserId',employee.id)"
       >
         <div>
           <base-badge
@@ -134,5 +134,5 @@ onMounted(() => {
     </section>
   </main>
 
-  <EditEmployee v-if="$store.getters['employees/activeUserId']" />
+  <EditEmployee v-if="store.getters['employees/activeUserId']" />
 </template>

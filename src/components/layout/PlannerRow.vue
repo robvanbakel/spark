@@ -44,7 +44,7 @@ const handleClick = (index) => {
         <span class="name">{{ employee.firstName }} {{ employee.lastName }}</span>
         <span class="hours">
           <span class="calculated">
-            {{ $store.getters['employees/totalHours'][employee.id]?.toFixed(2) }}</span> /
+            {{ store.getters['employees/totalHours'][employee.id]?.toFixed(2) }}</span> /
           {{ employee.contract }} hours
         </span>
       </div>
@@ -61,7 +61,7 @@ const handleClick = (index) => {
       <div class="row">
         <div class="employee" />
         <ShiftBlock
-          v-for="(date, index) in $store.getters['date/dates']"
+          v-for="(date, index) in store.getters['date/dates']"
           :key="date"
           @click="handleClick(index)"
         />

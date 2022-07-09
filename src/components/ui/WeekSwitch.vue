@@ -19,7 +19,7 @@ const shiftWeek = (amount) => {
       class="material-icons material-icons-round"
       @click="shiftWeek(-1)"
     >chevron_left</span>
-    <h2>Week {{ $store.getters["date/weekNumber"] }}</h2>
+    <h2>Week {{ store.getters["date/weekNumber"] }}</h2>
     <span
       class="material-icons material-icons-round"
       @click="shiftWeek(1)"

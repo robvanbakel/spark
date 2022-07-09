@@ -185,16 +185,16 @@ const helpActiveShift = () => {
 </script>
 
 <template>
-  <main v-if="$store.getters['auth/user'] && $store.getters['planner/shifts']">
+  <main v-if="store.getters['auth/user'] && store.getters['planner/shifts']">
     <section id="singleEmployeeCalendar">
       <div class="header">
-        <h1>Hi {{ $store.getters["auth/user"].firstName }}</h1>
+        <h1>Hi {{ store.getters["auth/user"].firstName }}</h1>
         <div
           v-if="schedulesInView"
           class="week-info"
         >
           <div>
-            Week: <span>{{ $store.getters["date/weekNumber"] }}</span>
+            Week: <span>{{ store.getters["date/weekNumber"] }}</span>
           </div>
           <div>
             Scheduled: <span>{{ workingDays }} days</span>
@@ -238,7 +238,7 @@ const helpActiveShift = () => {
       >
         <div class="colDays">
           <div
-            v-for="date in $store.getters['date/dates']"
+            v-for="date in store.getters['date/dates']"
             :key="date"
             class="row"
             :class="{ today: date.isSame($dayjs(), 'date') }"
@@ -293,7 +293,7 @@ const helpActiveShift = () => {
       >
         <p>
           No schedule available for week
-          {{ $store.getters["date/weekNumber"] }}.
+          {{ store.getters["date/weekNumber"] }}.
         </p>
       </div>
     </section>

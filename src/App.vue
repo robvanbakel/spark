@@ -57,7 +57,7 @@ onMounted(() => {
     v-if="!breakpoints.sm.active"
     class="container"
   >
-    <TheHeader v-if="$store.getters['auth/user']" />
+    <TheHeader v-if="store.getters['auth/user']" />
     <router-view />
   </div>
   <div

@@ -221,7 +221,7 @@ const deleteShift = async () => {
             >
             <div class="suggestions">
               <span
-                v-for="suggestion in $store.getters['settings/settings'].suggestions"
+                v-for="suggestion in store.getters['settings/settings'].suggestions"
                 :key="suggestion"
                 :class="{ selected: selectedSuggestion === suggestion }"
                 @click="selectSuggestion(suggestion)"
@@ -230,7 +230,7 @@ const deleteShift = async () => {
               <span
                 v-if="showNewSuggestion"
                 class="add"
-                @click="$store.dispatch('settings/addSuggestion', shift.location)"
+                @click="store.dispatch('settings/addSuggestion', shift.location)"
               >
                 <span class="material-icons material-icons-round">add</span>
                 {{ shift.location }}</span>
@@ -271,7 +271,7 @@ const deleteShift = async () => {
           <label>{{ $t('general.labels.break') }}</label>
           <BaseSwitch
             v-model="shift.break"
-            :items="$store.getters['settings/breaks']"
+            :items="store.getters['settings/breaks']"
             fixed
             tabindex="0"
           />

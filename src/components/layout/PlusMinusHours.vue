@@ -49,7 +49,7 @@ const computedShowAll = (employeeId) => {
       class="plus-minus-hours-role-wrapper"
     >
       <div
-        v-for="employee in $store.getters['employees/employees']"
+        v-for="employee in store.getters['employees/employees']"
         :key="employee.id"
       >
         <div

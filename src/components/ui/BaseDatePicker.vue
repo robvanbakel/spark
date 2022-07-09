@@ -2,6 +2,10 @@
 import { ref, computed } from 'vue';
 import BaseCalendar from '@/components/ui/BaseCalendar/BaseCalendar.vue';
 
+import { useStore } from 'vuex';
+
+const store = useStore();
+
 const props = defineProps({
   error: {
     type: Boolean,
@@ -51,7 +55,7 @@ const value = computed({
 <template>
   <div class="base-date-picker">
     <input
-      :value="modelValue?.format($store.getters['settings/settings'].dateNotation)"
+      :value="modelValue?.format(store.getters['settings/settings'].dateNotation)"
       readonly
       :class="{ focus: calendarVisible, error }"
       @click="showCalendar"

@@ -121,7 +121,7 @@ const setWeek = async (selectedDay) => {
     </div>
     <div id="days">
       <span
-        v-for="day in $store.getters['date/dayNamesShort']"
+        v-for="day in store.getters['date/dayNamesShort']"
         :key="day"
       >{{ day }}</span>
     </div>
