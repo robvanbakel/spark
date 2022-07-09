@@ -40,13 +40,6 @@ export default [
     meta: {
       admin: true,
     },
-    async beforeEnter(to, from, next) {
-      if (!to.params.weekId) {
-        next({ name: 'Planner', params: { weekId: dayjs().weekId() } });
-        return;
-      }
-      next();
-    },
   },
   {
     path: '/schedule/:weekId?',

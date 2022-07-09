@@ -3,6 +3,8 @@ import {
   ref, onMounted, computed, watch,
 } from 'vue';
 
+import dayjs from '@/plugins/dayjs';
+
 import PlannerContent from '@/components/layout/PlannerContent.vue';
 import EditShift from '@/components/layout/EditShift.vue';
 import PlannerCalendar from '@/components/layout/PlannerCalendar.vue';
@@ -32,8 +34,7 @@ const schedulesInView = computed(() => store.getters['planner/schedulesInView'])
 const emptyWeek = computed(() => !Object.values(schedulesInView.value).flat().length);
 
 const setWindowTitle = () => {
-  const { weekId } = route.params;
-  store.dispatch('date/setDates', weekId);
+  store.dispatch('date/setDates', route.params.weekId || dayjs().weekId());
   document.title = `Week ${store.getters['date/weekNumber']} - Planner - Spark`;
 };
 
