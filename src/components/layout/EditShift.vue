@@ -8,6 +8,10 @@ import dayjs from '@/plugins/dayjs';
 
 import { useStore } from 'vuex';
 
+import { useSettings } from '@/pinia';
+
+const settingsStore = useSettings();
+
 const store = useStore();
 
 const confirmDeleteShift = ref();
@@ -23,7 +27,7 @@ const selectedSuggestion = ref(null);
 
 const showNewSuggestion = computed(() => {
   if (
-    shift.value.location && !store.getters['settings/settings'].suggestions
+    shift.value.location && !settingsStore.settings.suggestions
       .map((sug) => sug.toLowerCase())
       .includes(shift.value.location.toLowerCase())
   ) {
@@ -125,7 +129,7 @@ const selectSuggestion = (suggestion) => {
 };
 
 const deleteSuggestion = (suggestion) => {
-  store.dispatch('settings/deleteSuggestion', suggestion);
+  settingsStore.deleteSuggestion(suggestion);
 };
 
 const suggestionRightClickHandler = async (event, suggestion) => {
@@ -221,7 +225,7 @@ const deleteShift = async () => {
             >
             <div class="suggestions">
               <span
-                v-for="suggestion in store.getters['settings/settings'].suggestions"
+                v-for="suggestion in settingsStore.settings.suggestions"
                 :key="suggestion"
                 :class="{ selected: selectedSuggestion === suggestion }"
                 @click="selectSuggestion(suggestion)"
@@ -230,7 +234,7 @@ const deleteShift = async () => {
               <span
                 v-if="showNewSuggestion"
                 class="add"
-                @click="store.dispatch('settings/addSuggestion', shift.location)"
+                @click="settingsStore.addSuggestion(shift.location)"
               >
                 <span class="material-icons material-icons-round">add</span>
                 {{ shift.location }}</span>
@@ -271,7 +275,7 @@ const deleteShift = async () => {
           <label>{{ $t('general.labels.break') }}</label>
           <BaseSwitch
             v-model="shift.break"
-            :items="store.getters['settings/breaks']"
+            :items="settingsStore.breaks"
             fixed
             tabindex="0"
           />

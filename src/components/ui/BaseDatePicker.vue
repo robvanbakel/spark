@@ -4,6 +4,10 @@ import BaseCalendar from '@/components/ui/BaseCalendar/BaseCalendar.vue';
 
 import { useStore } from 'vuex';
 
+import { useSettings } from '@/pinia';
+
+const settingsStore = useSettings();
+
 const store = useStore();
 
 const props = defineProps({
@@ -55,7 +59,7 @@ const value = computed({
 <template>
   <div class="base-date-picker">
     <input
-      :value="modelValue?.format(store.getters['settings/settings'].dateNotation)"
+      :value="modelValue?.format(settingsStore.settings.dateNotation)"
       readonly
       :class="{ focus: calendarVisible, error }"
       @click="showCalendar"

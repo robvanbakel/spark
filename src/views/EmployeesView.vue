@@ -5,6 +5,10 @@ import EditEmployee from '@/components/layout/EditEmployee.vue';
 
 import { useStore } from 'vuex';
 
+import { useSettings } from '@/pinia';
+
+const settingsStore = useSettings();
+
 const store = useStore();
 
 const searchInputField = ref();
@@ -49,7 +53,7 @@ const clearSearchInput = () => {
 };
 
 onMounted(() => {
-  filters.value = store.getters['settings/statuses'].reduce((acc, i) => ({ ...acc, [i]: false }), {});
+  filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false }), {});
 });
 
 </script>

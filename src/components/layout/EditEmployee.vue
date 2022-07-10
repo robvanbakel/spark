@@ -6,6 +6,10 @@ import StatusPicker from '@/components/ui/StatusPicker.vue';
 
 import { useStore } from 'vuex';
 
+import { useSettings } from '@/pinia';
+
+const settingsStore = useSettings();
+
 const store = useStore();
 
 const emailAlreadyExists = ref();
@@ -14,7 +18,7 @@ const confirmDeleteEmployee = ref();
 const employee = ref({});
 const error = ref({});
 
-const roles = computed(() => store.getters['settings/settings'].roles.map((role) => ({ id: role, display: role })));
+const roles = computed(() => settingsStore.settings.roles.map((role) => ({ id: role, display: role })));
 
 const newUser = computed(() => store.getters['employees/activeUserId'] === 'NEW');
 

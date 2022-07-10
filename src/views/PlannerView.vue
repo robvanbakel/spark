@@ -14,9 +14,10 @@ import EmptyWeek from '@/components/layout/EmptyWeek.vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
-import { useDate } from '@/pinia';
+import { useDate, useSettings } from '@/pinia';
 
 const dateStore = useDate();
+const settingsStore = useSettings();
 
 const store = useStore();
 const route = useRoute();
@@ -51,7 +52,7 @@ watch(route, (to) => {
 
 onMounted(() => {
   setWindowTitle();
-  filters.value = store.getters['settings/settings'].roles.reduce((acc, i) => ({ ...acc, [i.toLowerCase()]: false }), {});
+  filters.value = settingsStore.settings.roles.reduce((acc, i) => ({ ...acc, [i.toLowerCase()]: false }), {});
 });
 
 const clearSearchInput = () => {
@@ -72,8 +73,8 @@ const clearFilters = () => {
 };
 
 const toggleSidebar = () => {
-  store.dispatch('settings/toggleSidebar');
-  store.dispatch('settings/sidebarAutoHidden', false);
+  settingsStore.toggleSidebar();
+  settingsStore.sidebarAutoHidden = false;
 };
 
 </script>
@@ -123,7 +124,7 @@ const toggleSidebar = () => {
       <base-button
         inverted
         icon-only
-        :flipped="!store.getters['settings/hideSidebar']"
+        :flipped="!settingsStore.sidebarHidden"
         icon="menu_open"
         @click="toggleSidebar"
       />
@@ -139,7 +140,7 @@ const toggleSidebar = () => {
         <div class="header">
           <div>
             <transition name="weekSwitch">
-              <WeekSwitch v-if="store.getters['settings/hideSidebar']" />
+              <WeekSwitch v-if="settingsStore.sidebarHidden" />
             </transition>
           </div>
           <div

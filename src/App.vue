@@ -3,13 +3,10 @@ import { ref, onMounted } from 'vue';
 
 import TheHeader from '@/components/layout/TheHeader.vue';
 
-import { useAuth } from '@/pinia';
-
-import { useStore } from 'vuex';
+import { useAuth, useSettings } from '@/pinia';
 
 const authStore = useAuth();
-
-const store = useStore();
+const settingsStore = useSettings();
 
 const breakpoints = ref({
   sm: {
@@ -37,14 +34,14 @@ const checkScreenSize = () => {
   } else if (window.innerWidth < breakpoints.value.md.width) {
     setActiveBreakpoint('md');
 
-    if (!store.getters['settings/hideSidebar']) {
-      store.dispatch('settings/hideSidebar', true);
-      store.dispatch('settings/sidebarAutoHidden', true);
+    if (!settingsStore.sidebarHidden) {
+      settingsStore.sidebarHidden = true;
+      settingsStore.sidebarAutoHidden = true;
     }
   } else {
     setActiveBreakpoint(null);
-    if (store.getters['settings/sidebarAutoHidden']) {
-      store.dispatch('settings/hideSidebar', false);
+    if (settingsStore.sidebarAutoHidden) {
+      settingsStore.sidebarHidden = false;
     }
   }
 };

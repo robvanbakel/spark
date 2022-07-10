@@ -3,15 +3,16 @@ import {
   ref, onMounted, computed, watch,
 } from 'vue';
 
-import { useStore } from 'vuex';
 import { onBeforeRouteLeave } from 'vue-router';
 
-const store = useStore();
+import { useSettings } from '@/pinia';
+
+const settingsStore = useSettings();
 
 const settingsSaved = ref();
 const confirmUnsavedChanges = ref();
 const unsavedChanges = ref(null);
-const settings = ref(store.getters['settings/settings']);
+const settings = ref(settingsStore.settings);
 
 const dateNotations = computed(() => [
   {
@@ -33,7 +34,7 @@ const setDateNotation = (locale) => {
 };
 
 const saveSettings = async () => {
-  store.dispatch('settings/saveSettings', settings.value);
+  settingsStore.saveSettings(settings.value);
 
   if (await settingsSaved.value.open()) {
     unsavedChanges.value = false;

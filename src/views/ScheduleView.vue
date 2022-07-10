@@ -12,10 +12,11 @@ import EmployeeInfo from '@/components/layout/EmployeeInfo.vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
-import { useAuth, useDate } from '@/pinia';
+import { useAuth, useDate, useSettings } from '@/pinia';
 
 const authStore = useAuth();
 const dateStore = useDate();
+const settingsStore = useSettings();
 
 const store = useStore();
 const route = useRoute();
@@ -57,7 +58,7 @@ const hoursVisible = computed(() => (visibleHoursEnd.value || 24) - visibleHours
 
 const dayWidth = computed(() => calendarWidth.value / hoursVisible.value);
 
-const hideSidebar = computed(() => store.getters['settings/hideSidebar']);
+const hideSidebar = computed(() => settingsStore.sidebarHidden);
 
 watch(route, (to) => {
   if (to.name === 'Schedule') {

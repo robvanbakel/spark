@@ -1,13 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
-import { useStore } from 'vuex';
-
-import { useAuth } from '@/pinia';
+import { useAuth, useSettings } from '@/pinia';
 
 const authStore = useAuth();
-
-const store = useStore();
+const settingsStore = useSettings();
 
 const errorMessage = ref(null);
 const email = ref('');
@@ -91,7 +88,7 @@ onMounted(() => {
     </form>
   </div>
 
-  <div v-if="store.getters['settings/mode'] === 'demo' || store.getters['settings/mode'] === 'localhost'">
+  <div v-if="settingsStore.mode === 'demo' || settingsStore.mode === 'localhost'">
     <transition name="demo">
       <div
         v-if="showDemo"

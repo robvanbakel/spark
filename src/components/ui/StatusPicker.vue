@@ -1,9 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue';
 
-import { useStore } from 'vuex';
+import { useSettings } from '@/pinia';
 
-const store = useStore();
+const settingsStore = useSettings();
 
 const props = defineProps({
   activeStatus: {
@@ -16,7 +16,7 @@ const emit = defineEmits(['setActiveStatus']);
 
 const showDropdown = ref(false);
 
-const statuses = computed(() => store.getters['settings/statuses'].filter((status) => status !== 'STAGED'));
+const statuses = computed(() => settingsStore.statuses.filter((status) => status !== 'STAGED'));
 
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value;

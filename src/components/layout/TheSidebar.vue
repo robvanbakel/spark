@@ -1,11 +1,11 @@
 <script setup>
 import { computed } from 'vue';
 
-import { useStore } from 'vuex';
+import { useSettings } from '@/pinia';
 
-const store = useStore();
+const settingsStore = useSettings();
 
-const hidden = computed(() => store.getters['settings/hideSidebar']);
+const hidden = computed(() => settingsStore.sidebarHidden);
 </script>
 
 <template>
