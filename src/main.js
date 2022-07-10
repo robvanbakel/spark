@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 
 import { createPinia } from 'pinia';
-import { useDate } from '@/pinia';
+import { useAuth, useDate } from '@/pinia';
 
 import auth from '@/firebase';
 import router from '@/router';
@@ -37,24 +37,10 @@ if (store.getters['settings/mode'] === 'demo') {
 let app = null;
 
 onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    await store.dispatch('employees/getUsers');
-
-    if (store.getters['auth/admin']) {
-      await store.dispatch('settings/getSettings');
-    }
-
-    await store.dispatch('planner/getShifts');
-
-    router.push({ name: 'EmployeeList' });
-  }
-
   if (!app) {
     app = createApp(App);
 
     app.use(pinia);
-
-    useDate().setDates();
 
     app.use(router);
     app.use(store);
@@ -73,5 +59,20 @@ onAuthStateChanged(auth, async (user) => {
     app.component('TheSidebar', TheSidebar);
 
     app.mount('#app');
+  }
+
+  if (user) {
+    await store.dispatch('employees/getUsers');
+    await store.dispatch('planner/getShifts');
+
+    useDate().setDates();
+
+    if (!useAuth().isAdmin) {
+      router.push({ name: 'Schedule' });
+      return;
+    }
+
+    await store.dispatch('settings/getSettings');
+    router.push({ name: 'EmployeeList' });
   }
 });
