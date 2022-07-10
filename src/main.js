@@ -54,10 +54,12 @@ onAuthStateChanged(auth, async (user) => {
     app.component('TheSidebar', TheSidebar);
 
     app.mount('#app');
-  }
 
-  if (useSettings().mode === 'demo') {
-    signOut(auth);
+    if (useSettings().mode === 'demo') {
+      await signOut(auth);
+      router.push({ name: 'Auth' });
+      return;
+    }
   }
 
   if (user) {
