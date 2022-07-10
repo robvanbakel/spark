@@ -3,10 +3,12 @@ import { ref, computed, watch } from 'vue';
 
 import dayjs from '@/plugins/dayjs';
 
-import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 
-const store = useStore();
+import { useDate } from '@/pinia';
+
+const dateStore = useDate();
+
 const router = useRouter();
 
 const selectedMonth = ref(new Date().getMonth());
@@ -17,17 +19,17 @@ const calendarHeader = computed(() => dayjs()
   .month(selectedMonth.value)
   .format('MMMM YYYY'));
 
-const calendarPoint = computed(() => store.getters['date/dates'][3]);
+const calendarPoint = computed(() => dateStore.dates[3]);
 
 watch(calendarPoint, () => {
   const currentWeekId = dayjs().weekId();
 
-  if (store.getters['date/weekId'] === currentWeekId) {
+  if (dateStore.weekId === currentWeekId) {
     selectedMonth.value = new Date().getMonth();
     selectedYear.value = new Date().getFullYear();
   } else {
-    selectedMonth.value = store.getters['date/dates'][3].toDate().getMonth();
-    selectedYear.value = store.getters['date/dates'][3].toDate().getFullYear();
+    selectedMonth.value = dateStore.dates[3].toDate().getMonth();
+    selectedYear.value = dateStore.dates[3].toDate().getFullYear();
   }
 });
 
@@ -76,7 +78,7 @@ const calendarPointClass = (num) => {
 
   let dateClass = '';
 
-  store.getters['date/dates'].forEach((date) => {
+  dateStore.dates.forEach((date) => {
     if (calendarFullDate === date.toDate().toDateString()) {
       dateClass = 'selected';
     }
@@ -121,9 +123,9 @@ const setWeek = async (selectedDay) => {
     </div>
     <div id="days">
       <span
-        v-for="day in store.getters['date/dayNamesShort']"
+        v-for="day in 7"
         :key="day"
-      >{{ day }}</span>
+      >{{ dayjs.weekdaysShort()[day % 7 ] }}</span>
     </div>
     <div class="dates">
       <p

@@ -3,6 +3,10 @@ import { ref, onMounted, computed } from 'vue';
 
 import { useStore } from 'vuex';
 
+import { useDate } from '@/pinia';
+
+const dateStore = useDate();
+
 const store = useStore();
 
 const selectedWeek = ref(null);
@@ -20,7 +24,7 @@ const selectWeek = (week) => {
 
 const copyWeek = () => {
   store.dispatch('planner/copyWeek', {
-    to: store.getters['date/weekId'],
+    to: dateStore.weekId,
     from: selectedWeek.value,
   });
 };

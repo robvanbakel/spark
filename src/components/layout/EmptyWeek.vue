@@ -3,10 +3,12 @@ import { ref, computed, watch } from 'vue';
 
 import CopyWeek from '@/components/ui/CopyWeek.vue';
 
-import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
-const store = useStore();
+import { useDate } from '@/pinia';
+
+const dateStore = useDate();
+
 const route = useRoute();
 
 const emit = defineEmits(['hideEmptyWeek']);
@@ -14,7 +16,8 @@ const emit = defineEmits(['hideEmptyWeek']);
 const showCopyWeek = ref(false);
 
 const dateRange = computed(() => {
-  const dates = store.getters['date/dates'];
+  // eslint-disable-next-line prefer-destructuring
+  const dates = dateStore.dates;
   return `${dates[0].format('LL')} – ${dates[dates.length - 1].format('LL')}`;
 });
 

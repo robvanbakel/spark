@@ -1,5 +1,8 @@
 import { createApp } from 'vue';
 
+import { createPinia } from 'pinia';
+import { useDate } from '@/pinia';
+
 import auth from '@/firebase';
 import router from '@/router';
 import store from '@/store';
@@ -22,6 +25,8 @@ import TheSidebar from '@/components/layout/TheSidebar.vue';
 
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
+const pinia = createPinia();
+
 // Sign user out before demo environment is reloaded
 if (store.getters['settings/mode'] === 'demo') {
   signOut(auth);
@@ -40,13 +45,16 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     await store.dispatch('planner/getShifts');
-    await store.dispatch('date/setDates');
 
     router.push({ name: 'EmployeeList' });
   }
 
   if (!app) {
     app = createApp(App);
+
+    app.use(pinia);
+
+    useDate().setDates();
 
     app.use(router);
     app.use(store);

@@ -1,6 +1,4 @@
-import store from '@/store';
-
-import dayjs from '@/plugins/dayjs';
+import { useDate } from '@/pinia';
 
 import HomeView from '@/views/HomeView.vue';
 import EmployeesView from '@/views/EmployeesView.vue';
@@ -45,8 +43,8 @@ export default [
     path: '/schedule/:weekId?',
     component: ScheduleView,
     name: 'Schedule',
-    async beforeEnter(to) {
-      store.dispatch('date/setDates', to.params.weekId);
+    beforeEnter(to) {
+      useDate().setDates(to.params.weekId);
     },
   },
   {

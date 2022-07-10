@@ -5,6 +5,10 @@ import ShiftBlock from '@/components/layout/ShiftBlock.vue';
 
 import { useStore } from 'vuex';
 
+import { useDate } from '@/pinia';
+
+const dateStore = useDate();
+
 const store = useStore();
 
 const props = defineProps({
@@ -26,8 +30,8 @@ const handleClick = (index) => {
   } else {
     store.dispatch('planner/addNewShift', {
       employeeId: props.employee?.id,
-      from: store.getters['date/dates'][index],
-      to: store.getters['date/dates'][index],
+      from: dateStore.dates[index],
+      to: dateStore.dates[index],
     });
   }
 };
@@ -61,7 +65,7 @@ const handleClick = (index) => {
       <div class="row">
         <div class="employee" />
         <ShiftBlock
-          v-for="(date, index) in store.getters['date/dates']"
+          v-for="(date, index) in dateStore.dates"
           :key="date"
           @click="handleClick(index)"
         />

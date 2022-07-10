@@ -14,6 +14,10 @@ import EmptyWeek from '@/components/layout/EmptyWeek.vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
+import { useDate } from '@/pinia';
+
+const dateStore = useDate();
+
 const store = useStore();
 const route = useRoute();
 
@@ -34,8 +38,8 @@ const schedulesInView = computed(() => store.getters['planner/schedulesInView'])
 const emptyWeek = computed(() => !Object.values(schedulesInView.value).flat().length);
 
 const setWindowTitle = () => {
-  store.dispatch('date/setDates', route.params.weekId || dayjs().weekId());
-  document.title = `Week ${store.getters['date/weekNumber']} - Planner - Spark`;
+  dateStore.setDates(route.params.weekId || dayjs().weekId());
+  document.title = `Week ${dateStore.weekNumber} - Planner - Spark`;
 };
 
 watch(route, (to) => {
@@ -139,7 +143,7 @@ const toggleSidebar = () => {
             </transition>
           </div>
           <div
-            v-for="date in store.getters['date/dates']"
+            v-for="date in dateStore.dates"
             :key="date"
             :class="['dayWrapper', { today: date.isSame(dayjs(), 'date') }]"
           >

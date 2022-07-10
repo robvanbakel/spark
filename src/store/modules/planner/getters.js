@@ -1,6 +1,8 @@
 import dayjs from '@/plugins/dayjs';
 import store from '@/store';
 
+import { useDate } from '@/pinia';
+
 export default {
   schedules(state) {
     return state.schedules;
@@ -8,12 +10,13 @@ export default {
   shifts(state) {
     return state.shifts;
   },
-  schedulesInView(state, getters, rootState, rootGetters) {
+  schedulesInView(state, getters) {
+    const dateStore = useDate();
     const schedulesInView = getters.shifts.reduce((acc, shift) => {
-      const index = rootGetters['date/dates'].findIndex((date) => date.isSame(shift.from, 'day'));
+      const index = dateStore.dates.findIndex((date) => date.isSame(shift.from, 'day'));
 
       if (!acc[shift.employeeId]) {
-        acc[shift.employeeId] = new Array(rootGetters['date/dates'].length);
+        acc[shift.employeeId] = new Array(dateStore.dates.length);
       }
 
       if (index >= 0) {

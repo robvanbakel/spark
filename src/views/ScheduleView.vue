@@ -12,6 +12,10 @@ import EmployeeInfo from '@/components/layout/EmployeeInfo.vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
+import { useDate } from '@/pinia';
+
+const dateStore = useDate();
+
 const store = useStore();
 const route = useRoute();
 
@@ -29,7 +33,7 @@ const visibleHoursEnd = ref(0);
 const webcalLink = computed(() => `webcal://app.sparkscheduler.com/feed/${store.getters['auth/user'].feedToken}`);
 
 const schedulesInView = computed(() => {
-  const shiftsInView = store.getters['date/dates']
+  const shiftsInView = dateStore.dates
     .map((date) => store.getters['planner/shifts']
       .find((shift) => shift.employeeId === store.getters['auth/user'].id && date.isSame(shift.from, 'date')));
 
@@ -57,8 +61,8 @@ const hideSidebar = computed(() => store.getters['settings/hideSidebar']);
 watch(route, (to) => {
   if (to.name === 'Schedule') {
     const { weekId } = route.params;
-    store.dispatch('date/setDates', weekId);
-    document.title = `Week ${store.getters['date/weekNumber']} - Planner`;
+    dateStore.setDates(weekId);
+    document.title = `Week ${dateStore.weekNumber} - Planner`;
   }
 });
 
@@ -133,8 +137,8 @@ const setActiveShift = (shift, index) => {
 
   // Construct object
   activeShift.value = {
-    date: store.getters['date/dates'][index].format('dddd LL'),
-    dateShort: store.getters['date/dates'][index].format('L'),
+    date: dateStore.dates[index].format('dddd LL'),
+    dateShort: dateStore.dates[index].format('L'),
     location: shift.location,
     from: shift.from,
     to: shift.to,
@@ -194,7 +198,7 @@ const helpActiveShift = () => {
           class="week-info"
         >
           <div>
-            Week: <span>{{ store.getters["date/weekNumber"] }}</span>
+            Week: <span>{{ dateStore.weekNumber }}</span>
           </div>
           <div>
             Scheduled: <span>{{ workingDays }} days</span>
@@ -238,7 +242,7 @@ const helpActiveShift = () => {
       >
         <div class="colDays">
           <div
-            v-for="date in store.getters['date/dates']"
+            v-for="date in dateStore.dates"
             :key="date"
             class="row"
             :class="{ today: date.isSame(dayjs(), 'date') }"
@@ -293,7 +297,7 @@ const helpActiveShift = () => {
       >
         <p>
           No schedule available for week
-          {{ store.getters["date/weekNumber"] }}.
+          {{ dateStore.weekNumber }}.
         </p>
       </div>
     </section>
