@@ -3,6 +3,10 @@ import { ref, onMounted } from 'vue';
 
 import { useStore } from 'vuex';
 
+import { useAuth } from '@/pinia';
+
+const authStore = useAuth();
+
 const store = useStore();
 
 const errorMessage = ref(null);
@@ -15,7 +19,7 @@ const demoLoading = ref(false);
 const enterDemo = async () => {
   demoLoading.value = true;
 
-  await store.dispatch('auth/login', {
+  await authStore.login({
     email: 'demo@company.com',
     password: 'demo@company.com',
   });
@@ -24,7 +28,7 @@ const enterDemo = async () => {
 const handleSubmit = async () => {
   isLoading.value = true;
 
-  const res = await store.dispatch('auth/login', {
+  const res = await authStore.login({
     email: email.value,
     password: password.value,
   });

@@ -12,8 +12,9 @@ import EmployeeInfo from '@/components/layout/EmployeeInfo.vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
-import { useDate } from '@/pinia';
+import { useAuth, useDate } from '@/pinia';
 
+const authStore = useAuth();
 const dateStore = useDate();
 
 const store = useStore();
@@ -30,12 +31,12 @@ const activeShift = ref(null);
 const visibleHoursStart = ref(0);
 const visibleHoursEnd = ref(0);
 
-const webcalLink = computed(() => `webcal://app.sparkscheduler.com/feed/${store.getters['auth/user'].feedToken}`);
+const webcalLink = computed(() => `webcal://app.sparkscheduler.com/feed/${authStore.feedToken}`);
 
 const schedulesInView = computed(() => {
   const shiftsInView = dateStore.dates
     .map((date) => store.getters['planner/shifts']
-      .find((shift) => shift.employeeId === store.getters['auth/user'].id && date.isSame(shift.from, 'date')));
+      .find((shift) => shift.employeeId === authStore.user.id && date.isSame(shift.from, 'date')));
 
   if (shiftsInView.every((v) => !v)) return null;
 
@@ -189,10 +190,10 @@ const helpActiveShift = () => {
 </script>
 
 <template>
-  <main v-if="store.getters['auth/user'] && store.getters['planner/shifts']">
+  <main v-if="authStore.user && store.getters['planner/shifts']">
     <section id="singleEmployeeCalendar">
       <div class="header">
-        <h1>Hi {{ store.getters["auth/user"].firstName }}</h1>
+        <h1>Hi {{ authStore.user.firstName }}</h1>
         <div
           v-if="schedulesInView"
           class="week-info"

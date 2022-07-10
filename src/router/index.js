@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import auth from '@/firebase';
-import store from '@/store';
 
 import routes from './routes';
 
@@ -23,11 +22,10 @@ router.beforeEach((to, from, next) => {
 
   if (!to.meta.noAuth && !auth.currentUser) {
     next({ name: 'Auth' });
-  } else if (to.meta.admin && !store.getters['auth/admin']) {
-    next({ name: 'Schedule' });
-  } else {
-    next();
+    return;
   }
+
+  next();
 });
 
 export default router;

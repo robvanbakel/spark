@@ -1,23 +1,24 @@
 import api from '@/utils/api';
 import format from '@/utils/format';
 
-import router from '@/router';
+import { useAuth } from '@/pinia';
+
 import auth from '@/firebase';
 
 export default {
   async getUsers(context) {
     const users = await api.get('db/users');
 
+    const authStore = useAuth();
+
     if (!Array.isArray(users)) {
-      context.commit('auth/setUser', users, { root: true });
-      router.push({ name: 'Schedule' });
+      authStore.user = users;
       return;
     }
 
     const { uid } = auth.currentUser;
 
-    context.commit('auth/setUser', users.find((user) => user.id === uid), { root: true });
-    context.commit('auth/admin', true, { root: true });
+    authStore.user = users.find((user) => user.id === uid);
     context.commit('setUsers', users);
   },
   totalHours(context, payload) {

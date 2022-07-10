@@ -3,7 +3,11 @@ import { ref, onMounted } from 'vue';
 
 import TheHeader from '@/components/layout/TheHeader.vue';
 
+import { useAuth } from '@/pinia';
+
 import { useStore } from 'vuex';
+
+const authStore = useAuth();
 
 const store = useStore();
 
@@ -57,7 +61,7 @@ onMounted(() => {
     v-if="!breakpoints.sm.active"
     class="container"
   >
-    <TheHeader v-if="store.getters['auth/user']" />
+    <TheHeader v-if="authStore.user" />
     <router-view />
   </div>
   <div

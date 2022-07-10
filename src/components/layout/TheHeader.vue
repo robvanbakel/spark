@@ -1,20 +1,20 @@
 <script setup>
 import { ref, computed } from 'vue';
 
-import { useStore } from 'vuex';
+import { useAuth } from '@/pinia';
 
-const store = useStore();
+const authStore = useAuth();
 
 const icon = ref('person');
 
-const user = computed(() => store.getters['auth/user']);
+const user = computed(() => authStore.user);
 
-const admin = computed(() => store.getters['auth/admin']);
+const admin = computed(() => authStore.isAdmin);
 
-const employee = computed(() => store.getters['auth/user'].status !== 'ADMIN');
+const employee = computed(() => authStore.user.status !== 'ADMIN');
 
 const logout = () => {
-  store.dispatch('auth/logout');
+  authStore.logout();
 };
 
 </script>

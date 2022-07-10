@@ -1,11 +1,11 @@
 <script setup>
 import { computed } from 'vue';
 
-import { useStore } from 'vuex';
+import { useAuth } from '@/pinia';
 
-const store = useStore();
+const authStore = useAuth();
 
-const user = computed(() => store.getters['auth/user']);
+const user = computed(() => authStore.user);
 </script>
 
 <template>
