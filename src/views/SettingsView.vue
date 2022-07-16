@@ -5,6 +5,8 @@ import { onBeforeRouteLeave } from 'vue-router';
 
 import { useSettings } from '@/pinia';
 
+import dayjs from '@/plugins/dayjs';
+
 const settingsStore = useSettings();
 
 const settingsSaved = ref();
@@ -15,19 +17,19 @@ const settings = ref(settingsStore.settings);
 const dateNotations = computed(() => [
   {
     id: 'MM/DD/YYYY',
-    display: 'MM/DD/YYYY',
+    display: dayjs().format('MM/DD/YYYY'),
   },
   {
     id: 'DD/MM/YYYY',
-    display: 'DD/MM/YYYY',
+    display: dayjs().format('DD/MM/YYYY'),
   },
   {
     id: 'DD-MM-YYYY',
-    display: 'DD-MM-YYYY',
+    display: dayjs().format('DD-MM-YYYY'),
   },
   {
     id: 'D MMM YYYY',
-    display: 'D MMM YYYY',
+    display: dayjs().format('D MMM YYYY'),
   },
 ]);
 
