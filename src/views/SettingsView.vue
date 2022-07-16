@@ -25,6 +25,10 @@ const dateNotations = computed(() => [
     id: 'DD-MM-YYYY',
     display: 'DD-MM-YYYY',
   },
+  {
+    id: 'D MMM YYYY',
+    display: 'D MMM YYYY',
+  },
 ]);
 
 const setDateNotation = (locale) => {
