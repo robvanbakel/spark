@@ -1,6 +1,6 @@
 <script setup>
 import {
-  ref, onMounted, computed, nextTick,
+  ref, computed, nextTick,
 } from 'vue';
 
 import util from '@/utils/util';
@@ -44,10 +44,6 @@ const initState = computed(() => store.getters['planner/shifts'].find((v) => v.i
 
 const newRequestNeeded = computed(() => changed.value.employee || changed.value.from || changed.value.to);
 
-onMounted(() => {
-  resetForm();
-});
-
 const dropdownHandler = (selectedId) => {
   error.value.employee = false;
   shift.value.employeeId = selectedId;
@@ -67,6 +63,8 @@ const resetForm = async () => {
   await nextTick();
   setInitState();
 };
+
+resetForm();
 
 const setInitState = () => {
   shift.value = { break: '0', ...initState.value };
@@ -181,6 +179,7 @@ const deleteShift = async () => {
     closeEditShift();
   }
 };
+
 </script>
 
 <template>

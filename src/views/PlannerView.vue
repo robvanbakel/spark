@@ -1,7 +1,5 @@
 <script setup>
-import {
-  ref, onMounted, computed, watch,
-} from 'vue';
+import { ref, computed, watch } from 'vue';
 
 import dayjs from '@/plugins/dayjs';
 
@@ -50,10 +48,8 @@ watch(route, (to) => {
   }
 });
 
-onMounted(() => {
-  setWindowTitle();
-  filters.value = settingsStore.settings.roles.reduce((acc, i) => ({ ...acc, [i.toLowerCase()]: false }), {});
-});
+setWindowTitle();
+filters.value = settingsStore.settings.roles.reduce((acc, i) => ({ ...acc, [i.toLowerCase()]: false }), {});
 
 const clearSearchInput = () => {
   searchInput.value = '';

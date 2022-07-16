@@ -1,7 +1,5 @@
 <script setup>
-import {
-  ref, onMounted, computed, watch,
-} from 'vue';
+import { ref, computed, watch } from 'vue';
 
 import { onBeforeRouteLeave } from 'vue-router';
 
@@ -11,7 +9,7 @@ const settingsStore = useSettings();
 
 const settingsSaved = ref();
 const confirmUnsavedChanges = ref();
-const unsavedChanges = ref(null);
+const unsavedChanges = ref(false);
 const settings = ref(settingsStore.settings);
 
 const dateNotations = computed(() => [
@@ -43,10 +41,6 @@ const saveSettings = async () => {
 
 watch(settings.value, () => {
   unsavedChanges.value = true;
-});
-
-onMounted(() => {
-  unsavedChanges.value = false;
 });
 
 onBeforeRouteLeave(async (to, from, next) => {

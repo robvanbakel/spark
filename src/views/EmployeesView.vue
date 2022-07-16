@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, computed } from 'vue';
 
 import EditEmployee from '@/components/layout/EditEmployee.vue';
 
@@ -52,9 +52,7 @@ const clearSearchInput = () => {
   searchInputField.value.focus();
 };
 
-onMounted(() => {
-  filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false }), {});
-});
+filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false }), {});
 
 </script>
 

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
 import TheHeader from '@/components/layout/TheHeader.vue';
 
@@ -46,11 +46,8 @@ const checkScreenSize = () => {
   }
 };
 
-onMounted(() => {
-  checkScreenSize();
-  window.addEventListener('resize', checkScreenSize);
-});
-
+checkScreenSize();
+window.addEventListener('resize', checkScreenSize);
 </script>
 
 <template>

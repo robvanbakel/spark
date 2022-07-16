@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
 import { useAuth, useSettings } from '@/pinia';
 
@@ -21,6 +21,10 @@ const enterDemo = async () => {
     password: 'demo@company.com',
   });
 };
+
+setTimeout(() => {
+  showDemo.value = true;
+}, 650);
 
 const handleSubmit = async () => {
   isLoading.value = true;
@@ -45,13 +49,6 @@ const handleSubmit = async () => {
     }
   }
 };
-
-onMounted(() => {
-  setTimeout(() => {
-    showDemo.value = true;
-  }, 650);
-});
-
 </script>
 
 <template>

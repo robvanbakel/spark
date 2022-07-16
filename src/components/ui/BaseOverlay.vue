@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted } from 'vue';
+import { onUnmounted } from 'vue';
 
 defineProps({
   dark: Boolean,
@@ -9,9 +9,7 @@ defineProps({
 
 const emit = defineEmits(['clickout']);
 
-onMounted(() => {
-  document.body.classList.add('noscroll');
-});
+document.body.classList.add('noscroll');
 
 onUnmounted(() => {
   if (!document.querySelector('.overlay')) {
