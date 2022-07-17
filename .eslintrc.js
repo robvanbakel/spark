@@ -31,12 +31,6 @@ module.exports = {
         'func-names': 0,
       },
     },
-    {
-      files: ['./src/store/**/*.js'],
-      rules: {
-        'no-param-reassign': 0,
-      },
-    },
   ],
   settings: {
     'import/resolver': {

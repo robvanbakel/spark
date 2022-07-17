@@ -7,7 +7,6 @@ import {
 
 import auth from '@/firebase';
 import router from '@/router';
-import store from '@/store';
 import App from '@/App.vue';
 
 import '@/assets/styles/main.scss';
@@ -40,7 +39,6 @@ onAuthStateChanged(auth, async (user) => {
     app.use(pinia);
 
     app.use(router);
-    app.use(store);
     app.use(i18n);
 
     app.component('BaseButton', BaseButton);

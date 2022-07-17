@@ -3,14 +3,10 @@ import { ref, computed } from 'vue';
 
 import EditEmployee from '@/components/layout/EditEmployee.vue';
 
-import { useStore } from 'vuex';
-
 import { useSettings, useEmployees } from '@/pinia';
 
 const settingsStore = useSettings();
 const employeesStore = useEmployees();
-
-const store = useStore();
 
 const searchInputField = ref();
 const searchInput = ref('');
