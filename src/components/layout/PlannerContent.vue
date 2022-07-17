@@ -3,9 +3,9 @@ import { computed } from 'vue';
 
 import PlannerRow from '@/components/layout/PlannerRow.vue';
 
-import { useStore } from 'vuex';
+import { useEmployees } from '@/pinia';
 
-const store = useStore();
+const employeesStore = useEmployees();
 
 const props = defineProps({
   schedules: {
@@ -26,7 +26,7 @@ const employees = computed(() => {
   const output = [];
 
   props.roles.forEach((role) => {
-    store.getters['employees/users'].forEach((user) => {
+    employeesStore.users.forEach((user) => {
       if (role === user.role?.toLowerCase() && `${user.firstName} ${user.lastName}`.toLowerCase().includes(props.search.toLowerCase())) {
         output.push(user);
       }

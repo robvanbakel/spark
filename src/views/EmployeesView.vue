@@ -5,9 +5,10 @@ import EditEmployee from '@/components/layout/EditEmployee.vue';
 
 import { useStore } from 'vuex';
 
-import { useSettings } from '@/pinia';
+import { useSettings, useEmployees } from '@/pinia';
 
 const settingsStore = useSettings();
+const employeesStore = useEmployees();
 
 const store = useStore();
 
@@ -19,7 +20,7 @@ const getFullName = (employee) => `${employee.firstName} ${employee.lastName}`;
 
 const employees = computed(() => {
   // Get all non-archived employees
-  const allEmployees = store.getters['employees/employees'];
+  const allEmployees = employeesStore.employees;
 
   // Apply filter & search
   return allEmployees.filter((emp) => {
@@ -94,7 +95,7 @@ filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false 
     <div class="actions">
       <base-button
         icon="add"
-        @click="store.dispatch('employees/addNewUser')"
+        @click="employeesStore.addNewUser()"
       >
         {{ $t('general.actions.add', { resource: 'Employee' }) }}
       </base-button>
@@ -115,7 +116,7 @@ filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false 
         v-for="employee in employees"
         :key="employee.id"
         class="row"
-        @click="store.dispatch('employees/activeUserId',employee.id)"
+        @click="employeesStore.activeUserId = employee.id"
       >
         <div>
           <base-badge
@@ -136,5 +137,5 @@ filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false 
     </section>
   </main>
 
-  <EditEmployee v-if="store.getters['employees/activeUserId']" />
+  <EditEmployee v-if="employeesStore.activeUserId" />
 </template>

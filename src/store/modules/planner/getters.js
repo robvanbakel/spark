@@ -1,7 +1,7 @@
 import dayjs from '@/plugins/dayjs';
 import store from '@/store';
 
-import { useDate } from '@/pinia';
+import { useDate, useEmployees } from '@/pinia';
 
 export default {
   schedules(state) {
@@ -36,7 +36,9 @@ export default {
       return acc;
     }, {});
 
-    store.dispatch('employees/totalHours', totalHours);
+    const employeesStore = useEmployees();
+
+    employeesStore.totalHours = totalHours;
     store.dispatch('planner/emptyWeek', !Object.values(schedulesInView).flat().length);
 
     return schedulesInView;

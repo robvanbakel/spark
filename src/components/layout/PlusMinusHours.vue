@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 
-import { useStore } from 'vuex';
+import { useEmployees } from '@/pinia';
 
-const store = useStore();
+const employeesStore = useEmployees();
 
 defineProps({
   roles: {
@@ -19,8 +19,8 @@ defineProps({
 const showAll = ref(true);
 
 const calculatePlusMinusHours = (employeeId) => {
-  const contractHours = store.getters['employees/employees'].find((employee) => employee.id === employeeId).contract;
-  const calculatedHours = store.getters['employees/totalHours'][employeeId];
+  const contractHours = employeesStore.employees.find((employee) => employee.id === employeeId).contract;
+  const calculatedHours = employeesStore.totalHours[employeeId];
 
   const plusMinusHours = calculatedHours - contractHours;
 
@@ -34,7 +34,7 @@ const toggleShowAll = () => {
 };
 
 const computedShowAll = (employeeId) => {
-  if (showAll.value || store.getters['employees/totalHours'][employeeId] > 0) {
+  if (showAll.value || employeesStore.totalHours[employeeId] > 0) {
     return true;
   }
   return false;
@@ -49,7 +49,7 @@ const computedShowAll = (employeeId) => {
       class="plus-minus-hours-role-wrapper"
     >
       <div
-        v-for="employee in store.getters['employees/employees']"
+        v-for="employee in employeesStore.employees"
         :key="employee.id"
       >
         <div

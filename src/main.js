@@ -1,7 +1,9 @@
 import { createApp } from 'vue';
 
 import { createPinia } from 'pinia';
-import { useAuth, useDate, useSettings } from '@/pinia';
+import {
+  useAuth, useDate, useSettings, useEmployees,
+} from '@/pinia';
 
 import auth from '@/firebase';
 import router from '@/router';
@@ -63,7 +65,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   if (user) {
-    await store.dispatch('employees/getUsers');
+    await useEmployees().getUsers();
     await store.dispatch('planner/getShifts');
 
     useDate().setDates();

@@ -4,13 +4,10 @@ import { ref, computed, onBeforeMount } from 'vue';
 import util from '@/utils/util';
 import StatusPicker from '@/components/ui/StatusPicker.vue';
 
-import { useStore } from 'vuex';
-
-import { useSettings } from '@/pinia';
+import { useSettings, useEmployees } from '@/pinia';
 
 const settingsStore = useSettings();
-
-const store = useStore();
+const employeesStore = useEmployees();
 
 const emailAlreadyExists = ref();
 const somethingWentWrong = ref();
@@ -20,9 +17,9 @@ const error = ref({});
 
 const roles = computed(() => settingsStore.settings.roles.map((role) => ({ id: role, display: role })));
 
-const newUser = computed(() => store.getters['employees/activeUserId'] === 'NEW');
+const newUser = computed(() => employeesStore.activeUserId === 'NEW');
 
-const initState = computed(() => store.getters['employees/users'].find((v) => v.id === store.getters['employees/activeUserId']));
+const initState = computed(() => employeesStore.users.find((v) => v.id === employeesStore.activeUserId));
 
 onBeforeMount(() => {
   setInitState();
@@ -42,7 +39,7 @@ const setRole = (value) => {
 };
 
 const closeEditEmployee = () => {
-  store.dispatch('employees/activeUserId', null);
+  employeesStore.activeUserId = null;
 };
 
 const deleteEmployee = async () => {
@@ -77,7 +74,7 @@ const saveEditUser = async () => {
   }
 
   try {
-    await store.dispatch('employees/saveEditUser', employee.value);
+    await employeesStore.saveEditUser(employee.value);
     closeEditEmployee();
   } catch (err) {
     if (err.code === 'auth/email-already-exists') {

@@ -8,9 +8,10 @@ import dayjs from '@/plugins/dayjs';
 
 import { useStore } from 'vuex';
 
-import { useSettings } from '@/pinia';
+import { useSettings, useEmployees } from '@/pinia';
 
 const settingsStore = useSettings();
+const employeesStore = useEmployees();
 
 const store = useStore();
 
@@ -36,7 +37,7 @@ const showNewSuggestion = computed(() => {
   return false;
 });
 
-const employees = computed(() => store.getters['employees/employees'].map((employee) => ({ id: employee.id, display: `${employee.firstName} ${employee.lastName}` })));
+const employees = computed(() => employeesStore.employees.map((employee) => ({ id: employee.id, display: `${employee.firstName} ${employee.lastName}` })));
 
 const newShift = computed(() => store.getters['planner/activeShiftId'] === 'NEW');
 

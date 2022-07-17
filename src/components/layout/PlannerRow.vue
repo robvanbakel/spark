@@ -5,9 +5,10 @@ import ShiftBlock from '@/components/layout/ShiftBlock.vue';
 
 import { useStore } from 'vuex';
 
-import { useDate } from '@/pinia';
+import { useDate, useEmployees } from '@/pinia';
 
 const dateStore = useDate();
+const employeesStore = useEmployees();
 
 const store = useStore();
 
@@ -48,7 +49,7 @@ const handleClick = (index) => {
         <span class="name">{{ employee.firstName }} {{ employee.lastName }}</span>
         <span class="hours">
           <span class="calculated">
-            {{ store.getters['employees/totalHours'][employee.id]?.toFixed(2) }}</span> /
+            {{ employeesStore.totalHours[employee.id]?.toFixed(2) }}</span> /
           {{ employee.contract }} hours
         </span>
       </div>

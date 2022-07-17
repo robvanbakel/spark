@@ -1,9 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue';
 
-import { useStore } from 'vuex';
+import { useEmployees } from '@/pinia';
 
-const store = useStore();
+const emploeesStore = useEmployees();
 
 const props = defineProps({
   id: {
@@ -112,7 +112,7 @@ const showDropdown = () => {
 };
 
 const getStatus = (id, opt = {}) => {
-  const { status } = store.getters['employees/employees'].find((emp) => emp.id === id);
+  const { status } = emploeesStore.employees.find((emp) => emp.id === id);
 
   if (opt.capitalize) {
     return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
