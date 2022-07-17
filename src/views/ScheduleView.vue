@@ -9,16 +9,17 @@ import dayjs from '@/plugins/dayjs';
 import PlannerCalendar from '@/components/layout/PlannerCalendar.vue';
 import EmployeeInfo from '@/components/layout/EmployeeInfo.vue';
 
-import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
-import { useAuth, useDate, useSettings } from '@/pinia';
+import {
+  useAuth, useDate, useSettings, usePlanner,
+} from '@/pinia';
 
 const authStore = useAuth();
 const dateStore = useDate();
 const settingsStore = useSettings();
+const plannerStore = usePlanner();
 
-const store = useStore();
 const route = useRoute();
 
 const qrCodeImg = ref(null);
@@ -36,7 +37,7 @@ const webcalLink = computed(() => `webcal://app.sparkscheduler.com/feed/${authSt
 
 const schedulesInView = computed(() => {
   const shiftsInView = dateStore.dates
-    .map((date) => store.getters['planner/shifts']
+    .map((date) => plannerStore.shifts
       .find((shift) => shift.employeeId === authStore.user.id && date.isSame(shift.from, 'date')));
 
   if (shiftsInView.every((v) => !v)) return null;
@@ -158,7 +159,7 @@ const setActiveShift = (shift, index) => {
 const acceptAllShifts = async () => {
   if (await confirmAcceptAllShifts.value.open()) {
     const nonAcceptedShiftIds = schedulesInView.value.map((shift) => shift && shift.status !== 'ACCEPTED' && shift.id).filter((v) => v);
-    store.dispatch('planner/acceptShifts', nonAcceptedShiftIds);
+    plannerStore.acceptShifts(nonAcceptedShiftIds);
   }
 };
 
@@ -167,7 +168,7 @@ const closeActiveShift = () => {
 };
 
 const acceptProposal = (shiftId) => {
-  store.dispatch('planner/acceptShifts', [shiftId || activeShift.value.id]);
+  plannerStore.acceptShifts([shiftId || activeShift.value.id]);
   closeActiveShift();
 };
 
@@ -191,7 +192,7 @@ const helpActiveShift = () => {
 </script>
 
 <template>
-  <main v-if="authStore.user && store.getters['planner/shifts']">
+  <main v-if="authStore.user && plannerStore.shifts">
     <section id="singleEmployeeCalendar">
       <div class="header">
         <h1>Hi {{ authStore.user.firstName }}</h1>

@@ -6,14 +6,11 @@ import {
 import util from '@/utils/util';
 import dayjs from '@/plugins/dayjs';
 
-import { useStore } from 'vuex';
-
-import { useSettings, useEmployees } from '@/pinia';
+import { useSettings, useEmployees, usePlanner } from '@/pinia';
 
 const settingsStore = useSettings();
 const employeesStore = useEmployees();
-
-const store = useStore();
+const plannerStore = usePlanner();
 
 const confirmDeleteShift = ref();
 const confirmReplaceShift = ref();
@@ -39,9 +36,9 @@ const showNewSuggestion = computed(() => {
 
 const employees = computed(() => employeesStore.employees.map((employee) => ({ id: employee.id, display: `${employee.firstName} ${employee.lastName}` })));
 
-const newShift = computed(() => store.getters['planner/activeShiftId'] === 'NEW');
+const newShift = computed(() => plannerStore.activeShiftId === 'NEW');
 
-const initState = computed(() => store.getters['planner/shifts'].find((v) => v.id === store.getters['planner/activeShiftId']) || store.getters['planner/newShiftPrefillData']);
+const initState = computed(() => plannerStore.shifts.find((v) => v.id === plannerStore.activeShiftId) || plannerStore.newShiftPrefillData);
 
 const newRequestNeeded = computed(() => changed.value.employee || changed.value.from || changed.value.to);
 
@@ -156,14 +153,14 @@ const saveEditShift = async () => {
   }
 
   // If employee already has a shift on that day, confirm that the shift should be replaced
-  const collision = store.getters['planner/shifts'].find((v) => v.id !== shift.value.id && v.employeeId === shift.value.employeeId && v.from.isSame(shift.value.from, 'date'));
+  const collision = plannerStore.shifts.find((v) => v.id !== shift.value.id && v.employeeId === shift.value.employeeId && v.from.isSame(shift.value.from, 'date'));
   if (collision) {
     if (!(await confirmReplaceShift.value.open())) return;
-    store.dispatch('planner/deleteShiftLocally', collision.id);
+    plannerStore.deleteShiftLocally(collision.id);
   }
 
   // Save shift and exit modal
-  store.dispatch('planner/saveEditShift', {
+  plannerStore.saveEditShift({
     ...shift.value,
     status: newRequestNeeded.value ? 'PROPOSED' : shift.value.status,
   });
@@ -171,12 +168,12 @@ const saveEditShift = async () => {
 };
 
 const closeEditShift = () => {
-  store.dispatch('planner/setActiveShiftId', null);
+  plannerStore.activeShiftId = null;
 };
 
 const deleteShift = async () => {
   if (await confirmDeleteShift.value.open()) {
-    store.dispatch('planner/deleteShift');
+    plannerStore.deleteShift();
     closeEditShift();
   }
 };

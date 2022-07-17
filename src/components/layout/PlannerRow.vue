@@ -3,14 +3,11 @@ import { computed } from 'vue';
 
 import ShiftBlock from '@/components/layout/ShiftBlock.vue';
 
-import { useStore } from 'vuex';
-
-import { useDate, useEmployees } from '@/pinia';
+import { useDate, useEmployees, usePlanner } from '@/pinia';
 
 const dateStore = useDate();
 const employeesStore = useEmployees();
-
-const store = useStore();
+const plannerStore = usePlanner();
 
 const props = defineProps({
   employee: {
@@ -27,9 +24,9 @@ const hasSchedulesInView = computed(() => props.schedule && !props.schedule?.eve
 
 const handleClick = (index) => {
   if (props.schedule && props.schedule[index]) {
-    store.dispatch('planner/setActiveShiftId', props.schedule[index].id);
+    plannerStore.activeShiftId = props.schedule[index].id;
   } else {
-    store.dispatch('planner/addNewShift', {
+    plannerStore.addNewShift({
       employeeId: props.employee?.id,
       from: dateStore.dates[index],
       to: dateStore.dates[index],

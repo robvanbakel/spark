@@ -1,17 +1,14 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 
-import { useStore } from 'vuex';
-
-import { useDate } from '@/pinia';
+import { useDate, usePlanner } from '@/pinia';
 
 const dateStore = useDate();
-
-const store = useStore();
+const plannerStore = usePlanner();
 
 const selectedWeek = ref(null);
 
-const weeks = computed(() => Object.keys(store.getters['planner/schedules'])
+const weeks = computed(() => Object.keys(plannerStore.schedules)
   .map((weekId) => ({
     id: weekId,
     display: `Week ${Number(weekId.split('-')[1])}`,
@@ -23,7 +20,7 @@ const selectWeek = (week) => {
 };
 
 const copyWeek = () => {
-  store.dispatch('planner/copyWeek', {
+  plannerStore.copyWeek({
     to: dateStore.weekId,
     from: selectedWeek.value,
   });

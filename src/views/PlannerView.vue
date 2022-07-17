@@ -9,15 +9,14 @@ import PlannerCalendar from '@/components/layout/PlannerCalendar.vue';
 import PlusMinusHours from '@/components/layout/PlusMinusHours.vue';
 import EmptyWeek from '@/components/layout/EmptyWeek.vue';
 
-import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
-import { useDate, useSettings } from '@/pinia';
+import { useDate, useSettings, usePlanner } from '@/pinia';
 
 const dateStore = useDate();
 const settingsStore = useSettings();
+const plannerStore = usePlanner();
 
-const store = useStore();
 const route = useRoute();
 
 const searchInputField = ref();
@@ -32,7 +31,7 @@ const displayRoles = computed(() => {
   return Object.keys(filters.value);
 });
 
-const schedulesInView = computed(() => store.getters['planner/schedulesInView']);
+const schedulesInView = computed(() => plannerStore.schedulesInView);
 
 const emptyWeek = computed(() => !Object.values(schedulesInView.value).flat().length);
 
@@ -56,7 +55,7 @@ const clearSearchInput = () => {
   searchInputField.value.focus();
 };
 
-const addNewShift = () => store.dispatch('planner/addNewShift');
+const addNewShift = () => plannerStore(addNewShift);
 
 const setFilter = (status) => {
   filters.value[status] = !filters.value[status];
@@ -156,7 +155,7 @@ const toggleSidebar = () => {
       </div>
     </section>
 
-    <EditShift v-if="store.getters['planner/activeShiftId']" />
+    <EditShift v-if="plannerStore.activeShiftId" />
 
     <the-sidebar>
       <section>
