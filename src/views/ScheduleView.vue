@@ -13,7 +13,7 @@ import { useRoute } from 'vue-router';
 
 import {
   useAuth, useDate, useSettings, usePlanner,
-} from '@/pinia';
+} from '@/store';
 
 const authStore = useAuth();
 const dateStore = useDate();

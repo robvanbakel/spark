@@ -3,7 +3,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import {
   useAuth, useDate, useSettings, useEmployees, usePlanner,
-} from '@/pinia';
+} from '@/store';
 
 import auth from '@/firebase';
 import router from '@/router';

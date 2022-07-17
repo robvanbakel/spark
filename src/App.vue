@@ -3,7 +3,7 @@ import { ref } from 'vue';
 
 import TheHeader from '@/components/layout/TheHeader.vue';
 
-import { useAuth, useSettings } from '@/pinia';
+import { useAuth, useSettings } from '@/store';
 
 const authStore = useAuth();
 const settingsStore = useSettings();

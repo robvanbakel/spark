@@ -3,7 +3,7 @@ import { ref, computed } from 'vue';
 
 import EditEmployee from '@/components/layout/EditEmployee.vue';
 
-import { useSettings, useEmployees } from '@/pinia';
+import { useSettings, useEmployees } from '@/store';
 
 const settingsStore = useSettings();
 const employeesStore = useEmployees();

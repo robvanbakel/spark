@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 
-import { useSettings } from '@/pinia';
+import { useSettings } from '@/store';
 
 const settingsStore = useSettings();
 

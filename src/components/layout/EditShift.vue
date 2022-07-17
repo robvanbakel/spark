@@ -6,7 +6,7 @@ import {
 import util from '@/utils/util';
 import dayjs from '@/plugins/dayjs';
 
-import { useSettings, useEmployees, usePlanner } from '@/pinia';
+import { useSettings, useEmployees, usePlanner } from '@/store';
 
 const settingsStore = useSettings();
 const employeesStore = useEmployees();

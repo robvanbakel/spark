@@ -3,7 +3,7 @@ import { ref, computed, watch } from 'vue';
 
 import { onBeforeRouteLeave } from 'vue-router';
 
-import { useSettings } from '@/pinia';
+import { useSettings } from '@/store';
 
 import dayjs from '@/plugins/dayjs';
 

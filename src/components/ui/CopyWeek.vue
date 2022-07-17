@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 
-import { useDate, usePlanner } from '@/pinia';
+import { useDate, usePlanner } from '@/store';
 
 const dateStore = useDate();
 const plannerStore = usePlanner();

@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import BaseCalendar from '@/components/ui/BaseCalendar/BaseCalendar.vue';
 
-import { useSettings } from '@/pinia';
+import { useSettings } from '@/store';
 
 const settingsStore = useSettings();
 

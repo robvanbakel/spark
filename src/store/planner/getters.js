@@ -1,6 +1,6 @@
 import dayjs from '@/plugins/dayjs';
 
-import { useDate, useEmployees } from '@/pinia';
+import { useDate, useEmployees } from '@/store';
 
 export default {
 

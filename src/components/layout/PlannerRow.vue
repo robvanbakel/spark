@@ -3,7 +3,7 @@ import { computed } from 'vue';
 
 import ShiftBlock from '@/components/layout/ShiftBlock.vue';
 
-import { useDate, useEmployees, usePlanner } from '@/pinia';
+import { useDate, useEmployees, usePlanner } from '@/store';
 
 const dateStore = useDate();
 const employeesStore = useEmployees();

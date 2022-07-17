@@ -1,7 +1,7 @@
 import api from '@/utils/api';
 import format from '@/utils/format';
 
-import { useAuth } from '@/pinia';
+import { useAuth } from '@/store';
 
 import auth from '@/firebase';
 

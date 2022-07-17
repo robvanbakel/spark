@@ -11,7 +11,7 @@ import EmptyWeek from '@/components/layout/EmptyWeek.vue';
 
 import { useRoute } from 'vue-router';
 
-import { useDate, useSettings, usePlanner } from '@/pinia';
+import { useDate, useSettings, usePlanner } from '@/store';
 
 const dateStore = useDate();
 const settingsStore = useSettings();

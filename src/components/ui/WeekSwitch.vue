@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 
-import { useDate } from '@/pinia';
+import { useDate } from '@/store';
 
 const dateStore = useDate();
 

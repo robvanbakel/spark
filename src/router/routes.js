@@ -1,4 +1,4 @@
-import { useDate } from '@/pinia';
+import { useDate } from '@/store';
 
 import HomeView from '@/views/HomeView.vue';
 import EmployeesView from '@/views/EmployeesView.vue';

@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 
-import { useAuth, useSettings } from '@/pinia';
+import { useAuth, useSettings } from '@/store';
 
 const authStore = useAuth();
 const settingsStore = useSettings();

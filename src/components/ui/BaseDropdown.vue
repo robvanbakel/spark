@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 
-import { useEmployees } from '@/pinia';
+import { useEmployees } from '@/store';
 
 const emploeesStore = useEmployees();
 

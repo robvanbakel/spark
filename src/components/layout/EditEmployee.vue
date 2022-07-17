@@ -4,7 +4,7 @@ import { ref, computed, onBeforeMount } from 'vue';
 import util from '@/utils/util';
 import StatusPicker from '@/components/ui/StatusPicker.vue';
 
-import { useSettings, useEmployees } from '@/pinia';
+import { useSettings, useEmployees } from '@/store';
 
 const settingsStore = useSettings();
 const employeesStore = useEmployees();

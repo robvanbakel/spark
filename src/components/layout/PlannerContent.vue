@@ -3,7 +3,7 @@ import { computed } from 'vue';
 
 import PlannerRow from '@/components/layout/PlannerRow.vue';
 
-import { useEmployees } from '@/pinia';
+import { useEmployees } from '@/store';
 
 const employeesStore = useEmployees();
 
