@@ -5,7 +5,6 @@ import getters from './getters';
 
 export default defineStore('planner', {
   state: () => ({
-    schedules: null,
     shifts: [],
     activeShiftId: null,
     newShiftPrefillData: null,

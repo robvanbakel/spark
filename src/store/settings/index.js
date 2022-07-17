@@ -5,7 +5,6 @@ import getters from './getters';
 
 export default defineStore('settings', {
   state: () => ({
-    admin: null,
     sidebarHidden: false,
     sidebarAutoHidden: false,
     settings: null,
