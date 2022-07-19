@@ -30,50 +30,52 @@ const pinia = createPinia();
 
 // Get Firebase Auth status before app instantiation
 
-let app = null;
+const app = createApp(App);
+
+app.use(pinia);
+
+app.use(router);
+app.use(i18n);
+
+app.component('BaseButton', BaseButton);
+app.component('BaseBadge', BaseBadge);
+app.component('BaseSwitch', BaseSwitch);
+app.component('BaseOverlay', BaseOverlay);
+app.component('BaseModal', BaseModal);
+app.component('BaseDropdown', BaseDropdown);
+app.component('BaseConfirm', BaseConfirm);
+app.component('BaseDatePicker', BaseDatePicker);
+app.component('WeekSwitch', WeekSwitch);
+app.component('RightClickMenu', RightClickMenu);
+app.component('TheSidebar', TheSidebar);
+
+app.mount('#app');
+
+if (useSettings().mode === 'demo') {
+  signOut(auth);
+  router.push({ name: 'Auth' });
+}
 
 onAuthStateChanged(auth, async (user) => {
-  if (!app) {
-    app = createApp(App);
-
-    app.use(pinia);
-
-    app.use(router);
-    app.use(i18n);
-
-    app.component('BaseButton', BaseButton);
-    app.component('BaseBadge', BaseBadge);
-    app.component('BaseSwitch', BaseSwitch);
-    app.component('BaseOverlay', BaseOverlay);
-    app.component('BaseModal', BaseModal);
-    app.component('BaseDropdown', BaseDropdown);
-    app.component('BaseConfirm', BaseConfirm);
-    app.component('BaseDatePicker', BaseDatePicker);
-    app.component('WeekSwitch', WeekSwitch);
-    app.component('RightClickMenu', RightClickMenu);
-    app.component('TheSidebar', TheSidebar);
-
-    app.mount('#app');
-
-    if (useSettings().mode === 'demo') {
-      await signOut(auth);
-      router.push({ name: 'Auth' });
-      return;
-    }
-  }
-
   if (user) {
+    useDate().setDates();
     await useEmployees().getUsers();
     await usePlanner().getShifts();
 
-    useDate().setDates();
-
     if (!useAuth().isAdmin) {
-      router.push({ name: 'Schedule' });
-      return;
-    }
+      if (router.currentRoute.value.name === 'Auth') {
+        router.push({ name: 'Schedule' });
+      }
+    } else {
+      await useSettings().getSettings();
 
-    await useSettings().getSettings();
-    router.push({ name: 'EmployeeList' });
+      if (router.currentRoute.value.name === 'Auth') {
+        router.push({ name: 'EmployeeList' });
+      }
+    }
+  } else {
+    router.push({ name: 'Auth' });
   }
+
+  useSettings().isLoaded = true;
 });

@@ -8,6 +8,7 @@ export default defineStore('settings', {
     sidebarHidden: false,
     sidebarAutoHidden: false,
     settings: null,
+    isLoaded: false,
     dateLocale: 'en-US',
     breaks: ['0', '15', '30', '45', '60'],
     statuses: ['ACTIVE', 'UNAVAILABLE', 'SICK', 'INACTIVE', 'STAGED'],

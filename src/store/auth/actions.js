@@ -1,5 +1,6 @@
 import auth from '@/firebase';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { useSettings } from '@/store';
 
 export default {
   async login({ email, password }) {
@@ -11,7 +12,7 @@ export default {
     }
   },
   logout() {
+    useSettings().isLoaded = false;
     signOut(auth);
-    window.location.reload();
   },
 };

@@ -51,17 +51,19 @@ window.addEventListener('resize', checkScreenSize);
 </script>
 
 <template>
-  <div
-    v-if="!breakpoints.sm.active"
-    class="container"
-  >
-    <TheHeader v-if="authStore.user" />
-    <router-view />
-  </div>
-  <div
-    v-else
-    style="text-align: center; padding: 3em 1em;"
-  >
-    {{ $t('general.smallScreenWarning') }}
+  <div v-if="settingsStore.isLoaded">
+    <div
+      v-if="!breakpoints.sm.active"
+      class="container"
+    >
+      <TheHeader v-if="authStore.user" />
+      <router-view />
+    </div>
+    <div
+      v-else
+      style="text-align: center; padding: 3em 1em;"
+    >
+      {{ $t('general.smallScreenWarning') }}
+    </div>
   </div>
 </template>
