@@ -1,5 +1,3 @@
-import { useDate } from '@/store';
-
 import HomeView from '@/views/HomeView.vue';
 import EmployeesView from '@/views/EmployeesView.vue';
 import PlannerView from '@/views/PlannerView.vue';
@@ -43,9 +41,6 @@ export default [
     path: '/schedule/:weekId?',
     component: ScheduleView,
     name: 'Schedule',
-    beforeEnter(to) {
-      useDate().setDates(to.params.weekId);
-    },
   },
   {
     path: '/settings',
