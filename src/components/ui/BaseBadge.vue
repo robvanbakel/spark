@@ -12,7 +12,8 @@ const props = defineProps({
   },
 });
 
-const formatContent = computed(() => props.status.substring(0, 1).toUpperCase() + props.status.substring(1).toLowerCase());
+const formatContent = computed(() => props.status.substring(0, 1).toUpperCase()
++ props.status.substring(1).toLowerCase());
 
 const getBadgeColor = () => {
   switch (props.status) {

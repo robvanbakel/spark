@@ -93,8 +93,8 @@ const handleSubmit = async () => {
       >
         <h1>No account yet?</h1>
         <p>
-          Click the button below to enter a demo account. Any changes you make won't be stored and will be lost when
-          existing the demo environment.
+          Click the button below to enter a demo account. Any changes you make won't be stored and
+          will be lost when existing the demo environment.
         </p>
         <base-button
           v-if="!demoLoading"

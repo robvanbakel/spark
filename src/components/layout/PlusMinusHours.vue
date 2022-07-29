@@ -19,7 +19,8 @@ defineProps({
 const showAll = ref(true);
 
 const calculatePlusMinusHours = (employeeId) => {
-  const contractHours = employeesStore.employees.find((employee) => employee.id === employeeId).contract;
+  const contractHours = employeesStore.employees
+    .find((employee) => employee.id === employeeId).contract;
   const calculatedHours = employeesStore.totalHours[employeeId];
 
   const plusMinusHours = calculatedHours - contractHours;
@@ -65,7 +66,8 @@ const computedShowAll = (employeeId) => {
         >
           <div class="hours">
             <span :class="calculatePlusMinusHours(employee.id) < 0 ? 'minus' : 'plus'">
-              {{ ((calculatePlusMinusHours(employee.id) > 0) ? '+' : '') + calculatePlusMinusHours(employee.id).toFixed(2) }}
+              {{ ((calculatePlusMinusHours(employee.id) > 0) ? '+' : '')
+                + calculatePlusMinusHours(employee.id).toFixed(2) }}
             </span>
           </div>
           <div class="employee-info">

@@ -118,7 +118,6 @@ const setPassword = async () => {
 const toLogin = () => {
   router.push({ name: 'Auth' });
 };
-
 </script>
 
 <template>
@@ -164,7 +163,10 @@ const toLogin = () => {
       class="auth-modal"
     >
       <h1>Hi {{ firstName }}</h1>
-      <p>Choose a strong password and submit in order to activate your account and login to see your schedule.</p>
+      <p>
+        Choose a strong password and submit in order to activate your account and login to see your
+        schedule.
+      </p>
       <p
         v-if="errorMessage"
         class="error"
@@ -205,7 +207,10 @@ const toLogin = () => {
     class="auth-modal success"
   >
     <h1>Success!</h1>
-    <p>Your account has been successfully activated! You can now log in to Spark to see your schedule.</p>
+    <p>
+      Your account has been successfully activated! You can now log in to Spark to see your
+      schedule.
+    </p>
     <base-button
       icon="login"
       @click="toLogin"

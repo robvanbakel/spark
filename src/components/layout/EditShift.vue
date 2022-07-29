@@ -38,9 +38,12 @@ const employees = computed(() => employeesStore.employees.map((employee) => ({ i
 
 const newShift = computed(() => plannerStore.activeShiftId === 'NEW');
 
-const initState = computed(() => plannerStore.shifts.find((v) => v.id === plannerStore.activeShiftId) || plannerStore.newShiftPrefillData);
+const initState = computed(() => plannerStore.shifts
+  .find((v) => v.id === plannerStore.activeShiftId) || plannerStore.newShiftPrefillData);
 
-const newRequestNeeded = computed(() => changed.value.employee || changed.value.from || changed.value.to);
+const newRequestNeeded = computed(() => changed.value.employee
+|| changed.value.from
+|| changed.value.to);
 
 const dropdownHandler = (selectedId) => {
   error.value.employee = false;
@@ -79,7 +82,9 @@ const formatDateTime = (value, field, model) => {
   } else {
     try {
       const [, hour, minute] = value.match(/^(\d{1,2}?)\D?(\d{1,2})?$/);
-      shift.value[field] = dayjs(shift.value[field]).hour(hour < 24 ? hour : 0).minute(minute < 60 ? minute : 0);
+      shift.value[field] = dayjs(shift.value[field])
+        .hour(hour < 24 ? hour : 0)
+        .minute(minute < 60 ? minute : 0);
     } catch {
       error.value[field] = model;
       return;

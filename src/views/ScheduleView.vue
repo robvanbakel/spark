@@ -285,7 +285,9 @@ const helpActiveShift = () => {
               @click.right="day.status === 'PROPOSED' && proposalRightClickHandler($event, day.id)"
             >
               <span class="location"> {{ day.location }}</span>
-              <span class="time">{{ day.from.format('HH:mm') }} - {{ day.to.format('HH:mm') }}</span>
+              <span class="time">
+                {{ day.from.format('HH:mm') }} - {{ day.to.format('HH:mm') }}
+              </span>
               <span
                 v-if="day.notes"
                 class="notes material-icons material-icons-round"
@@ -324,11 +326,15 @@ const helpActiveShift = () => {
         </div>
         <div class="shift-info-group">
           <span class="label">Time</span>
-          <span class="value">{{ activeShift.from.format('HH:mm') }} - {{ activeShift.to.format('HH:mm') }}</span>
+          <span class="value">
+            {{ activeShift.from.format('HH:mm') }} - {{ activeShift.to.format('HH:mm') }}
+          </span>
         </div>
         <div class="shift-info-group">
           <span class="label">Duration</span>
-          <span class="value">{{ activeShift.duration }} hours ({{ activeShift.break }} minutes break)</span>
+          <span class="value">
+            {{ activeShift.duration }} hours ({{ activeShift.break }} minutes break)
+          </span>
         </div>
         <div
           v-if="activeShift.notes"

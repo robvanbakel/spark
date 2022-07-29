@@ -44,7 +44,8 @@ const selectedDisplay = computed(() => props.items.find((item) => item.id === se
 
 const filteredItems = computed(() => {
   if (props.enableSearch) {
-    return props.items.filter((item) => item.display.toLowerCase().includes(input.value.toLowerCase()));
+    return props.items.filter((item) => item.display.toLowerCase()
+      .includes(input.value.toLowerCase()));
   }
   return props.items;
 });

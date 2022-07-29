@@ -15,11 +15,13 @@ const confirmDeleteEmployee = ref();
 const employee = ref({});
 const error = ref({});
 
-const roles = computed(() => settingsStore.settings.roles.map((role) => ({ id: role, display: role })));
+const roles = computed(() => settingsStore.settings.roles
+  .map((role) => ({ id: role, display: role })));
 
 const newUser = computed(() => employeesStore.activeUserId === 'NEW');
 
-const initState = computed(() => employeesStore.users.find((v) => v.id === employeesStore.activeUserId));
+const initState = computed(() => employeesStore.users
+  .find((v) => v.id === employeesStore.activeUserId));
 
 onBeforeMount(() => {
   setInitState();

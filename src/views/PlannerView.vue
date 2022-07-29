@@ -48,7 +48,8 @@ watch(route, (to) => {
 });
 
 setWindowTitle();
-filters.value = settingsStore.settings.roles.reduce((acc, i) => ({ ...acc, [i.toLowerCase()]: false }), {});
+filters.value = settingsStore.settings.roles
+  .reduce((acc, i) => ({ ...acc, [i.toLowerCase()]: false }), {});
 
 const clearSearchInput = () => {
   searchInput.value = '';
