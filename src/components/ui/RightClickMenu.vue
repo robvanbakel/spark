@@ -45,26 +45,28 @@ defineExpose({
       invisible
       @click="close(clickout)"
     />
-    <div
-      class="right-click-menu"
-      :style="{top, left}"
-    >
+    <Teleport to="body">
       <div
-        v-for="item in props.items"
-        :key="item"
-        class="right-click-menu-inner"
+        class="right-click-menu"
+        :style="{top, left}"
       >
         <div
-          class="item"
-          @click="clickHandler(item)"
+          v-for="item in props.items"
+          :key="item"
+          class="right-click-menu-inner"
         >
-          <span
-            v-if="item.icon"
-            class="material-icons material-icons-round"
-          >{{ item.icon }}</span>
-          {{ item.label }}
+          <div
+            class="item"
+            @click="clickHandler(item)"
+          >
+            <span
+              v-if="item.icon"
+              class="material-icons material-icons-round"
+            >{{ item.icon }}</span>
+            {{ item.label }}
+          </div>
         </div>
       </div>
-    </div>
+    </Teleport>
   </div>
 </template>
