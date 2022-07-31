@@ -53,7 +53,7 @@
     },
     "address": {
       "title": "Address",
-      "description": "This addres will be visible in the calendar feed for each employee.",
+      "description": "This address will be visible in the calendar feed for each employee.",
       "address": "Address"
     }
   }
