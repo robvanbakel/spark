@@ -56,8 +56,6 @@ const clearSearchInput = () => {
   searchInputField.value.focus();
 };
 
-const addNewShift = () => plannerStore(addNewShift);
-
 const setFilter = (status) => {
   filters.value[status] = !filters.value[status];
 };
@@ -113,7 +111,7 @@ const toggleSidebar = () => {
     <div class="actions">
       <base-button
         icon="add"
-        @click="addNewShift"
+        @click="plannerStore.addNewShift"
       >
         {{ $t('general.actions.add', { resource: 'Shift' }) }}
       </base-button>
