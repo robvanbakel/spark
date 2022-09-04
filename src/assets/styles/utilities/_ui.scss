@@ -622,3 +622,41 @@
     }
   }
 }
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  margin-bottom: 14px;
+  & > span {
+    background-color: colors.$main-light;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 13px;
+    color: #fff;
+    margin: 0 5px 5px 0;
+    padding: 3px 5px;
+    max-width: 100%;
+    user-select: none;
+    cursor: pointer;
+    &.selected,
+    &:hover {
+      background-color: darken(colors.$main-light, 7%);
+    }
+    &.add {
+      background-color: lighten(colors.$main-light, 4%);
+      position: relative;
+      padding-left: 22px;
+      span.material-icons {
+        position: absolute;
+        left: 5px;
+        top: 3px;
+        font-size: 15px;
+        font-weight: 700;
+      }
+      &:hover {
+        background-color: colors.$main-light;
+      }
+    }
+  }
+}

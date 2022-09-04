@@ -3,6 +3,8 @@ import {
   ref, computed, nextTick,
 } from 'vue';
 
+import FieldSuggestions from '@/components//ui/FieldSuggestions.vue';
+
 import util from '@/utils/util';
 import dayjs from '@/plugins/dayjs';
 
@@ -14,25 +16,12 @@ const plannerStore = usePlanner();
 
 const confirmDeleteShift = ref();
 const confirmReplaceShift = ref();
-const suggestionRightClickMenu = ref();
 const inputFrom = ref('');
 const inputTo = ref('');
 const shift = ref({});
 const changed = ref({});
 const error = ref({});
 const requiredFields = ref(['employee', 'location', 'date', 'from', 'to']);
-const selectedSuggestion = ref(null);
-
-const showNewSuggestion = computed(() => {
-  if (
-    shift.value.location && !settingsStore.settings.suggestions
-      .map((sug) => sug.toLowerCase())
-      .includes(shift.value.location.toLowerCase())
-  ) {
-    return true;
-  }
-  return false;
-});
 
 const employees = computed(() => employeesStore.employees.map((employee) => ({ id: employee.id, display: `${employee.firstName} ${employee.lastName}` })));
 
@@ -124,21 +113,6 @@ const shiftToTime = () => {
   }
 };
 
-const selectSuggestion = (suggestion) => {
-  shift.value.location = suggestion;
-  error.value.location = false;
-};
-
-const deleteSuggestion = (suggestion) => {
-  settingsStore.deleteSuggestion(suggestion);
-};
-
-const suggestionRightClickHandler = async (event, suggestion) => {
-  selectedSuggestion.value = suggestion;
-  await suggestionRightClickMenu.value.open(event, suggestion);
-  selectedSuggestion.value = null;
-};
-
 const validate = () => {
   error.value.employee = !shift.value.employeeId;
   error.value.location = !shift.value.location;
@@ -182,7 +156,6 @@ const deleteShift = async () => {
     closeEditShift();
   }
 };
-
 </script>
 
 <template>
@@ -225,22 +198,13 @@ const deleteShift = async () => {
               :class="{ error: error.location }"
               @input="clearError('location')"
             >
-            <div class="suggestions">
-              <span
-                v-for="suggestion in settingsStore.settings.suggestions"
-                :key="suggestion"
-                :class="{ selected: selectedSuggestion === suggestion }"
-                @click="selectSuggestion(suggestion)"
-                @click.right.prevent="suggestionRightClickHandler($event, suggestion)"
-              >{{ suggestion }}</span>
-              <span
-                v-if="showNewSuggestion"
-                class="add"
-                @click="settingsStore.addSuggestion(shift.location)"
-              >
-                <span class="material-icons material-icons-round">add</span>
-                {{ shift.location }}</span>
-            </div>
+            <FieldSuggestions
+              v-if="shift.location"
+              v-model="shift.location"
+              :suggestions="settingsStore.settings.suggestions"
+              :add-suggestion="settingsStore.addSuggestion"
+              :delete-suggestion="settingsStore.deleteSuggestion"
+            />
           </div>
         </div>
         <div class="form-control">
@@ -320,17 +284,6 @@ const deleteShift = async () => {
       </base-button>
     </template>
   </base-modal>
-
-  <RightClickMenu
-    ref="suggestionRightClickMenu"
-    :items="[
-      {
-        icon: 'delete',
-        label: 'Delete',
-        action: deleteSuggestion,
-      },
-    ]"
-  />
 
   <BaseConfirm
     ref="confirmReplaceShift"
