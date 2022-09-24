@@ -46,6 +46,7 @@ watch(() => route.hash, () => {
         <li v-else>
           <router-link :to="{hash: item.hash}">
             <span
+              v-if="item.icon"
               class="icon"
               :class="
                 isActive(item.hash)
