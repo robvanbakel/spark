@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useEmployees } from '@/store';
 import { useRoute } from 'vue-router';
 import SideMenu from '@/components/layout/SideMenu.vue';
@@ -51,7 +51,9 @@ const items = [
   },
 ];
 
-const activeRoute = ref({});
+const activeRoute = ref();
+
+const menuItems = computed(() => items.filter((item) => !item.hidden));
 
 </script>
 
@@ -59,7 +61,7 @@ const activeRoute = ref({});
   <div id="user-settings">
     <side-menu
       v-model="activeRoute"
-      :items="items"
+      :items="menuItems"
     >
       <div class="slot-header">
         <span class="name">{{ user.firstName }} {{ user.lastName }}</span>
