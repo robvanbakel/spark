@@ -99,7 +99,7 @@ filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false 
   </div>
   <main>
     <section id="employeelist">
-      <table cellspacing="0">
+      <table>
         <thead>
           <th class="badge" />
           <th class="name">
@@ -109,6 +109,7 @@ filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false 
           <th>{{ $t('general.labels.phone') }}</th>
           <th>{{ $t('general.labels.role') }}</th>
           <th>{{ $t('general.labels.notes') }}</th>
+          <th class="settings" />
         </thead>
         <tbody>
           <tr
@@ -131,6 +132,12 @@ filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false 
             <td>{{ employee.role }}</td>
             <td class="notes">
               {{ employee.notes }}
+            </td>
+            <td
+              class="settings"
+              @click.stop
+            >
+              <span class="material-symbols-outlined">settings</span>
             </td>
           </tr>
         </tbody>

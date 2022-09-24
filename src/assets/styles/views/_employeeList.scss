@@ -10,6 +10,7 @@ section#employeelist {
   table {
     text-align: left;
     margin-inline: -11px;
+    border-collapse: collapse;
     th,
     td {
       padding-inline: $table-padding * 2;
@@ -19,6 +20,9 @@ section#employeelist {
       }
       &.name {
         padding-left: $table-padding;
+      }
+      &.settings {
+        padding-inline: $table-padding;
       }
     }
     thead {
@@ -45,8 +49,6 @@ section#employeelist {
             font-size: 16px;
             font-weight: 500;
             color: colors.$main;
-            display: flex;
-            align-items: center;
           }
           &.notes {
             overflow: hidden;
@@ -54,9 +56,24 @@ section#employeelist {
             text-overflow: ellipsis;
             width: 100%;
           }
+          &.settings {
+            opacity: 0;
+            color: colors.$text-700;
+            &:hover {
+              color: colors.$main;
+            }
+            span {
+              font-size: 16px;
+              display: flex;
+              align-items: center;
+            }
+          }
         }
         &:hover {
           background-color: colors.$select;
+          td.settings {
+            opacity: 1;
+          }
         }
       }
     }
