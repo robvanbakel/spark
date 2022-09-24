@@ -99,37 +99,42 @@ filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false 
   </div>
   <main>
     <section id="employeelist">
-      <div class="header">
-        <div />
-        <div>{{ $t('general.labels.name') }}</div>
-        <div>{{ $t('general.labels.email') }}</div>
-        <div>{{ $t('general.labels.phone') }}</div>
-        <div>{{ $t('general.labels.role') }}</div>
-        <div>{{ $t('general.labels.notes') }}</div>
-      </div>
-
-      <div
-        v-for="employee in employees"
-        :key="employee.id"
-        class="row"
-        @click="employeesStore.activeUserId = employee.id"
-      >
-        <div>
-          <base-badge
-            :status="employee.status"
-            :label="false"
-          />
-        </div>
-        <div class="name">
-          {{ getFullName(employee) }}
-        </div>
-        <div>{{ employee.email }}</div>
-        <div>{{ employee.phone }}</div>
-        <div>{{ employee.role }}</div>
-        <div class="notes">
-          {{ employee.notes }}
-        </div>
-      </div>
+      <table cellspacing="0">
+        <thead>
+          <th class="badge" />
+          <th class="name">
+            {{ $t('general.labels.name') }}
+          </th>
+          <th>{{ $t('general.labels.email') }}</th>
+          <th>{{ $t('general.labels.phone') }}</th>
+          <th>{{ $t('general.labels.role') }}</th>
+          <th>{{ $t('general.labels.notes') }}</th>
+        </thead>
+        <tbody>
+          <tr
+            v-for="employee in employees"
+            :key="employee.id"
+            class="row"
+            @click="employeesStore.activeUserId = employee.id"
+          >
+            <td class="badge">
+              <base-badge
+                :status="employee.status"
+                :label="false"
+              />
+            </td>
+            <td class="name">
+              {{ getFullName(employee) }}
+            </td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.phone }}</td>
+            <td>{{ employee.role }}</td>
+            <td class="notes">
+              {{ employee.notes }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </section>
   </main>
 

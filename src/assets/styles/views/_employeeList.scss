@@ -1,37 +1,64 @@
-@use '../utilities/colors';
-@use '../utilities/mixins';
+@use "../utilities/colors";
+@use "../utilities/mixins";
+
+$table-padding: 14px;
 
 // EMPLOYEELIST
 section#employeelist {
-  padding-bottom: 8px;
-  .header {
-    @include mixins.employeeListGrid;
-    padding-bottom: 16px;
-    font-size: 16px;
-    font-weight: 700;
-    color: colors.$text-100;
-  }
-  .row {
-    @include mixins.employeeListGrid;
-    font-size: 14px;
-    font-weight: 400;
-    color: colors.$text-500;
-    margin: 0 -12px;
-    padding: 0 12px;
-    border-radius: 3px;
-    cursor: pointer;
-    .name {
-      font-size: 16px;
-      font-weight: 500;
-      color: colors.$main;
+  padding-block: 10px;
+  overflow-x: scroll;
+  table {
+    text-align: left;
+    margin-inline: -11px;
+    th,
+    td {
+      padding-inline: $table-padding * 2;
+      &.badge {
+        padding-left: $table-padding;
+        padding-right: 0;
+      }
+      &.name {
+        padding-left: $table-padding;
+      }
     }
-    .notes {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+    thead {
+      th {
+        padding-block: $table-padding * 2;
+        color: colors.$text-100;
+      }
     }
-    &:hover {
-      background-color: colors.$select;
+    tbody {
+      font-size: 14px;
+      color: colors.$text-500;
+      cursor: pointer;
+      tr {
+        td {
+          white-space: nowrap;
+          padding-block: $table-padding;
+          &:first-child {
+            border-radius: 3px 0 0 3px;
+          }
+          &:last-child {
+            border-radius: 0 3px 3px 0;
+          }
+          &.name {
+            font-size: 16px;
+            font-weight: 500;
+            color: colors.$main;
+            display: flex;
+            align-items: center;
+          }
+          &.notes {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 100%;
+          }
+        }
+        &:hover {
+          background-color: colors.$select;
+        }
+      }
     }
   }
 }
@@ -55,8 +82,8 @@ section#employeelist {
         font-weight: 500;
         color: colors.$text-100;
         font-size: 14px;
-        &[for='notes'],
-        &[for='location'] {
+        &[for="notes"],
+        &[for="location"] {
           align-self: flex-start;
           margin-top: 12px;
         }
