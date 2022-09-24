@@ -4,6 +4,7 @@ import PlannerView from '@/views/PlannerView.vue';
 import ScheduleView from '@/views/ScheduleView.vue';
 import AuthView from '@/views/AuthView.vue';
 import SettingsView from '@/views/SettingsView.vue';
+import UserSettings from '@/views/UserSettings.vue';
 
 export default [
   {
@@ -27,6 +28,15 @@ export default [
     meta: {
       admin: true,
       title: 'Staff',
+    },
+  },
+  {
+    path: '/staff/:id',
+    component: UserSettings,
+    name: 'UserSettings',
+    meta: {
+      admin: true,
+      title: 'Settings',
     },
   },
   {

@@ -1,0 +1,40 @@
+@use "../utilities/colors";
+@use "../utilities/mixins";
+
+$nav-spacing: 12px;
+
+nav.side {
+  .header {
+    padding-block: 36px;
+  }
+  ul {
+    color: colors.$main;
+    font-size: 14px;
+    list-style: none;
+    hr {
+      margin-block: $nav-spacing;
+      border: none;
+      border-top: 1px solid colors.$border;
+    }
+    li {
+      margin-inline: -$nav-spacing;
+      a {
+        padding-inline: $nav-spacing;
+        padding-block: $nav-spacing;
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        border-radius: 3px;
+        span.icon {
+          font-size: 20px;
+        }
+        span.active {
+          font-weight: 600;
+        }
+        &:hover {
+          background-color: colors.$select;
+        }
+      }
+    }
+  }
+}

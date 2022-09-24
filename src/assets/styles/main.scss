@@ -1,19 +1,21 @@
 // GENERAL
-@use 'reset';
-@use 'general';
+@use "reset";
+@use "general";
 
 // UTILITIES
-@use 'utilities/colors';
-@use 'utilities/mixins';
-@use 'utilities/ui';
+@use "utilities/colors";
+@use "utilities/mixins";
+@use "utilities/ui";
 
 // VIEWS
-@use 'views/auth';
-@use 'views/employeeList';
-@use 'views/planner';
-@use 'views/singleEmployeeCalendar';
-@use 'views/settings';
+@use "views/auth";
+@use "views/employeeList";
+@use "views/userSettings";
+@use "views/planner";
+@use "views/singleEmployeeCalendar";
+@use "views/settings";
 
 // SECTIONS
-@use 'sections/actionbar';
-@use 'sections/header';
+@use "sections/actionbar";
+@use "sections/header";
+@use "sections/sideMenu";

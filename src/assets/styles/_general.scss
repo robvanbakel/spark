@@ -3,7 +3,7 @@
 
 // GOOGLE FONTS
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Material+Icons");
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,600,0,0");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0");
 
 body {
   font-family: "Roboto", sans-serif;
@@ -20,7 +20,6 @@ body {
 .container {
   margin: 0 auto;
   min-width: 880px;
-  overflow: hidden;
 }
 
 .overlay {
@@ -62,7 +61,7 @@ aside {
   width: 264px;
   margin-left: 40px;
   &,
-  & > * {
+  s & > * {
     transition: all 260ms ease-in;
   }
   &.hidden {

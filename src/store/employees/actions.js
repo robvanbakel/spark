@@ -47,4 +47,7 @@ export default {
 
     throw await res.json();
   },
+  getUser(userId) {
+    return this.users.find((user) => user.id === userId);
+  },
 };

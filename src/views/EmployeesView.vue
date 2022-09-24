@@ -5,8 +5,12 @@ import EditEmployee from '@/components/layout/EditEmployee.vue';
 
 import { useSettings, useEmployees } from '@/store';
 
+import { useRouter } from 'vue-router';
+
 const settingsStore = useSettings();
 const employeesStore = useEmployees();
+
+const router = useRouter();
 
 const searchInputField = ref();
 const searchInput = ref('');
@@ -47,6 +51,10 @@ const clearFilters = () => {
 const clearSearchInput = () => {
   searchInput.value = '';
   searchInputField.value.focus();
+};
+
+const toUserSettings = (employeeId) => {
+  router.push({ name: 'UserSettings', params: { id: employeeId } });
 };
 
 filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false }), {});
@@ -135,7 +143,7 @@ filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false 
             </td>
             <td
               class="settings"
-              @click.stop
+              @click.stop="toUserSettings(employee.id)"
             >
               <span class="material-symbols-outlined">settings</span>
             </td>
