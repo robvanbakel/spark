@@ -1,4 +1,4 @@
-<script setup lang=ts>
+<script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 
 import { useDate, usePlanner } from "@/store";

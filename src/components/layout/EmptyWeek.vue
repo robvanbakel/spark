@@ -1,4 +1,4 @@
-<script setup lang=ts>
+<script setup lang="ts">
 import { ref, computed, watch } from "vue";
 
 import CopyWeek from "@/components/ui/CopyWeek.vue";

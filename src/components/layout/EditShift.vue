@@ -1,4 +1,4 @@
-<script setup lang=ts>
+<script setup lang="ts">
 import { ref, computed, nextTick } from "vue";
 
 import FieldSuggestions from "@/components//ui/FieldSuggestions.vue";

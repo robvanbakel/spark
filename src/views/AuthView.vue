@@ -1,4 +1,4 @@
-<script setup lang=ts>
+<script setup lang="ts">
 import ActivateAccount from "@/components/layout/ActivateAccount.vue";
 import SignIn from "@/components/layout/SignIn.vue";
 </script>
