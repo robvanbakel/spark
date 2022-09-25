@@ -1,12 +1,40 @@
 import { defineStore } from "pinia";
 
-import actions from "./actions";
-import getters from "./getters";
+import type { Employee, User } from "@/types/employees";
+
+import auth from "@/firebase";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { useSettings } from "@/store";
+
+interface State {
+  user: null | User | Employee;
+}
 
 export default defineStore("auth", {
-  state: () => ({
+  state: (): State => ({
     user: null,
   }),
-  actions,
-  getters,
+  actions: {
+    async login(payload: { email: string; password: string }) {
+      try {
+        const res = await signInWithEmailAndPassword(
+          auth,
+          payload.email,
+          payload.password
+        );
+        return res;
+      } catch (err) {
+        return err;
+      }
+    },
+    logout() {
+      useSettings().isLoaded = false;
+      signOut(auth);
+    },
+  },
+  getters: {
+    isAdmin(): boolean {
+      return !!this.user?.admin;
+    },
+  },
 });
