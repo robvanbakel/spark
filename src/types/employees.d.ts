@@ -1,14 +1,19 @@
-export interface User {
+interface User {
   id: string;
   lastName: string;
   firstName: string;
-  admin: boolean;
   status: string;
+  admin: boolean;
   demo: boolean;
   email: string;
 }
 
+export interface Admin extends User {
+  admin: true;
+}
+
 export interface Employee extends User {
+  admin: false;
   feedToken: string;
   contractType: "fulltime" | "parttime";
   createdAt: number;
