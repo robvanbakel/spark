@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import { watch, computed } from "vue";
+import { watch, computed, useSlots } from "vue";
 import { useRoute, useRouter } from "vue-router";
-
-interface MenuItem {
-  title: string;
-  icon?: string;
-  hash: string;
-}
+import type { MenuItem } from "@/types/global";
 
 interface Props {
   items: MenuItem[][];
@@ -14,6 +9,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+const slots = useSlots();
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -25,6 +21,12 @@ const isActive = (itemHash: string) => route.hash === itemHash;
 const activeItem = computed(() =>
   props.items.flat().find((item) => item.hash === route.hash)
 );
+
+const menuItems = computed(() => {
+  return props.items.map((group) => {
+    return group.filter((item) => !item.hidden);
+  });
+});
 
 if (!route.hash) {
   router.replace({ hash: props.items[0][0].hash });
@@ -41,10 +43,10 @@ watch(
 
 <template>
   <nav class="side">
-    <div class="header">
-      <slot />
+    <div v-if="slots.header" class="header">
+      <slot name="header" />
     </div>
-    <ul v-for="(group, groupIndex) in items" :key="groupIndex">
+    <ul v-for="(group, groupIndex) in menuItems" :key="groupIndex">
       <li v-for="(item, itemIndex) in group" :key="itemIndex">
         <router-link :to="{ hash: item.hash }">
           <span
