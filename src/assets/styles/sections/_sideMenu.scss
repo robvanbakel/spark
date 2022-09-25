@@ -11,7 +11,9 @@ nav.side {
     color: colors.$main;
     font-size: 14px;
     list-style: none;
-    hr {
+    &:not(:last-child)::after {
+      content: "";
+      display: block;
       margin-block: $nav-spacing;
       border: none;
       border-top: 1px solid colors.$border;
