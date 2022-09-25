@@ -1,10 +1,10 @@
-<script setup>
-import { ref, computed, onBeforeMount } from 'vue';
+<script setup lang=ts>
+import { ref, computed, onBeforeMount } from "vue";
 
-import util from '@/utils/util';
-import StatusPicker from '@/components/ui/StatusPicker.vue';
+import util from "@/utils/util";
+import StatusPicker from "@/components/ui/StatusPicker.vue";
 
-import { useSettings, useEmployees } from '@/store';
+import { useSettings, useEmployees } from "@/store";
 
 const settingsStore = useSettings();
 const employeesStore = useEmployees();
@@ -15,13 +15,15 @@ const confirmDeleteEmployee = ref();
 const employee = ref({});
 const error = ref({});
 
-const roles = computed(() => settingsStore.settings.roles
-  .map((role) => ({ id: role, display: role })));
+const roles = computed(() =>
+  settingsStore.settings.roles.map((role) => ({ id: role, display: role }))
+);
 
-const newUser = computed(() => employeesStore.activeUserId === 'NEW');
+const newUser = computed(() => employeesStore.activeUserId === "NEW");
 
-const initState = computed(() => employeesStore.users
-  .find((v) => v.id === employeesStore.activeUserId));
+const initState = computed(() =>
+  employeesStore.users.find((v) => v.id === employeesStore.activeUserId)
+);
 
 onBeforeMount(() => {
   setInitState();
@@ -36,7 +38,7 @@ const setInitState = () => {
 };
 
 const setRole = (value) => {
-  clearError('role');
+  clearError("role");
   employee.value.role = value;
 };
 
@@ -46,7 +48,7 @@ const closeEditEmployee = () => {
 
 const deleteEmployee = async () => {
   if (await confirmDeleteEmployee.value.open()) {
-    employee.value.status = 'ARCHIVED';
+    employee.value.status = "ARCHIVED";
     saveEditUser();
   }
 };
@@ -57,7 +59,7 @@ const validate = () => {
     error.value.lastName = !employee.value.lastName;
   }
 
-  employee.value.contract = parseFloat(employee.value.contract.toString().replace(',', '.'));
+  employee.value.contract = parseFloat(employee.value.contract.toString().replace(",", "."));
 
   error.value.role = !employee.value.role;
   error.value.contract = !employee.value.contract;
@@ -71,7 +73,7 @@ const validate = () => {
 
 const saveEditUser = async () => {
   if (newUser.value) {
-    employee.value.status = 'NEW';
+    employee.value.status = "NEW";
     employee.value.id = util.randomId(28);
   }
 
@@ -79,7 +81,7 @@ const saveEditUser = async () => {
     await employeesStore.saveEditUser(employee.value);
     closeEditEmployee();
   } catch (err) {
-    if (err.code === 'auth/email-already-exists') {
+    if (err.code === "auth/email-already-exists") {
       error.value.email = true;
       emailAlreadyExists.value.open();
       return;
@@ -95,18 +97,12 @@ const clearError = (field) => {
 </script>
 
 <template>
-  <base-modal
-    class="edit-employee"
-    global-close
-    @close="closeEditEmployee"
-  >
+  <base-modal class="edit-employee" global-close @close="closeEditEmployee">
     <template #header>
       <h1 v-if="newUser">
-        {{ $t('general.actions.add', { resource: 'Employee' }) }}
+        {{ $t("general.actions.add", { resource: "Employee" }) }}
       </h1>
-      <h1 v-else>
-        {{ employee.firstName }} {{ employee.lastName }}
-      </h1>
+      <h1 v-else>{{ employee.firstName }} {{ employee.lastName }}</h1>
       <StatusPicker
         v-if="!newUser && employee.status"
         :active-status="employee.status"
@@ -116,7 +112,7 @@ const clearError = (field) => {
     <template #main>
       <div v-if="newUser">
         <div class="form-control">
-          <label for="firstName">{{ $t('general.labels.firstName') }}</label>
+          <label for="firstName">{{ $t("general.labels.firstName") }}</label>
           <input
             id="firstName"
             v-model.trim="employee.firstName"
@@ -124,10 +120,10 @@ const clearError = (field) => {
             type="text"
             :class="{ error: error.firstName }"
             @input="clearError('firstName')"
-          >
+          />
         </div>
         <div class="form-control">
-          <label for="lastName">{{ $t('general.labels.lastName') }}</label>
+          <label for="lastName">{{ $t("general.labels.lastName") }}</label>
           <input
             id="lastName"
             v-model.trim="employee.lastName"
@@ -135,11 +131,11 @@ const clearError = (field) => {
             type="text"
             :class="{ error: error.lastName }"
             @input="clearError('lastName')"
-          >
+          />
         </div>
       </div>
       <div class="form-control">
-        <label for="role">{{ $t('general.labels.role') }}</label>
+        <label for="role">{{ $t("general.labels.role") }}</label>
         <base-dropdown
           v-if="employee.role || newUser"
           id="role"
@@ -150,7 +146,7 @@ const clearError = (field) => {
         />
       </div>
       <div class="form-control">
-        <label for="contract">{{ $t('general.labels.contract') }}</label>
+        <label for="contract">{{ $t("general.labels.contract") }}</label>
         <div class="form-control-contract">
           <div>
             <input
@@ -160,17 +156,14 @@ const clearError = (field) => {
               type="text"
               :class="{ error: error.contract }"
               @input="clearError('contract')"
-            >
-            <span class="input-label">{{ $t('staff.hours') }}</span>
+            />
+            <span class="input-label">{{ $t("staff.hours") }}</span>
           </div>
-          <BaseSwitch
-            v-model="employee.contractType"
-            :items="['fulltime', 'parttime']"
-          />
+          <BaseSwitch v-model="employee.contractType" :items="['fulltime', 'parttime']" />
         </div>
       </div>
       <div class="form-control">
-        <label for="email">{{ $t('general.labels.email') }}</label>
+        <label for="email">{{ $t("general.labels.email") }}</label>
         <input
           id="email"
           v-model.trim="employee.email"
@@ -178,23 +171,15 @@ const clearError = (field) => {
           type="text"
           :class="{ error: error.email }"
           @input="clearError('email')"
-        >
+        />
       </div>
       <div class="form-control">
-        <label for="phone">{{ $t('general.labels.phone') }}</label>
-        <input
-          id="phone"
-          v-model.trim="employee.phone"
-          autocomplete="off"
-          type="text"
-        >
+        <label for="phone">{{ $t("general.labels.phone") }}</label>
+        <input id="phone" v-model.trim="employee.phone" autocomplete="off" type="text" />
       </div>
       <div class="form-control notes">
-        <label for="notes">{{ $t('general.labels.notes') }}</label>
-        <textarea
-          id="notes"
-          v-model="employee.notes"
-        />
+        <label for="notes">{{ $t("general.labels.notes") }}</label>
+        <textarea id="notes" v-model="employee.notes" />
       </div>
     </template>
     <template #actions>
@@ -207,14 +192,11 @@ const clearError = (field) => {
         tabindex="-1"
         @click="deleteEmployee"
       />
-      <base-button
-        secondary
-        @click="closeEditEmployee"
-      >
-        {{ $t('general.actions.cancel') }}
+      <base-button secondary @click="closeEditEmployee">
+        {{ $t("general.actions.cancel") }}
       </base-button>
       <base-button @click="validate">
-        {{ $t('general.actions.save') }}
+        {{ $t("general.actions.save") }}
       </base-button>
     </template>
   </base-modal>
@@ -222,7 +204,7 @@ const clearError = (field) => {
   <BaseConfirm
     ref="confirmDeleteEmployee"
     message="Deleting an employee cannot be undone."
-    :choice-true="$t('general.actions.delete', {resource: 'employee'})"
+    :choice-true="$t('general.actions.delete', { resource: 'employee' })"
   />
 
   <BaseConfirm

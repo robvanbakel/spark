@@ -1,9 +1,9 @@
-import api from '@/utils/api';
-import format from '@/utils/format';
+import api from "@/utils/api";
+import format from "@/utils/format";
 
 export default {
   async getSettings() {
-    this.settings = await api.get('db/settings');
+    this.settings = await api.get("db/settings");
   },
   saveSettings(payload) {
     api.patch(`db/admin/${payload.id}`, format.settings.req(payload));
@@ -12,10 +12,7 @@ export default {
   addSuggestion(suggestion) {
     this.saveSettings({
       ...this.settings,
-      suggestions: [
-        ...this.settings.suggestions,
-        suggestion,
-      ],
+      suggestions: [...this.settings.suggestions, suggestion],
     });
   },
   deleteSuggestion(suggestion) {

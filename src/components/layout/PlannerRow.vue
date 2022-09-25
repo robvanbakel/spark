@@ -1,9 +1,9 @@
-<script setup>
-import { computed } from 'vue';
+<script setup lang=ts>
+import { computed } from "vue";
 
-import ShiftBlock from '@/components/layout/ShiftBlock.vue';
+import ShiftBlock from "@/components/layout/ShiftBlock.vue";
 
-import { useDate, useEmployees, usePlanner } from '@/store';
+import { useDate, useEmployees, usePlanner } from "@/store";
 
 const dateStore = useDate();
 const employeesStore = useEmployees();
@@ -37,17 +37,12 @@ const handleClick = (index) => {
 
 <template>
   <div v-if="employee">
-    <div
-      v-if="hasSchedulesInView"
-      class="row"
-      :class="employee.role?.toLowerCase()"
-    >
+    <div v-if="hasSchedulesInView" class="row" :class="employee.role?.toLowerCase()">
       <div class="employee">
         <span class="name">{{ employee.firstName }} {{ employee.lastName }}</span>
         <span class="hours">
-          <span class="calculated">
-            {{ employeesStore.totalHours[employee.id]?.toFixed(2) }}</span> /
-          {{ employee.contract }} hours
+          <span class="calculated"> {{ employeesStore.totalHours[employee.id]?.toFixed(2) }}</span>
+          / {{ employee.contract }} hours
         </span>
       </div>
       <ShiftBlock

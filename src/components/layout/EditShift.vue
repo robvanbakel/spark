@@ -1,14 +1,12 @@
-<script setup>
-import {
-  ref, computed, nextTick,
-} from 'vue';
+<script setup lang=ts>
+import { ref, computed, nextTick } from "vue";
 
-import FieldSuggestions from '@/components//ui/FieldSuggestions.vue';
+import FieldSuggestions from "@/components//ui/FieldSuggestions.vue";
 
-import util from '@/utils/util';
-import dayjs from '@/plugins/dayjs';
+import util from "@/utils/util";
+import dayjs from "@/plugins/dayjs";
 
-import { useSettings, useEmployees, usePlanner } from '@/store';
+import { useSettings, useEmployees, usePlanner } from "@/store";
 
 const settingsStore = useSettings();
 const employeesStore = useEmployees();
@@ -16,23 +14,31 @@ const plannerStore = usePlanner();
 
 const confirmDeleteShift = ref();
 const confirmReplaceShift = ref();
-const inputFrom = ref('');
-const inputTo = ref('');
+const inputFrom = ref("");
+const inputTo = ref("");
 const shift = ref({});
 const changed = ref({});
 const error = ref({});
-const requiredFields = ref(['employee', 'location', 'date', 'from', 'to']);
+const requiredFields = ref(["employee", "location", "date", "from", "to"]);
 
-const employees = computed(() => employeesStore.employees.map((employee) => ({ id: employee.id, display: `${employee.firstName} ${employee.lastName}` })));
+const employees = computed(() =>
+  employeesStore.employees.map((employee) => ({
+    id: employee.id,
+    display: `${employee.firstName} ${employee.lastName}`,
+  }))
+);
 
-const newShift = computed(() => plannerStore.activeShiftId === 'NEW');
+const newShift = computed(() => plannerStore.activeShiftId === "NEW");
 
-const initState = computed(() => plannerStore.shifts
-  .find((v) => v.id === plannerStore.activeShiftId) || plannerStore.newShiftPrefillData);
+const initState = computed(
+  () =>
+    plannerStore.shifts.find((v) => v.id === plannerStore.activeShiftId) ||
+    plannerStore.newShiftPrefillData
+);
 
-const newRequestNeeded = computed(() => changed.value.employee
-|| changed.value.from
-|| changed.value.to);
+const newRequestNeeded = computed(
+  () => changed.value.employee || changed.value.from || changed.value.to
+);
 
 const dropdownHandler = (selectedId) => {
   error.value.employee = false;
@@ -57,12 +63,12 @@ const resetForm = async () => {
 resetForm();
 
 const setInitState = () => {
-  shift.value = { break: '0', ...initState.value };
+  shift.value = { break: "0", ...initState.value };
 
   if (newShift.value) return;
 
-  inputFrom.value = shift.value.from.format('HH:mm');
-  inputTo.value = shift.value.to.format('HH:mm');
+  inputFrom.value = shift.value.from.format("HH:mm");
+  inputTo.value = shift.value.to.format("HH:mm");
 };
 
 const formatDateTime = (value, field, model) => {
@@ -80,13 +86,13 @@ const formatDateTime = (value, field, model) => {
     }
   }
 
-  const formattedTime = dayjs(shift.value[field]).format('HH:mm');
+  const formattedTime = dayjs(shift.value[field]).format("HH:mm");
 
   switch (model) {
-    case 'inputFrom':
+    case "inputFrom":
       inputFrom.value = formattedTime;
       break;
-    case 'inputTo':
+    case "inputTo":
       inputTo.value = formattedTime;
       break;
     default:
@@ -97,19 +103,17 @@ const formatDateTime = (value, field, model) => {
 
   if (newShift.value) return;
 
-  changed.value.from = !initState.value.from.isSame(shift.value.from, 'minute');
-  changed.value.to = !initState.value.to.isSame(shift.value.to, 'minute');
+  changed.value.from = !initState.value.from.isSame(shift.value.from, "minute");
+  changed.value.to = !initState.value.to.isSame(shift.value.to, "minute");
 };
 
 const shiftToTime = () => {
   if (!shift.value.from || !shift.value.to) return;
 
-  shift.value.to = shift.value.from
-    .hour(shift.value.to.hour())
-    .minute(shift.value.to.minute());
+  shift.value.to = shift.value.from.hour(shift.value.to.hour()).minute(shift.value.to.minute());
 
-  if (shift.value.to.isBefore(shift.value.from) || inputTo.value === '00:00') {
-    shift.value.to = shift.value.to.add(1, 'day');
+  if (shift.value.to.isBefore(shift.value.from) || inputTo.value === "00:00") {
+    shift.value.to = shift.value.to.add(1, "day");
   }
 };
 
@@ -126,13 +130,18 @@ const validate = () => {
 
 const saveEditShift = async () => {
   if (newShift.value) {
-    shift.value.status = 'NEW';
+    shift.value.status = "NEW";
     shift.value.id = util.randomId(20);
     shift.value.statusUpdated = new Date().toISOString();
   }
 
   // If employee already has a shift on that day, confirm that the shift should be replaced
-  const collision = plannerStore.shifts.find((v) => v.id !== shift.value.id && v.employeeId === shift.value.employeeId && v.from.isSame(shift.value.from, 'date'));
+  const collision = plannerStore.shifts.find(
+    (v) =>
+      v.id !== shift.value.id &&
+      v.employeeId === shift.value.employeeId &&
+      v.from.isSame(shift.value.from, "date")
+  );
   if (collision) {
     if (!(await confirmReplaceShift.value.open())) return;
     plannerStore.deleteShiftLocally(collision.id);
@@ -141,7 +150,7 @@ const saveEditShift = async () => {
   // Save shift and exit modal
   plannerStore.saveEditShift({
     ...shift.value,
-    status: newRequestNeeded.value ? 'PROPOSED' : shift.value.status,
+    status: newRequestNeeded.value ? "PROPOSED" : shift.value.status,
   });
   closeEditShift();
 };
@@ -175,7 +184,7 @@ const deleteShift = async () => {
     <template #main>
       <div>
         <div class="form-control">
-          <label for="name">{{ $t('general.labels.name') }}</label>
+          <label for="name">{{ $t("general.labels.name") }}</label>
           <base-dropdown
             v-if="shift.employeeId || (newShift && !initState?.employeeId)"
             id="name"
@@ -188,7 +197,7 @@ const deleteShift = async () => {
           />
         </div>
         <div class="form-control">
-          <label for="location">{{ $t('general.labels.location') }}</label>
+          <label for="location">{{ $t("general.labels.location") }}</label>
           <div>
             <input
               id="location"
@@ -197,7 +206,7 @@ const deleteShift = async () => {
               type="text"
               :class="{ error: error.location }"
               @input="clearError('location')"
-            >
+            />
             <FieldSuggestions
               v-if="shift.location"
               v-model="shift.location"
@@ -208,7 +217,7 @@ const deleteShift = async () => {
           </div>
         </div>
         <div class="form-control">
-          <label for="date">{{ $t('general.labels.date') }}</label>
+          <label for="date">{{ $t("general.labels.date") }}</label>
           <div class="form-control-date">
             <BaseDatePicker
               v-model="shift.from"
@@ -216,7 +225,7 @@ const deleteShift = async () => {
               @update:model-value="shiftToTime"
             />
             <div class="form-control-time">
-              <span class="input-label-main">{{ $t('general.labels.time') }}</span>
+              <span class="input-label-main">{{ $t("general.labels.time") }}</span>
               <input
                 v-model.lazy.trim="inputFrom"
                 autocomplete="off"
@@ -224,7 +233,7 @@ const deleteShift = async () => {
                 :class="['time', { error: error.from }]"
                 @change="formatDateTime(inputFrom, 'from', 'inputFrom')"
                 @input="clearError('from')"
-              >
+              />
               <span class="input-label">-</span>
               <input
                 v-model.lazy.trim="inputTo"
@@ -233,25 +242,17 @@ const deleteShift = async () => {
                 :class="['time', { error: error.to }]"
                 @change="formatDateTime(inputTo, 'to', 'inputTo')"
                 @input="clearError('to')"
-              >
+              />
             </div>
           </div>
         </div>
         <div class="form-control">
-          <label>{{ $t('general.labels.break') }}</label>
-          <BaseSwitch
-            v-model="shift.break"
-            :items="settingsStore.breaks"
-            fixed
-            tabindex="0"
-          />
+          <label>{{ $t("general.labels.break") }}</label>
+          <BaseSwitch v-model="shift.break" :items="settingsStore.breaks" fixed tabindex="0" />
         </div>
         <div class="form-control notes">
-          <label for="notes">{{ $t('general.labels.notes') }}</label>
-          <textarea
-            id="notes"
-            v-model="shift.notes"
-          />
+          <label for="notes">{{ $t("general.labels.notes") }}</label>
+          <textarea id="notes" v-model="shift.notes" />
         </div>
       </div>
     </template>
@@ -265,22 +266,14 @@ const deleteShift = async () => {
         tabindex="-1"
         @click="deleteShift"
       />
-      <base-button
-        v-if="newRequestNeeded && !newShift"
-        secondary
-        @click="resetForm"
-      >
+      <base-button v-if="newRequestNeeded && !newShift" secondary @click="resetForm">
         Reset
       </base-button>
-      <base-button
-        v-else
-        secondary
-        @click="closeEditShift"
-      >
-        {{ $t('general.actions.cancel') }}
+      <base-button v-else secondary @click="closeEditShift">
+        {{ $t("general.actions.cancel") }}
       </base-button>
       <base-button @click="validate">
-        {{ newShift || newRequestNeeded ? 'Send request' : $t('general.actions.save') }}
+        {{ newShift || newRequestNeeded ? "Send request" : $t("general.actions.save") }}
       </base-button>
     </template>
   </base-modal>
@@ -290,12 +283,12 @@ const deleteShift = async () => {
     title="Shift already exists"
     message="This employee already has a shift on that day. Do you want to replace it?"
     choice-false="Go back"
-    :choice-true="$t('general.actions.replace', {resource: 'shift'})"
+    :choice-true="$t('general.actions.replace', { resource: 'shift' })"
   />
 
   <BaseConfirm
     ref="confirmDeleteShift"
     message="Deleting this shift cannot be undone."
-    :choice-true="$t('general.actions.delete', {resource: 'shift'})"
+    :choice-true="$t('general.actions.delete', { resource: 'shift' })"
   />
 </template>

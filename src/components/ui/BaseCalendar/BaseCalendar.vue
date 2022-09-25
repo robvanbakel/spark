@@ -1,15 +1,15 @@
-<script setup>
-import { ref, computed } from 'vue';
+<script setup lang=ts>
+import { ref, computed } from "vue";
 
-import dayjs from '@/plugins/dayjs';
+import dayjs from "@/plugins/dayjs";
 
-import DayPicker from '@/components/ui/BaseCalendar/DayPicker.vue';
-import MonthPicker from '@/components/ui/BaseCalendar/MonthPicker.vue';
+import DayPicker from "@/components/ui/BaseCalendar/DayPicker.vue";
+import MonthPicker from "@/components/ui/BaseCalendar/MonthPicker.vue";
 
 const props = defineProps({
   mode: {
     type: String,
-    default: 'picker',
+    default: "picker",
   },
   modelValue: {
     type: [Object, null],
@@ -17,18 +17,18 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(["update:modelValue"]);
 
-const mode = ref('DAY');
+const mode = ref("DAY");
 
-const currentView = ref((props.modelValue || dayjs()).startOf('month'));
+const currentView = ref((props.modelValue || dayjs()).startOf("month"));
 
 const date = computed({
   get() {
     return props.modelValue;
   },
   set(val) {
-    emit('update:modelValue', val);
+    emit("update:modelValue", val);
   },
 });
 

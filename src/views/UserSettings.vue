@@ -1,8 +1,8 @@
-<script setup>
-import { ref, computed } from 'vue';
-import { useEmployees } from '@/store';
-import { useRoute } from 'vue-router';
-import SideMenu from '@/components/layout/SideMenu.vue';
+<script setup lang=ts>
+import { ref, computed } from "vue";
+import { useEmployees } from "@/store";
+import { useRoute } from "vue-router";
+import SideMenu from "@/components/layout/SideMenu.vue";
 
 const employeesStore = useEmployees();
 
@@ -12,57 +12,53 @@ const user = employeesStore.getUser(route.params.id);
 
 const items = [
   {
-    title: 'Personal',
-    icon: 'person',
-    hash: '#personal',
+    title: "Personal",
+    icon: "person",
+    hash: "#personal",
   },
   {
-    title: 'Financial',
-    icon: 'account_balance',
-    hash: '#financial',
+    title: "Financial",
+    icon: "account_balance",
+    hash: "#financial",
   },
   {
-    title: 'Documents',
-    icon: 'description',
-    hash: '#documents',
+    title: "Documents",
+    icon: "description",
+    hash: "#documents",
   },
   {
-    title: 'Reports',
-    icon: 'insights',
-    hash: '#reports',
+    title: "Reports",
+    icon: "insights",
+    hash: "#reports",
   },
   {
     divider: true,
   },
   {
-    title: 'Availability',
-    icon: 'calendar_month',
-    hash: '#availability',
+    title: "Availability",
+    icon: "calendar_month",
+    hash: "#availability",
   },
   {
-    title: 'Notifications',
-    icon: 'notifications',
-    hash: '#notifications',
+    title: "Notifications",
+    icon: "notifications",
+    hash: "#notifications",
   },
   {
-    title: 'Settings',
-    icon: 'settings',
-    hash: '#settings',
+    title: "Settings",
+    icon: "settings",
+    hash: "#settings",
   },
 ];
 
 const activeRoute = ref();
 
 const menuItems = computed(() => items.filter((item) => !item.hidden));
-
 </script>
 
 <template>
   <div id="user-settings">
-    <side-menu
-      v-model="activeRoute"
-      :items="menuItems"
-    >
+    <side-menu v-model="activeRoute" :items="menuItems">
       <div class="slot-header">
         <span class="name">{{ user.firstName }} {{ user.lastName }}</span>
         <span class="email">{{ user.email }}</span>

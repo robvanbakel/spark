@@ -1,11 +1,11 @@
-<script setup>
-import { ref, computed, watch } from 'vue';
+<script setup lang=ts>
+import { ref, computed, watch } from "vue";
 
-import dayjs from '@/plugins/dayjs';
+import dayjs from "@/plugins/dayjs";
 
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 
-import { useDate } from '@/store';
+import { useDate } from "@/store";
 
 const dateStore = useDate();
 
@@ -14,10 +14,9 @@ const router = useRouter();
 const selectedMonth = ref(new Date().getMonth());
 const selectedYear = ref(new Date().getFullYear());
 
-const calendarHeader = computed(() => dayjs()
-  .year(selectedYear.value)
-  .month(selectedMonth.value)
-  .format('MMMM YYYY'));
+const calendarHeader = computed(() =>
+  dayjs().year(selectedYear.value).month(selectedMonth.value).format("MMMM YYYY")
+);
 
 const calendarPoint = computed(() => dateStore.dates[3]);
 
@@ -76,11 +75,11 @@ const prev = () => {
 const calendarPointClass = (num) => {
   const calendarFullDate = new Date(selectedYear.value, selectedMonth.value, num).toDateString();
 
-  let dateClass = '';
+  let dateClass = "";
 
   dateStore.dates.forEach((date) => {
     if (calendarFullDate === date.toDate().toDateString()) {
-      dateClass = 'selected';
+      dateClass = "selected";
     }
   });
 
@@ -91,7 +90,7 @@ const currentDateClass = (num) => {
   const calendarFullDate = new Date(selectedYear.value, selectedMonth.value, num).toDateString();
   const currentFullDate = new Date().toDateString();
 
-  return calendarFullDate === currentFullDate ? 'current-date' : '';
+  return calendarFullDate === currentFullDate ? "current-date" : "";
 };
 
 const today = () => {
@@ -109,31 +108,17 @@ const setWeek = async (selectedDay) => {
 <template>
   <div class="plannerCalendar">
     <div id="header">
-      <span
-        class="material-icons material-icons-round"
-        @click="prev"
-      >chevron_left</span>
+      <span class="material-icons material-icons-round" @click="prev">chevron_left</span>
       <h2 @click="today">
         {{ calendarHeader }}
       </h2>
-      <span
-        class="material-icons material-icons-round"
-        @click="next"
-      >chevron_right</span>
+      <span class="material-icons material-icons-round" @click="next">chevron_right</span>
     </div>
     <div id="days">
-      <span
-        v-for="day in 7"
-        :key="day"
-      >{{ dayjs.weekdaysShort()[day % 7 ] }}</span>
+      <span v-for="day in 7" :key="day">{{ dayjs.weekdaysShort()[day % 7] }}</span>
     </div>
     <div class="dates">
-      <p
-        v-for="num in visibleInPrevMonth()"
-        :key="num"
-        class="prev-month"
-        @click="prev()"
-      >
+      <p v-for="num in visibleInPrevMonth()" :key="num" class="prev-month" @click="prev()">
         {{ num }}
       </p>
       <p
@@ -144,12 +129,7 @@ const setWeek = async (selectedDay) => {
       >
         {{ num }}
       </p>
-      <p
-        v-for="num in visibleInNextMonth()"
-        :key="num"
-        class="next-month"
-        @click="next()"
-      >
+      <p v-for="num in visibleInNextMonth()" :key="num" class="next-month" @click="next()">
         {{ num }}
       </p>
     </div>

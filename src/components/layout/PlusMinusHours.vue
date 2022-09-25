@@ -1,7 +1,7 @@
-<script setup>
-import { ref } from 'vue';
+<script setup lang=ts>
+import { ref } from "vue";
 
-import { useEmployees } from '@/store';
+import { useEmployees } from "@/store";
 
 const employeesStore = useEmployees();
 
@@ -12,15 +12,16 @@ defineProps({
   },
   search: {
     type: String,
-    default: '',
+    default: "",
   },
 });
 
 const showAll = ref(true);
 
 const calculatePlusMinusHours = (employeeId) => {
-  const contractHours = employeesStore.employees
-    .find((employee) => employee.id === employeeId).contract;
+  const contractHours = employeesStore.employees.find(
+    (employee) => employee.id === employeeId
+  ).contract;
   const calculatedHours = employeesStore.totalHours[employeeId];
 
   const plusMinusHours = calculatedHours - contractHours;
@@ -44,30 +45,23 @@ const computedShowAll = (employeeId) => {
 
 <template>
   <div class="plus-minus-hours-wrapper">
-    <div
-      v-for="role in roles"
-      :key="role"
-      class="plus-minus-hours-role-wrapper"
-    >
-      <div
-        v-for="employee in employeesStore.employees"
-        :key="employee.id"
-      >
+    <div v-for="role in roles" :key="role" class="plus-minus-hours-role-wrapper">
+      <div v-for="employee in employeesStore.employees" :key="employee.id">
         <div
           v-if="
             employee.role.toLowerCase() === role &&
-              calculatePlusMinusHours(employee.id) &&
-              computedShowAll(employee.id) &&
-              employeeFullName(employee)
-                .toLowerCase()
-                .includes(search.toLowerCase())
+            calculatePlusMinusHours(employee.id) &&
+            computedShowAll(employee.id) &&
+            employeeFullName(employee).toLowerCase().includes(search.toLowerCase())
           "
           class="entry"
         >
           <div class="hours">
             <span :class="calculatePlusMinusHours(employee.id) < 0 ? 'minus' : 'plus'">
-              {{ ((calculatePlusMinusHours(employee.id) > 0) ? '+' : '')
-                + calculatePlusMinusHours(employee.id).toFixed(2) }}
+              {{
+                (calculatePlusMinusHours(employee.id) > 0 ? "+" : "") +
+                calculatePlusMinusHours(employee.id).toFixed(2)
+              }}
             </span>
           </div>
           <div class="employee-info">
@@ -77,10 +71,7 @@ const computedShowAll = (employeeId) => {
         </div>
       </div>
     </div>
-    <div
-      class="show-all"
-      @click="toggleShowAll"
-    >
+    <div class="show-all" @click="toggleShowAll">
       <div v-if="showAll">
         Show scheduled employees
         <span class="material-icons material-icons-round">expand_less</span>

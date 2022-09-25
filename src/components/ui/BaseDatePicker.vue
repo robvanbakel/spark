@@ -1,8 +1,8 @@
-<script setup>
-import { ref, computed } from 'vue';
-import BaseCalendar from '@/components/ui/BaseCalendar/BaseCalendar.vue';
+<script setup lang=ts>
+import { ref, computed } from "vue";
+import BaseCalendar from "@/components/ui/BaseCalendar/BaseCalendar.vue";
 
-import { useSettings } from '@/store';
+import { useSettings } from "@/store";
 
 const settingsStore = useSettings();
 
@@ -17,23 +17,23 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(["update:modelValue"]);
 
 const calendarVisible = ref(false);
 
 const showCalendar = () => {
   calendarVisible.value = true;
-  window.addEventListener('keydown', keyDownHandler);
+  window.addEventListener("keydown", keyDownHandler);
 };
 
 const hideCalendar = () => {
   calendarVisible.value = false;
-  window.removeEventListener('keydown', keyDownHandler);
+  window.removeEventListener("keydown", keyDownHandler);
 };
 
 const keyDownHandler = (e) => {
   switch (e.key) {
-    case 'Escape':
+    case "Escape":
       hideCalendar();
       break;
     default:
@@ -46,7 +46,7 @@ const value = computed({
     return props.modelValue;
   },
   set(val) {
-    emit('update:modelValue', val);
+    emit("update:modelValue", val);
     hideCalendar();
   },
 });
@@ -61,12 +61,9 @@ const value = computed({
       @click="showCalendar"
       @focus="showCalendar"
       @keydown.tab="hideCalendar"
-    >
+    />
     <div v-if="calendarVisible">
-      <base-overlay
-        invisible
-        @clickout="hideCalendar"
-      />
+      <base-overlay invisible @clickout="hideCalendar" />
       <BaseCalendar v-model="value" />
     </div>
   </div>

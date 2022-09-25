@@ -1,7 +1,7 @@
-<script setup>
-import { ref, computed } from 'vue';
+<script setup lang=ts>
+import { ref, computed } from "vue";
 
-import { useSettings } from '@/store';
+import { useSettings } from "@/store";
 
 const settingsStore = useSettings();
 
@@ -12,11 +12,11 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['setActiveStatus']);
+const emit = defineEmits(["setActiveStatus"]);
 
 const showDropdown = ref(false);
 
-const statuses = computed(() => settingsStore.statuses.filter((status) => status !== 'STAGED'));
+const statuses = computed(() => settingsStore.statuses.filter((status) => status !== "STAGED"));
 
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value;
@@ -24,7 +24,7 @@ const toggleDropdown = () => {
 
 const setStatus = (status) => {
   if (status !== props.activeStatus) {
-    emit('setActiveStatus', status);
+    emit("setActiveStatus", status);
     showDropdown.value = false;
   }
 };
@@ -33,21 +33,10 @@ const setStatus = (status) => {
 <template>
   <div class="status-picker-wrapper">
     <div class="current-status">
-      <base-badge
-        :status="activeStatus"
-        :label="true"
-        @click="toggleDropdown"
-      />
+      <base-badge :status="activeStatus" :label="true" @click="toggleDropdown" />
     </div>
-    <base-overlay
-      v-if="showDropdown"
-      invisible
-      @clickout="showDropdown = false"
-    />
-    <div
-      v-if="showDropdown"
-      class="status-picker-dropdown"
-    >
+    <base-overlay v-if="showDropdown" invisible @clickout="showDropdown = false" />
+    <div v-if="showDropdown" class="status-picker-dropdown">
       <base-badge
         v-for="status in statuses"
         :key="status"

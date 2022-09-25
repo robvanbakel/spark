@@ -1,13 +1,13 @@
-import api from '@/utils/api';
-import format from '@/utils/format';
+import api from "@/utils/api";
+import format from "@/utils/format";
 
-import { useAuth } from '@/store';
+import { useAuth } from "@/store";
 
-import auth from '@/firebase';
+import auth from "@/firebase";
 
 export default {
   async getUsers() {
-    const users = await api.get('db/users');
+    const users = await api.get("db/users");
 
     const authStore = useAuth();
 
@@ -23,16 +23,19 @@ export default {
     this.users = users;
   },
   addNewUser() {
-    this.activeUserId = 'NEW';
+    this.activeUserId = "NEW";
   },
   async saveEditUser(payload) {
-    const res = await api[payload.status === 'NEW' ? 'post' : 'patch'](`db/users/${payload.id}`, format.users.req(payload));
+    const res = await api[payload.status === "NEW" ? "post" : "patch"](
+      `db/users/${payload.id}`,
+      format.users.req(payload)
+    );
 
     if (res.ok) {
-      if (payload.status === 'NEW') {
+      if (payload.status === "NEW") {
         this.users.push({
           ...payload,
-          status: 'STAGED',
+          status: "STAGED",
         });
 
         return;

@@ -1,7 +1,7 @@
-<script setup>
-import { ref, computed } from 'vue';
+<script setup lang=ts>
+import { ref, computed } from "vue";
 
-import { useEmployees } from '@/store';
+import { useEmployees } from "@/store";
 
 const emploeesStore = useEmployees();
 
@@ -32,20 +32,23 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['choice']);
+const emit = defineEmits(["choice"]);
 
 const dropdownVisible = ref(false);
 const selected = ref(props.active);
 const hoveredIndex = ref(null);
-const input = ref(props.items.find((item) => item.id === props.active)?.display || '');
+const input = ref(props.items.find((item) => item.id === props.active)?.display || "");
 const inputField = ref();
 
-const selectedDisplay = computed(() => props.items.find((item) => item.id === selected.value)?.display || '');
+const selectedDisplay = computed(
+  () => props.items.find((item) => item.id === selected.value)?.display || ""
+);
 
 const filteredItems = computed(() => {
   if (props.enableSearch) {
-    return props.items.filter((item) => item.display.toLowerCase()
-      .includes(input.value.toLowerCase()));
+    return props.items.filter((item) =>
+      item.display.toLowerCase().includes(input.value.toLowerCase())
+    );
   }
   return props.items;
 });
@@ -62,24 +65,24 @@ const hideDropdown = () => {
   dropdownVisible.value = false;
   inputField.value.blur();
   hoveredIndex.value = null;
-  window.removeEventListener('keydown', keyDownHandler);
+  window.removeEventListener("keydown", keyDownHandler);
 };
 
 const selectItem = (choice) => {
   selected.value = choice;
   hideDropdown();
-  emit('choice', choice);
+  emit("choice", choice);
 };
 
 const keyDownHandler = (e) => {
   switch (e.key) {
-    case 'Escape':
+    case "Escape":
       hideDropdown();
       break;
-    case 'Enter':
+    case "Enter":
       selectItem(filteredItems.value[hoveredIndex.value].id);
       break;
-    case 'ArrowUp':
+    case "ArrowUp":
       if (hoveredIndex.value === null) {
         hoveredIndex.value = filteredItems.value.length - 1;
       } else if (hoveredIndex.value === 0) {
@@ -89,7 +92,7 @@ const keyDownHandler = (e) => {
       }
 
       break;
-    case 'ArrowDown':
+    case "ArrowDown":
       if (hoveredIndex.value === null) {
         hoveredIndex.value = 0;
       } else if (hoveredIndex.value === filteredItems.value.length - 1) {
@@ -105,11 +108,11 @@ const keyDownHandler = (e) => {
 
 const showDropdown = () => {
   if (props.enableSearch) {
-    input.value = '';
+    input.value = "";
   }
   dropdownVisible.value = true;
   inputField.value.focus();
-  window.addEventListener('keydown', keyDownHandler);
+  window.addEventListener("keydown", keyDownHandler);
 };
 
 const getStatus = (id, opt = {}) => {
@@ -140,17 +143,10 @@ const getStatus = (id, opt = {}) => {
         @click="showDropdown"
         @focus="showDropdown"
         @keydown.tab="hideDropdown"
-      >
+      />
     </div>
-    <base-overlay
-      v-if="dropdownVisible"
-      invisible
-      @clickout="hideDropdown"
-    />
-    <div
-      v-if="dropdownVisible"
-      class="dropdown"
-    >
+    <base-overlay v-if="dropdownVisible" invisible @clickout="hideDropdown" />
+    <div v-if="dropdownVisible" class="dropdown">
       <div
         v-if="filteredItems.length"
         class="dropdown-inner"
@@ -167,19 +163,12 @@ const getStatus = (id, opt = {}) => {
           @click="selectItem(item.id)"
         >
           <span>{{ item.display }}</span>
-          <span
-            v-if="employeeStatus"
-            :class="['status', getStatus(item.id)]"
-          >{{
+          <span v-if="employeeStatus" :class="['status', getStatus(item.id)]">{{
             getStatus(item.id, { capitalize: true })
           }}</span>
         </div>
       </div>
-      <span
-        v-else
-        class="item no-match"
-        @click="showDropdown"
-      >No matches</span>
+      <span v-else class="item no-match" @click="showDropdown">No matches</span>
     </div>
   </div>
 </template>

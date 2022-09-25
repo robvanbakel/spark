@@ -1,17 +1,17 @@
-<script setup>
-import { ref, computed, watch } from 'vue';
+<script setup lang=ts>
+import { ref, computed, watch } from "vue";
 
-import dayjs from '@/plugins/dayjs';
+import dayjs from "@/plugins/dayjs";
 
-import PlannerContent from '@/components/layout/PlannerContent.vue';
-import EditShift from '@/components/layout/EditShift.vue';
-import PlannerCalendar from '@/components/layout/PlannerCalendar.vue';
-import PlusMinusHours from '@/components/layout/PlusMinusHours.vue';
-import EmptyWeek from '@/components/layout/EmptyWeek.vue';
+import PlannerContent from "@/components/layout/PlannerContent.vue";
+import EditShift from "@/components/layout/EditShift.vue";
+import PlannerCalendar from "@/components/layout/PlannerCalendar.vue";
+import PlusMinusHours from "@/components/layout/PlusMinusHours.vue";
+import EmptyWeek from "@/components/layout/EmptyWeek.vue";
 
-import { useRoute } from 'vue-router';
+import { useRoute } from "vue-router";
 
-import { useDate, useSettings, usePlanner } from '@/store';
+import { useDate, useSettings, usePlanner } from "@/store";
 
 const dateStore = useDate();
 const settingsStore = useSettings();
@@ -20,7 +20,7 @@ const plannerStore = usePlanner();
 const route = useRoute();
 
 const searchInputField = ref();
-const searchInput = ref('');
+const searchInput = ref("");
 const hideEmptyWeek = ref(false);
 const filters = ref({});
 
@@ -41,18 +41,20 @@ const setWindowTitle = () => {
 };
 
 watch(route, (to) => {
-  if (to.name === 'Planner') {
+  if (to.name === "Planner") {
     setWindowTitle();
     hideEmptyWeek.value = false;
   }
 });
 
 setWindowTitle();
-filters.value = settingsStore.settings.roles
-  .reduce((acc, i) => ({ ...acc, [i.toLowerCase()]: false }), {});
+filters.value = settingsStore.settings.roles.reduce(
+  (acc, i) => ({ ...acc, [i.toLowerCase()]: false }),
+  {}
+);
 
 const clearSearchInput = () => {
-  searchInput.value = '';
+  searchInput.value = "";
   searchInputField.value.focus();
 };
 
@@ -70,7 +72,6 @@ const toggleSidebar = () => {
   settingsStore.toggleSidebar();
   settingsStore.sidebarAutoHidden = false;
 };
-
 </script>
 
 <template>
@@ -82,19 +83,14 @@ const toggleSidebar = () => {
         autocomplete="off"
         type="text"
         placeholder="Search Planner"
+      />
+      <span v-if="!searchInput" class="material-icons material-icons-round">search</span>
+      <span v-else class="clear material-icons material-icons-round" @click="clearSearchInput"
+        >clear</span
       >
-      <span
-        v-if="!searchInput"
-        class="material-icons material-icons-round"
-      >search</span>
-      <span
-        v-else
-        class="clear material-icons material-icons-round"
-        @click="clearSearchInput"
-      >clear</span>
     </div>
     <div class="filter">
-      {{ $t('general.actions.filter') }}:
+      {{ $t("general.actions.filter") }}:
       <base-badge
         v-for="status in Object.keys(filters)"
         :key="status"
@@ -106,14 +102,12 @@ const toggleSidebar = () => {
         v-if="Object.values(filters).includes(true)"
         class="clear material-icons material-icons-round"
         @click="clearFilters"
-      >clear</span>
+        >clear</span
+      >
     </div>
     <div class="actions">
-      <base-button
-        icon="add"
-        @click="plannerStore.addNewShift"
-      >
-        {{ $t('general.actions.add', { resource: 'Shift' }) }}
+      <base-button icon="add" @click="plannerStore.addNewShift">
+        {{ $t("general.actions.add", { resource: "Shift" }) }}
       </base-button>
       <base-button
         inverted
@@ -126,10 +120,7 @@ const toggleSidebar = () => {
   </div>
   <main>
     <section id="planner">
-      <EmptyWeek
-        v-if="emptyWeek && !hideEmptyWeek"
-        @hide-empty-week="hideEmptyWeek = true"
-      />
+      <EmptyWeek v-if="emptyWeek && !hideEmptyWeek" @hide-empty-week="hideEmptyWeek = true" />
       <div v-else>
         <div class="header">
           <div>
@@ -142,15 +133,11 @@ const toggleSidebar = () => {
             :key="date"
             :class="['dayWrapper', { today: date.isSame(dayjs(), 'date') }]"
           >
-            <span class="dayName">{{ date.format('dddd') }}</span>
-            <span class="date">{{ date.format('LL') }}</span>
+            <span class="dayName">{{ date.format("dddd") }}</span>
+            <span class="date">{{ date.format("LL") }}</span>
           </div>
         </div>
-        <PlannerContent
-          :schedules="schedulesInView"
-          :roles="displayRoles"
-          :search="searchInput"
-        />
+        <PlannerContent :schedules="schedulesInView" :roles="displayRoles" :search="searchInput" />
       </div>
     </section>
 
@@ -160,14 +147,8 @@ const toggleSidebar = () => {
       <section>
         <PlannerCalendar />
       </section>
-      <section
-        v-if="!emptyWeek || hideEmptyWeek"
-        class="plus-minus-hours"
-      >
-        <PlusMinusHours
-          :roles="displayRoles"
-          :search="searchInput"
-        />
+      <section v-if="!emptyWeek || hideEmptyWeek" class="plus-minus-hours">
+        <PlusMinusHours :roles="displayRoles" :search="searchInput" />
       </section>
     </the-sidebar>
   </main>

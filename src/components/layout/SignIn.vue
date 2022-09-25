@@ -1,14 +1,14 @@
-<script setup>
-import { ref } from 'vue';
+<script setup lang=ts>
+import { ref } from "vue";
 
-import { useAuth, useSettings } from '@/store';
+import { useAuth, useSettings } from "@/store";
 
 const authStore = useAuth();
 const settingsStore = useSettings();
 
 const errorMessage = ref(null);
-const email = ref('');
-const password = ref('');
+const email = ref("");
+const password = ref("");
 const isLoading = ref(false);
 const showDemo = ref(false);
 const demoLoading = ref(false);
@@ -17,8 +17,8 @@ const enterDemo = async () => {
   demoLoading.value = true;
 
   await authStore.login({
-    email: 'demo@company.com',
-    password: 'demo@company.com',
+    email: "demo@company.com",
+    password: "demo@company.com",
   });
 };
 
@@ -38,14 +38,14 @@ const handleSubmit = async () => {
     isLoading.value = false;
 
     switch (res.code) {
-      case 'auth/user-not-found':
-        errorMessage.value = 'User not found';
+      case "auth/user-not-found":
+        errorMessage.value = "User not found";
         break;
-      case 'auth/wrong-password':
-        errorMessage.value = 'Password incorrect';
+      case "auth/wrong-password":
+        errorMessage.value = "Password incorrect";
         break;
       default:
-        errorMessage.value = 'Login failed';
+        errorMessage.value = "Login failed";
     }
   }
 };
@@ -54,62 +54,27 @@ const handleSubmit = async () => {
 <template>
   <div class="auth-modal">
     <h1>Log In</h1>
-    <p
-      v-if="errorMessage"
-      class="error"
-    >
+    <p v-if="errorMessage" class="error">
       {{ errorMessage }}
     </p>
     <form @submit.prevent="handleSubmit">
-      <input
-        v-model.trim="email"
-        type="email"
-        placeholder="Email"
-        required
-      >
-      <input
-        v-model="password"
-        type="password"
-        placeholder="Password"
-        required
-      >
-      <base-button v-if="!isLoading">
-        Log In
-      </base-button>
-      <base-button
-        v-else
-        disabled
-      >
-        Loading…
-      </base-button>
+      <input v-model.trim="email" type="email" placeholder="Email" required />
+      <input v-model="password" type="password" placeholder="Password" required />
+      <base-button v-if="!isLoading"> Log In </base-button>
+      <base-button v-else disabled> Loading… </base-button>
     </form>
   </div>
 
   <div v-if="settingsStore.mode === 'demo' || settingsStore.mode === 'localhost'">
     <transition name="demo">
-      <div
-        v-if="showDemo"
-        class="auth-modal demo"
-      >
+      <div v-if="showDemo" class="auth-modal demo">
         <h1>No account yet?</h1>
         <p>
           Click the button below to enter a demo account. Any changes you make won't be stored and
           will be lost when existing the demo environment.
         </p>
-        <base-button
-          v-if="!demoLoading"
-          icon="login"
-          @click="enterDemo"
-        >
-          Enter Demo
-        </base-button>
-        <base-button
-          v-else
-          disabled
-          icon="login"
-        >
-          Loading…
-        </base-button>
+        <base-button v-if="!demoLoading" icon="login" @click="enterDemo"> Enter Demo </base-button>
+        <base-button v-else disabled icon="login"> Loading… </base-button>
       </div>
     </transition>
   </div>

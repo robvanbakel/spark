@@ -1,11 +1,11 @@
-<script setup>
-import { ref, computed } from 'vue';
+<script setup lang=ts>
+import { ref, computed } from "vue";
 
-import EditEmployee from '@/components/layout/EditEmployee.vue';
+import EditEmployee from "@/components/layout/EditEmployee.vue";
 
-import { useSettings, useEmployees } from '@/store';
+import { useSettings, useEmployees } from "@/store";
 
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 
 const settingsStore = useSettings();
 const employeesStore = useEmployees();
@@ -13,7 +13,7 @@ const employeesStore = useEmployees();
 const router = useRouter();
 
 const searchInputField = ref();
-const searchInput = ref('');
+const searchInput = ref("");
 const filters = ref({});
 
 const getFullName = (employee) => `${employee.firstName} ${employee.lastName}`;
@@ -26,15 +26,11 @@ const employees = computed(() => {
   return allEmployees.filter((emp) => {
     if (Object.values(filters.value).includes(true)) {
       return (
-        filters.value[emp.status] === true
-            && getFullName(emp)
-              .toLowerCase()
-              .includes(searchInput.value.toLowerCase())
+        filters.value[emp.status] === true &&
+        getFullName(emp).toLowerCase().includes(searchInput.value.toLowerCase())
       );
     }
-    return getFullName(emp)
-      .toLowerCase()
-      .includes(searchInput.value.toLowerCase());
+    return getFullName(emp).toLowerCase().includes(searchInput.value.toLowerCase());
   });
 });
 
@@ -49,16 +45,15 @@ const clearFilters = () => {
 };
 
 const clearSearchInput = () => {
-  searchInput.value = '';
+  searchInput.value = "";
   searchInputField.value.focus();
 };
 
 const toUserSettings = (employeeId) => {
-  router.push({ name: 'UserSettings', params: { id: employeeId } });
+  router.push({ name: "UserSettings", params: { id: employeeId } });
 };
 
 filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false }), {});
-
 </script>
 
 <template>
@@ -70,19 +65,14 @@ filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false 
         autocomplete="off"
         type="text"
         placeholder="Search Staff"
+      />
+      <span v-if="!searchInput" class="material-icons material-icons-round">search</span>
+      <span v-else class="clear material-icons material-icons-round" @click="clearSearchInput"
+        >clear</span
       >
-      <span
-        v-if="!searchInput"
-        class="material-icons material-icons-round"
-      >search</span>
-      <span
-        v-else
-        class="clear material-icons material-icons-round"
-        @click="clearSearchInput"
-      >clear</span>
     </div>
     <div class="filter">
-      {{ $t('general.actions.filter') }}:
+      {{ $t("general.actions.filter") }}:
       <base-badge
         v-for="status in Object.keys(filters)"
         :key="status"
@@ -94,14 +84,12 @@ filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false 
         v-if="Object.values(filters).includes(true)"
         class="clear material-icons material-icons-round"
         @click="clearFilters"
-      >clear</span>
+        >clear</span
+      >
     </div>
     <div class="actions">
-      <base-button
-        icon="add"
-        @click="employeesStore.addNewUser()"
-      >
-        {{ $t('general.actions.add', { resource: 'Employee' }) }}
+      <base-button icon="add" @click="employeesStore.addNewUser()">
+        {{ $t("general.actions.add", { resource: "Employee" }) }}
       </base-button>
     </div>
   </div>
@@ -111,12 +99,12 @@ filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false 
         <thead>
           <th class="badge" />
           <th class="name">
-            {{ $t('general.labels.name') }}
+            {{ $t("general.labels.name") }}
           </th>
-          <th>{{ $t('general.labels.email') }}</th>
-          <th>{{ $t('general.labels.phone') }}</th>
-          <th>{{ $t('general.labels.role') }}</th>
-          <th>{{ $t('general.labels.notes') }}</th>
+          <th>{{ $t("general.labels.email") }}</th>
+          <th>{{ $t("general.labels.phone") }}</th>
+          <th>{{ $t("general.labels.role") }}</th>
+          <th>{{ $t("general.labels.notes") }}</th>
           <th class="settings" />
         </thead>
         <tbody>
@@ -127,10 +115,7 @@ filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false 
             @click="employeesStore.activeUserId = employee.id"
           >
             <td class="badge">
-              <base-badge
-                :status="employee.status"
-                :label="false"
-              />
+              <base-badge :status="employee.status" :label="false" />
             </td>
             <td class="name">
               {{ getFullName(employee) }}
@@ -141,10 +126,7 @@ filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false 
             <td class="notes">
               {{ employee.notes }}
             </td>
-            <td
-              class="settings"
-              @click.stop="toUserSettings(employee.id)"
-            >
+            <td class="settings" @click.stop="toUserSettings(employee.id)">
               <span class="material-symbols-outlined">settings</span>
             </td>
           </tr>

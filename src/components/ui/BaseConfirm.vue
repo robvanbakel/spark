@@ -1,18 +1,18 @@
-<script setup>
-import { ref } from 'vue';
+<script setup lang=ts>
+import { ref } from "vue";
 
 defineProps({
   title: {
     type: String,
-    default: 'Are you sure?',
+    default: "Are you sure?",
   },
   message: {
     type: String,
-    default: 'This action cannot be undone.',
+    default: "This action cannot be undone.",
   },
   choiceFalse: {
     type: String,
-    default: 'Cancel',
+    default: "Cancel",
   },
   choiceTrue: {
     type: String,
@@ -42,25 +42,15 @@ const confirm = (bool) => {
 defineExpose({
   open,
 });
-
 </script>
 
 <template>
-  <base-modal
-    v-if="showConfirm"
-    tight
-    centered
-    :title="title"
-  >
+  <base-modal v-if="showConfirm" tight centered :title="title">
     <template #main>
       {{ message }}
     </template>
     <template #actions>
-      <base-button
-        v-if="!noFalse"
-        secondary
-        @click="confirm(false)"
-      >
+      <base-button v-if="!noFalse" secondary @click="confirm(false)">
         {{ choiceFalse }}
       </base-button>
       <base-button @click="confirm(true)">

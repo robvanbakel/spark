@@ -1,9 +1,9 @@
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
 
-import actions from './actions';
-import getters from './getters';
+import actions from "./actions";
+import getters from "./getters";
 
-export default defineStore('planner', {
+export default defineStore("planner", {
   state: () => ({
     shifts: [],
     activeShiftId: null,

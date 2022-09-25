@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang=ts>
 const props = defineProps({
   class: {
     type: String,
@@ -34,41 +34,29 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(["close"]);
 
 const close = (bool) => {
   if (bool) {
-    emit('close');
+    emit("close");
   }
 };
 </script>
 
 <template>
-  <base-overlay
-    dark
-    transparent
-    @click="close(clickout)"
-  />
+  <base-overlay dark transparent @click="close(clickout)" />
   <div :class="['base-modal', { tight, centered }, props.class]">
-    <div
-      v-if="!noHeader"
-      class="header"
-    >
+    <div v-if="!noHeader" class="header">
       <h1>{{ title }}</h1>
       <slot name="header" />
-      <span
-        v-if="globalClose"
-        class="material-icons material-icons-round"
-        @click="close"
-      >clear</span>
+      <span v-if="globalClose" class="material-icons material-icons-round" @click="close"
+        >clear</span
+      >
     </div>
     <div class="main">
       <slot name="main" />
     </div>
-    <div
-      v-if="!noActions"
-      class="actions"
-    >
+    <div v-if="!noActions" class="actions">
       <slot name="actions" />
     </div>
   </div>

@@ -1,19 +1,15 @@
-<script setup>
-import {
-  ref, onMounted, onUnmounted, onUpdated, computed, watch,
-} from 'vue';
+<script setup lang=ts>
+import { ref, onMounted, onUnmounted, onUpdated, computed, watch } from "vue";
 
-import QRCode from 'qrcode';
-import dayjs from '@/plugins/dayjs';
+import QRCode from "qrcode";
+import dayjs from "@/plugins/dayjs";
 
-import PlannerCalendar from '@/components/layout/PlannerCalendar.vue';
-import EmployeeInfo from '@/components/layout/EmployeeInfo.vue';
+import PlannerCalendar from "@/components/layout/PlannerCalendar.vue";
+import EmployeeInfo from "@/components/layout/EmployeeInfo.vue";
 
-import { useRoute } from 'vue-router';
+import { useRoute } from "vue-router";
 
-import {
-  useAuth, useDate, useSettings, usePlanner,
-} from '@/store';
+import { useAuth, useDate, useSettings, usePlanner } from "@/store";
 
 const authStore = useAuth();
 const dateStore = useDate();
@@ -36,24 +32,34 @@ const visibleHoursEnd = ref(0);
 const webcalLink = computed(() => `webcal://app.sparkscheduler.com/feed/${authStore.feedToken}`);
 
 const schedulesInView = computed(() => {
-  const shiftsInView = dateStore.dates
-    .map((date) => plannerStore.shifts
-      .find((shift) => shift.employeeId === authStore.user.id && date.isSame(shift.from, 'date')));
+  const shiftsInView = dateStore.dates.map((date) =>
+    plannerStore.shifts.find(
+      (shift) => shift.employeeId === authStore.user.id && date.isSame(shift.from, "date")
+    )
+  );
 
   if (shiftsInView.every((v) => !v)) return null;
 
   return shiftsInView;
 });
 
-const totalHours = computed(() => schedulesInView.value.reduce((acc, shift) => {
-  if (!shift) return acc;
-  const shiftDuration = dayjs.duration(shift.to.diff(shift.from)).subtract(shift.break, 'minutes');
-  return acc + shiftDuration.asHours();
-}, 0));
+const totalHours = computed(() =>
+  schedulesInView.value.reduce((acc, shift) => {
+    if (!shift) return acc;
+    const shiftDuration = dayjs
+      .duration(shift.to.diff(shift.from))
+      .subtract(shift.break, "minutes");
+    return acc + shiftDuration.asHours();
+  }, 0)
+);
 
 const workingDays = computed(() => schedulesInView.value.filter((v) => v).length);
 
-const hasUnacceptedShifts = computed(() => schedulesInView.value?.map((shift) => shift && shift.status === 'ACCEPTED').some((accepted) => accepted === false));
+const hasUnacceptedShifts = computed(() =>
+  schedulesInView.value
+    ?.map((shift) => shift && shift.status === "ACCEPTED")
+    .some((accepted) => accepted === false)
+);
 
 const hoursVisible = computed(() => (visibleHoursEnd.value || 24) - visibleHoursStart.value);
 
@@ -62,7 +68,7 @@ const dayWidth = computed(() => calendarWidth.value / hoursVisible.value);
 const hideSidebar = computed(() => settingsStore.sidebarHidden);
 
 watch(route, (to) => {
-  if (to.name === 'Schedule') {
+  if (to.name === "Schedule") {
     const { weekId } = route.params;
     dateStore.setDates(weekId);
     document.title = `Week ${dateStore.weekNumber} - Planner`;
@@ -82,10 +88,10 @@ watch(hideSidebar, () => {
 
 onMounted(() => {
   checkCalendarWidth();
-  window.addEventListener('resize', checkCalendarWidth);
+  window.addEventListener("resize", checkCalendarWidth);
 });
 
-onUnmounted(() => window.removeEventListener('resize', checkCalendarWidth));
+onUnmounted(() => window.removeEventListener("resize", checkCalendarWidth));
 
 onUpdated(() => {
   if (calendarWidth.value && calendarWidth.value) return;
@@ -134,14 +140,16 @@ const setActiveShift = (shift, index) => {
   // Helper functions
 
   const calculateShiftDuration = (selectedShift) => {
-    const shiftDuration = dayjs.duration(selectedShift.to.diff(selectedShift.from)).subtract(selectedShift.break, 'minutes');
+    const shiftDuration = dayjs
+      .duration(selectedShift.to.diff(selectedShift.from))
+      .subtract(selectedShift.break, "minutes");
     return shiftDuration.asHours();
   };
 
   // Construct object
   activeShift.value = {
-    date: dateStore.dates[index].format('dddd LL'),
-    dateShort: dateStore.dates[index].format('L'),
+    date: dateStore.dates[index].format("dddd LL"),
+    dateShort: dateStore.dates[index].format("L"),
     location: shift.location,
     from: shift.from,
     to: shift.to,
@@ -158,7 +166,9 @@ const setActiveShift = (shift, index) => {
 
 const acceptAllShifts = async () => {
   if (await confirmAcceptAllShifts.value.open()) {
-    const nonAcceptedShiftIds = schedulesInView.value.map((shift) => shift && shift.status !== 'ACCEPTED' && shift.id).filter((v) => v);
+    const nonAcceptedShiftIds = schedulesInView.value
+      .map((shift) => shift && shift.status !== "ACCEPTED" && shift.id)
+      .filter((v) => v);
     plannerStore.acceptShifts(nonAcceptedShiftIds);
   }
 };
@@ -184,7 +194,7 @@ const proposalRightClickHandler = async (event, id) => {
 };
 
 const helpActiveShift = () => {
-  const to = 'planner@company.com';
+  const to = "planner@company.com";
   const subject = `${activeShift.value.dateShort}: Question about my shift (${activeShift.value.location})`;
 
   window.open(`mailto:${to}?subject=${subject}`);
@@ -196,10 +206,7 @@ const helpActiveShift = () => {
     <section id="singleEmployeeCalendar">
       <div class="header">
         <h1>Hi {{ authStore.user.firstName }}</h1>
-        <div
-          v-if="schedulesInView"
-          class="week-info"
-        >
+        <div v-if="schedulesInView" class="week-info">
           <div>
             Week: <span>{{ dateStore.weekNumber }}</span>
           </div>
@@ -210,39 +217,17 @@ const helpActiveShift = () => {
             Total: <span>{{ totalHours }} hours</span>
           </div>
         </div>
-        <div
-          v-if="hasUnacceptedShifts"
-          class="actions"
-        >
-          <base-button
-            icon="check"
-            @click="acceptAllShifts"
-          >
-            Accept all shifts
-          </base-button>
+        <div v-if="hasUnacceptedShifts" class="actions">
+          <base-button icon="check" @click="acceptAllShifts"> Accept all shifts </base-button>
         </div>
-        <div
-          v-else
-          class="actions"
-        >
-          <base-button
-            icon="calendar_today"
-            @click="openCalendar"
-          >
-            Add to Calendar
-          </base-button>
-          <base-button
-            class="inverted icon-only"
-            @click="generateQR"
-          >
+        <div v-else class="actions">
+          <base-button icon="calendar_today" @click="openCalendar"> Add to Calendar </base-button>
+          <base-button class="inverted icon-only" @click="generateQR">
             <span class="clear material-icons material-icons-round">qr_code_2</span>
           </base-button>
         </div>
       </div>
-      <div
-        v-if="schedulesInView"
-        class="calendar"
-      >
+      <div v-if="schedulesInView" class="calendar">
         <div class="colDays">
           <div
             v-for="date in dateStore.dates"
@@ -250,14 +235,11 @@ const helpActiveShift = () => {
             class="row"
             :class="{ today: date.isSame(dayjs(), 'date') }"
           >
-            <span class="dayName">{{ date.format('dddd') }}</span>
-            <span class="date">{{ date.format('LL') }}</span>
+            <span class="dayName">{{ date.format("dddd") }}</span>
+            <span class="date">{{ date.format("LL") }}</span>
           </div>
         </div>
-        <div
-          ref="calendar"
-          class="colCalendar"
-        >
+        <div ref="calendar" class="colCalendar">
           <div class="hours">
             <span
               v-for="(hour, index) in hoursVisible + 1"
@@ -266,13 +248,15 @@ const helpActiveShift = () => {
                 width: `${dayWidth}px`,
                 '--calendarHeight': `${calendarHeight + 12}px`,
               }"
-            >{{ dayjs().hour(index + visibleHoursStart).minute(0).format('HH:mm') }}</span>
+              >{{
+                dayjs()
+                  .hour(index + visibleHoursStart)
+                  .minute(0)
+                  .format("HH:mm")
+              }}</span
+            >
           </div>
-          <div
-            v-for="(day, index) in schedulesInView"
-            :key="index"
-            class="row"
-          >
+          <div v-for="(day, index) in schedulesInView" :key="index" class="row">
             <div
               v-if="day"
               class="shift"
@@ -280,26 +264,22 @@ const helpActiveShift = () => {
                 width: `${timeRangeToPercentage(day.from, day.to).percentage}%`,
                 left: `${timeRangeToPercentage(day.from, day.to).startPoint}%`,
               }"
-              :class="{proposed: day && day.status !== 'ACCEPTED'}"
+              :class="{ proposed: day && day.status !== 'ACCEPTED' }"
               @click="setActiveShift(day, index)"
               @click.right="day.status === 'PROPOSED' && proposalRightClickHandler($event, day.id)"
             >
               <span class="location"> {{ day.location }}</span>
               <span class="time">
-                {{ day.from.format('HH:mm') }} - {{ day.to.format('HH:mm') }}
+                {{ day.from.format("HH:mm") }} - {{ day.to.format("HH:mm") }}
               </span>
-              <span
-                v-if="day.notes"
-                class="notes material-icons material-icons-round"
-              >description</span>
+              <span v-if="day.notes" class="notes material-icons material-icons-round"
+                >description</span
+              >
             </div>
           </div>
         </div>
       </div>
-      <div
-        v-else
-        class="empty-schedule"
-      >
+      <div v-else class="empty-schedule">
         <p>
           No schedule available for week
           {{ dateStore.weekNumber }}.
@@ -327,7 +307,7 @@ const helpActiveShift = () => {
         <div class="shift-info-group">
           <span class="label">Time</span>
           <span class="value">
-            {{ activeShift.from.format('HH:mm') }} - {{ activeShift.to.format('HH:mm') }}
+            {{ activeShift.from.format("HH:mm") }} - {{ activeShift.to.format("HH:mm") }}
           </span>
         </div>
         <div class="shift-info-group">
@@ -336,45 +316,18 @@ const helpActiveShift = () => {
             {{ activeShift.duration }} hours ({{ activeShift.break }} minutes break)
           </span>
         </div>
-        <div
-          v-if="activeShift.notes"
-          class="shift-info-group"
-        >
+        <div v-if="activeShift.notes" class="shift-info-group">
           <span class="label">Notes</span>
           <span class="value">{{ activeShift.notes }}</span>
         </div>
       </template>
-      <template
-        v-if="activeShift.status !== 'ACCEPTED'"
-        #actions
-      >
-        <base-button
-          icon="close"
-          inverted
-          @click="declineProposal()"
-        >
-          Decline
-        </base-button>
-        <base-button
-          icon="check"
-          @click="acceptProposal()"
-        >
-          Accept
-        </base-button>
+      <template v-if="activeShift.status !== 'ACCEPTED'" #actions>
+        <base-button icon="close" inverted @click="declineProposal()"> Decline </base-button>
+        <base-button icon="check" @click="acceptProposal()"> Accept </base-button>
       </template>
-      <template
-        v-else
-        #actions
-      >
-        <base-button
-          inverted
-          @click="helpActiveShift"
-        >
-          Help
-        </base-button>
-        <base-button @click="closeActiveShift">
-          Close
-        </base-button>
+      <template v-else #actions>
+        <base-button inverted @click="helpActiveShift"> Help </base-button>
+        <base-button @click="closeActiveShift"> Close </base-button>
       </template>
     </base-modal>
 
@@ -394,24 +347,13 @@ const helpActiveShift = () => {
       ]"
     />
 
-    <base-modal
-      v-if="showQR"
-      no-header
-      class="schedule-qr"
-      clickout
-      @close="closeQR"
-    >
+    <base-modal v-if="showQR" no-header class="schedule-qr" clickout @close="closeQR">
       <template #main>
         <p>Scan with your phone to add your work schedule to your calendar.</p>
-        <img
-          :src="qrCodeImg"
-          alt="Link to calendar subscription"
-        >
+        <img :src="qrCodeImg" alt="Link to calendar subscription" />
       </template>
       <template #actions>
-        <base-button @click="closeQR">
-          Close
-        </base-button>
+        <base-button @click="closeQR"> Close </base-button>
       </template>
     </base-modal>
 

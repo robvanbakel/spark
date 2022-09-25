@@ -1,6 +1,6 @@
-import auth from '@/firebase';
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { useSettings } from '@/store';
+import auth from "@/firebase";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { useSettings } from "@/store";
 
 export default {
   async login({ email, password }) {

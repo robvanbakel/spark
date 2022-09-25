@@ -1,9 +1,9 @@
-<script setup>
-import { ref } from 'vue';
+<script setup lang="ts">
+import { ref } from "vue";
 
-import TheHeader from '@/components/layout/TheHeader.vue';
+import TheHeader from "@/components/layout/TheHeader.vue";
 
-import { useAuth, useSettings } from '@/store';
+import { useAuth, useSettings } from "@/store";
 
 const authStore = useAuth();
 const settingsStore = useSettings();
@@ -30,9 +30,9 @@ const setActiveBreakpoint = (selected) => {
 
 const checkScreenSize = () => {
   if (window.innerWidth < breakpoints.value.sm.width) {
-    setActiveBreakpoint('sm');
+    setActiveBreakpoint("sm");
   } else if (window.innerWidth < breakpoints.value.md.width) {
-    setActiveBreakpoint('md');
+    setActiveBreakpoint("md");
 
     if (!settingsStore.sidebarHidden) {
       settingsStore.sidebarHidden = true;
@@ -47,23 +47,17 @@ const checkScreenSize = () => {
 };
 
 checkScreenSize();
-window.addEventListener('resize', checkScreenSize);
+window.addEventListener("resize", checkScreenSize);
 </script>
 
 <template>
   <div v-if="settingsStore.isLoaded">
-    <div
-      v-if="!breakpoints.sm.active"
-      class="container"
-    >
+    <div v-if="!breakpoints.sm.active" class="container">
       <TheHeader v-if="authStore.user" />
       <router-view />
     </div>
-    <div
-      v-else
-      style="text-align: center; padding: 3em 1em;"
-    >
-      {{ $t('general.smallScreenWarning') }}
+    <div v-else style="text-align: center; padding: 3em 1em">
+      {{ $t("general.smallScreenWarning") }}
     </div>
   </div>
 </template>

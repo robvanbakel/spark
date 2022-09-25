@@ -1,5 +1,5 @@
-<script setup>
-import { onUnmounted } from 'vue';
+<script setup lang=ts>
+import { onUnmounted } from "vue";
 
 defineProps({
   dark: Boolean,
@@ -7,20 +7,17 @@ defineProps({
   invisible: Boolean,
 });
 
-const emit = defineEmits(['clickout']);
+const emit = defineEmits(["clickout"]);
 
-document.body.classList.add('noscroll');
+document.body.classList.add("noscroll");
 
 onUnmounted(() => {
-  if (!document.querySelector('.overlay')) {
-    document.body.classList.remove('noscroll');
+  if (!document.querySelector(".overlay")) {
+    document.body.classList.remove("noscroll");
   }
 });
 </script>
 
 <template>
-  <div
-    :class="['overlay', { dark, transparent, invisible }]"
-    @click="emit('clickout')"
-  />
+  <div :class="['overlay', { dark, transparent, invisible }]" @click="emit('clickout')" />
 </template>

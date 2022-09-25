@@ -1,5 +1,5 @@
-<script setup>
-import { ref, onMounted, watch } from 'vue';
+<script setup lang=ts>
+import { ref, onMounted, watch } from "vue";
 
 const props = defineProps({
   toggle: {
@@ -16,32 +16,35 @@ const props = defineProps({
   },
   modelValue: {
     type: [String, Boolean],
-    default: '',
+    default: "",
   },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(["update:modelValue"]);
 
 const indicator = ref();
 const wrapper = ref();
 const item = ref();
 
-watch(() => props.modelValue, (val) => {
-  setIndicator(val);
-});
+watch(
+  () => props.modelValue,
+  (val) => {
+    setIndicator(val);
+  }
+);
 
 onMounted(() => {
   setIndicator(props.modelValue);
 
   setTimeout(() => {
-    indicator.value.style.transition = 'all 120ms ease-in-out';
+    indicator.value.style.transition = "all 120ms ease-in-out";
   }, 120);
 });
 
 const setIndicator = (val) => {
   const target = [...item.value].find((v) => {
     if (props.toggle) {
-      return v.attributes['data-value'].value === val.toString();
+      return v.attributes["data-value"].value === val.toString();
     }
 
     return v.innerText === val;
@@ -49,24 +52,26 @@ const setIndicator = (val) => {
 
   if (!target) return;
 
-  indicator.value.style.left = `${target.getBoundingClientRect().left - wrapper.value.getBoundingClientRect().left}px`;
+  indicator.value.style.left = `${
+    target.getBoundingClientRect().left - wrapper.value.getBoundingClientRect().left
+  }px`;
   indicator.value.style.width = `${target.getBoundingClientRect().width}px`;
 };
 
 const setActive = (value) => {
   setIndicator(value);
 
-  emit('update:modelValue', value);
+  emit("update:modelValue", value);
 };
 
 const keydownHandler = (e) => {
   const activeIndex = props.items.indexOf(props.modelValue);
   switch (e.code) {
-    case 'ArrowLeft':
+    case "ArrowLeft":
       if (activeIndex === 0) return;
       setActive(props.items[activeIndex - 1]);
       break;
-    case 'ArrowRight':
+    case "ArrowRight":
       if (activeIndex === props.items.length - 1) return;
       setActive(props.items[activeIndex + 1]);
       break;
@@ -74,19 +79,11 @@ const keydownHandler = (e) => {
       break;
   }
 };
-
 </script>
 
 <template>
-  <div
-    ref="wrapper"
-    class="switch-wrapper"
-    @keydown="keydownHandler"
-  >
-    <div
-      ref="indicator"
-      class="indicator"
-    />
+  <div ref="wrapper" class="switch-wrapper" @keydown="keydownHandler">
+    <div ref="indicator" class="indicator" />
 
     <div v-if="toggle">
       <div
@@ -97,7 +94,7 @@ const keydownHandler = (e) => {
         class="switch-control toggle fixed"
         @click="setActive(bool)"
       >
-        <span class="material-icons material-icons-round">{{ bool ? 'check' : 'close' }}</span>
+        <span class="material-icons material-icons-round">{{ bool ? "check" : "close" }}</span>
       </div>
     </div>
 

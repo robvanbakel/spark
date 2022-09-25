@@ -1,5 +1,5 @@
-<script setup>
-import { ref, computed } from 'vue';
+<script setup lang=ts>
+import { ref, computed } from "vue";
 
 const props = defineProps({
   suggestions: {
@@ -20,15 +20,15 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(["update:modelValue"]);
 
 const selectedSuggestion = ref(null);
 const suggestionRightClickMenu = ref();
 
 const showNewSuggestion = computed(() => {
-  if (props.modelValue && !props.suggestions
-    .map((sug) => sug.toLowerCase())
-    .includes(props.modelValue.toLowerCase())
+  if (
+    props.modelValue &&
+    !props.suggestions.map((sug) => sug.toLowerCase()).includes(props.modelValue.toLowerCase())
   ) {
     return true;
   }
@@ -36,7 +36,7 @@ const showNewSuggestion = computed(() => {
 });
 
 const selectSuggestion = (suggestion) => {
-  emit('update:modelValue', suggestion);
+  emit("update:modelValue", suggestion);
 };
 
 const suggestionRightClickHandler = async (event, suggestion) => {
@@ -44,7 +44,6 @@ const suggestionRightClickHandler = async (event, suggestion) => {
   await suggestionRightClickMenu.value.open(event, suggestion);
   selectedSuggestion.value = null;
 };
-
 </script>
 
 <template>
@@ -55,12 +54,9 @@ const suggestionRightClickHandler = async (event, suggestion) => {
       :class="{ selected: selectedSuggestion === suggestion }"
       @click="selectSuggestion(suggestion)"
       @click.right.prevent="suggestionRightClickHandler($event, suggestion)"
-    >{{ suggestion }}</span>
-    <span
-      v-if="showNewSuggestion"
-      class="add"
-      @click="addSuggestion(modelValue)"
+      >{{ suggestion }}</span
     >
+    <span v-if="showNewSuggestion" class="add" @click="addSuggestion(modelValue)">
       <span class="material-icons material-icons-round">add</span>
       {{ modelValue }}
     </span>

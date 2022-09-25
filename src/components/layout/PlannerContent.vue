@@ -1,9 +1,9 @@
-<script setup>
-import { computed } from 'vue';
+<script setup lang=ts>
+import { computed } from "vue";
 
-import PlannerRow from '@/components/layout/PlannerRow.vue';
+import PlannerRow from "@/components/layout/PlannerRow.vue";
 
-import { useEmployees } from '@/store';
+import { useEmployees } from "@/store";
 
 const employeesStore = useEmployees();
 
@@ -18,7 +18,7 @@ const props = defineProps({
   },
   search: {
     type: String,
-    default: '',
+    default: "",
   },
 });
 
@@ -27,7 +27,10 @@ const employees = computed(() => {
 
   props.roles.forEach((role) => {
     employeesStore.users.forEach((user) => {
-      if (role === user.role?.toLowerCase() && `${user.firstName} ${user.lastName}`.toLowerCase().includes(props.search.toLowerCase())) {
+      if (
+        role === user.role?.toLowerCase() &&
+        `${user.firstName} ${user.lastName}`.toLowerCase().includes(props.search.toLowerCase())
+      ) {
         output.push(user);
       }
     });

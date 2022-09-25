@@ -1,5 +1,5 @@
-<script setup>
-import { ref } from 'vue';
+<script setup lang=ts>
+import { ref } from "vue";
 
 const props = defineProps({
   items: {
@@ -25,7 +25,7 @@ const open = (event, targetEl) => {
 };
 
 const close = () => {
-  click.value(showMenu.value = false);
+  click.value((showMenu.value = false));
 };
 
 const clickHandler = (item) => {
@@ -36,33 +36,18 @@ const clickHandler = (item) => {
 defineExpose({
   open,
 });
-
 </script>
 
 <template>
   <div v-if="showMenu">
-    <base-overlay
-      invisible
-      @click="close(clickout)"
-    />
+    <base-overlay invisible @click="close(clickout)" />
     <Teleport to="body">
-      <div
-        class="right-click-menu"
-        :style="{top, left}"
-      >
-        <div
-          v-for="item in props.items"
-          :key="item"
-          class="right-click-menu-inner"
-        >
-          <div
-            class="item"
-            @click="clickHandler(item)"
-          >
-            <span
-              v-if="item.icon"
-              class="material-icons material-icons-round"
-            >{{ item.icon }}</span>
+      <div class="right-click-menu" :style="{ top, left }">
+        <div v-for="item in props.items" :key="item" class="right-click-menu-inner">
+          <div class="item" @click="clickHandler(item)">
+            <span v-if="item.icon" class="material-icons material-icons-round">{{
+              item.icon
+            }}</span>
             {{ item.label }}
           </div>
         </div>

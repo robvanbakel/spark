@@ -1,15 +1,12 @@
-<script setup>
-import ActivateAccount from '@/components/layout/ActivateAccount.vue';
-import SignIn from '@/components/layout/SignIn.vue';
+<script setup lang=ts>
+import ActivateAccount from "@/components/layout/ActivateAccount.vue";
+import SignIn from "@/components/layout/SignIn.vue";
 </script>
 
 <template>
   <div class="auth">
     <div class="logo">
-      <img
-        src="@/assets/logo.svg"
-        alt="Spark"
-      >
+      <img src="@/assets/logo.svg" alt="Spark" />
     </div>
     <div v-if="$route.query.activationToken">
       <ActivateAccount />

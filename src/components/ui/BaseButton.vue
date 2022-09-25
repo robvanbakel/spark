@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang=ts>
 defineProps({
   icon: {
     type: String,
@@ -29,10 +29,9 @@ defineProps({
 
 <template>
   <button :class="['base-button', { inverted, secondary, 'icon-only': iconOnly }, color]">
-    <span
-      v-if="icon"
-      :class="['material-icons material-icons-round', { flipped }]"
-    >{{ icon }}</span>
+    <span v-if="icon" :class="['material-icons material-icons-round', { flipped }]">{{
+      icon
+    }}</span>
     <slot />
   </button>
 </template>

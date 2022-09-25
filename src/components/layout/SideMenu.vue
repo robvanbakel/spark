@@ -1,6 +1,6 @@
-<script setup>
-import { watch, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+<script setup lang=ts>
+import { watch, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 const props = defineProps({
   items: {
@@ -13,7 +13,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(["update:modelValue"]);
 
 const route = useRoute();
 const router = useRouter();
@@ -26,10 +26,13 @@ if (!route.hash) {
   router.replace({ hash: props.items[0].hash });
 }
 
-watch(() => route.hash, () => {
-  emit('update:modelValue', activeItem.value);
-}, { immediate: true });
-
+watch(
+  () => route.hash,
+  () => {
+    emit("update:modelValue", activeItem.value);
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -38,13 +41,10 @@ watch(() => route.hash, () => {
       <slot />
     </div>
     <ul>
-      <div
-        v-for="(item, index) in items"
-        :key="index"
-      >
-        <hr v-if="item.divider">
+      <div v-for="(item, index) in items" :key="index">
+        <hr v-if="item.divider" />
         <li v-else>
-          <router-link :to="{hash: item.hash}">
+          <router-link :to="{ hash: item.hash }">
             <span
               v-if="item.icon"
               class="icon"
@@ -53,8 +53,9 @@ watch(() => route.hash, () => {
                   ? 'material-icons material-icons-round'
                   : 'material-symbols-outlined'
               "
-            >{{ item.icon }}</span>
-            <span :class="{active: isActive(item.hash)}">{{ item.title }}</span>
+              >{{ item.icon }}</span
+            >
+            <span :class="{ active: isActive(item.hash) }">{{ item.title }}</span>
           </router-link>
         </li>
       </div>

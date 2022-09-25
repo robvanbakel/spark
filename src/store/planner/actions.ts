@@ -1,20 +1,20 @@
-import api from '@/utils/api';
-import format from '@/utils/format';
+import api from "@/utils/api";
+import format from "@/utils/format";
 
 export default {
   async getShifts() {
-    const shifts = await api.get('db/shifts');
+    const shifts = await api.get("db/shifts");
     this.shifts = format.shifts.res(shifts);
   },
   addNewShift(payload) {
-    this.activeShiftId = 'NEW';
+    this.activeShiftId = "NEW";
     this.newShiftPrefillData = payload;
   },
   updateShiftLocally(payload) {
-    if (payload.status === 'NEW') {
+    if (payload.status === "NEW") {
       this.shifts.push({
         ...payload,
-        status: 'PROPOSED',
+        status: "PROPOSED",
         statusUpdated: new Date().toISOString(),
       });
 
@@ -33,7 +33,10 @@ export default {
   saveEditShift(payload) {
     this.updateShiftLocally(payload);
 
-    api[payload.status === 'NEW' ? 'post' : 'patch'](`db/shifts/${payload.id}`, format.shifts.req(payload));
+    api[payload.status === "NEW" ? "post" : "patch"](
+      `db/shifts/${payload.id}`,
+      format.shifts.req(payload)
+    );
   },
   deleteShiftLocally(shiftId = this.activeShiftId) {
     this.shifts = this.shifts.filter((shift) => shift.id !== shiftId);
@@ -44,7 +47,7 @@ export default {
   },
   acceptShifts(shiftIds) {
     shiftIds.forEach((shiftId) => {
-      this.updateShiftLocally({ id: shiftId, status: 'ACCEPTED' });
+      this.updateShiftLocally({ id: shiftId, status: "ACCEPTED" });
       api.patch(`accept/${shiftId}`);
     });
   },
