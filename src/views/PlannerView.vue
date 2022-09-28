@@ -79,95 +79,95 @@ const toggleSidebar = () => {
 </script>
 
 <template>
-  <div class="actionbar">
-    <div class="search">
-      <input
-        ref="searchInputField"
-        v-model.trim="searchInput"
-        autocomplete="off"
-        type="text"
-        placeholder="Search Planner"
-      />
-      <span v-if="!searchInput" class="material-icons material-icons-round"
-        >search</span
-      >
-      <span
-        v-else
-        class="clear material-icons material-icons-round"
-        @click="clearSearchInput"
-        >clear</span
-      >
-    </div>
-    <div class="filter">
-      {{ $t("general.actions.filter") }}:
-      <base-badge
-        v-for="status in Object.keys(filters)"
-        :key="status"
-        :status="status"
-        :class="{ inactive: !filters[status] }"
-        @click="setFilter(status)"
-      />
-      <span
-        v-if="Object.values(filters).includes(true)"
-        class="clear material-icons material-icons-round"
-        @click="clearFilters"
-        >clear</span
-      >
-    </div>
-    <div class="actions">
-      <base-button icon="add" @click="plannerStore.addNewShift">
-        {{ $t("general.actions.add", { resource: "Shift" }) }}
-      </base-button>
-      <base-button
-        inverted
-        icon-only
-        :flipped="!settingsStore.sidebarHidden"
-        icon="menu_open"
-        @click="toggleSidebar"
-      />
-    </div>
-  </div>
-  <main>
-    <section id="planner">
-      <EmptyWeek
-        v-if="emptyWeek && !hideEmptyWeek"
-        @hide-empty-week="hideEmptyWeek = true"
-      />
-      <div v-else>
-        <div class="header">
-          <div>
-            <transition name="weekSwitch">
-              <WeekSwitch v-if="settingsStore.sidebarHidden" />
-            </transition>
-          </div>
-          <div
-            v-for="date in dateStore.dates"
-            :key="date"
-            :class="['dayWrapper', { today: date.isSame(dayjs(), 'date') }]"
+  <base-layout id="planner">
+    <template #actionbar>
+      <div class="actionbar">
+        <div class="search">
+          <input
+            ref="searchInputField"
+            v-model.trim="searchInput"
+            autocomplete="off"
+            type="text"
+            placeholder="Search Planner"
+          />
+          <span v-if="!searchInput" class="material-icons material-icons-round"
+            >search</span
           >
-            <span class="dayName">{{ date.format("dddd") }}</span>
-            <span class="date">{{ date.format("LL") }}</span>
-          </div>
+          <span
+            v-else
+            class="clear material-icons material-icons-round"
+            @click="clearSearchInput"
+            >clear</span
+          >
         </div>
-        <PlannerContent
-          :schedules="schedulesInView"
-          :roles="displayRoles"
-          :search="searchInput"
-        />
+        <div class="filter">
+          {{ $t("general.actions.filter") }}:
+          <base-badge
+            v-for="status in Object.keys(filters)"
+            :key="status"
+            :status="status"
+            :class="{ inactive: !filters[status] }"
+            @click="setFilter(status)"
+          />
+          <span
+            v-if="Object.values(filters).includes(true)"
+            class="clear material-icons material-icons-round"
+            @click="clearFilters"
+            >clear</span
+          >
+        </div>
+        <div class="actions">
+          <base-button icon="add" @click="plannerStore.addNewShift">
+            {{ $t("general.actions.add", { resource: "Shift" }) }}
+          </base-button>
+          <base-button
+            inverted
+            icon-only
+            :flipped="!settingsStore.sidebarHidden"
+            icon="menu_open"
+            @click="toggleSidebar"
+          />
+        </div>
       </div>
-    </section>
+    </template>
+    <EmptyWeek
+      v-if="emptyWeek && !hideEmptyWeek"
+      @hide-empty-week="hideEmptyWeek = true"
+    />
+    <div v-else>
+      <div class="header">
+        <div>
+          <transition name="weekSwitch">
+            <WeekSwitch v-if="settingsStore.sidebarHidden" />
+          </transition>
+        </div>
+        <div
+          v-for="date in dateStore.dates"
+          :key="date"
+          :class="['dayWrapper', { today: date.isSame(dayjs(), 'date') }]"
+        >
+          <span class="dayName">{{ date.format("dddd") }}</span>
+          <span class="date">{{ date.format("LL") }}</span>
+        </div>
+      </div>
+      <PlannerContent
+        :schedules="schedulesInView"
+        :roles="displayRoles"
+        :search="searchInput"
+      />
+    </div>
 
-    <EditShift v-if="plannerStore.activeShiftId" />
-
-    <the-sidebar>
+    <template #sidebar>
       <section>
         <PlannerCalendar />
       </section>
       <section v-if="!emptyWeek || hideEmptyWeek" class="plus-minus-hours">
         <PlusMinusHours :roles="displayRoles" :search="searchInput" />
       </section>
-    </the-sidebar>
-  </main>
+    </template>
+  </base-layout>
+
+  <EditShift v-if="plannerStore.activeShiftId" />
 </template>
 
 <style scoped>

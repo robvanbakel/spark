@@ -3,7 +3,7 @@
 @use "../utilities/colors";
 @use "../utilities/mixins";
 
-section#planner {
+#planner {
   padding-bottom: 8px;
   .header {
     @include mixins.plannerGrid;
