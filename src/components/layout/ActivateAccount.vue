@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, watch, nextTick } from "vue";
 
 import { useRouter, useRoute } from "vue-router";

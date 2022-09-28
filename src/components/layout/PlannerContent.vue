@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { computed } from "vue";
 
 import PlannerRow from "@/components/layout/PlannerRow.vue";

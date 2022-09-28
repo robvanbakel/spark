@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted, onUpdated, computed, watch } from "vue";
 
 import QRCode from "qrcode";

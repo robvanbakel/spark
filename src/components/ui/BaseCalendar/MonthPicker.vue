@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import dayjs from "@/plugins/dayjs";
 
 const props = defineProps({
