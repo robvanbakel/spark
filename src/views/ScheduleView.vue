@@ -210,197 +210,195 @@ const helpActiveShift = () => {
 };
 </script>
 
+<!-- v-if="authStore.user && plannerStore.shifts" -->
+
 <template>
-  <main v-if="authStore.user && plannerStore.shifts">
-    <section id="singleEmployeeCalendar">
-      <div class="header">
-        <h1>Hi {{ authStore.user.firstName }}</h1>
-        <div v-if="schedulesInView" class="week-info">
-          <div>
-            Week: <span>{{ dateStore.weekNumber }}</span>
-          </div>
-          <div>
-            Scheduled: <span>{{ workingDays }} days</span>
-          </div>
-          <div>
-            Total: <span>{{ totalHours }} hours</span>
-          </div>
+  <base-layout id="singleEmployeeCalendar">
+    <div class="header">
+      <h1>Hi {{ authStore.user.firstName }}</h1>
+      <div v-if="schedulesInView" class="week-info">
+        <div>
+          Week: <span>{{ dateStore.weekNumber }}</span>
         </div>
-        <div v-if="hasUnacceptedShifts" class="actions">
-          <base-button icon="check" @click="acceptAllShifts">
-            Accept all shifts
-          </base-button>
+        <div>
+          Scheduled: <span>{{ workingDays }} days</span>
         </div>
-        <div v-else class="actions">
-          <base-button icon="calendar_today" @click="openCalendar">
-            Add to Calendar
-          </base-button>
-          <base-button class="inverted icon-only" @click="generateQR">
-            <span class="clear material-icons material-icons-round"
-              >qr_code_2</span
-            >
-          </base-button>
+        <div>
+          Total: <span>{{ totalHours }} hours</span>
         </div>
       </div>
-      <div v-if="schedulesInView" class="calendar">
-        <div class="colDays">
-          <div
-            v-for="date in dateStore.dates"
-            :key="date"
-            class="row"
-            :class="{ today: date.isSame(dayjs(), 'date') }"
+      <div v-if="hasUnacceptedShifts" class="actions">
+        <base-button icon="check" @click="acceptAllShifts">
+          Accept all shifts
+        </base-button>
+      </div>
+      <div v-else class="actions">
+        <base-button icon="calendar_today" @click="openCalendar">
+          Add to Calendar
+        </base-button>
+        <base-button class="inverted icon-only" @click="generateQR">
+          <span class="clear material-icons material-icons-round"
+            >qr_code_2</span
           >
-            <span class="dayName">{{ date.format("dddd") }}</span>
-            <span class="date">{{ date.format("LL") }}</span>
-          </div>
+        </base-button>
+      </div>
+    </div>
+    <div v-if="schedulesInView" class="calendar">
+      <div class="colDays">
+        <div
+          v-for="date in dateStore.dates"
+          :key="date"
+          class="row"
+          :class="{ today: date.isSame(dayjs(), 'date') }"
+        >
+          <span class="dayName">{{ date.format("dddd") }}</span>
+          <span class="date">{{ date.format("LL") }}</span>
         </div>
-        <div ref="calendar" class="colCalendar">
-          <div class="hours">
+      </div>
+      <div ref="calendar" class="colCalendar">
+        <div class="hours">
+          <span
+            v-for="(hour, index) in hoursVisible + 1"
+            :key="index"
+            :style="{
+              width: `${dayWidth}px`,
+              '--calendarHeight': `${calendarHeight + 12}px`,
+            }"
+            >{{
+              dayjs()
+                .hour(index + visibleHoursStart)
+                .minute(0)
+                .format("HH:mm")
+            }}</span
+          >
+        </div>
+        <div v-for="(day, index) in schedulesInView" :key="index" class="row">
+          <div
+            v-if="day"
+            class="shift"
+            :style="{
+              width: `${timeRangeToPercentage(day.from, day.to).percentage}%`,
+              left: `${timeRangeToPercentage(day.from, day.to).startPoint}%`,
+            }"
+            :class="{ proposed: day && day.status !== 'ACCEPTED' }"
+            @click="setActiveShift(day, index)"
+            @click.right="
+              day.status === 'PROPOSED' &&
+                proposalRightClickHandler($event, day.id)
+            "
+          >
+            <span class="location"> {{ day.location }}</span>
+            <span class="time">
+              {{ day.from.format("HH:mm") }} - {{ day.to.format("HH:mm") }}
+            </span>
             <span
-              v-for="(hour, index) in hoursVisible + 1"
-              :key="index"
-              :style="{
-                width: `${dayWidth}px`,
-                '--calendarHeight': `${calendarHeight + 12}px`,
-              }"
-              >{{
-                dayjs()
-                  .hour(index + visibleHoursStart)
-                  .minute(0)
-                  .format("HH:mm")
-              }}</span
+              v-if="day.notes"
+              class="notes material-icons material-icons-round"
+              >description</span
             >
-          </div>
-          <div v-for="(day, index) in schedulesInView" :key="index" class="row">
-            <div
-              v-if="day"
-              class="shift"
-              :style="{
-                width: `${timeRangeToPercentage(day.from, day.to).percentage}%`,
-                left: `${timeRangeToPercentage(day.from, day.to).startPoint}%`,
-              }"
-              :class="{ proposed: day && day.status !== 'ACCEPTED' }"
-              @click="setActiveShift(day, index)"
-              @click.right="
-                day.status === 'PROPOSED' &&
-                  proposalRightClickHandler($event, day.id)
-              "
-            >
-              <span class="location"> {{ day.location }}</span>
-              <span class="time">
-                {{ day.from.format("HH:mm") }} - {{ day.to.format("HH:mm") }}
-              </span>
-              <span
-                v-if="day.notes"
-                class="notes material-icons material-icons-round"
-                >description</span
-              >
-            </div>
           </div>
         </div>
       </div>
-      <div v-else class="empty-schedule">
-        <p>
-          No schedule available for week
-          {{ dateStore.weekNumber }}.
-        </p>
-      </div>
-    </section>
+    </div>
+    <div v-else class="empty-schedule">
+      <p>
+        No schedule available for week
+        {{ dateStore.weekNumber }}.
+      </p>
+    </div>
 
-    <base-modal
-      v-if="activeShift"
-      class="schedule-shift-info"
-      title="Shift info"
-      global-close
-      clickout
-      @close="closeActiveShift"
-    >
-      <template #main>
-        <div class="shift-info-group">
-          <span class="label">Date</span>
-          <span class="value">{{ activeShift.date }}</span>
-        </div>
-        <div class="shift-info-group">
-          <span class="label">Location</span>
-          <span class="value">{{ activeShift.location }}</span>
-        </div>
-        <div class="shift-info-group">
-          <span class="label">Time</span>
-          <span class="value">
-            {{ activeShift.from.format("HH:mm") }} -
-            {{ activeShift.to.format("HH:mm") }}
-          </span>
-        </div>
-        <div class="shift-info-group">
-          <span class="label">Duration</span>
-          <span class="value">
-            {{ activeShift.duration }} hours ({{ activeShift.break }} minutes
-            break)
-          </span>
-        </div>
-        <div v-if="activeShift.notes" class="shift-info-group">
-          <span class="label">Notes</span>
-          <span class="value">{{ activeShift.notes }}</span>
-        </div>
-      </template>
-      <template v-if="activeShift.status !== 'ACCEPTED'" #actions>
-        <base-button icon="close" inverted @click="declineProposal()">
-          Decline
-        </base-button>
-        <base-button icon="check" @click="acceptProposal()">
-          Accept
-        </base-button>
-      </template>
-      <template v-else #actions>
-        <base-button inverted @click="helpActiveShift"> Help </base-button>
-        <base-button @click="closeActiveShift"> Close </base-button>
-      </template>
-    </base-modal>
-
-    <RightClickMenu
-      ref="acceptRightClickMenu"
-      :items="[
-        {
-          icon: 'check',
-          label: 'Accept',
-          action: acceptProposal,
-        },
-        {
-          icon: 'close',
-          label: 'Decline',
-          action: declineProposal,
-        },
-      ]"
-    />
-
-    <base-modal
-      v-if="showQR"
-      no-header
-      class="schedule-qr"
-      clickout
-      @close="closeQR"
-    >
-      <template #main>
-        <p>Scan with your phone to add your work schedule to your calendar.</p>
-        <img :src="qrCodeImg" alt="Link to calendar subscription" />
-      </template>
-      <template #actions>
-        <base-button @click="closeQR"> Close </base-button>
-      </template>
-    </base-modal>
-
-    <BaseConfirm
-      ref="confirmAcceptAllShifts"
-      title="Accept all shifts for this week"
-      message="Are you sure you want to accept all shifts for this week?"
-      choice-true="Accept shifts"
-    />
-
-    <the-sidebar>
+    <template #sidebar>
       <section><PlannerCalendar /></section>
       <section><EmployeeInfo /></section>
-    </the-sidebar>
-  </main>
+    </template>
+  </base-layout>
+
+  <base-modal
+    v-if="activeShift"
+    class="schedule-shift-info"
+    title="Shift info"
+    global-close
+    clickout
+    @close="closeActiveShift"
+  >
+    <template #main>
+      <div class="shift-info-group">
+        <span class="label">Date</span>
+        <span class="value">{{ activeShift.date }}</span>
+      </div>
+      <div class="shift-info-group">
+        <span class="label">Location</span>
+        <span class="value">{{ activeShift.location }}</span>
+      </div>
+      <div class="shift-info-group">
+        <span class="label">Time</span>
+        <span class="value">
+          {{ activeShift.from.format("HH:mm") }} -
+          {{ activeShift.to.format("HH:mm") }}
+        </span>
+      </div>
+      <div class="shift-info-group">
+        <span class="label">Duration</span>
+        <span class="value">
+          {{ activeShift.duration }} hours ({{ activeShift.break }} minutes
+          break)
+        </span>
+      </div>
+      <div v-if="activeShift.notes" class="shift-info-group">
+        <span class="label">Notes</span>
+        <span class="value">{{ activeShift.notes }}</span>
+      </div>
+    </template>
+    <template v-if="activeShift.status !== 'ACCEPTED'" #actions>
+      <base-button icon="close" inverted @click="declineProposal()">
+        Decline
+      </base-button>
+      <base-button icon="check" @click="acceptProposal()"> Accept </base-button>
+    </template>
+    <template v-else #actions>
+      <base-button inverted @click="helpActiveShift"> Help </base-button>
+      <base-button @click="closeActiveShift"> Close </base-button>
+    </template>
+  </base-modal>
+
+  <RightClickMenu
+    ref="acceptRightClickMenu"
+    :items="[
+      {
+        icon: 'check',
+        label: 'Accept',
+        action: acceptProposal,
+      },
+      {
+        icon: 'close',
+        label: 'Decline',
+        action: declineProposal,
+      },
+    ]"
+  />
+
+  <base-modal
+    v-if="showQR"
+    no-header
+    class="schedule-qr"
+    clickout
+    @close="closeQR"
+  >
+    <template #main>
+      <p>Scan with your phone to add your work schedule to your calendar.</p>
+      <img :src="qrCodeImg" alt="Link to calendar subscription" />
+    </template>
+    <template #actions>
+      <base-button @click="closeQR"> Close </base-button>
+    </template>
+  </base-modal>
+
+  <BaseConfirm
+    ref="confirmAcceptAllShifts"
+    title="Accept all shifts for this week"
+    message="Are you sure you want to accept all shifts for this week?"
+    choice-true="Accept shifts"
+  />
 </template>
 
 <style scoped>

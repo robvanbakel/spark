@@ -1,10 +1,9 @@
-@use 'sass:color';
+@use "sass:color";
 
-@use '../utilities/colors';
-@use '../utilities/mixins';
+@use "../utilities/colors";
+@use "../utilities/mixins";
 
-section#singleEmployeeCalendar {
-  padding: 40px;
+#singleEmployeeCalendar {
   .header {
     margin-bottom: 3em;
     display: flex;
@@ -76,7 +75,7 @@ section#singleEmployeeCalendar {
         left: -50%;
         top: -32px;
         &::after {
-          content: '';
+          content: "";
           width: 1px;
           background-color: lighten(colors.$border, 6%);
           display: block;
@@ -121,7 +120,7 @@ section#singleEmployeeCalendar {
               border-color: colors.$blue-light;
             }
             &::after {
-              content: '?';
+              content: "?";
               font-size: 11px;
               position: absolute;
               top: 0;
