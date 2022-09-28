@@ -1,5 +1,11 @@
 @use "colors";
 
+@mixin baseBox {
+  border-radius: 20px;
+  border: 1px solid colors.$border;
+  padding: 22px;
+}
+
 @mixin baseModal {
   position: fixed;
   top: 50%;

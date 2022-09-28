@@ -16,6 +16,8 @@ import App from "@/App.vue";
 import "@/assets/styles/main.scss";
 
 import i18n from "@/plugins/i18n";
+import BaseLayout from "@/components/layout/BaseLayout.vue";
+import SideMenu from "@/components/layout/SideMenu.vue";
 import BaseBadge from "@/components/ui/BaseBadge.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 import BaseSwitch from "@/components/ui/BaseSwitch.vue";
@@ -41,6 +43,8 @@ app.use(pinia);
 app.use(router);
 app.use(i18n);
 
+app.component("BaseLayout", BaseLayout);
+app.component("SideMenu", SideMenu);
 app.component("BaseButton", BaseButton);
 app.component("BaseBadge", BaseBadge);
 app.component("BaseSwitch", BaseSwitch);

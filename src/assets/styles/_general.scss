@@ -22,6 +22,40 @@ body {
   min-width: 880px;
 }
 
+section {
+  @include mixins.baseBox;
+}
+
+$base-padding: 40px;
+
+.base-layout {
+  display: flex;
+  gap: $base-padding;
+
+  nav {
+    flex: 0 0 184px;
+  }
+
+  main {
+    overflow-x: hidden;
+    flex-grow: 1;
+    .content {
+      display: flex;
+      gap: $base-padding;
+      .main {
+        flex-grow: 1;
+        overflow-x: scroll;
+      }
+      aside {
+        flex: 0 0 260px;
+        display: flex;
+        flex-direction: column;
+        gap: $base-padding;
+      }
+    }
+  }
+}
+
 .overlay {
   position: fixed;
   top: 0;
@@ -39,39 +73,6 @@ body {
   }
   &.invisible {
     opacity: 0;
-  }
-}
-
-main {
-  display: flex;
-  align-items: flex-start;
-  & > section {
-    flex-grow: 1;
-  }
-}
-
-section {
-  border-radius: 20px;
-  border: 1px solid colors.$border;
-  padding: 22px;
-  margin-bottom: 40px;
-}
-
-aside {
-  width: 264px;
-  margin-left: 40px;
-  &,
-  s & > * {
-    transition: all 260ms ease-in;
-  }
-  &.hidden {
-    margin-left: -264px;
-    pointer-events: none;
-    & > * {
-      opacity: 0;
-      transform: translateX(304px); // width + margin-left
-      position: relative;
-    }
   }
 }
 
