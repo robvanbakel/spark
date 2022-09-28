@@ -62,88 +62,88 @@ filters.value = settingsStore.statuses.reduce(
 </script>
 
 <template>
-  <div class="actionbar">
-    <div class="search">
-      <input
-        ref="searchInputField"
-        v-model.trim="searchInput"
-        autocomplete="off"
-        type="text"
-        placeholder="Search Staff"
-      />
-      <span v-if="!searchInput" class="material-icons material-icons-round"
-        >search</span
-      >
-      <span
-        v-else
-        class="clear material-icons material-icons-round"
-        @click="clearSearchInput"
-        >clear</span
-      >
-    </div>
-    <div class="filter">
-      {{ $t("general.actions.filter") }}:
-      <base-badge
-        v-for="status in Object.keys(filters)"
-        :key="status"
-        :status="status"
-        :class="{ inactive: !filters[status] }"
-        @click="setFilter(status)"
-      />
-      <span
-        v-if="Object.values(filters).includes(true)"
-        class="clear material-icons material-icons-round"
-        @click="clearFilters"
-        >clear</span
-      >
-    </div>
-    <div class="actions">
-      <base-button icon="add" @click="employeesStore.addNewUser()">
-        {{ $t("general.actions.add", { resource: "Employee" }) }}
-      </base-button>
-    </div>
-  </div>
-  <main>
-    <section id="employeelist">
-      <table>
-        <thead>
-          <th class="badge" />
-          <th class="name">
-            {{ $t("general.labels.name") }}
-          </th>
-          <th>{{ $t("general.labels.email") }}</th>
-          <th>{{ $t("general.labels.phone") }}</th>
-          <th>{{ $t("general.labels.role") }}</th>
-          <th>{{ $t("general.labels.notes") }}</th>
-          <th class="settings" />
-        </thead>
-        <tbody>
-          <tr
-            v-for="employee in employees"
-            :key="employee.id"
-            class="row"
-            @click="employeesStore.activeUserId = employee.id"
+  <base-layout id="employee-list">
+    <template #actionbar>
+      <div class="actionbar">
+        <div class="search">
+          <input
+            ref="searchInputField"
+            v-model.trim="searchInput"
+            autocomplete="off"
+            type="text"
+            placeholder="Search Staff"
+          />
+          <span v-if="!searchInput" class="material-icons material-icons-round"
+            >search</span
           >
-            <td class="badge">
-              <base-badge :status="employee.status" :label="false" />
-            </td>
-            <td class="name">
-              {{ getFullName(employee) }}
-            </td>
-            <td>{{ employee.email }}</td>
-            <td>{{ employee.phone }}</td>
-            <td>{{ employee.role }}</td>
-            <td class="notes">
-              {{ employee.notes }}
-            </td>
-            <td class="settings" @click.stop="toUserSettings(employee.id)">
-              <span class="material-symbols-outlined">settings</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-  </main>
+          <span
+            v-else
+            class="clear material-icons material-icons-round"
+            @click="clearSearchInput"
+            >clear</span
+          >
+        </div>
+        <div class="filter">
+          {{ $t("general.actions.filter") }}:
+          <base-badge
+            v-for="status in Object.keys(filters)"
+            :key="status"
+            :status="status"
+            :class="{ inactive: !filters[status] }"
+            @click="setFilter(status)"
+          />
+          <span
+            v-if="Object.values(filters).includes(true)"
+            class="clear material-icons material-icons-round"
+            @click="clearFilters"
+            >clear</span
+          >
+        </div>
+        <div class="actions">
+          <base-button icon="add" @click="employeesStore.addNewUser()">
+            {{ $t("general.actions.add", { resource: "Employee" }) }}
+          </base-button>
+        </div>
+      </div>
+    </template>
+    <table>
+      <thead>
+        <th class="badge" />
+        <th class="name">
+          {{ $t("general.labels.name") }}
+        </th>
+        <th>{{ $t("general.labels.email") }}</th>
+        <th>{{ $t("general.labels.phone") }}</th>
+        <th>{{ $t("general.labels.role") }}</th>
+        <th>{{ $t("general.labels.notes") }}</th>
+        <th class="settings" />
+      </thead>
+      <tbody>
+        <tr
+          v-for="employee in employees"
+          :key="employee.id"
+          class="row"
+          @click="employeesStore.activeUserId = employee.id"
+        >
+          <td class="badge">
+            <base-badge :status="employee.status" :label="false" />
+          </td>
+          <td class="name">
+            {{ getFullName(employee) }}
+          </td>
+          <td>{{ employee.email }}</td>
+          <td>{{ employee.phone }}</td>
+          <td>{{ employee.role }}</td>
+          <td class="notes">
+            {{ employee.notes }}
+          </td>
+          <td class="settings" @click.stop="toUserSettings(employee.id)">
+            <span class="material-symbols-outlined">settings</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </base-layout>
 
   <EditEmployee v-if="employeesStore.activeUserId" />
 </template>
