@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { useSettings } from "@/store";
+
+const settingsStore = useSettings();
+</script>
+
 <template>
   <div class="base-layout">
     <nav v-if="$slots.nav">
@@ -11,7 +17,10 @@
         <section class="main">
           <slot />
         </section>
-        <aside v-if="$slots.sidebar">
+        <aside
+          v-if="$slots.sidebar"
+          :class="{ hidden: settingsStore.sidebarHidden }"
+        >
           <slot name="sidebar" />
         </aside>
       </div>

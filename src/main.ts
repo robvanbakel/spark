@@ -28,7 +28,6 @@ import BaseConfirm from "@/components/ui/BaseConfirm.vue";
 import BaseDatePicker from "@/components/ui/BaseDatePicker.vue";
 import WeekSwitch from "@/components/ui/WeekSwitch.vue";
 import RightClickMenu from "@/components/ui/RightClickMenu.vue";
-import TheSidebar from "@/components/layout/TheSidebar.vue";
 
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
@@ -55,7 +54,6 @@ app.component("BaseConfirm", BaseConfirm);
 app.component("BaseDatePicker", BaseDatePicker);
 app.component("WeekSwitch", WeekSwitch);
 app.component("RightClickMenu", RightClickMenu);
-app.component("TheSidebar", TheSidebar);
 
 app.mount("#app");
 
