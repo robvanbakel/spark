@@ -4,6 +4,7 @@ import { useEmployees } from "@/store";
 import { useRoute } from "vue-router";
 import SideMenu from "@/components/layout/SideMenu.vue";
 import type { MenuItem } from "@/types/global";
+import BaseLayout from "../components/layout/BaseLayout.vue";
 
 const employeesStore = useEmployees();
 
@@ -57,19 +58,17 @@ const activeRoute = ref();
 </script>
 
 <template>
-  <div id="user-settings">
-    <side-menu v-model="activeRoute" :items="items">
-      <template #header>
-        <div class="slot-header">
-          <span class="name">{{ user?.firstName }} {{ user?.lastName }}</span>
-          <span class="email">{{ user?.email }}</span>
-        </div>
-      </template>
-    </side-menu>
-    <main>
-      <section>
-        <h1>{{ activeRoute?.title }}</h1>
-      </section>
-    </main>
-  </div>
+  <base-layout id="user-settings">
+    <template #nav>
+      <side-menu v-model="activeRoute" :items="items">
+        <template #header>
+          <div class="slot-header">
+            <span class="name">{{ user?.firstName }} {{ user?.lastName }}</span>
+            <span class="email">{{ user?.email }}</span>
+          </div>
+        </template>
+      </side-menu>
+    </template>
+    <h1>{{ activeRoute?.title }}</h1>
+  </base-layout>
 </template>
