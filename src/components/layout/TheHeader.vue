@@ -51,7 +51,9 @@ const logout = () => {
     </nav>
     <div id="profile">
       <div v-if="icon !== 'logout'" class="profile-info">
-        <span class="profile-name">{{ user.firstName }} {{ user.lastName }}</span>
+        <span class="profile-name"
+          >{{ user.firstName }} {{ user.lastName }}</span
+        >
         <span class="profile-account">{{ user.email }}</span>
       </div>
       <div v-else class="profile-info">

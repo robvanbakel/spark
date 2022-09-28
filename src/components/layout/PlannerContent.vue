@@ -29,7 +29,9 @@ const employees = computed(() => {
     employeesStore.users.forEach((user) => {
       if (
         role === user.role?.toLowerCase() &&
-        `${user.firstName} ${user.lastName}`.toLowerCase().includes(props.search.toLowerCase())
+        `${user.firstName} ${user.lastName}`
+          .toLowerCase()
+          .includes(props.search.toLowerCase())
       ) {
         output.push(user);
       }

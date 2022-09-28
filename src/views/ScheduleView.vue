@@ -29,12 +29,16 @@ const activeShift = ref(null);
 const visibleHoursStart = ref(0);
 const visibleHoursEnd = ref(0);
 
-const webcalLink = computed(() => `webcal://app.sparkscheduler.com/feed/${authStore.feedToken}`);
+const webcalLink = computed(
+  () => `webcal://app.sparkscheduler.com/feed/${authStore.feedToken}`
+);
 
 const schedulesInView = computed(() => {
   const shiftsInView = dateStore.dates.map((date) =>
     plannerStore.shifts.find(
-      (shift) => shift.employeeId === authStore.user.id && date.isSame(shift.from, "date")
+      (shift) =>
+        shift.employeeId === authStore.user.id &&
+        date.isSame(shift.from, "date")
     )
   );
 
@@ -53,7 +57,9 @@ const totalHours = computed(() =>
   }, 0)
 );
 
-const workingDays = computed(() => schedulesInView.value.filter((v) => v).length);
+const workingDays = computed(
+  () => schedulesInView.value.filter((v) => v).length
+);
 
 const hasUnacceptedShifts = computed(() =>
   schedulesInView.value
@@ -61,7 +67,9 @@ const hasUnacceptedShifts = computed(() =>
     .some((accepted) => accepted === false)
 );
 
-const hoursVisible = computed(() => (visibleHoursEnd.value || 24) - visibleHoursStart.value);
+const hoursVisible = computed(
+  () => (visibleHoursEnd.value || 24) - visibleHoursStart.value
+);
 
 const dayWidth = computed(() => calendarWidth.value / hoursVisible.value);
 
@@ -131,7 +139,8 @@ const timeRangeToPercentage = (from, to) => {
   // Calculate starting point
   const startHourPercentage = (startHour - visibleHoursStart.value) * 100;
   const startMinPercentage = (startMin / 60) * 100;
-  const startPoint = (startHourPercentage + startMinPercentage) / hoursVisible.value;
+  const startPoint =
+    (startHourPercentage + startMinPercentage) / hoursVisible.value;
 
   return { startPoint, percentage };
 };
@@ -218,12 +227,18 @@ const helpActiveShift = () => {
           </div>
         </div>
         <div v-if="hasUnacceptedShifts" class="actions">
-          <base-button icon="check" @click="acceptAllShifts"> Accept all shifts </base-button>
+          <base-button icon="check" @click="acceptAllShifts">
+            Accept all shifts
+          </base-button>
         </div>
         <div v-else class="actions">
-          <base-button icon="calendar_today" @click="openCalendar"> Add to Calendar </base-button>
+          <base-button icon="calendar_today" @click="openCalendar">
+            Add to Calendar
+          </base-button>
           <base-button class="inverted icon-only" @click="generateQR">
-            <span class="clear material-icons material-icons-round">qr_code_2</span>
+            <span class="clear material-icons material-icons-round"
+              >qr_code_2</span
+            >
           </base-button>
         </div>
       </div>
@@ -266,13 +281,18 @@ const helpActiveShift = () => {
               }"
               :class="{ proposed: day && day.status !== 'ACCEPTED' }"
               @click="setActiveShift(day, index)"
-              @click.right="day.status === 'PROPOSED' && proposalRightClickHandler($event, day.id)"
+              @click.right="
+                day.status === 'PROPOSED' &&
+                  proposalRightClickHandler($event, day.id)
+              "
             >
               <span class="location"> {{ day.location }}</span>
               <span class="time">
                 {{ day.from.format("HH:mm") }} - {{ day.to.format("HH:mm") }}
               </span>
-              <span v-if="day.notes" class="notes material-icons material-icons-round"
+              <span
+                v-if="day.notes"
+                class="notes material-icons material-icons-round"
                 >description</span
               >
             </div>
@@ -307,13 +327,15 @@ const helpActiveShift = () => {
         <div class="shift-info-group">
           <span class="label">Time</span>
           <span class="value">
-            {{ activeShift.from.format("HH:mm") }} - {{ activeShift.to.format("HH:mm") }}
+            {{ activeShift.from.format("HH:mm") }} -
+            {{ activeShift.to.format("HH:mm") }}
           </span>
         </div>
         <div class="shift-info-group">
           <span class="label">Duration</span>
           <span class="value">
-            {{ activeShift.duration }} hours ({{ activeShift.break }} minutes break)
+            {{ activeShift.duration }} hours ({{ activeShift.break }} minutes
+            break)
           </span>
         </div>
         <div v-if="activeShift.notes" class="shift-info-group">
@@ -322,8 +344,12 @@ const helpActiveShift = () => {
         </div>
       </template>
       <template v-if="activeShift.status !== 'ACCEPTED'" #actions>
-        <base-button icon="close" inverted @click="declineProposal()"> Decline </base-button>
-        <base-button icon="check" @click="acceptProposal()"> Accept </base-button>
+        <base-button icon="close" inverted @click="declineProposal()">
+          Decline
+        </base-button>
+        <base-button icon="check" @click="acceptProposal()">
+          Accept
+        </base-button>
       </template>
       <template v-else #actions>
         <base-button inverted @click="helpActiveShift"> Help </base-button>
@@ -347,7 +373,13 @@ const helpActiveShift = () => {
       ]"
     />
 
-    <base-modal v-if="showQR" no-header class="schedule-qr" clickout @close="closeQR">
+    <base-modal
+      v-if="showQR"
+      no-header
+      class="schedule-qr"
+      clickout
+      @close="closeQR"
+    >
       <template #main>
         <p>Scan with your phone to add your work schedule to your calendar.</p>
         <img :src="qrCodeImg" alt="Link to calendar subscription" />

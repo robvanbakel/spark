@@ -43,11 +43,17 @@ defineExpose({
     <base-overlay invisible @click="close(clickout)" />
     <Teleport to="body">
       <div class="right-click-menu" :style="{ top, left }">
-        <div v-for="item in props.items" :key="item" class="right-click-menu-inner">
+        <div
+          v-for="item in props.items"
+          :key="item"
+          class="right-click-menu-inner"
+        >
           <div class="item" @click="clickHandler(item)">
-            <span v-if="item.icon" class="material-icons material-icons-round">{{
-              item.icon
-            }}</span>
+            <span
+              v-if="item.icon"
+              class="material-icons material-icons-round"
+              >{{ item.icon }}</span
+            >
             {{ item.label }}
           </div>
         </div>

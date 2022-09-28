@@ -41,11 +41,15 @@ const monthClasses = (month) => {
 
 <template>
   <div id="header">
-    <span class="material-icons material-icons-round" @click="shiftYear(-1)">chevron_left</span>
+    <span class="material-icons material-icons-round" @click="shiftYear(-1)"
+      >chevron_left</span
+    >
     <h2 @click="emit('switchMode', 'DAY')">
       {{ currentView.format("YYYY") }}
     </h2>
-    <span class="material-icons material-icons-round" @click="shiftYear(1)">chevron_right</span>
+    <span class="material-icons material-icons-round" @click="shiftYear(1)"
+      >chevron_right</span
+    >
   </div>
   <div id="months">
     <span

@@ -37,13 +37,17 @@ watch(route, (to) => {
       You can either start with an empty schedule or copy an existing week.
     </p>
     <div class="action-wrapper">
-      <div :class="['action', { transparent: showCopyWeek }]" @click="emit('hideEmptyWeek')">
+      <div
+        :class="['action', { transparent: showCopyWeek }]"
+        @click="emit('hideEmptyWeek')"
+      >
         <span class="material-icons material-icons-round">calendar_today</span>
         Create empty schedule
       </div>
       <CopyWeek v-if="showCopyWeek" />
       <div v-else class="action transparent" style="pointer-events: none">
-        <span class="material-icons material-icons-round">event_note</span> Copy an existing week
+        <span class="material-icons material-icons-round">event_note</span> Copy
+        an existing week
       </div>
     </div>
   </div>

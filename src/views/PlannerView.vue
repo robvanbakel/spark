@@ -26,14 +26,18 @@ const filters = ref({});
 
 const displayRoles = computed(() => {
   if (Object.values(filters.value).includes(true)) {
-    return Object.keys(filters.value).filter((role) => filters.value[role] === true);
+    return Object.keys(filters.value).filter(
+      (role) => filters.value[role] === true
+    );
   }
   return Object.keys(filters.value);
 });
 
 const schedulesInView = computed(() => plannerStore.schedulesInView);
 
-const emptyWeek = computed(() => !Object.values(schedulesInView.value).flat().length);
+const emptyWeek = computed(
+  () => !Object.values(schedulesInView.value).flat().length
+);
 
 const setWindowTitle = () => {
   dateStore.setDates(route.params.weekId || dayjs().weekId());
@@ -84,8 +88,13 @@ const toggleSidebar = () => {
         type="text"
         placeholder="Search Planner"
       />
-      <span v-if="!searchInput" class="material-icons material-icons-round">search</span>
-      <span v-else class="clear material-icons material-icons-round" @click="clearSearchInput"
+      <span v-if="!searchInput" class="material-icons material-icons-round"
+        >search</span
+      >
+      <span
+        v-else
+        class="clear material-icons material-icons-round"
+        @click="clearSearchInput"
         >clear</span
       >
     </div>
@@ -120,7 +129,10 @@ const toggleSidebar = () => {
   </div>
   <main>
     <section id="planner">
-      <EmptyWeek v-if="emptyWeek && !hideEmptyWeek" @hide-empty-week="hideEmptyWeek = true" />
+      <EmptyWeek
+        v-if="emptyWeek && !hideEmptyWeek"
+        @hide-empty-week="hideEmptyWeek = true"
+      />
       <div v-else>
         <div class="header">
           <div>
@@ -137,7 +149,11 @@ const toggleSidebar = () => {
             <span class="date">{{ date.format("LL") }}</span>
           </div>
         </div>
-        <PlannerContent :schedules="schedulesInView" :roles="displayRoles" :search="searchInput" />
+        <PlannerContent
+          :schedules="schedulesInView"
+          :roles="displayRoles"
+          :search="searchInput"
+        />
       </div>
     </section>
 

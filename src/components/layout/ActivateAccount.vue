@@ -28,13 +28,17 @@ watch(emailConfirmed, (val) => {
 const confirmEmail = async () => {
   loading.value = true;
 
-  const baseUrl = `${import.meta.env.VITE_ADMIN_HOST || ""}/admin/activateAccount`;
+  const baseUrl = `${
+    import.meta.env.VITE_ADMIN_HOST || ""
+  }/admin/activateAccount`;
 
   const { activationToken } = route.query;
   const encodedEmail = encodeURIComponent(email.value);
 
   try {
-    const res = await fetch(`${baseUrl}?activationToken=${activationToken}&email=${encodedEmail}`);
+    const res = await fetch(
+      `${baseUrl}?activationToken=${activationToken}&email=${encodedEmail}`
+    );
 
     if (res.ok) {
       const data = await res.json();
@@ -92,15 +96,18 @@ const setPassword = async () => {
   errorMessage.value = null;
 
   try {
-    const res = await fetch(`${import.meta.env.VITE_ADMIN_HOST || ""}/admin/activateAccount`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        activationToken: route.query.activationToken,
-        email: email.value,
-        password: password.value,
-      }),
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_ADMIN_HOST || ""}/admin/activateAccount`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          activationToken: route.query.activationToken,
+          email: email.value,
+          password: password.value,
+        }),
+      }
+    );
 
     if (res.ok) {
       success.value = true;
@@ -124,7 +131,9 @@ const toLogin = () => {
   <div v-if="!success">
     <div v-if="!emailConfirmed" class="auth-modal">
       <h1>Welcome</h1>
-      <p>Please enter your email address and click continue to choose a password.</p>
+      <p>
+        Please enter your email address and click continue to choose a password.
+      </p>
       <p v-if="errorMessage" class="error">
         {{ errorMessage }}
       </p>
@@ -145,21 +154,28 @@ const toLogin = () => {
     <div v-else class="auth-modal">
       <h1>Hi {{ firstName }}</h1>
       <p>
-        Choose a strong password and submit in order to activate your account and login to see your
-        schedule.
+        Choose a strong password and submit in order to activate your account
+        and login to see your schedule.
       </p>
       <p v-if="errorMessage" class="error">
         {{ errorMessage }}
       </p>
       <form @submit.prevent="setPassword">
-        <input ref="passwordField" v-model="password" type="password" placeholder="Password" />
+        <input
+          ref="passwordField"
+          v-model="password"
+          type="password"
+          placeholder="Password"
+        />
         <input
           ref="repeatPasswordField"
           v-model="repeatPassword"
           type="password"
           placeholder="Repeat password"
         />
-        <base-button v-if="!loading" type="submit"> Activate Account </base-button>
+        <base-button v-if="!loading" type="submit">
+          Activate Account
+        </base-button>
         <base-button v-else disabled> Loading… </base-button>
       </form>
     </div>
@@ -168,8 +184,8 @@ const toLogin = () => {
   <div v-else class="auth-modal success">
     <h1>Success!</h1>
     <p>
-      Your account has been successfully activated! You can now log in to Spark to see your
-      schedule.
+      Your account has been successfully activated! You can now log in to Spark
+      to see your schedule.
     </p>
     <base-button icon="login" @click="toLogin"> Login page </base-button>
   </div>

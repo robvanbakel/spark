@@ -15,7 +15,10 @@ const selectedMonth = ref(new Date().getMonth());
 const selectedYear = ref(new Date().getFullYear());
 
 const calendarHeader = computed(() =>
-  dayjs().year(selectedYear.value).month(selectedMonth.value).format("MMMM YYYY")
+  dayjs()
+    .year(selectedYear.value)
+    .month(selectedMonth.value)
+    .format("MMMM YYYY")
 );
 
 const calendarPoint = computed(() => dateStore.dates[3]);
@@ -32,7 +35,8 @@ watch(calendarPoint, () => {
   }
 });
 
-const daysInMonth = () => new Date(selectedYear.value, selectedMonth.value + 1, 0).getDate();
+const daysInMonth = () =>
+  new Date(selectedYear.value, selectedMonth.value + 1, 0).getDate();
 
 const visibleInPrevMonth = () => {
   const amount = new Date(selectedYear.value, selectedMonth.value, 0).getDay();
@@ -40,14 +44,20 @@ const visibleInPrevMonth = () => {
   const dates = [];
 
   for (let i = 0; i < amount; i += 1) {
-    dates.unshift(new Date(selectedYear.value, selectedMonth.value, -i).getDate());
+    dates.unshift(
+      new Date(selectedYear.value, selectedMonth.value, -i).getDate()
+    );
   }
 
   return dates;
 };
 
 const visibleInNextMonth = () => {
-  const lastDayInMonth = new Date(selectedYear.value, selectedMonth.value + 1, 0).getDay();
+  const lastDayInMonth = new Date(
+    selectedYear.value,
+    selectedMonth.value + 1,
+    0
+  ).getDay();
 
   if (lastDayInMonth === 0) return null;
 
@@ -73,7 +83,11 @@ const prev = () => {
 };
 
 const calendarPointClass = (num) => {
-  const calendarFullDate = new Date(selectedYear.value, selectedMonth.value, num).toDateString();
+  const calendarFullDate = new Date(
+    selectedYear.value,
+    selectedMonth.value,
+    num
+  ).toDateString();
 
   let dateClass = "";
 
@@ -87,7 +101,11 @@ const calendarPointClass = (num) => {
 };
 
 const currentDateClass = (num) => {
-  const calendarFullDate = new Date(selectedYear.value, selectedMonth.value, num).toDateString();
+  const calendarFullDate = new Date(
+    selectedYear.value,
+    selectedMonth.value,
+    num
+  ).toDateString();
   const currentFullDate = new Date().toDateString();
 
   return calendarFullDate === currentFullDate ? "current-date" : "";
@@ -108,17 +126,28 @@ const setWeek = async (selectedDay) => {
 <template>
   <div class="plannerCalendar">
     <div id="header">
-      <span class="material-icons material-icons-round" @click="prev">chevron_left</span>
+      <span class="material-icons material-icons-round" @click="prev"
+        >chevron_left</span
+      >
       <h2 @click="today">
         {{ calendarHeader }}
       </h2>
-      <span class="material-icons material-icons-round" @click="next">chevron_right</span>
+      <span class="material-icons material-icons-round" @click="next"
+        >chevron_right</span
+      >
     </div>
     <div id="days">
-      <span v-for="day in 7" :key="day">{{ dayjs.weekdaysShort()[day % 7] }}</span>
+      <span v-for="day in 7" :key="day">{{
+        dayjs.weekdaysShort()[day % 7]
+      }}</span>
     </div>
     <div class="dates">
-      <p v-for="num in visibleInPrevMonth()" :key="num" class="prev-month" @click="prev()">
+      <p
+        v-for="num in visibleInPrevMonth()"
+        :key="num"
+        class="prev-month"
+        @click="prev()"
+      >
         {{ num }}
       </p>
       <p
@@ -129,7 +158,12 @@ const setWeek = async (selectedDay) => {
       >
         {{ num }}
       </p>
-      <p v-for="num in visibleInNextMonth()" :key="num" class="next-month" @click="next()">
+      <p
+        v-for="num in visibleInNextMonth()"
+        :key="num"
+        class="next-month"
+        @click="next()"
+      >
         {{ num }}
       </p>
     </div>

@@ -59,21 +59,30 @@ const handleSubmit = async () => {
     </p>
     <form @submit.prevent="handleSubmit">
       <input v-model.trim="email" type="email" placeholder="Email" required />
-      <input v-model="password" type="password" placeholder="Password" required />
+      <input
+        v-model="password"
+        type="password"
+        placeholder="Password"
+        required
+      />
       <base-button v-if="!isLoading"> Log In </base-button>
       <base-button v-else disabled> Loading… </base-button>
     </form>
   </div>
 
-  <div v-if="settingsStore.mode === 'demo' || settingsStore.mode === 'localhost'">
+  <div
+    v-if="settingsStore.mode === 'demo' || settingsStore.mode === 'localhost'"
+  >
     <transition name="demo">
       <div v-if="showDemo" class="auth-modal demo">
         <h1>No account yet?</h1>
         <p>
-          Click the button below to enter a demo account. Any changes you make won't be stored and
-          will be lost when existing the demo environment.
+          Click the button below to enter a demo account. Any changes you make
+          won't be stored and will be lost when existing the demo environment.
         </p>
-        <base-button v-if="!demoLoading" icon="login" @click="enterDemo"> Enter Demo </base-button>
+        <base-button v-if="!demoLoading" icon="login" @click="enterDemo">
+          Enter Demo
+        </base-button>
         <base-button v-else disabled icon="login"> Loading… </base-button>
       </div>
     </transition>

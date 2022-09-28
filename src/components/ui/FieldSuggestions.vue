@@ -28,7 +28,9 @@ const suggestionRightClickMenu = ref();
 const showNewSuggestion = computed(() => {
   if (
     props.modelValue &&
-    !props.suggestions.map((sug) => sug.toLowerCase()).includes(props.modelValue.toLowerCase())
+    !props.suggestions
+      .map((sug) => sug.toLowerCase())
+      .includes(props.modelValue.toLowerCase())
   ) {
     return true;
   }
@@ -56,7 +58,11 @@ const suggestionRightClickHandler = async (event, suggestion) => {
       @click.right.prevent="suggestionRightClickHandler($event, suggestion)"
       >{{ suggestion }}</span
     >
-    <span v-if="showNewSuggestion" class="add" @click="addSuggestion(modelValue)">
+    <span
+      v-if="showNewSuggestion"
+      class="add"
+      @click="addSuggestion(modelValue)"
+    >
       <span class="material-icons material-icons-round">add</span>
       {{ modelValue }}
     </span>

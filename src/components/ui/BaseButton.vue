@@ -28,10 +28,18 @@ defineProps({
 </script>
 
 <template>
-  <button :class="['base-button', { inverted, secondary, 'icon-only': iconOnly }, color]">
-    <span v-if="icon" :class="['material-icons material-icons-round', { flipped }]">{{
-      icon
-    }}</span>
+  <button
+    :class="[
+      'base-button',
+      { inverted, secondary, 'icon-only': iconOnly },
+      color,
+    ]"
+  >
+    <span
+      v-if="icon"
+      :class="['material-icons material-icons-round', { flipped }]"
+      >{{ icon }}</span
+    >
     <slot />
   </button>
 </template>

@@ -110,7 +110,9 @@ const formatDateTime = (value, field, model) => {
 const shiftToTime = () => {
   if (!shift.value.from || !shift.value.to) return;
 
-  shift.value.to = shift.value.from.hour(shift.value.to.hour()).minute(shift.value.to.minute());
+  shift.value.to = shift.value.from
+    .hour(shift.value.to.hour())
+    .minute(shift.value.to.minute());
 
   if (shift.value.to.isBefore(shift.value.from) || inputTo.value === "00:00") {
     shift.value.to = shift.value.to.add(1, "day");
@@ -225,7 +227,9 @@ const deleteShift = async () => {
               @update:model-value="shiftToTime"
             />
             <div class="form-control-time">
-              <span class="input-label-main">{{ $t("general.labels.time") }}</span>
+              <span class="input-label-main">{{
+                $t("general.labels.time")
+              }}</span>
               <input
                 v-model.lazy.trim="inputFrom"
                 autocomplete="off"
@@ -248,7 +252,12 @@ const deleteShift = async () => {
         </div>
         <div class="form-control">
           <label>{{ $t("general.labels.break") }}</label>
-          <BaseSwitch v-model="shift.break" :items="settingsStore.breaks" fixed tabindex="0" />
+          <BaseSwitch
+            v-model="shift.break"
+            :items="settingsStore.breaks"
+            fixed
+            tabindex="0"
+          />
         </div>
         <div class="form-control notes">
           <label for="notes">{{ $t("general.labels.notes") }}</label>
@@ -266,14 +275,22 @@ const deleteShift = async () => {
         tabindex="-1"
         @click="deleteShift"
       />
-      <base-button v-if="newRequestNeeded && !newShift" secondary @click="resetForm">
+      <base-button
+        v-if="newRequestNeeded && !newShift"
+        secondary
+        @click="resetForm"
+      >
         Reset
       </base-button>
       <base-button v-else secondary @click="closeEditShift">
         {{ $t("general.actions.cancel") }}
       </base-button>
       <base-button @click="validate">
-        {{ newShift || newRequestNeeded ? "Send request" : $t("general.actions.save") }}
+        {{
+          newShift || newRequestNeeded
+            ? "Send request"
+            : $t("general.actions.save")
+        }}
       </base-button>
     </template>
   </base-modal>

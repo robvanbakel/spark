@@ -19,5 +19,8 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div :class="['overlay', { dark, transparent, invisible }]" @click="emit('clickout')" />
+  <div
+    :class="['overlay', { dark, transparent, invisible }]"
+    @click="emit('clickout')"
+  />
 </template>

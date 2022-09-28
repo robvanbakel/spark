@@ -49,7 +49,10 @@ const close = (bool) => {
     <div v-if="!noHeader" class="header">
       <h1>{{ title }}</h1>
       <slot name="header" />
-      <span v-if="globalClose" class="material-icons material-icons-round" @click="close"
+      <span
+        v-if="globalClose"
+        class="material-icons material-icons-round"
+        @click="close"
         >clear</span
       >
     </div>

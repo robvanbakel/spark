@@ -20,7 +20,9 @@ const props = defineProps({
   },
 });
 
-const hasSchedulesInView = computed(() => props.schedule && !props.schedule?.every((v) => !v));
+const hasSchedulesInView = computed(
+  () => props.schedule && !props.schedule?.every((v) => !v)
+);
 
 const handleClick = (index) => {
   if (props.schedule && props.schedule[index]) {
@@ -37,11 +39,19 @@ const handleClick = (index) => {
 
 <template>
   <div v-if="employee">
-    <div v-if="hasSchedulesInView" class="row" :class="employee.role?.toLowerCase()">
+    <div
+      v-if="hasSchedulesInView"
+      class="row"
+      :class="employee.role?.toLowerCase()"
+    >
       <div class="employee">
-        <span class="name">{{ employee.firstName }} {{ employee.lastName }}</span>
+        <span class="name"
+          >{{ employee.firstName }} {{ employee.lastName }}</span
+        >
         <span class="hours">
-          <span class="calculated"> {{ employeesStore.totalHours[employee.id]?.toFixed(2) }}</span>
+          <span class="calculated">
+            {{ employeesStore.totalHours[employee.id]?.toFixed(2) }}</span
+          >
           / {{ employee.contract }} hours
         </span>
       </div>

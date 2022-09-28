@@ -30,7 +30,9 @@ const employees = computed(() => {
         getFullName(emp).toLowerCase().includes(searchInput.value.toLowerCase())
       );
     }
-    return getFullName(emp).toLowerCase().includes(searchInput.value.toLowerCase());
+    return getFullName(emp)
+      .toLowerCase()
+      .includes(searchInput.value.toLowerCase());
   });
 });
 
@@ -53,7 +55,10 @@ const toUserSettings = (employeeId) => {
   router.push({ name: "UserSettings", params: { id: employeeId } });
 };
 
-filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false }), {});
+filters.value = settingsStore.statuses.reduce(
+  (acc, i) => ({ ...acc, [i]: false }),
+  {}
+);
 </script>
 
 <template>
@@ -66,8 +71,13 @@ filters.value = settingsStore.statuses.reduce((acc, i) => ({ ...acc, [i]: false 
         type="text"
         placeholder="Search Staff"
       />
-      <span v-if="!searchInput" class="material-icons material-icons-round">search</span>
-      <span v-else class="clear material-icons material-icons-round" @click="clearSearchInput"
+      <span v-if="!searchInput" class="material-icons material-icons-round"
+        >search</span
+      >
+      <span
+        v-else
+        class="clear material-icons material-icons-round"
+        @click="clearSearchInput"
         >clear</span
       >
     </div>

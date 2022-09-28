@@ -16,7 +16,9 @@ const user = computed(() => authStore.user);
     <h4>{{ $t("general.labels.role") }}</h4>
     <p>{{ user.role }}</p>
     <h4>{{ $t("general.labels.contract") }}</h4>
-    <p>{{ user.contract }} {{ $t("schedule.hours") }} ({{ user.contractType }})</p>
+    <p>
+      {{ user.contract }} {{ $t("schedule.hours") }} ({{ user.contractType }})
+    </p>
     <h4>{{ $t("general.labels.email") }}</h4>
     <p>{{ user.email }}</p>
     <h4>{{ $t("general.labels.phone") }}</h4>

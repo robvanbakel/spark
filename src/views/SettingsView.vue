@@ -68,7 +68,11 @@ onBeforeRouteLeave(async (to, from, next) => {
     <div class="header">
       <h1>{{ $t("settings.title") }}</h1>
       <div class="actions">
-        <base-button :disabled="!unsavedChanges" icon="save" @click="saveSettings">
+        <base-button
+          :disabled="!unsavedChanges"
+          icon="save"
+          @click="saveSettings"
+        >
           {{ $t("general.actions.save") }}
         </base-button>
       </div>
@@ -81,7 +85,10 @@ onBeforeRouteLeave(async (to, from, next) => {
       </p>
       <div class="setting toggle">
         <span class="label">{{ $t("settings.shareNotes.employeeNotes") }}</span>
-        <BaseSwitch v-model="settings.shareWithEmployees.employeeNotes" toggle />
+        <BaseSwitch
+          v-model="settings.shareWithEmployees.employeeNotes"
+          toggle
+        />
       </div>
       <div class="setting toggle">
         <span class="label">{{ $t("settings.shareNotes.shiftNotes") }}</span>
@@ -92,7 +99,9 @@ onBeforeRouteLeave(async (to, from, next) => {
     <div class="settings-group">
       <h2>{{ $t("settings.dateNotation.title") }}</h2>
       <div class="setting dropdown">
-        <span class="label">{{ $t("settings.dateNotation.dateNotation") }}</span>
+        <span class="label">{{
+          $t("settings.dateNotation.dateNotation")
+        }}</span>
         <base-dropdown
           :items="dateNotations"
           :active="settings.dateNotation"
@@ -110,7 +119,12 @@ onBeforeRouteLeave(async (to, from, next) => {
         <span class="label">{{ $t("settings.address.address") }}</span>
         <div class="input-wrapper">
           <div class="input-row">
-            <input id="street" v-model="settings.address.street" type="text" placeholder="street" />
+            <input
+              id="street"
+              v-model="settings.address.street"
+              type="text"
+              placeholder="street"
+            />
           </div>
           <div class="input-row">
             <input
@@ -119,7 +133,12 @@ onBeforeRouteLeave(async (to, from, next) => {
               type="text"
               placeholder="ZIP Code"
             />
-            <input id="city" v-model="settings.address.city" type="text" placeholder="City" />
+            <input
+              id="city"
+              v-model="settings.address.city"
+              type="text"
+              placeholder="City"
+            />
           </div>
         </div>
       </div>

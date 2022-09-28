@@ -59,7 +59,9 @@ const validate = () => {
     error.value.lastName = !employee.value.lastName;
   }
 
-  employee.value.contract = parseFloat(employee.value.contract.toString().replace(",", "."));
+  employee.value.contract = parseFloat(
+    employee.value.contract.toString().replace(",", ".")
+  );
 
   error.value.role = !employee.value.role;
   error.value.contract = !employee.value.contract;
@@ -159,7 +161,10 @@ const clearError = (field) => {
             />
             <span class="input-label">{{ $t("staff.hours") }}</span>
           </div>
-          <BaseSwitch v-model="employee.contractType" :items="['fulltime', 'parttime']" />
+          <BaseSwitch
+            v-model="employee.contractType"
+            :items="['fulltime', 'parttime']"
+          />
         </div>
       </div>
       <div class="form-control">
@@ -175,7 +180,12 @@ const clearError = (field) => {
       </div>
       <div class="form-control">
         <label for="phone">{{ $t("general.labels.phone") }}</label>
-        <input id="phone" v-model.trim="employee.phone" autocomplete="off" type="text" />
+        <input
+          id="phone"
+          v-model.trim="employee.phone"
+          autocomplete="off"
+          type="text"
+        />
       </div>
       <div class="form-control notes">
         <label for="notes">{{ $t("general.labels.notes") }}</label>

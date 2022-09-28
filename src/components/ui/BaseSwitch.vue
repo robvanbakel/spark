@@ -53,7 +53,8 @@ const setIndicator = (val) => {
   if (!target) return;
 
   indicator.value.style.left = `${
-    target.getBoundingClientRect().left - wrapper.value.getBoundingClientRect().left
+    target.getBoundingClientRect().left -
+    wrapper.value.getBoundingClientRect().left
   }px`;
   indicator.value.style.width = `${target.getBoundingClientRect().width}px`;
 };
@@ -94,7 +95,9 @@ const keydownHandler = (e) => {
         class="switch-control toggle fixed"
         @click="setActive(bool)"
       >
-        <span class="material-icons material-icons-round">{{ bool ? "check" : "close" }}</span>
+        <span class="material-icons material-icons-round">{{
+          bool ? "check" : "close"
+        }}</span>
       </div>
     </div>
 

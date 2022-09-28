@@ -16,7 +16,9 @@ const emit = defineEmits(["setActiveStatus"]);
 
 const showDropdown = ref(false);
 
-const statuses = computed(() => settingsStore.statuses.filter((status) => status !== "STAGED"));
+const statuses = computed(() =>
+  settingsStore.statuses.filter((status) => status !== "STAGED")
+);
 
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value;
@@ -33,9 +35,17 @@ const setStatus = (status) => {
 <template>
   <div class="status-picker-wrapper">
     <div class="current-status">
-      <base-badge :status="activeStatus" :label="true" @click="toggleDropdown" />
+      <base-badge
+        :status="activeStatus"
+        :label="true"
+        @click="toggleDropdown"
+      />
     </div>
-    <base-overlay v-if="showDropdown" invisible @clickout="showDropdown = false" />
+    <base-overlay
+      v-if="showDropdown"
+      invisible
+      @clickout="showDropdown = false"
+    />
     <div v-if="showDropdown" class="status-picker-dropdown">
       <base-badge
         v-for="status in statuses"

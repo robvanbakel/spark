@@ -37,7 +37,9 @@ const emit = defineEmits(["choice"]);
 const dropdownVisible = ref(false);
 const selected = ref(props.active);
 const hoveredIndex = ref(null);
-const input = ref(props.items.find((item) => item.id === props.active)?.display || "");
+const input = ref(
+  props.items.find((item) => item.id === props.active)?.display || ""
+);
 const inputField = ref();
 
 const selectedDisplay = computed(
