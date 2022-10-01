@@ -1,5 +1,6 @@
 import HomeView from "@/views/HomeView.vue";
 import EmployeesView from "@/views/EmployeesView.vue";
+import BaseView from "@/views/BaseView.vue";
 import PlannerView from "@/views/PlannerView.vue";
 import ScheduleView from "@/views/ScheduleView.vue";
 import AuthView from "@/views/AuthView.vue";
@@ -23,21 +24,27 @@ export default [
   },
   {
     path: "/staff",
-    component: EmployeesView,
-    name: "EmployeeList",
-    meta: {
-      admin: true,
-      title: "Staff",
-    },
-  },
-  {
-    path: "/staff/:id",
-    component: UserSettings,
-    name: "UserSettings",
-    meta: {
-      admin: true,
-      title: "Settings",
-    },
+    component: BaseView,
+    children: [
+      {
+        path: "",
+        component: EmployeesView,
+        name: "EmployeeList",
+        meta: {
+          admin: true,
+          title: "Staff",
+        },
+      },
+      {
+        path: ":id",
+        component: UserSettings,
+        name: "UserSettings",
+        meta: {
+          admin: true,
+          title: "Settings",
+        },
+      },
+    ],
   },
   {
     path: "/planner/:weekId?",
