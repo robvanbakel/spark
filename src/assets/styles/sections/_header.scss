@@ -1,4 +1,4 @@
-@use '../utilities/colors';
+@use "../utilities/colors";
 
 // HEADER
 header {
@@ -7,12 +7,12 @@ header {
   align-items: center;
   padding: 32px 0;
   div#logo {
+    width: 220px;
     img {
       height: 20px;
     }
   }
   nav {
-    margin-left: 100px;
     font-weight: 500;
     font-size: 16px;
     ul {
