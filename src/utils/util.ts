@@ -1,10 +1,10 @@
-const randomId = (len) => {
+const randomId = (length: number) => {
   const chars =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
 
   let string = "";
 
-  for (let i = 0; i < len; i += 1) {
+  for (let i = 0; i < length; i += 1) {
     string += chars[Math.floor(Math.random() * chars.length)];
   }
 

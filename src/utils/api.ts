@@ -1,7 +1,11 @@
 import auth from "@/firebase";
 
-const request = async (method, path, body) => {
-  const idToken = await auth.currentUser.getIdToken();
+type Method = "GET" | "POST" | "PATCH" | "DELETE";
+
+const request = async (method: Method, path: string, body?: string) => {
+  const idToken = await auth.currentUser?.getIdToken();
+
+  if (!idToken) throw new Error();
 
   return fetch(`${import.meta.env.VITE_ADMIN_HOST || ""}/admin/${path}`, {
     method,
@@ -13,16 +17,16 @@ const request = async (method, path, body) => {
   });
 };
 
-const get = async (...args) => {
-  const res = await request("GET", ...args);
-  return res.json();
+const get = async (path: string, body?: string) => {
+  const res = await request("GET", path, body);
+  return res?.json();
 };
 
-const post = (...args) => request("POST", ...args);
+const post = (path: string, body?: string) => request("POST", path, body);
 
-const patch = (...args) => request("PATCH", ...args);
+const patch = (path: string, body?: string) => request("PATCH", path, body);
 
-const destroy = (...args) => request("DELETE", ...args);
+const destroy = (path: string, body?: string) => request("DELETE", path, body);
 
 export default {
   get,
