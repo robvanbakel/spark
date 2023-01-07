@@ -1,13 +1,13 @@
 import { defineStore } from "pinia";
 
-import type { Employee, User } from "@/types/employees";
+import type { Employee, Admin } from "@/types/employees";
 
 import auth from "@/firebase";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { useSettings } from "@/store";
 
 interface State {
-  user: null | User | Employee;
+  user: null | Admin | Employee;
 }
 
 export default defineStore("auth", {
