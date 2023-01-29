@@ -2,6 +2,7 @@
 import { ref } from "vue";
 
 import TheHeader from "@/components/layout/TheHeader.vue";
+import NotificationsView from "./views/NotificationsView.vue";
 
 import { useAuth, useSettings } from "@/store";
 
@@ -55,6 +56,7 @@ window.addEventListener("resize", checkScreenSize);
     <div v-if="!breakpoints.sm.active" class="container">
       <TheHeader v-if="authStore.user" />
       <router-view />
+      <NotificationsView />
     </div>
     <div v-else style="text-align: center; padding: 3em 1em">
       {{ $t("general.smallScreenWarning") }}
