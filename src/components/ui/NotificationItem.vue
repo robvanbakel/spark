@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, computed } from "vue";
 import { type Notification, NotificationType } from "@/types/notifications";
-import useNotificationsStore from "@/store/notifications";
+import { useNotifications } from "@/store";
 
-const notificationStore = useNotificationsStore();
+const notificationStore = useNotifications();
 
 const props = defineProps<{
   notification: Notification;
