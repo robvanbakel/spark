@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { type Notification, NotificationType } from "@/types/notifications";
 import { useNotifications } from "@/store";
 
@@ -20,18 +20,31 @@ const color = computed(() => {
   }
 });
 
-onMounted(() => {
-  if (props.notification.persistent) return;
+const timeout = ref<number>();
 
-  setTimeout(() => {
+const startTimeout = () => {
+  timeout.value = setTimeout(() => {
     notificationStore.removeNotification(props.notification.id);
   }, notificationStore.notificationVisibilityDuration);
+};
+
+const disableTimeout = () => clearTimeout(timeout.value);
+
+onMounted(() => {
+  if (props.notification.persistent) return;
+  startTimeout();
 });
 </script>
 
 <template>
   <Transition appear name="fade">
-    <div class="notification" v-if="!notification.leaving" :class="color">
+    <div
+      @mouseover="disableTimeout"
+      @mouseleave="startTimeout"
+      class="notification"
+      v-if="!notification.leaving"
+      :class="color"
+    >
       <span
         v-if="notification.persistent"
         class="material-icons material-icons-round close"
