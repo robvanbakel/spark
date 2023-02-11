@@ -4,7 +4,7 @@ import { useEmployees } from "@/store";
 import { useRoute } from "vue-router";
 import SideMenu from "@/components/layout/SideMenu.vue";
 import type { MenuItem } from "@/types/global";
-import BaseLayout from "../components/layout/BaseLayout.vue";
+import BaseLayout from "@/components/layout/BaseLayout.vue";
 
 const employeesStore = useEmployees();
 
