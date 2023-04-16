@@ -14,24 +14,32 @@ const confirmUnsavedChanges = ref();
 const unsavedChanges = ref(false);
 const settings = ref(settingsStore.settings);
 
-const dateNotations = computed(() => [
-  {
-    id: "MM/DD/YYYY",
-    display: dayjs().format("MM/DD/YYYY"),
-  },
-  {
-    id: "DD/MM/YYYY",
-    display: dayjs().format("DD/MM/YYYY"),
-  },
-  {
-    id: "DD-MM-YYYY",
-    display: dayjs().format("DD-MM-YYYY"),
-  },
-  {
-    id: "D MMM YYYY",
-    display: dayjs().format("D MMM YYYY"),
-  },
-]);
+const dateNotations = computed(() => {
+  const date = dayjs().month(11).date(31);
+
+  return [
+    {
+      id: "D MMM YYYY",
+      display: date.format("D MMM YYYY"),
+    },
+    {
+      id: "DD-MM-YYYY",
+      display: date.format("DD-MM-YYYY"),
+    },
+    {
+      id: "MM-DD-YYYY",
+      display: date.format("MM-DD-YYYY"),
+    },
+    {
+      id: "DD/MM/YYYY",
+      display: date.format("DD/MM/YYYY"),
+    },
+    {
+      id: "MM/DD/YYYY",
+      display: date.format("MM/DD/YYYY"),
+    },
+  ];
+});
 
 const setDateNotation = (locale) => {
   settings.value.dateNotation = locale;
