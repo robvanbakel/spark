@@ -30,7 +30,7 @@ const visibleHoursStart = ref(0);
 const visibleHoursEnd = ref(0);
 
 const webcalLink = computed(
-  () => `webcal://app.sparkscheduler.com/feed/${authStore.feedToken}`
+  () => `webcal://app.sparkscheduler.com/feed/${authStore.user.feedToken}`
 );
 
 const schedulesInView = computed(() => {
