@@ -38,7 +38,7 @@ In order to login as an employee, use any of the demo employee email addresses a
 | Setting to share notes with employees         | SETTINGS | Done        |
 | View schedules in Employee login              | EMPLOYEE | Done        |
 | Serve calendar subscription for each employee | EMPLOYEE | Done        |
-| Accept shifts as employee                     | PLANNER  | In progress |
+| Accept shifts as employee                     | PLANNER  | Done        |
 | Create planning draft before publishing       | PLANNER  | Upcoming    |
 | Provide availability to planner               | EMPLOYEE | Upcoming    |
 
