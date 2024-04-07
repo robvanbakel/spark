@@ -6,14 +6,14 @@ import localeData from "dayjs/plugin/localeData";
 import duration from "dayjs/plugin/duration";
 import isoWeek from "dayjs/plugin/isoWeek";
 
-const weekId = (option, dayjsClass) => {
+const weekId = (option: any, dayjsClass: typeof dayjs.Dayjs) => {
   const proto = dayjsClass.prototype;
   proto.weekId = function () {
     return this.format("GGGG-WW");
   };
 };
 
-const dateTime = (option, dayjsClass) => {
+const dateTime = (option: any, dayjsClass: typeof dayjs.Dayjs) => {
   const proto = dayjsClass.prototype;
   proto.dateTime = function () {
     return this.format("YYYY-MM-DDTHH:mm");
