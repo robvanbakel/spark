@@ -1,7 +1,7 @@
 import dayjs from "@/plugins/dayjs";
 
 const shifts = {
-  req(data) {
+  req(data: Record<string, any>) {
     const entries = Object.entries(data)
       .map(([key, val]) => {
         switch (key) {
@@ -14,14 +14,14 @@ const shifts = {
             return [key, val];
         }
       })
-      .filter((v) => v);
+      .filter((v) => v) as [string, any][];
 
     const requestObject = Object.fromEntries(entries);
 
     return JSON.stringify(requestObject);
   },
-  res(data) {
-    return data.map((val) => ({
+  res(data: Record<string, any>) {
+    return data.map((val: Record<string, any>) => ({
       ...val,
       from: dayjs(val.from),
       to: dayjs(val.to),
@@ -30,7 +30,7 @@ const shifts = {
 };
 
 const users = {
-  req(data) {
+  req(data: Record<string, any>) {
     const entries = Object.entries(data)
       .map(([key, val]) => {
         switch (key) {
@@ -40,7 +40,7 @@ const users = {
             return [key, val];
         }
       })
-      .filter((v) => v);
+      .filter((v) => v) as [string, any][];
 
     const requestObject = Object.fromEntries(entries);
 
@@ -49,7 +49,7 @@ const users = {
 };
 
 const settings = {
-  req(data) {
+  req(data: Record<string, any>) {
     const entries = Object.entries(data)
       .map(([key, val]) => {
         switch (key) {
@@ -59,7 +59,7 @@ const settings = {
             return [key, val];
         }
       })
-      .filter((v) => v);
+      .filter((v) => v) as [string, any][];
 
     const requestObject = Object.fromEntries(entries);
 
