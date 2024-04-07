@@ -116,7 +116,7 @@ filters.value = settingsStore.statuses.reduce(
         <th>{{ $t("general.labels.phone") }}</th>
         <th>{{ $t("general.labels.role") }}</th>
         <th>{{ $t("general.labels.notes") }}</th>
-        <th class="settings" />
+        <!-- <th class="settings" /> -->
       </thead>
       <tbody>
         <tr
@@ -137,9 +137,9 @@ filters.value = settingsStore.statuses.reduce(
           <td class="notes">
             {{ employee.notes }}
           </td>
-          <td class="settings" @click.stop="toUserSettings(employee.id)">
+          <!-- <td class="settings" @click.stop="toUserSettings(employee.id)">
             <span class="material-symbols-outlined">settings</span>
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>
