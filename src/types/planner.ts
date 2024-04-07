@@ -1,10 +1,10 @@
 import type { Dayjs } from "dayjs";
 
 export enum ShiftStatus {
-  NEW,
-  DRAFT,
-  PROPOSED,
-  ACCEPTED,
+  NEW = "NEW",
+  DRAFT = "DRAFT",
+  PROPOSED = "PROPOSED",
+  ACCEPTED = "ACCEPTED",
 }
 
 export interface Shift {
