@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, nextTick } from "vue";
 
-import FieldSuggestions from "@/components//ui/FieldSuggestions.vue";
+import FieldSuggestions from "@/components/ui/FieldSuggestions.vue";
 
 import util from "@/utils/util";
 import dayjs from "@/plugins/dayjs";
@@ -210,7 +210,6 @@ const deleteShift = async () => {
               @input="clearError('location')"
             />
             <FieldSuggestions
-              v-if="shift.location"
               v-model="shift.location"
               :suggestions="settingsStore.settings.suggestions"
               :add-suggestion="settingsStore.addSuggestion"
